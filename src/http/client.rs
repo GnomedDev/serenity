@@ -2219,6 +2219,7 @@ impl Http {
         self.fire(Request {
             body: None,
             headers: None,
+            multipart: None,
             route: RouteInfo::GetWebhookMessage {
                 token,
                 webhook_id,
