@@ -1942,19 +1942,153 @@
 <span id="1937">1937</span>
 <span id="1938">1938</span>
 <span id="1939">1939</span>
+<span id="1940">1940</span>
+<span id="1941">1941</span>
+<span id="1942">1942</span>
+<span id="1943">1943</span>
+<span id="1944">1944</span>
+<span id="1945">1945</span>
+<span id="1946">1946</span>
+<span id="1947">1947</span>
+<span id="1948">1948</span>
+<span id="1949">1949</span>
+<span id="1950">1950</span>
+<span id="1951">1951</span>
+<span id="1952">1952</span>
+<span id="1953">1953</span>
+<span id="1954">1954</span>
+<span id="1955">1955</span>
+<span id="1956">1956</span>
+<span id="1957">1957</span>
+<span id="1958">1958</span>
+<span id="1959">1959</span>
+<span id="1960">1960</span>
+<span id="1961">1961</span>
+<span id="1962">1962</span>
+<span id="1963">1963</span>
+<span id="1964">1964</span>
+<span id="1965">1965</span>
+<span id="1966">1966</span>
+<span id="1967">1967</span>
+<span id="1968">1968</span>
+<span id="1969">1969</span>
+<span id="1970">1970</span>
+<span id="1971">1971</span>
+<span id="1972">1972</span>
+<span id="1973">1973</span>
+<span id="1974">1974</span>
+<span id="1975">1975</span>
+<span id="1976">1976</span>
+<span id="1977">1977</span>
+<span id="1978">1978</span>
+<span id="1979">1979</span>
+<span id="1980">1980</span>
+<span id="1981">1981</span>
+<span id="1982">1982</span>
+<span id="1983">1983</span>
+<span id="1984">1984</span>
+<span id="1985">1985</span>
+<span id="1986">1986</span>
+<span id="1987">1987</span>
+<span id="1988">1988</span>
+<span id="1989">1989</span>
+<span id="1990">1990</span>
+<span id="1991">1991</span>
+<span id="1992">1992</span>
+<span id="1993">1993</span>
+<span id="1994">1994</span>
+<span id="1995">1995</span>
+<span id="1996">1996</span>
+<span id="1997">1997</span>
+<span id="1998">1998</span>
+<span id="1999">1999</span>
+<span id="2000">2000</span>
+<span id="2001">2001</span>
+<span id="2002">2002</span>
+<span id="2003">2003</span>
+<span id="2004">2004</span>
+<span id="2005">2005</span>
+<span id="2006">2006</span>
+<span id="2007">2007</span>
+<span id="2008">2008</span>
+<span id="2009">2009</span>
+<span id="2010">2010</span>
+<span id="2011">2011</span>
+<span id="2012">2012</span>
+<span id="2013">2013</span>
+<span id="2014">2014</span>
+<span id="2015">2015</span>
+<span id="2016">2016</span>
+<span id="2017">2017</span>
+<span id="2018">2018</span>
+<span id="2019">2019</span>
+<span id="2020">2020</span>
+<span id="2021">2021</span>
+<span id="2022">2022</span>
+<span id="2023">2023</span>
+<span id="2024">2024</span>
+<span id="2025">2025</span>
+<span id="2026">2026</span>
+<span id="2027">2027</span>
+<span id="2028">2028</span>
+<span id="2029">2029</span>
+<span id="2030">2030</span>
+<span id="2031">2031</span>
+<span id="2032">2032</span>
+<span id="2033">2033</span>
+<span id="2034">2034</span>
+<span id="2035">2035</span>
+<span id="2036">2036</span>
+<span id="2037">2037</span>
+<span id="2038">2038</span>
+<span id="2039">2039</span>
+<span id="2040">2040</span>
+<span id="2041">2041</span>
+<span id="2042">2042</span>
+<span id="2043">2043</span>
+<span id="2044">2044</span>
+<span id="2045">2045</span>
+<span id="2046">2046</span>
+<span id="2047">2047</span>
+<span id="2048">2048</span>
+<span id="2049">2049</span>
+<span id="2050">2050</span>
+<span id="2051">2051</span>
+<span id="2052">2052</span>
+<span id="2053">2053</span>
+<span id="2054">2054</span>
+<span id="2055">2055</span>
+<span id="2056">2056</span>
+<span id="2057">2057</span>
+<span id="2058">2058</span>
+<span id="2059">2059</span>
+<span id="2060">2060</span>
+<span id="2061">2061</span>
+<span id="2062">2062</span>
+<span id="2063">2063</span>
+<span id="2064">2064</span>
 </pre><pre class="rust"><code><span class="doccomment">//! All the events this library handles.</span>
 
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">fmt</span>};
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="kw">use</span> <span class="ident">serde::de</span>::{<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">DeError</span>, <span class="ident">IgnoredAny</span>, <span class="ident">MapAccess</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::utils</span>::{<span class="ident">emojis</span>, <span class="ident">roles</span>, <span class="ident">stickers</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::constants::OpCode</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::prelude</span>::<span class="kw-2">*</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::interactions::Interaction</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">constants::OpCode</span>, <span class="ident">json::prelude</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::application::command::CommandPermission</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::application::interaction::Interaction</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApplicationCommandPermissionsUpdateEvent</span> {
+    <span class="kw">pub</span> <span class="ident">permission</span>: <span class="ident">CommandPermission</span>,
+}
 
 <span class="doccomment">/// Event data for the channel creation event.</span>
 <span class="doccomment">///</span>
@@ -2163,9 +2297,9 @@
 
                 <span class="prelude-val">Ok</span>(<span class="ident">GuildMembersChunkEvent</span> {
                     <span class="ident">guild_id</span>,
+                    <span class="ident">members</span>,
                     <span class="ident">chunk_index</span>,
                     <span class="ident">chunk_count</span>,
-                    <span class="ident">members</span>,
                     <span class="ident">nonce</span>,
                 })
             }
@@ -2406,7 +2540,6 @@
     <span class="kw">pub</span> <span class="ident">guild_id</span>: <span class="ident">GuildId</span>,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
@@ -2414,7 +2547,6 @@
     <span class="kw">pub</span> <span class="ident">interaction</span>: <span class="ident">Interaction</span>,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
@@ -2422,7 +2554,6 @@
     <span class="kw">pub</span> <span class="ident">integration</span>: <span class="ident">Integration</span>,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
@@ -2430,7 +2561,6 @@
     <span class="kw">pub</span> <span class="ident">integration</span>: <span class="ident">Integration</span>,
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntegrationDeleteEvent</span> {
@@ -2519,6 +2649,45 @@
     <span class="doccomment">/// The ids of the users who were removed from the thread.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="kw">pub</span> <span class="ident">removed_members_ids</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildScheduledEventCreateEvent</span> {
+    <span class="kw">pub</span> <span class="ident">event</span>: <span class="ident">ScheduledEvent</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildScheduledEventUpdateEvent</span> {
+    <span class="kw">pub</span> <span class="ident">event</span>: <span class="ident">ScheduledEvent</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildScheduledEventDeleteEvent</span> {
+    <span class="kw">pub</span> <span class="ident">event</span>: <span class="ident">ScheduledEvent</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildScheduledEventUserAddEvent</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;guild_scheduled_event_id&quot;</span>)]</span>
+    <span class="ident">scheduled_event_id</span>: <span class="ident">ScheduledEventId</span>,
+    <span class="ident">guild_id</span>: <span class="ident">GuildId</span>,
+    <span class="ident">user_id</span>: <span class="ident">UserId</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildScheduledEventUserRemoveEvent</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;guild_scheduled_event_id&quot;</span>)]</span>
+    <span class="ident">scheduled_event_id</span>: <span class="ident">ScheduledEventId</span>,
+    <span class="ident">guild_id</span>: <span class="ident">GuildId</span>,
+    <span class="ident">user_id</span>: <span class="ident">UserId</span>,
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::large_enum_variant</span>)]</span>
@@ -2616,6 +2785,13 @@
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">untagged</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span> {
+    <span class="doccomment">/// The permissions of an [`Command`] was changed.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Fires the [`EventHandler::application_command_permissions_update`] event.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`Command`]: crate::model::application::command::Command</span>
+    <span class="doccomment">/// [`EventHandler::application_command_permissions_update`]: crate::client::EventHandler::application_command_permissions_update</span>
+    <span class="ident">ApplicationCommandPermissionsUpdate</span>(<span class="ident">ApplicationCommandPermissionsUpdateEvent</span>),
     <span class="doccomment">/// A [`Channel`] was created.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Fires the [`EventHandler::channel_create`] event.</span>
@@ -2715,16 +2891,12 @@
     <span class="doccomment">/// A webhook for a [channel][`GuildChannel`] was updated in a [`Guild`].</span>
     <span class="ident">WebhookUpdate</span>(<span class="ident">WebhookUpdateEvent</span>),
     <span class="doccomment">/// An interaction was created.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">InteractionCreate</span>(<span class="ident">InteractionCreateEvent</span>),
     <span class="doccomment">/// A guild integration was created</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationCreate</span>(<span class="ident">IntegrationCreateEvent</span>),
     <span class="doccomment">/// A guild integration was updated</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationUpdate</span>(<span class="ident">IntegrationUpdateEvent</span>),
     <span class="doccomment">/// A guild integration was deleted</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationDelete</span>(<span class="ident">IntegrationDeleteEvent</span>),
     <span class="doccomment">/// A stage instance was created.</span>
     <span class="ident">StageInstanceCreate</span>(<span class="ident">StageInstanceCreateEvent</span>),
@@ -2748,23 +2920,38 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`GatewayIntents::GUILDS`]: crate::model::gateway::GatewayIntents::GUILDS</span>
     <span class="ident">ThreadMembersUpdate</span>(<span class="ident">ThreadMembersUpdateEvent</span>),
+    <span class="doccomment">/// A scheduled event was created.</span>
+    <span class="ident">GuildScheduledEventCreate</span>(<span class="ident">GuildScheduledEventCreateEvent</span>),
+    <span class="doccomment">/// A scheduled event was updated.</span>
+    <span class="ident">GuildScheduledEventUpdate</span>(<span class="ident">GuildScheduledEventUpdateEvent</span>),
+    <span class="doccomment">/// A scheduled event was deleted.</span>
+    <span class="ident">GuildScheduledEventDelete</span>(<span class="ident">GuildScheduledEventDeleteEvent</span>),
+    <span class="doccomment">/// A guild member has subscribed to a scheduled event.</span>
+    <span class="ident">GuildScheduledEventUserAdd</span>(<span class="ident">GuildScheduledEventUserAddEvent</span>),
+    <span class="doccomment">/// A guild member has unsubscribed from a scheduled event.</span>
+    <span class="ident">GuildScheduledEventUserRemove</span>(<span class="ident">GuildScheduledEventUserRemoveEvent</span>),
     <span class="doccomment">/// An event type not covered by the above</span>
     <span class="ident">Unknown</span>(<span class="ident">UnknownEvent</span>),
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">gid_from_channel</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="ident">Channel</span>) -&gt; <span class="ident">RelatedId</span><span class="op">&lt;</span><span class="ident">GuildId</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">RelatedId</span>::<span class="kw-2">*</span>;
     <span class="kw">match</span> <span class="ident">c</span> {
-        <span class="ident">Channel::Guild</span>(<span class="ident">g</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">g</span>.<span class="ident">guild_id</span>),
-        <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+        <span class="ident">Channel::Guild</span>(<span class="ident">g</span>) =&gt; <span class="ident">RelatedId::Some</span>(<span class="ident">g</span>.<span class="ident">guild_id</span>),
+        <span class="kw">_</span> =&gt; <span class="ident">RelatedId::None</span>,
     }
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">with_related_ids_for_event_types</span> {
     (<span class="macro-nonterminal">$</span><span class="kw">macro</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">macro!</span> {
-            <span class="macro-nonterminal">Self::ChannelCreate</span>, <span class="ident"><span class="self">Self</span>::ChannelCreate</span>(<span class="ident">e</span>) =&gt; {
+            <span class="macro-nonterminal">Self::ApplicationCommandPermissionsUpdate</span>, <span class="ident"><span class="self">Self</span>::ApplicationCommandPermissionsUpdate</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="ident">Never</span>,
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">permission</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">Never</span>,
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::ChannelCreate</span>, <span class="ident"><span class="self">Self</span>::ChannelCreate</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="ident">Never</span>,
                 <span class="ident">guild_id</span>: <span class="ident">gid_from_channel</span>(<span class="kw-2">&amp;</span><span class="ident">e</span>.<span class="ident">channel</span>),
                 <span class="ident">channel_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">channel</span>.<span class="ident">id</span>()),
@@ -2863,6 +3050,36 @@
             <span class="ident"><span class="self">Self</span>::GuildRoleUpdate</span>, <span class="ident"><span class="self">Self</span>::GuildRoleUpdate</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="ident">Never</span>,
                 <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">role</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">Never</span>,
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventCreate</span>, <span class="ident"><span class="self">Self</span>::GuildScheduledEventCreate</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">creator_id</span>.<span class="ident">into</span>(),
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">channel_id</span>.<span class="ident">into</span>(),
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUpdate</span>, <span class="ident"><span class="self">Self</span>::GuildScheduledEventUpdate</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">creator_id</span>.<span class="ident">into</span>(),
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">channel_id</span>.<span class="ident">into</span>(),
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventDelete</span>, <span class="ident"><span class="self">Self</span>::GuildScheduledEventDelete</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">creator_id</span>.<span class="ident">into</span>(),
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">e</span>.<span class="ident">event</span>.<span class="ident">channel_id</span>.<span class="ident">into</span>(),
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserAdd</span>, <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserAdd</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">user_id</span>),
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">guild_id</span>),
+                <span class="ident">channel_id</span>: <span class="ident">Never</span>,
+                <span class="ident">message_id</span>: <span class="ident">Never</span>,
+            },
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserRemove</span>, <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserRemove</span>(<span class="ident">e</span>) =&gt; {
+                <span class="ident">user_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">user_id</span>),
+                <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">guild_id</span>),
                 <span class="ident">channel_id</span>: <span class="ident">Never</span>,
                 <span class="ident">message_id</span>: <span class="ident">Never</span>,
             },
@@ -3052,7 +3269,6 @@
                 <span class="ident">channel_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">channel_id</span>),
                 <span class="ident">message_id</span>: <span class="ident">Never</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::InteractionCreate</span>, <span class="ident"><span class="self">Self</span>::InteractionCreate</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">e</span>.<span class="ident">interaction</span> {
                     <span class="ident">Interaction::Ping</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
@@ -3083,21 +3299,18 @@
                     <span class="ident">Interaction::ModalSubmit</span>(<span class="ident">i</span>) =&gt; <span class="ident">i</span>.<span class="ident">message</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">id</span>).<span class="ident">into</span>(),
                 },
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationCreate</span>, <span class="ident"><span class="self">Self</span>::IntegrationCreate</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="ident">e</span>.<span class="ident">integration</span>.<span class="ident">user</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">u</span>.<span class="ident">id</span>).<span class="ident">into</span>(),
                 <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">integration</span>.<span class="ident">guild_id</span>),
                 <span class="ident">channel_id</span>: <span class="ident">Never</span>,
                 <span class="ident">message_id</span>: <span class="ident">Never</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationUpdate</span>, <span class="ident"><span class="self">Self</span>::IntegrationUpdate</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="ident">e</span>.<span class="ident">integration</span>.<span class="ident">user</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">u</span>.<span class="ident">id</span>).<span class="ident">into</span>(),
                 <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">integration</span>.<span class="ident">guild_id</span>),
                 <span class="ident">channel_id</span>: <span class="ident">Never</span>,
                 <span class="ident">message_id</span>: <span class="ident">Never</span>,
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationDelete</span>, <span class="ident"><span class="self">Self</span>::IntegrationDelete</span>(<span class="ident">e</span>) =&gt; {
                 <span class="ident">user_id</span>: <span class="ident">Never</span>,
                 <span class="ident">guild_id</span>: <span class="prelude-val">Some</span>(<span class="ident">e</span>.<span class="ident">guild_id</span>),
@@ -3120,6 +3333,7 @@
         }
     ),<span class="op">+</span> $(,)<span class="question-mark">?</span>) =&gt; {
         <span class="doccomment">/// User ID(s) related to this event.</span>
+        <span class="attribute">#[<span class="ident">must_use</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">user_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelatedId</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span> {
             <span class="kw">use</span> <span class="ident">RelatedId</span>::<span class="kw-2">*</span>;
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
@@ -3133,6 +3347,7 @@
         }
 
         <span class="doccomment">/// Guild ID related to this event.</span>
+        <span class="attribute">#[<span class="ident">must_use</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelatedId</span><span class="op">&lt;</span><span class="ident">GuildId</span><span class="op">&gt;</span> {
             <span class="kw">use</span> <span class="ident">RelatedId</span>::<span class="kw-2">*</span>;
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
@@ -3146,6 +3361,7 @@
         }
 
         <span class="doccomment">/// Channel ID(s) related to this event.</span>
+        <span class="attribute">#[<span class="ident">must_use</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelatedId</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span> {
             <span class="kw">use</span> <span class="ident">RelatedId</span>::<span class="kw-2">*</span>;
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
@@ -3159,6 +3375,7 @@
         }
 
         <span class="doccomment">/// Message ID(s) related to this event.</span>
+        <span class="attribute">#[<span class="ident">must_use</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelatedId</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span> {
             <span class="kw">use</span> <span class="ident">RelatedId</span>::<span class="kw-2">*</span>;
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
@@ -3175,8 +3392,12 @@
 
 <span class="kw">impl</span> <span class="ident">Event</span> {
     <span class="doccomment">/// Return the type of this event.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">event_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">EventType</span> {
         <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident"><span class="self">Self</span>::ApplicationCommandPermissionsUpdate</span>(<span class="kw">_</span>) =&gt; {
+                <span class="ident">EventType::ApplicationCommandPermissionsUpdate</span>
+            },
             <span class="ident"><span class="self">Self</span>::ChannelCreate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ChannelCreate</span>,
             <span class="ident"><span class="self">Self</span>::ChannelDelete</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ChannelDelete</span>,
             <span class="ident"><span class="self">Self</span>::ChannelPinsUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ChannelPinsUpdate</span>,
@@ -3215,13 +3436,9 @@
             <span class="ident"><span class="self">Self</span>::VoiceStateUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::VoiceStateUpdate</span>,
             <span class="ident"><span class="self">Self</span>::VoiceServerUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::VoiceServerUpdate</span>,
             <span class="ident"><span class="self">Self</span>::WebhookUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::WebhookUpdate</span>,
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::InteractionCreate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::InteractionCreate</span>,
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationCreate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::IntegrationCreate</span>,
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::IntegrationUpdate</span>,
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationDelete</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::IntegrationDelete</span>,
             <span class="ident"><span class="self">Self</span>::StageInstanceCreate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::StageInstanceCreate</span>,
             <span class="ident"><span class="self">Self</span>::StageInstanceUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::StageInstanceUpdate</span>,
@@ -3232,6 +3449,11 @@
             <span class="ident"><span class="self">Self</span>::ThreadListSync</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ThreadListSync</span>,
             <span class="ident"><span class="self">Self</span>::ThreadMemberUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ThreadMemberUpdate</span>,
             <span class="ident"><span class="self">Self</span>::ThreadMembersUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::ThreadMembersUpdate</span>,
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventCreate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::GuildScheduledEventCreate</span>,
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUpdate</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::GuildScheduledEventUpdate</span>,
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventDelete</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::GuildScheduledEventDelete</span>,
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserAdd</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::GuildScheduledEventUserAdd</span>,
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserRemove</span>(<span class="kw">_</span>) =&gt; <span class="ident">EventType::GuildScheduledEventUserRemove</span>,
             <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">unknown</span>) =&gt; <span class="ident">EventType::Other</span>(<span class="ident">unknown</span>.<span class="ident">kind</span>.<span class="ident">clone</span>()),
         }
     }
@@ -3304,6 +3526,9 @@
 <span class="doccomment">/// Returns [`Error::Json`] if there is an error in deserializing the event data.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize_event_with_type</span>(<span class="ident">kind</span>: <span class="ident">EventType</span>, <span class="ident">v</span>: <span class="ident">Value</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">kind</span> {
+        <span class="ident">EventType::ApplicationCommandPermissionsUpdate</span> =&gt; {
+            <span class="ident">Event::ApplicationCommandPermissionsUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
+        },
         <span class="ident">EventType::ChannelCreate</span> =&gt; <span class="ident">Event::ChannelCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::ChannelDelete</span> =&gt; <span class="ident">Event::ChannelDelete</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::ChannelPinsUpdate</span> =&gt; <span class="ident">Event::ChannelPinsUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
@@ -3314,25 +3539,17 @@
             <span class="comment">// GuildUnavailable isn&#39;t actually received from the gateway, so it</span>
             <span class="comment">// can be lumped in with GuildCreate&#39;s arm.</span>
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">JsonMap::deserialize</span>(<span class="ident">v</span>)<span class="question-mark">?</span>;
-
-            <span class="kw">if</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;unavailable&quot;</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">as_bool</span>()).<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>) {
-                <span class="kw">let</span> <span class="ident">guild_data</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="ident">Value::from</span>(<span class="ident">map</span>))<span class="question-mark">?</span>;
-
-                <span class="ident">Event::GuildUnavailable</span>(<span class="ident">guild_data</span>)
+            <span class="kw">if</span> <span class="ident">v</span>.<span class="ident">get</span>(<span class="string">&quot;unavailable&quot;</span>).<span class="ident">and_then</span>(<span class="ident">Value::as_bool</span>).<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>) {
+                <span class="ident">Event::GuildUnavailable</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
             } <span class="kw">else</span> {
-                <span class="ident">Event::GuildCreate</span>(<span class="ident">from_value</span>(<span class="ident">Value::from</span>(<span class="ident">map</span>))<span class="question-mark">?</span>)
+                <span class="ident">Event::GuildCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
             }
         },
         <span class="ident">EventType::GuildDelete</span> =&gt; {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">JsonMap::deserialize</span>(<span class="ident">v</span>)<span class="question-mark">?</span>;
-
-            <span class="kw">if</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;unavailable&quot;</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">as_bool</span>()).<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>) {
-                <span class="kw">let</span> <span class="ident">guild_data</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="ident">Value::from</span>(<span class="ident">map</span>))<span class="question-mark">?</span>;
-
-                <span class="ident">Event::GuildUnavailable</span>(<span class="ident">guild_data</span>)
+            <span class="kw">if</span> <span class="ident">v</span>.<span class="ident">get</span>(<span class="string">&quot;unavailable&quot;</span>).<span class="ident">and_then</span>(<span class="ident">Value::as_bool</span>).<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>) {
+                <span class="ident">Event::GuildUnavailable</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
             } <span class="kw">else</span> {
-                <span class="ident">Event::GuildDelete</span>(<span class="ident">from_value</span>(<span class="ident">Value::from</span>(<span class="ident">map</span>))<span class="question-mark">?</span>)
+                <span class="ident">Event::GuildDelete</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
             }
         },
         <span class="ident">EventType::GuildEmojisUpdate</span> =&gt; <span class="ident">Event::GuildEmojisUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
@@ -3364,13 +3581,9 @@
         <span class="ident">EventType::VoiceServerUpdate</span> =&gt; <span class="ident">Event::VoiceServerUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::VoiceStateUpdate</span> =&gt; <span class="ident">Event::VoiceStateUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::WebhookUpdate</span> =&gt; <span class="ident">Event::WebhookUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
         <span class="ident">EventType::InteractionCreate</span> =&gt; <span class="ident">Event::InteractionCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
         <span class="ident">EventType::IntegrationCreate</span> =&gt; <span class="ident">Event::IntegrationCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
         <span class="ident">EventType::IntegrationUpdate</span> =&gt; <span class="ident">Event::IntegrationUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
         <span class="ident">EventType::IntegrationDelete</span> =&gt; <span class="ident">Event::IntegrationDelete</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::StageInstanceCreate</span> =&gt; <span class="ident">Event::StageInstanceCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::StageInstanceUpdate</span> =&gt; <span class="ident">Event::StageInstanceUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
@@ -3381,6 +3594,13 @@
         <span class="ident">EventType::ThreadListSync</span> =&gt; <span class="ident">Event::ThreadListSync</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::ThreadMemberUpdate</span> =&gt; <span class="ident">Event::ThreadMemberUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
         <span class="ident">EventType::ThreadMembersUpdate</span> =&gt; <span class="ident">Event::ThreadMembersUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
+        <span class="ident">EventType::GuildScheduledEventCreate</span> =&gt; <span class="ident">Event::GuildScheduledEventCreate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
+        <span class="ident">EventType::GuildScheduledEventUpdate</span> =&gt; <span class="ident">Event::GuildScheduledEventUpdate</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
+        <span class="ident">EventType::GuildScheduledEventDelete</span> =&gt; <span class="ident">Event::GuildScheduledEventDelete</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
+        <span class="ident">EventType::GuildScheduledEventUserAdd</span> =&gt; <span class="ident">Event::GuildScheduledEventUserAdd</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>),
+        <span class="ident">EventType::GuildScheduledEventUserRemove</span> =&gt; {
+            <span class="ident">Event::GuildScheduledEventUserRemove</span>(<span class="ident">from_value</span>(<span class="ident">v</span>)<span class="question-mark">?</span>)
+        },
         <span class="ident">EventType::Other</span>(<span class="ident">kind</span>) =&gt; <span class="ident">Event::Unknown</span>(<span class="ident">UnknownEvent</span> {
             <span class="ident">kind</span>,
             <span class="ident">value</span>: <span class="ident">v</span>,
@@ -3398,6 +3618,10 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span> {
+    <span class="doccomment">/// Indicator that an application command permission update payload was received.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`ApplicationCommandPermissionsUpdateEvent`].</span>
+    <span class="ident">ApplicationCommandPermissionsUpdate</span>,
     <span class="doccomment">/// Indicator that a channel create payload was received.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`ChannelCreateEvent`].</span>
@@ -3553,22 +3777,18 @@
     <span class="doccomment">/// Indicator that an interaction was created.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`InteractionCreateEvent`].</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">InteractionCreate</span>,
     <span class="doccomment">/// Indicator that an integration was created.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`IntegrationCreateEvent`].</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationCreate</span>,
     <span class="doccomment">/// Indicator that an integration was created.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`IntegrationUpdateEvent`].</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationUpdate</span>,
     <span class="doccomment">/// Indicator that an integration was created.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`IntegrationDeleteEvent`].</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="ident">IntegrationDelete</span>,
     <span class="doccomment">/// Indicator that a stage instance was created.</span>
     <span class="doccomment">///</span>
@@ -3607,6 +3827,26 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This maps to [`ThreadMembersUpdateEvent`]</span>
     <span class="ident">ThreadMembersUpdate</span>,
+    <span class="doccomment">/// Indicator that a scheduled event create payload was received.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`GuildScheduledEventCreateEvent`].</span>
+    <span class="ident">GuildScheduledEventCreate</span>,
+    <span class="doccomment">/// Indicator that a scheduled event update payload was received.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`GuildScheduledEventUpdateEvent`].</span>
+    <span class="ident">GuildScheduledEventUpdate</span>,
+    <span class="doccomment">/// Indicator that a scheduled event delete payload was received.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`GuildScheduledEventDeleteEvent`].</span>
+    <span class="ident">GuildScheduledEventDelete</span>,
+    <span class="doccomment">/// Indicator that a guild member has subscribed to a scheduled event.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`GuildScheduledEventUserAddEvent`].</span>
+    <span class="ident">GuildScheduledEventUserAdd</span>,
+    <span class="doccomment">/// Indicator that a guild member has unsubscribed from a scheduled event.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This maps to [`GuildScheduledEventUserRemoveEvent`].</span>
+    <span class="ident">GuildScheduledEventUserRemove</span>,
     <span class="doccomment">/// An unknown event was received over the gateway.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This should be logged so that support for it can be added in the</span>
@@ -3640,6 +3880,7 @@
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>:<span class="ident">path</span>, <span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">pat</span> =&gt; { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>:<span class="ident">tt</span>)<span class="op">*</span> }
         ),<span class="op">+</span> $(,)<span class="question-mark">?</span>
     ) =&gt; {
+        <span class="attribute">#[<span class="ident">must_use</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">related_ids</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RelatedIdsForEventType</span> {
             <span class="kw">match</span> <span class="self">self</span> {
                 <span class="ident"><span class="self">Self</span>::Other</span>(<span class="kw">_</span>) =&gt; <span class="ident">Default::default</span>(),
@@ -3660,13 +3901,6 @@
     (@<span class="ident">munch</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">next</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>}) =&gt; {
         <span class="macro">define_related_ids_for_event_type!</span>{ @<span class="ident">munch</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">next</span>)<span class="kw-2">*</span>) -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>)<span class="op">*</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>: <span class="bool-val">true</span>)} }
     };
-    <span class="comment">// These are variants of the above to munch the last field.</span>
-    (@<span class="ident">munch</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">ident</span>: <span class="ident">Never</span> $(,)<span class="question-mark">?</span>) -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>}) =&gt; {
-        <span class="macro">define_related_ids_for_event_type!</span>{ @<span class="ident">munch</span> () -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>)<span class="op">*</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>: <span class="bool-val">false</span>)} }
-    };
-    (@<span class="ident">munch</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">expr</span> $(,)<span class="question-mark">?</span>) -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>}) =&gt; {
-        <span class="macro">define_related_ids_for_event_type!</span>{ @<span class="ident">munch</span> () -&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>)<span class="op">*</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>: <span class="bool-val">true</span>)} }
-    };
     <span class="comment">// All input fields consumed; create the struct.</span>
     (@<span class="ident">munch</span> () -&gt; {$((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">value</span>:<span class="ident">literal</span>))<span class="op">+</span>}) =&gt; {
         <span class="ident">RelatedIdsForEventType</span> {
@@ -3678,6 +3912,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">EventType</span> {
+    <span class="kw">const</span> <span class="ident">APPLICATION_COMMAND_PERMISSIONS_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span>
+        <span class="string">&quot;APPLICATION_COMMAND_PERMISSIONS_UPDATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">CHANNEL_CREATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;CHANNEL_CREATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">CHANNEL_DELETE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;CHANNEL_DELETE&quot;</span>;
     <span class="kw">const</span> <span class="ident">CHANNEL_PINS_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;CHANNEL_PINS_UPDATE&quot;</span>;
@@ -3715,13 +3951,9 @@
     <span class="kw">const</span> <span class="ident">VOICE_SERVER_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;VOICE_SERVER_UPDATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">VOICE_STATE_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;VOICE_STATE_UPDATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">WEBHOOKS_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;WEBHOOKS_UPDATE&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">const</span> <span class="ident">INTERACTION_CREATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;INTERACTION_CREATE&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">const</span> <span class="ident">INTEGRATION_CREATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;INTEGRATION_CREATE&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">const</span> <span class="ident">INTEGRATION_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;INTEGRATION_UPDATE&quot;</span>;
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">const</span> <span class="ident">INTEGRATION_DELETE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;INTEGRATION_DELETE&quot;</span>;
     <span class="kw">const</span> <span class="ident">STAGE_INSTANCE_CREATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;STAGE_INSTANCE_CREATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">STAGE_INSTANCE_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;STAGE_INSTANCE_UPDATE&quot;</span>;
@@ -3732,12 +3964,21 @@
     <span class="kw">const</span> <span class="ident">THREAD_LIST_SYNC</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;THREAD_LIST_SYNC&quot;</span>;
     <span class="kw">const</span> <span class="ident">THREAD_MEMBER_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;THREAD_MEMBER_UPDATE&quot;</span>;
     <span class="kw">const</span> <span class="ident">THREAD_MEMBERS_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;THREAD_MEMBERS_UPDATE&quot;</span>;
+    <span class="kw">const</span> <span class="ident">GUILD_SCHEDULED_EVENT_CREATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;GUILD_SCHEDULED_EVENT_CREATE&quot;</span>;
+    <span class="kw">const</span> <span class="ident">GUILD_SCHEDULED_EVENT_UPDATE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;GUILD_SCHEDULED_EVENT_UPDATE&quot;</span>;
+    <span class="kw">const</span> <span class="ident">GUILD_SCHEDULED_EVENT_DELETE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;GUILD_SCHEDULED_EVENT_DELETE&quot;</span>;
+    <span class="kw">const</span> <span class="ident">GUILD_SCHEDULED_EVENT_USER_ADD</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;GUILD_SCHEDULED_EVENT_USER_ADD&quot;</span>;
+    <span class="kw">const</span> <span class="ident">GUILD_SCHEDULED_EVENT_USER_REMOVE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;GUILD_SCHEDULED_EVENT_USER_REMOVE&quot;</span>;
 
     <span class="doccomment">/// Return the event name of this event. Some events are synthetic, and we lack</span>
     <span class="doccomment">/// the information to recover the original event name for these events, in which</span>
     <span class="doccomment">/// case this method returns [`None`].</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident"><span class="self">Self</span>::ApplicationCommandPermissionsUpdate</span> =&gt; {
+                <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::APPLICATION_COMMAND_PERMISSIONS_UPDATE</span>)
+            },
             <span class="ident"><span class="self">Self</span>::ChannelCreate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::CHANNEL_CREATE</span>),
             <span class="ident"><span class="self">Self</span>::ChannelDelete</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::CHANNEL_DELETE</span>),
             <span class="ident"><span class="self">Self</span>::ChannelPinsUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::CHANNEL_PINS_UPDATE</span>),
@@ -3775,13 +4016,9 @@
             <span class="ident"><span class="self">Self</span>::VoiceServerUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::VOICE_SERVER_UPDATE</span>),
             <span class="ident"><span class="self">Self</span>::VoiceStateUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::VOICE_STATE_UPDATE</span>),
             <span class="ident"><span class="self">Self</span>::WebhookUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::WEBHOOKS_UPDATE</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::InteractionCreate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::INTERACTION_CREATE</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationCreate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::INTEGRATION_CREATE</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::INTEGRATION_UPDATE</span>),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
             <span class="ident"><span class="self">Self</span>::IntegrationDelete</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::INTEGRATION_DELETE</span>),
             <span class="ident"><span class="self">Self</span>::StageInstanceCreate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::STAGE_INSTANCE_CREATE</span>),
             <span class="ident"><span class="self">Self</span>::StageInstanceUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::STAGE_INSTANCE_UPDATE</span>),
@@ -3792,6 +4029,11 @@
             <span class="ident"><span class="self">Self</span>::ThreadListSync</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::THREAD_LIST_SYNC</span>),
             <span class="ident"><span class="self">Self</span>::ThreadMemberUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::THREAD_MEMBER_UPDATE</span>),
             <span class="ident"><span class="self">Self</span>::ThreadMembersUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::THREAD_MEMBERS_UPDATE</span>),
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventCreate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENT_CREATE</span>),
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUpdate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENT_UPDATE</span>),
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventDelete</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENT_DELETE</span>),
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserAdd</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENT_USER_ADD</span>),
+            <span class="ident"><span class="self">Self</span>::GuildScheduledEventUserRemove</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENT_USER_REMOVE</span>),
             <span class="comment">// GuildUnavailable is a synthetic event type, corresponding to either</span>
             <span class="comment">// `GUILD_CREATE` or `GUILD_DELETE`, but we don&#39;t have enough information</span>
             <span class="comment">// to recover the name here, so we return `None` instead.</span>
@@ -3822,6 +4064,9 @@
                 <span class="ident">E</span>: <span class="ident">DeError</span>,
             {
                 <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">v</span> {
+                    <span class="ident">EventType::APPLICATION_COMMAND_PERMISSIONS_UPDATE</span> =&gt; {
+                        <span class="ident">EventType::ApplicationCommandPermissionsUpdate</span>
+                    },
                     <span class="ident">EventType::CHANNEL_CREATE</span> =&gt; <span class="ident">EventType::ChannelCreate</span>,
                     <span class="ident">EventType::CHANNEL_DELETE</span> =&gt; <span class="ident">EventType::ChannelDelete</span>,
                     <span class="ident">EventType::CHANNEL_PINS_UPDATE</span> =&gt; <span class="ident">EventType::ChannelPinsUpdate</span>,
@@ -3859,13 +4104,9 @@
                     <span class="ident">EventType::VOICE_SERVER_UPDATE</span> =&gt; <span class="ident">EventType::VoiceServerUpdate</span>,
                     <span class="ident">EventType::VOICE_STATE_UPDATE</span> =&gt; <span class="ident">EventType::VoiceStateUpdate</span>,
                     <span class="ident">EventType::WEBHOOKS_UPDATE</span> =&gt; <span class="ident">EventType::WebhookUpdate</span>,
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                     <span class="ident">EventType::INTERACTION_CREATE</span> =&gt; <span class="ident">EventType::InteractionCreate</span>,
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                     <span class="ident">EventType::INTEGRATION_CREATE</span> =&gt; <span class="ident">EventType::IntegrationCreate</span>,
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                     <span class="ident">EventType::INTEGRATION_UPDATE</span> =&gt; <span class="ident">EventType::IntegrationUpdate</span>,
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                     <span class="ident">EventType::INTEGRATION_DELETE</span> =&gt; <span class="ident">EventType::IntegrationDelete</span>,
                     <span class="ident">EventType::STAGE_INSTANCE_CREATE</span> =&gt; <span class="ident">EventType::StageInstanceCreate</span>,
                     <span class="ident">EventType::STAGE_INSTANCE_UPDATE</span> =&gt; <span class="ident">EventType::StageInstanceUpdate</span>,
@@ -3873,6 +4114,15 @@
                     <span class="ident">EventType::THREAD_CREATE</span> =&gt; <span class="ident">EventType::ThreadCreate</span>,
                     <span class="ident">EventType::THREAD_UPDATE</span> =&gt; <span class="ident">EventType::ThreadUpdate</span>,
                     <span class="ident">EventType::THREAD_DELETE</span> =&gt; <span class="ident">EventType::ThreadDelete</span>,
+                    <span class="ident">EventType::GUILD_SCHEDULED_EVENT_CREATE</span> =&gt; <span class="ident">EventType::GuildScheduledEventCreate</span>,
+                    <span class="ident">EventType::GUILD_SCHEDULED_EVENT_UPDATE</span> =&gt; <span class="ident">EventType::GuildScheduledEventUpdate</span>,
+                    <span class="ident">EventType::GUILD_SCHEDULED_EVENT_DELETE</span> =&gt; <span class="ident">EventType::GuildScheduledEventDelete</span>,
+                    <span class="ident">EventType::GUILD_SCHEDULED_EVENT_USER_ADD</span> =&gt; {
+                        <span class="ident">EventType::GuildScheduledEventUserAdd</span>
+                    },
+                    <span class="ident">EventType::GUILD_SCHEDULED_EVENT_USER_REMOVE</span> =&gt; {
+                        <span class="ident">EventType::GuildScheduledEventUserRemove</span>
+                    },
                     <span class="ident">other</span> =&gt; <span class="ident">EventType::Other</span>(<span class="ident">other</span>.<span class="ident">to_owned</span>()),
                 })
             }
@@ -3882,5 +4132,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

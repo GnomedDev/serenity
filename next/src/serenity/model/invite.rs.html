@@ -438,6 +438,8 @@
 <span id="433">433</span>
 <span id="434">434</span>
 <span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Models for server and channel invites.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::prelude</span>::<span class="kw-2">*</span>;
@@ -510,14 +512,14 @@
     <span class="doccomment">/// See the documentation for the [`CreateInvite`] builder for information</span>
     <span class="doccomment">/// on how to use this and the default values that it provides.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the [Create Invite] permission.</span>
+    <span class="doccomment">/// Requires the [Create Instant Invite] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`]</span>
     <span class="doccomment">/// if the current user does not have the required [permission].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Create Invite]: Permissions::CREATE_INVITE</span>
+    <span class="doccomment">/// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE</span>
     <span class="doccomment">/// [permission]: super::permissions</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
@@ -537,7 +539,7 @@
                     <span class="ident">cache</span>,
                     <span class="ident">channel_id</span>,
                     <span class="prelude-val">None</span>,
-                    <span class="ident">Permissions::CREATE_INVITE</span>,
+                    <span class="ident">Permissions::CREATE_INSTANT_INVITE</span>,
                 )<span class="question-mark">?</span>;
             }
         }
@@ -653,6 +655,7 @@
     <span class="doccomment">/// assert_eq!(invite.url(), &quot;https://discord.gg/WxZumR&quot;);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="macro">format!</span>(<span class="string">&quot;https://discord.gg/{}&quot;</span>, <span class="self">self</span>.<span class="ident">code</span>)
     }
@@ -720,8 +723,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;utils&quot;</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_count</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">shard_count</span>).<span class="kw">await</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_count</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">shard_count</span>)
     }
 }
 
@@ -841,6 +844,7 @@
     <span class="doccomment">/// assert_eq!(invite.url(), &quot;https://discord.gg/WxZumR&quot;);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="macro">format!</span>(<span class="string">&quot;https://discord.gg/{}&quot;</span>, <span class="self">self</span>.<span class="ident">code</span>)
     }
@@ -874,5 +878,5 @@
     <span class="ident">EmmbeddedApplication</span>,
 });
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

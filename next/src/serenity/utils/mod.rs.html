@@ -507,18 +507,10 @@
 <span id="502">502</span>
 <span id="503">503</span>
 <span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
-<span id="511">511</span>
-<span id="512">512</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A set of utilities to help with common use cases that are not required to</span>
 <span class="doccomment">//! fully use the library.</span>
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">argument_convert</span>;
 <span class="kw">mod</span> <span class="ident">colour</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
@@ -528,25 +520,27 @@
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">token</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">argument_convert</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">content_safe</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">reqwest::Url</span>;
+<span class="kw">use</span> <span class="ident">url::Url</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::colour</span>::{<span class="ident">colours</span>, <span class="ident">Colour</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::custom_message::CustomMessage</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::message_builder</span>::{<span class="ident">Content</span>, <span class="ident">ContentModifier</span>, <span class="ident">EmbedMessageBuilding</span>, <span class="ident">MessageBuilder</span>};
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::token</span>::{<span class="ident">parse</span> <span class="kw">as</span> <span class="ident">parse_token</span>, <span class="ident">validate</span> <span class="kw">as</span> <span class="ident">validate_token</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
-    <span class="ident">colour</span>::{<span class="ident">colours</span>, <span class="ident">Colour</span>},
-    <span class="ident">custom_message::CustomMessage</span>,
-    <span class="ident">message_builder</span>::{<span class="ident">Content</span>, <span class="ident">ContentModifier</span>, <span class="ident">EmbedMessageBuilding</span>, <span class="ident">MessageBuilder</span>},
-};
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Color</span> <span class="op">=</span> <span class="ident">Colour</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::OsStr</span>, <span class="ident">fs::File</span>, <span class="ident">io::Read</span>, <span class="ident">path::Path</span>};
+<span class="kw">use</span> <span class="ident">std::ffi::OsStr</span>;
+<span class="kw">use</span> <span class="ident">std::fs::File</span>;
+<span class="kw">use</span> <span class="ident">std::io::Read</span>;
+<span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model</span>::{<span class="ident">id::EmojiId</span>, <span class="ident">misc::EmojiIdentifier</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::id::EmojiId</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::misc::EmojiIdentifier</span>;
 
 <span class="doccomment">/// Retrieves the &quot;code&quot; part of an invite out of a URL.</span>
 <span class="doccomment">///</span>
@@ -576,6 +570,7 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`RichInvite`]: crate::model::invite::RichInvite</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_invite</span>(<span class="ident">code</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
     <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">code</span>.<span class="ident">trim_start_matches</span>(<span class="string">&quot;http://&quot;</span>).<span class="ident">trim_start_matches</span>(<span class="string">&quot;https://&quot;</span>);
     <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">code</span>.<span class="ident">to_lowercase</span>();
@@ -586,6 +581,27 @@
     } <span class="kw">else</span> {
         <span class="ident">code</span>
     }
+}
+
+<span class="doccomment">/// Retrieves the username and discriminator out of a user tag (`name#discrim`).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If the user tag is invalid, None is returned.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// use serenity::utils::parse_user_tag;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// assert_eq!(parse_user_tag(&quot;kangalioo#9108&quot;), Some((&quot;kangalioo&quot;, 9108)));</span>
+<span class="doccomment">/// assert_eq!(parse_user_tag(&quot;kangalioo#10108&quot;), None);</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_user_tag</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">u16</span>)<span class="op">&gt;</span> {
+    <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">discrim</span>) <span class="op">=</span> <span class="ident">s</span>.<span class="ident">split_once</span>(<span class="string">&#39;#&#39;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">discrim</span> <span class="op">=</span> <span class="ident">discrim</span>.<span class="ident">parse</span>().<span class="ident">ok</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">discrim</span> <span class="op">&gt;</span> <span class="number">9999</span> {
+        <span class="kw">return</span> <span class="prelude-val">None</span>;
+    }
+    <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">discrim</span>))
 }
 
 <span class="doccomment">/// Retrieves an Id from a user mention.</span>
@@ -711,33 +727,6 @@
     }
 }
 
-<span class="doccomment">/// Retrieve the ID number out of a channel, role, or user mention.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If the mention is invalid, [`None`] is returned.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use serenity::utils::parse_mention;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(parse_mention(&quot;&lt;@136510335967297536&gt;&quot;), Some(136510335967297536));</span>
-<span class="doccomment">/// assert_eq!(parse_mention(&quot;&lt;@&amp;137235212097683456&gt;&quot;), Some(137235212097683456));</span>
-<span class="doccomment">/// assert_eq!(parse_mention(&quot;&lt;#137234234728251392&gt;&quot;), Some(137234234728251392));</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_mention</span>(<span class="ident">mention</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="ident">mention</span>.<span class="ident">as_ref</span>();
-
-    <span class="kw">if</span> <span class="ident">mention</span>.<span class="ident">starts_with</span>(<span class="string">&quot;&lt;@&amp;&quot;</span>) {
-        <span class="ident">parse_role</span>(<span class="ident">mention</span>)
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">mention</span>.<span class="ident">starts_with</span>(<span class="string">&quot;&lt;@&quot;</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">mention</span>.<span class="ident">starts_with</span>(<span class="string">&quot;&lt;@!&quot;</span>) {
-        <span class="ident">parse_username</span>(<span class="ident">mention</span>)
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">mention</span>.<span class="ident">starts_with</span>(<span class="string">&quot;&lt;#&quot;</span>) {
-        <span class="ident">parse_channel</span>(<span class="ident">mention</span>)
-    } <span class="kw">else</span> {
-        <span class="prelude-val">None</span>
-    }
-}
-
 <span class="doccomment">/// Retrieves the animated state, name and Id from an emoji mention, in the form of an</span>
 <span class="doccomment">/// [`EmojiIdentifier`].</span>
 <span class="doccomment">///</span>
@@ -793,15 +782,13 @@
                 <span class="kw">for</span> <span class="ident">y</span> <span class="kw">in</span> <span class="ident">mention</span>[<span class="ident">from</span>..].<span class="ident">chars</span>() {
                     <span class="kw">if</span> <span class="ident">y</span> <span class="op">==</span> <span class="string">&#39;&gt;&#39;</span> {
                         <span class="kw">break</span>;
-                    } <span class="kw">else</span> {
-                        <span class="ident">id</span>.<span class="ident">push</span>(<span class="ident">y</span>);
                     }
+                    <span class="ident">id</span>.<span class="ident">push</span>(<span class="ident">y</span>);
                 }
 
                 <span class="kw">break</span>;
-            } <span class="kw">else</span> {
-                <span class="ident">name</span>.<span class="ident">push</span>(<span class="ident">x</span>);
             }
+            <span class="ident">name</span>.<span class="ident">push</span>(<span class="ident">x</span>);
         }
 
         <span class="kw">match</span> <span class="ident">id</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() {
@@ -847,8 +834,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">File::open</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
 
     <span class="comment">// errors here are intentionally ignored</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::let_underscore_must_use</span>)]</span>
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
+    <span class="ident">drop</span>(<span class="ident">f</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>));
 
     <span class="kw">let</span> <span class="ident">b64</span> <span class="op">=</span> <span class="ident">base64::encode</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>);
     <span class="kw">let</span> <span class="ident">ext</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">extension</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">OsStr::new</span>(<span class="string">&quot;png&quot;</span>)) { <span class="string">&quot;png&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;jpg&quot;</span> };
@@ -928,7 +914,7 @@
     <span class="ident">args</span>
 }
 
-<span class="doccomment">/// Parses the id and token from a webhook url. Expects a [`reqwest::Url`] object rather than a [`&amp;str`].</span>
+<span class="doccomment">/// Parses the id and token from a webhook url. Expects a [`url::Url`] object rather than a [`&amp;str`].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -942,11 +928,9 @@
 <span class="doccomment">/// assert_eq!(id, 245037420704169985);</span>
 <span class="doccomment">/// assert_eq!(token, &quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;);</span>
 <span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_webhook</span>(<span class="ident">url</span>: <span class="kw-2">&amp;</span><span class="ident">Url</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>)<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">url</span>.<span class="ident">path</span>().<span class="ident">strip_prefix</span>(<span class="string">&quot;/api/webhooks/&quot;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">split_idx</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">find</span>(<span class="string">&#39;/&#39;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">webhook_id</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">path</span>[..<span class="ident">split_idx</span>];
-    <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">path</span>[<span class="ident">split_idx</span> <span class="op">+</span> <span class="number">1</span>..];
+    <span class="kw">let</span> (<span class="ident">webhook_id</span>, <span class="ident">token</span>) <span class="op">=</span> <span class="ident">url</span>.<span class="ident">path</span>().<span class="ident">strip_prefix</span>(<span class="string">&quot;/api/webhooks/&quot;</span>)<span class="question-mark">?</span>.<span class="ident">split_once</span>(<span class="string">&#39;/&#39;</span>)<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="op">!</span>[<span class="string">&quot;http&quot;</span>, <span class="string">&quot;https&quot;</span>].<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">scheme</span>())
         <span class="op">|</span><span class="op">|</span> <span class="op">!</span>[<span class="string">&quot;discord.com&quot;</span>, <span class="string">&quot;discordapp.com&quot;</span>].<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">url</span>.<span class="ident">domain</span>()<span class="question-mark">?</span>)
         <span class="op">|</span><span class="op">|</span> <span class="op">!</span>(<span class="number">17</span>..<span class="op">=</span><span class="number">20</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">webhook_id</span>.<span class="ident">len</span>())
@@ -1028,5 +1012,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

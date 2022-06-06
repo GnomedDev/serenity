@@ -1378,29 +1378,12 @@
 <span id="1373">1373</span>
 <span id="1374">1374</span>
 <span id="1375">1375</span>
-<span id="1376">1376</span>
-<span id="1377">1377</span>
-<span id="1378">1378</span>
-<span id="1379">1379</span>
-<span id="1380">1380</span>
-<span id="1381">1381</span>
-<span id="1382">1382</span>
-<span id="1383">1383</span>
-<span id="1384">1384</span>
-<span id="1385">1385</span>
-<span id="1386">1386</span>
-<span id="1387">1387</span>
-<span id="1388">1388</span>
-<span id="1389">1389</span>
-<span id="1390">1390</span>
 </pre><pre class="rust"><code><span class="doccomment">//! User information-related models.</span>
 
 <span class="kw">use</span> <span class="ident">std::fmt</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">std::fmt::Write</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">futures::future</span>::{<span class="ident">BoxFuture</span>, <span class="ident">FutureExt</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::prelude</span>::<span class="kw-2">*</span>;
@@ -1421,12 +1404,15 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::http::GuildPagination</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::http</span>::{<span class="ident">CacheHttp</span>, <span class="ident">Http</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::prelude</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json::json</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json::to_string</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">internal::prelude</span>::<span class="kw-2">*</span>, <span class="ident">model::misc::Mentionable</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::application::oauth::Scope</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::mention::Mentionable</span>;
 
 <span class="doccomment">/// Used with `#[serde(with|deserialize_with|serialize_with)]`</span>
 <span class="doccomment">///</span>
@@ -1462,6 +1448,7 @@
         <span class="ident">deserializer</span>.<span class="ident">deserialize_any</span>(<span class="ident">DiscriminatorVisitor</span>)
     }
 
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::trivially_copy_pass_by_ref</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">u16</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S::Ok</span>, <span class="ident">S::Error</span><span class="op">&gt;</span> {
         <span class="ident">serializer</span>.<span class="ident">collect_str</span>(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:04}&quot;</span>, <span class="ident">value</span>))
     }
@@ -1521,6 +1508,7 @@
             <span class="ident">deserializer</span>.<span class="ident">deserialize_option</span>(<span class="ident">OptionalDiscriminatorVisitor</span>)
         }
 
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::trivially_copy_pass_by_ref</span>)]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Serializer</span><span class="op">&gt;</span>(
             <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>,
             <span class="ident">serializer</span>: <span class="ident">S</span>,
@@ -1593,10 +1581,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust,no_run</span>
     <span class="doccomment">/// # #[cfg(feature = &quot;cache&quot;)]</span>
-    <span class="doccomment">/// # async fn run() {</span>
+    <span class="doccomment">/// # fn run() {</span>
     <span class="doccomment">/// # use serenity::cache::Cache;</span>
-    <span class="doccomment">/// # use tokio::sync::RwLock;</span>
-    <span class="doccomment">/// # use std::sync::Arc;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # let cache = Cache::default();</span>
     <span class="doccomment">/// // assuming the cache has been unlocked</span>
@@ -1609,6 +1595,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">avatar_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">as_ref</span>())
     }
@@ -1617,6 +1604,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will produce a PNG URL.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">default_avatar_url</span>(<span class="self">self</span>.<span class="ident">discriminator</span>)
     }
@@ -1636,7 +1624,7 @@
     <span class="doccomment">/// # use serenity::model::user::CurrentUser;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// #     let mut user = CurrentUser::default();</span>
     <span class="doccomment">/// let avatar = serenity::utils::read_image(&quot;./avatar.png&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -1679,6 +1667,7 @@
     <span class="doccomment">/// This will call [`Self::avatar_url`] first, and if that returns [`None`], it</span>
     <span class="doccomment">/// then falls back to [`Self::default_avatar_url`].</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">face</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">avatar_url</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">default_avatar_url</span>())
     }
@@ -1695,7 +1684,7 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     let user = CurrentUser::default();</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// // assuming the user has been bound</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// if let Ok(guilds) = user.guilds(&amp;http).await {</span>
@@ -1754,7 +1743,7 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     let user = CurrentUser::default();</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// use serenity::model::Permissions;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // assuming the user has been bound</span>
@@ -1783,12 +1772,12 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     let user = CurrentUser::default();</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// use serenity::model::Permissions;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // assuming the user has been bound</span>
     <span class="doccomment">/// let permissions =</span>
-    <span class="doccomment">///     Permissions::READ_MESSAGES | Permissions::SEND_MESSAGES | Permissions::EMBED_LINKS;</span>
+    <span class="doccomment">///     Permissions::VIEW_CHANNEL | Permissions::SEND_MESSAGES | Permissions::EMBED_LINKS;</span>
     <span class="doccomment">/// let url = match user.invite_url(&amp;http, permissions).await {</span>
     <span class="doccomment">///     Ok(v) =&gt; v,</span>
     <span class="doccomment">///     Err(why) =&gt; {</span>
@@ -1820,7 +1809,7 @@
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">permissions</span>: <span class="ident">Permissions</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">invite_url_with_oauth2_scopes</span>(<span class="ident">http</span>, <span class="ident">permissions</span>, <span class="kw-2">&amp;</span>[<span class="ident">OAuth2Scope::Bot</span>]).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">invite_url_with_oauth2_scopes</span>(<span class="ident">http</span>, <span class="ident">permissions</span>, <span class="kw-2">&amp;</span>[<span class="ident">Scope::Bot</span>]).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Generate an invite url, but with custom scopes.</span>
@@ -1835,11 +1824,11 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     let user = CurrentUser::default();</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
-    <span class="doccomment">/// use serenity::model::oauth2::OAuth2Scope;</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
+    <span class="doccomment">/// use serenity::model::application::oauth::Scope;</span>
     <span class="doccomment">/// use serenity::model::Permissions;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let scopes = vec![OAuth2Scope::Bot, OAuth2Scope::ApplicationsCommands];</span>
+    <span class="doccomment">/// let scopes = vec![Scope::Bot, Scope::ApplicationsCommands];</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // assuming the user has been bound</span>
     <span class="doccomment">/// let url = match user.invite_url_with_oauth2_scopes(&amp;http, Permissions::empty(), &amp;scopes).await {</span>
@@ -1858,6 +1847,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns an</span>
@@ -1871,7 +1861,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">permissions</span>: <span class="ident">Permissions</span>,
-        <span class="ident">scopes</span>: <span class="kw-2">&amp;</span>[<span class="ident">OAuth2Scope</span>],
+        <span class="ident">scopes</span>: <span class="kw-2">&amp;</span>[<span class="ident">Scope</span>],
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">CreateBotAuthParameters::default</span>();
 
@@ -1904,6 +1894,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">static_avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">static_avatar_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">as_ref</span>())
     }
@@ -1925,6 +1916,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">discriminator</span>)
     }
@@ -1993,6 +1985,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">OnlineStatus</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">OnlineStatus::DoNotDisturb</span> =&gt; <span class="string">&quot;dnd&quot;</span>,
@@ -2131,6 +2124,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will produce a WEBP image URL, or GIF if the user has a GIF avatar.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">avatar_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">as_ref</span>())
     }
@@ -2142,6 +2136,7 @@
     <span class="doccomment">/// **Note**: This will only be present if the user is fetched via Rest API,</span>
     <span class="doccomment">/// e.g. with [`Http::get_user`].</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">banner_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">banner_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">banner</span>.<span class="ident">as_ref</span>())
     }
@@ -2165,6 +2160,7 @@
 
     <span class="doccomment">/// Retrieves the time that this user was created at.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">created_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Timestamp</span> {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">created_at</span>()
     }
@@ -2173,6 +2169,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will produce a PNG URL.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">default_avatar_url</span>(<span class="self">self</span>.<span class="ident">discriminator</span>)
     }
@@ -2228,7 +2225,8 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">/// let mut client = Client::builder(&quot;token&quot;).event_handler(Handler).await?;</span>
+    <span class="doccomment">/// let mut client =</span>
+    <span class="doccomment">///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// # }</span>
@@ -2269,6 +2267,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will call [`Self::avatar_url`] first, and if that returns [`None`], it</span>
     <span class="doccomment">/// then falls back to [`Self::default_avatar_url`].</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">face</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">avatar_url</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">default_avatar_url</span>())
     }
@@ -2276,9 +2275,6 @@
     <span class="doccomment">/// Check if a user has a [`Role`]. This will retrieve the [`Guild`] from</span>
     <span class="doccomment">/// the [`Cache`] if it is available, and then check if that guild has the</span>
     <span class="doccomment">/// given [`Role`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Three forms of data may be passed in to the guild parameter: either a</span>
-    <span class="doccomment">/// [`PartialGuild`], a [`GuildId`], or a `u64`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -2306,50 +2302,10 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">has_role</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>,
-        <span class="ident">guild</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GuildContainer</span><span class="op">&gt;</span>,
+        <span class="ident">guild_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">GuildId</span><span class="op">&gt;</span>,
         <span class="ident">role</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">RoleId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">_has_role</span>(<span class="kw-2">&amp;</span><span class="ident">cache_http</span>, <span class="ident">guild</span>.<span class="ident">into</span>(), <span class="ident">role</span>.<span class="ident">into</span>()).<span class="kw">await</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">_has_role</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-        <span class="ident">cache_http</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">CacheHttp</span>,
-        <span class="ident">guild</span>: <span class="ident">GuildContainer</span>,
-        <span class="ident">role</span>: <span class="ident">RoleId</span>,
-    ) -&gt; <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">async</span> <span class="kw">move</span> {
-            <span class="kw">match</span> <span class="ident">guild</span> {
-                <span class="ident">GuildContainer::Guild</span>(<span class="ident">partial_guild</span>) =&gt; {
-                    <span class="self">self</span>.<span class="ident">_has_role</span>(<span class="ident">cache_http</span>, <span class="ident">GuildContainer::Id</span>(<span class="ident">partial_guild</span>.<span class="ident">id</span>), <span class="ident">role</span>).<span class="kw">await</span>
-                },
-                <span class="ident">GuildContainer::Id</span>(<span class="ident">guild_id</span>) =&gt; {
-                    <span class="comment">// Silences a warning when compiling without the `cache` feature.</span>
-                    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_mut</span>)]</span>
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_role</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
-                    {
-                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
-                            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">member</span>) <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">member</span>(<span class="ident">guild_id</span>, <span class="self">self</span>.<span class="ident">id</span>) {
-                                <span class="ident">has_role</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">member</span>.<span class="ident">roles</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">role</span>));
-                            }
-                        }
-                    }
-
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">has_role</span>) <span class="op">=</span> <span class="ident">has_role</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">has_role</span>)
-                    } <span class="kw">else</span> {
-                        <span class="ident">cache_http</span>
-                            .<span class="ident">http</span>()
-                            .<span class="ident">get_member</span>(<span class="ident">guild_id</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)
-                            .<span class="kw">await</span>
-                            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">roles</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">role</span>))
-                    }
-                },
-            }
-        }
-        .<span class="ident">boxed</span>()
+        <span class="ident">guild_id</span>.<span class="ident">into</span>().<span class="ident">member</span>(<span class="ident">cache_http</span>, <span class="self">self</span>).<span class="kw">await</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">roles</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">role</span>.<span class="ident">into</span>()))
     }
 
     <span class="doccomment">/// Refreshes the information about the user.</span>
@@ -2370,6 +2326,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will always produce a WEBP image URL.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">static_avatar_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">static_avatar_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">as_ref</span>())
     }
@@ -2406,13 +2363,15 @@
     <span class="doccomment">///         }</span>
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
-    <span class="doccomment">/// let mut client = Client::builder(&quot;token&quot;).event_handler(Handler).await?;</span>
+    <span class="doccomment">/// let mut client =</span>
+    <span class="doccomment">///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// client.start().await?;</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">discriminator</span>)
     }
@@ -2428,6 +2387,8 @@
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">guild_id</span> <span class="op">=</span> <span class="ident">guild_id</span>.<span class="ident">into</span>();
 
+        <span class="comment">// This can&#39;t be removed because `GuildId::member` clones the entire `Member` struct if</span>
+        <span class="comment">// it&#39;s present in the cache, which is expensive.</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
         {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
@@ -2439,6 +2400,7 @@
             }
         }
 
+        <span class="comment">// At this point we&#39;re guaranteed to do an API call.</span>
         <span class="ident">guild_id</span>.<span class="ident">member</span>(<span class="ident">cache_http</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>).<span class="kw">await</span>.<span class="ident">ok</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">member</span><span class="op">|</span> <span class="ident">member</span>.<span class="ident">nick</span>)
     }
 
@@ -2529,8 +2491,10 @@
     <span class="doccomment">/// First attempts to find a [`User`] by its Id in the cache,</span>
     <span class="doccomment">/// upon failure requests it via the REST API.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// **Note**: If the cache is not enabled,</span>
-    <span class="doccomment">/// REST API will be used only.</span>
+    <span class="doccomment">/// **Note**: If the cache is not enabled, REST API will be used only.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note**: If the cache is enabled, you might want to enable the `temp_cache` feature to</span>
+    <span class="doccomment">/// cache user data retrieved by this function for a short duration.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
@@ -2553,7 +2517,16 @@
             }
         }
 
-        <span class="ident">cache_http</span>.<span class="ident">http</span>().<span class="ident">get_user</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="kw">await</span>
+        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">http</span>().<span class="ident">get_user</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;temp_cache&quot;</span>))]</span>
+        {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
+                <span class="ident">cache</span>.<span class="ident">temp_users</span>.<span class="ident">insert</span>(<span class="ident">user</span>.<span class="ident">id</span>, <span class="ident">user</span>.<span class="ident">clone</span>());
+            }
+        }
+
+        <span class="prelude-val">Ok</span>(<span class="ident">user</span>)
     }
 }
 
@@ -2665,9 +2638,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tag</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="number">37</span>);
     <span class="ident">tag</span>.<span class="ident">push_str</span>(<span class="ident">name</span>);
     <span class="ident">tag</span>.<span class="ident">push</span>(<span class="string">&#39;#&#39;</span>);
-
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::let_underscore_must_use</span>)]</span>
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro">write!</span>(<span class="ident">tag</span>, <span class="string">&quot;{:04}&quot;</span>, <span class="ident">discriminator</span>);
+    <span class="macro">write!</span>(<span class="ident">tag</span>, <span class="string">&quot;{:04}&quot;</span>, <span class="ident">discriminator</span>).<span class="ident">unwrap</span>();
 
     <span class="ident">tag</span>
 }
@@ -2685,6 +2656,11 @@
         <span class="kw">struct</span> <span class="ident">User</span> {
             <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;discriminator&quot;</span>)]</span>
             <span class="ident">discriminator</span>: <span class="ident">u16</span>,
+        }
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">UserOpt</span> {
+            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;discriminator::option&quot;</span>)]</span>
+            <span class="ident">discriminator</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>,
         }
 
         <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">User</span> {
@@ -2708,12 +2684,6 @@
             <span class="ident">Token::U16</span>(<span class="number">123</span>),
             <span class="ident">Token::StructEnd</span>,
         ]);
-
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">UserOpt</span> {
-            <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;discriminator::option&quot;</span>)]</span>
-            <span class="ident">discriminator</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>,
-        }
 
         <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">UserOpt</span> {
             <span class="ident">discriminator</span>: <span class="prelude-val">Some</span>(<span class="number">123</span>),
@@ -2784,5 +2754,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

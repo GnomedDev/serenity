@@ -838,6 +838,16 @@
 <span id="833">833</span>
 <span id="834">834</span>
 <span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Models pertaining to the gateway.</span>
 
 <span class="kw">use</span> <span class="ident">url::Url</span>;
@@ -957,16 +967,13 @@
     <span class="doccomment">/// #[command]</span>
     <span class="doccomment">/// async fn activity(ctx: &amp;Context, _msg: &amp;Message, args: Args) -&gt; CommandResult {</span>
     <span class="doccomment">///     let name = args.message();</span>
-    <span class="doccomment">///     ctx.set_activity(Activity::playing(&amp;name)).await;</span>
+    <span class="doccomment">///     ctx.set_activity(Activity::playing(name)).await;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     Ok(())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">playing</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">N</span>) -&gt; <span class="ident">Activity</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToString</span>,
-    {
-        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">ActivityType::Playing</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">playing</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="ident">Activity</span> {
+        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">ActivityType::Playing</span>)
     }
 
     <span class="doccomment">/// Creates an [`Activity`] struct that appears as a `Streaming &lt;name&gt;`</span>
@@ -992,19 +999,15 @@
     <span class="doccomment">///     const STREAM_URL: &amp;str = &quot;...&quot;;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     let name = args.message();</span>
-    <span class="doccomment">///     ctx.set_activity(Activity::streaming(&amp;name, STREAM_URL)).await;</span>
+    <span class="doccomment">///     ctx.set_activity(Activity::streaming(name, STREAM_URL)).await;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     Ok(())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">streaming</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">url</span>: <span class="ident">U</span>) -&gt; <span class="ident">Activity</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToString</span>,
-        <span class="ident">U</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
-    {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">streaming</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">url</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">Activity</span> {
         <span class="ident">Activity</span> {
             <span class="ident">url</span>: <span class="prelude-val">Some</span>(<span class="ident">Url::parse</span>(<span class="ident">url</span>.<span class="ident">as_ref</span>()).<span class="ident">expect</span>(<span class="string">&quot;Failed to parse url&quot;</span>)),
-            ..<span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">ActivityType::Streaming</span>)
+            ..<span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">ActivityType::Streaming</span>)
         }
     }
 
@@ -1028,16 +1031,13 @@
     <span class="doccomment">/// #[command]</span>
     <span class="doccomment">/// async fn listen(ctx: &amp;Context, _msg: &amp;Message, args: Args) -&gt; CommandResult {</span>
     <span class="doccomment">///     let name = args.message();</span>
-    <span class="doccomment">///     ctx.set_activity(Activity::listening(&amp;name)).await;</span>
+    <span class="doccomment">///     ctx.set_activity(Activity::listening(name)).await;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     Ok(())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listening</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">N</span>) -&gt; <span class="ident">Activity</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToString</span>,
-    {
-        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">ActivityType::Listening</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listening</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="ident">Activity</span> {
+        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">ActivityType::Listening</span>)
     }
 
     <span class="doccomment">/// Creates a [`Activity`] struct that appears as a `Watching &lt;name&gt;` status.</span>
@@ -1060,16 +1060,13 @@
     <span class="doccomment">/// #[command]</span>
     <span class="doccomment">/// async fn watch(ctx: &amp;Context, _msg: &amp;Message, args: Args) -&gt; CommandResult {</span>
     <span class="doccomment">///     let name = args.message();</span>
-    <span class="doccomment">///     ctx.set_activity(Activity::watching(&amp;name)).await;</span>
+    <span class="doccomment">///     ctx.set_activity(Activity::watching(name)).await;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     Ok(())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">watching</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">N</span>) -&gt; <span class="ident">Activity</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToString</span>,
-    {
-        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">ActivityType::Watching</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">watching</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="ident">Activity</span> {
+        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">ActivityType::Watching</span>)
     }
 
     <span class="doccomment">/// Creates a [`Activity`] struct that appears as a `Competing in &lt;name&gt;` status.</span>
@@ -1092,16 +1089,13 @@
     <span class="doccomment">/// #[command]</span>
     <span class="doccomment">/// async fn compete(ctx: &amp;Context, _msg: &amp;Message, args: Args) -&gt; CommandResult {</span>
     <span class="doccomment">///     let name = args.message();</span>
-    <span class="doccomment">///     ctx.set_activity(Activity::competing(&amp;name)).await;</span>
+    <span class="doccomment">///     ctx.set_activity(Activity::competing(name)).await;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     Ok(())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">competing</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">N</span>) -&gt; <span class="ident">Activity</span>
-    <span class="kw">where</span>
-        <span class="ident">N</span>: <span class="ident">ToString</span>,
-    {
-        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">ActivityType::Competing</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">competing</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="ident">Activity</span> {
+        <span class="ident">Activity::new</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">ActivityType::Competing</span>)
     }
 }
 
@@ -1264,6 +1258,7 @@
     <span class="doccomment">/// Attempts to convert this [`PresenceUser`] instance into a [`User`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If one of [`User`]&#39;s required fields is None in `self`, None is returned.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_user</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="ident">User</span> {
             <span class="ident">avatar</span>: <span class="self">self</span>.<span class="ident">avatar</span>,
@@ -1282,6 +1277,7 @@
     <span class="doccomment">/// Will clone individual fields if needed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If one of [`User`]&#39;s required fields is None in `self`, None is returned.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="ident">User</span> {
             <span class="ident">avatar</span>: <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">clone</span>(),
@@ -1383,9 +1379,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Privileged Intents</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The intents [`GatewayIntents::GUILD_PRESENCES`] and [`GatewayIntents::GUILD_MEMBERS`]</span>
-    <span class="doccomment">/// are [Privileged Intents]. They need to be enabled in the</span>
-    <span class="doccomment">/// *developer portal*.</span>
+    <span class="doccomment">/// The intents [`GatewayIntents::GUILD_PRESENCES`], [`GatewayIntents::GUILD_MEMBERS`]</span>
+    <span class="doccomment">/// and [`GatewayIntents::MESSAGE_CONTENT`] are [Privileged Intents]. They need to be enabled in</span>
+    <span class="doccomment">/// the *developer portal*.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Note**:</span>
     <span class="doccomment">/// Once the bot is in 100 guilds or more, [the bot must be verified] in</span>
@@ -1511,6 +1507,11 @@
         <span class="doccomment">/// Enable message content in following gateway events:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// - MESSAGE_CREATE</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// **Info**:</span>
+        <span class="doccomment">/// This intent is *privileged*.</span>
+        <span class="doccomment">/// In order to use it, you must head to your application in the</span>
+        <span class="doccomment">/// Developer Portal and enable the toggle for *Privileged Intents*.</span>
         <span class="kw">const</span> <span class="ident">MESSAGE_CONTENT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>;
         <span class="doccomment">/// Enable following gateway events:</span>
         <span class="doccomment">///</span>
@@ -1526,6 +1527,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">GatewayIntents</span> {
     <span class="doccomment">/// Gets all of the intents that aren&#39;t considered privileged by Discord.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">non_privileged</span>() -&gt; <span class="ident">GatewayIntents</span> {
         <span class="comment">// bitflags don&#39;t support const evaluation. Workaround.</span>
         <span class="comment">// See: https://github.com/bitflags/bitflags/issues/180</span>
@@ -1534,6 +1536,7 @@
 
     <span class="doccomment">/// Gets all of the intents that are considered privileged by Discord.</span>
     <span class="doccomment">/// Use of these intents will require explicitly whitelisting the bot.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">privileged</span>() -&gt; <span class="ident">GatewayIntents</span> {
         <span class="comment">// bitflags don&#39;t support const evaluation. Workaround.</span>
         <span class="comment">// See: https://github.com/bitflags/bitflags/issues/180</span>
@@ -1541,6 +1544,7 @@
     }
 
     <span class="doccomment">/// Checks if any of the included intents are privileged.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_privileged</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">intersects</span>(<span class="ident"><span class="self">Self</span>::privileged</span>())
     }
@@ -1549,6 +1553,7 @@
     <span class="doccomment">/// [GUILDS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILDS]: Self::GUILDS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guilds</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILDS</span>)
     }
@@ -1557,6 +1562,7 @@
     <span class="doccomment">/// [GUILD_MEMBERS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_MEMBERS]: Self::GUILD_MEMBERS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_MEMBERS</span>)
     }
@@ -1565,6 +1571,7 @@
     <span class="doccomment">/// [GUILD_BANS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_BANS]: Self::GUILD_BANS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_bans</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_BANS</span>)
     }
@@ -1573,6 +1580,7 @@
     <span class="doccomment">/// [GUILD_EMOJIS_AND_STICKERS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_EMOJIS_AND_STICKERS]: Self::GUILD_EMOJIS_AND_STICKERS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_emojis_and_stickers</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_EMOJIS_AND_STICKERS</span>)
     }
@@ -1581,6 +1589,7 @@
     <span class="doccomment">/// [GUILD_INTEGRATIONS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_INTEGRATIONS]: Self::GUILD_INTEGRATIONS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_integrations</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_INTEGRATIONS</span>)
     }
@@ -1589,6 +1598,7 @@
     <span class="doccomment">/// [GUILD_WEBHOOKS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_WEBHOOKS]: Self::GUILD_WEBHOOKS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_webhooks</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_WEBHOOKS</span>)
     }
@@ -1597,6 +1607,7 @@
     <span class="doccomment">/// [GUILD_INVITES] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_INVITES]: Self::GUILD_INVITES</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_invites</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_INVITES</span>)
     }
@@ -1605,6 +1616,7 @@
     <span class="doccomment">/// [GUILD_VOICE_STATES] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_VOICE_STATES]: Self::GUILD_VOICE_STATES</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_voice_states</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_VOICE_STATES</span>)
     }
@@ -1613,6 +1625,7 @@
     <span class="doccomment">/// [GUILD_PRESENCES] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_PRESENCES]: Self::GUILD_PRESENCES</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_presences</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_PRESENCES</span>)
     }
@@ -1621,6 +1634,7 @@
     <span class="doccomment">/// [GUILD_MESSAGE_REACTIONS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_MESSAGE_REACTIONS]: Self::GUILD_MESSAGE_REACTIONS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_message_reactions</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_MESSAGE_REACTIONS</span>)
     }
@@ -1629,6 +1643,7 @@
     <span class="doccomment">/// [GUILD_MESSAGE_TYPING] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_MESSAGE_TYPING]: Self::GUILD_MESSAGE_TYPING</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_message_typing</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_MESSAGE_TYPING</span>)
     }
@@ -1637,6 +1652,7 @@
     <span class="doccomment">/// [DIRECT_MESSAGES] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [DIRECT_MESSAGES]: Self::DIRECT_MESSAGES</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">direct_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::DIRECT_MESSAGES</span>)
     }
@@ -1645,6 +1661,7 @@
     <span class="doccomment">/// [DIRECT_MESSAGE_REACTIONS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [DIRECT_MESSAGE_REACTIONS]: Self::DIRECT_MESSAGE_REACTIONS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">direct_message_reactions</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::DIRECT_MESSAGE_REACTIONS</span>)
     }
@@ -1653,6 +1670,7 @@
     <span class="doccomment">/// [DIRECT_MESSAGE_TYPING] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [DIRECT_MESSAGE_TYPING]: Self::DIRECT_MESSAGE_TYPING</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">direct_message_typing</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::DIRECT_MESSAGE_TYPING</span>)
     }
@@ -1661,6 +1679,7 @@
     <span class="doccomment">/// [MESSAGE_CONTENT] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [MESSAGE_CONTENT]: Self::MESSAGE_CONTENT</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_content</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MESSAGE_CONTENT</span>)
     }
@@ -1669,10 +1688,11 @@
     <span class="doccomment">/// [GUILD_SCHEDULED_EVENTS] intent.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [GUILD_SCHEDULED_EVENTS]: Self::GUILD_SCHEDULED_EVENTS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guild_scheduled_events</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::GUILD_SCHEDULED_EVENTS</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

@@ -1297,8 +1297,38 @@
 <span id="1292">1292</span>
 <span id="1293">1293</span>
 <span id="1294">1294</span>
+<span id="1295">1295</span>
+<span id="1296">1296</span>
+<span id="1297">1297</span>
+<span id="1298">1298</span>
+<span id="1299">1299</span>
+<span id="1300">1300</span>
+<span id="1301">1301</span>
+<span id="1302">1302</span>
+<span id="1303">1303</span>
+<span id="1304">1304</span>
+<span id="1305">1305</span>
+<span id="1306">1306</span>
+<span id="1307">1307</span>
+<span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
+<span id="1314">1314</span>
+<span id="1315">1315</span>
+<span id="1316">1316</span>
+<span id="1317">1317</span>
+<span id="1318">1318</span>
+<span id="1319">1319</span>
+<span id="1320">1320</span>
+<span id="1321">1321</span>
+<span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std::fmt::Write</span> <span class="kw">as</span> <span class="ident">FmtWrite</span>;
+<span class="kw">use</span> <span class="ident">std::fmt::Write</span> <span class="kw">as</span> <span class="kw">_</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
@@ -1316,6 +1346,7 @@
     <span class="ident">EditStageInstance</span>,
     <span class="ident">EditThread</span>,
     <span class="ident">GetMessages</span>,
+    <span class="ident">SearchFilter</span>,
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cache::Cache</span>;
@@ -1355,7 +1386,7 @@
     <span class="doccomment">/// use serenity::model::id::ChannelId;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # async fn run() {</span>
-    <span class="doccomment">/// # let http = serenity::http::Http::default();</span>
+    <span class="doccomment">/// # let http = serenity::http::Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// let _successful = ChannelId(7).broadcast_typing(&amp;http).await;</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
@@ -1373,13 +1404,13 @@
 
     <span class="doccomment">/// Creates an invite leading to the given channel.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// **Note**: Requires the [Create Invite] permission.</span>
+    <span class="doccomment">/// **Note**: Requires the [Create Instant Invite] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Create Invite]: Permissions::CREATE_INVITE</span>
+    <span class="doccomment">/// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_invite</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RichInvite</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">CreateInvite</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">CreateInvite</span>,
@@ -1614,7 +1645,7 @@
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     use serenity::http::Http;</span>
     <span class="doccomment">/// #     use serenity::model::id::ChannelId;</span>
-    <span class="doccomment">/// #     let http = Http::default();</span>
+    <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// #     let channel_id = ChannelId(1234);</span>
     <span class="doccomment">/// channel_id.edit(&amp;http, |c| c.name(&quot;test&quot;).bitrate(64000)).await;</span>
     <span class="doccomment">/// # }</span>
@@ -1681,6 +1712,24 @@
             .<span class="kw">await</span>
     }
 
+    <span class="doccomment">/// Follows the announcement channel</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Requires [Manage Webhook] permissions on the target channel.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note**: Only available on announcement channels.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission.</span>
+    <span class="doccomment">/// [Manage Webhook]: Permissions::MANAGE_WEBHOOKS</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">follow</span>(
+        <span class="self">self</span>,
+        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
+        <span class="ident">target_channel_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FollowedChannel</span><span class="op">&gt;</span> {
+        <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">follow_news_channel</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">target_channel_id</span>.<span class="ident">into</span>().<span class="number">0</span>).<span class="kw">await</span>
+    }
+
     <span class="doccomment">/// Attempts to find a [`Channel`] by its Id in the cache.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -1691,8 +1740,10 @@
     <span class="doccomment">/// First attempts to find a [`Channel`] by its Id in the cache,</span>
     <span class="doccomment">/// upon failure requests it via the REST API.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// **Note**: If the `cache`-feature is enabled permissions will be checked and upon</span>
-    <span class="doccomment">/// owning the required permissions the HTTP-request will be issued.</span>
+    <span class="doccomment">/// **Note**: If the `cache`-feature is enabled permissions will be checked and upon owning the</span>
+    <span class="doccomment">/// required permissions the HTTP-request will be issued. Additionally, you might want to</span>
+    <span class="doccomment">/// enable the `temp_cache` feature to cache channel data retrieved by this function for a</span>
+    <span class="doccomment">/// short duration.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_errors_doc</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">to_channel</span>(<span class="self">self</span>, <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Channel</span><span class="op">&gt;</span> {
@@ -1705,7 +1756,18 @@
             }
         }
 
-        <span class="ident">cache_http</span>.<span class="ident">http</span>().<span class="ident">get_channel</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="kw">await</span>
+        <span class="kw">let</span> <span class="ident">channel</span> <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">http</span>().<span class="ident">get_channel</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;temp_cache&quot;</span>))]</span>
+        {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Channel::Guild</span>(<span class="ident">guild_channel</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">channel</span> {
+                    <span class="ident">cache</span>.<span class="ident">temp_channels</span>.<span class="ident">insert</span>(<span class="ident">guild_channel</span>.<span class="ident">id</span>, <span class="ident">guild_channel</span>.<span class="ident">clone</span>());
+                }
+            }
+        }
+
+        <span class="prelude-val">Ok</span>(<span class="ident">channel</span>)
     }
 
     <span class="doccomment">/// Gets all of the channel&#39;s invites.</span>
@@ -1724,6 +1786,9 @@
 
     <span class="doccomment">/// Gets a message from the channel.</span>
     <span class="doccomment">///</span>
+    <span class="doccomment">/// If the cache feature is enabled the cache will be checked</span>
+    <span class="doccomment">/// first. If not found it will resort to an http request.</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Requires the [Read Message History] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
@@ -1734,14 +1799,19 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">message</span>(
         <span class="self">self</span>,
-        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
+        <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>,
         <span class="ident">message_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
-        <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">get_message</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">message_id</span>.<span class="ident">into</span>().<span class="number">0</span>).<span class="kw">await</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">msg</span><span class="op">|</span> {
-            <span class="ident">msg</span>.<span class="ident">transform_content</span>();
+        <span class="kw">let</span> <span class="ident">message_id</span> <span class="op">=</span> <span class="ident">message_id</span>.<span class="ident">into</span>();
 
-            <span class="ident">msg</span>
-        })
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">message</span>(<span class="self">self</span>, <span class="ident">message_id</span>) {
+                <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">message</span>);
+            }
+        }
+
+        <span class="ident">cache_http</span>.<span class="ident">http</span>().<span class="ident">get_message</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">message_id</span>.<span class="number">0</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Gets messages from the channel.</span>
@@ -1763,26 +1833,17 @@
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">get_messages</span> <span class="op">=</span> <span class="ident">GetMessages::default</span>();
         <span class="ident">builder</span>(<span class="kw-2">&amp;mut</span> <span class="ident">get_messages</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">get_messages</span>.<span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">query</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;?limit={}&quot;</span>, <span class="ident">map</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="string">&quot;limit&quot;</span>).<span class="ident">unwrap_or</span>(<span class="number">50</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">query</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;?limit={}&quot;</span>, <span class="ident">get_messages</span>.<span class="ident">limit</span>.<span class="ident">unwrap_or</span>(<span class="number">50</span>));
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">after</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="string">&quot;after&quot;</span>) {
-            <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;after={}&quot;</span>, <span class="ident">after</span>)<span class="question-mark">?</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">around</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="string">&quot;around&quot;</span>) {
-            <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;around={}&quot;</span>, <span class="ident">around</span>)<span class="question-mark">?</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">before</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="string">&quot;before&quot;</span>) {
-            <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;before={}&quot;</span>, <span class="ident">before</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">filter</span>) <span class="op">=</span> <span class="ident">get_messages</span>.<span class="ident">search_filter</span> {
+            <span class="kw">match</span> <span class="ident">filter</span> {
+                <span class="ident">SearchFilter::After</span>(<span class="ident">after</span>) =&gt; <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;after={}&quot;</span>, <span class="ident">after</span>)<span class="question-mark">?</span>,
+                <span class="ident">SearchFilter::Around</span>(<span class="ident">around</span>) =&gt; <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;around={}&quot;</span>, <span class="ident">around</span>)<span class="question-mark">?</span>,
+                <span class="ident">SearchFilter::Before</span>(<span class="ident">before</span>) =&gt; <span class="macro">write!</span>(<span class="ident">query</span>, <span class="string">&quot;&amp;before={}&quot;</span>, <span class="ident">before</span>)<span class="question-mark">?</span>,
+            }
         }
 
-        <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">get_messages</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">query</span>).<span class="kw">await</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">msgs</span><span class="op">|</span> {
-            <span class="ident">msgs</span>.<span class="ident">into_iter</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">msg</span><span class="op">|</span> {
-                    <span class="ident">msg</span>.<span class="ident">transform_content</span>();
-
-                    <span class="ident">msg</span>
-                })
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span><span class="op">&gt;</span>()
-        })
+        <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">get_messages</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">query</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Streams over all the messages in a channel.</span>
@@ -1801,7 +1862,7 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// # let channel_id = ChannelId::default();</span>
-    <span class="doccomment">/// # let ctx = Http::default();</span>
+    <span class="doccomment">/// # let ctx = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// use serenity::futures::StreamExt;</span>
     <span class="doccomment">/// use serenity::model::channel::MessagesIter;</span>
     <span class="doccomment">///</span>
@@ -1927,11 +1988,7 @@
     <span class="doccomment">/// is over the above limit, containing the number of unicode code points</span>
     <span class="doccomment">/// over the limit.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">say</span>(
-        <span class="self">self</span>,
-        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
-        <span class="ident">content</span>: <span class="kw">impl</span> <span class="ident">std::fmt::Display</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">say</span>(<span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>, <span class="ident">content</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_message</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">content</span>(<span class="ident">content</span>)).<span class="kw">await</span>
     }
 
@@ -1956,7 +2013,7 @@
     <span class="doccomment">/// # use std::sync::Arc;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
-    <span class="doccomment">/// # let http = Arc::new(Http::default());</span>
+    <span class="doccomment">/// # let http = Arc::new(Http::new(&quot;token&quot;));</span>
     <span class="doccomment">/// use serenity::model::id::ChannelId;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let channel_id = ChannelId(7);</span>
@@ -1974,7 +2031,7 @@
     <span class="doccomment">/// # use std::sync::Arc;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">/// # let http = Arc::new(Http::default());</span>
+    <span class="doccomment">/// # let http = Arc::new(Http::new(&quot;token&quot;));</span>
     <span class="doccomment">/// use serenity::model::id::ChannelId;</span>
     <span class="doccomment">/// use tokio::fs::File;</span>
     <span class="doccomment">///</span>
@@ -2050,19 +2107,22 @@
         <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">CreateMessage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">CreateMessage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">create_message</span> <span class="op">=</span> <span class="ident">CreateMessage::default</span>();
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">f</span>(<span class="kw-2">&amp;mut</span> <span class="ident">create_message</span>);
+        <span class="ident">f</span>(<span class="kw-2">&amp;mut</span> <span class="ident">create_message</span>);
+        <span class="self">self</span>.<span class="ident">_send_message</span>(<span class="ident">http</span>.<span class="ident">as_ref</span>(), <span class="ident">create_message</span>).<span class="kw">await</span>
+    }
 
-        <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">json::hashmap_to_json_map</span>(<span class="ident">msg</span>.<span class="number">0</span>.<span class="ident">clone</span>());
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">_send_message</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">http</span>: <span class="kw-2">&amp;</span><span class="ident">Http</span>, <span class="ident">msg</span>: <span class="ident">CreateMessage</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">json::hashmap_to_json_map</span>(<span class="ident">msg</span>.<span class="number">0</span>);
 
         <span class="ident">Message::check_lengths</span>(<span class="kw-2">&amp;</span><span class="ident">map</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">msg</span>.<span class="number">2</span>.<span class="ident">is_empty</span>() {
             <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">send_message</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">Value::from</span>(<span class="ident">map</span>)).<span class="kw">await</span><span class="question-mark">?</span>
         } <span class="kw">else</span> {
-            <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">send_files</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">msg</span>.<span class="number">2</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">map</span>).<span class="kw">await</span><span class="question-mark">?</span>
+            <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">send_files</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">msg</span>.<span class="number">2</span>, <span class="kw-2">&amp;</span><span class="ident">map</span>).<span class="kw">await</span><span class="question-mark">?</span>
         };
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reactions</span>) <span class="op">=</span> <span class="ident">msg</span>.<span class="number">1</span>.<span class="ident">clone</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reactions</span>) <span class="op">=</span> <span class="ident">msg</span>.<span class="number">1</span> {
             <span class="kw">for</span> <span class="ident">reaction</span> <span class="kw">in</span> <span class="ident">reactions</span> {
                 <span class="self">self</span>.<span class="ident">create_reaction</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message</span>.<span class="ident">id</span>, <span class="ident">reaction</span>).<span class="kw">await</span><span class="question-mark">?</span>;
             }
@@ -2092,7 +2152,7 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn long_process() {}</span>
     <span class="doccomment">/// # fn main() -&gt; Result&lt;()&gt; {</span>
-    <span class="doccomment">/// # let http = Arc::new(Http::default());</span>
+    <span class="doccomment">/// # let http = Arc::new(Http::new(&quot;token&quot;));</span>
     <span class="doccomment">/// // Initiate typing (assuming http is `Arc&lt;Http&gt;`)</span>
     <span class="doccomment">/// let typing = ChannelId(7).start_typing(&amp;http)?;</span>
     <span class="doccomment">///</span>
@@ -2560,7 +2620,7 @@
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// # let channel_id = ChannelId::default();</span>
-    <span class="doccomment">/// # let ctx = Http::default();</span>
+    <span class="doccomment">/// # let ctx = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// use serenity::futures::StreamExt;</span>
     <span class="doccomment">/// use serenity::model::channel::MessagesIter;</span>
     <span class="doccomment">///</span>
@@ -2592,5 +2652,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

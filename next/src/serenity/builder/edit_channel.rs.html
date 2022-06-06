@@ -208,11 +208,9 @@
 <span id="203">203</span>
 <span id="204">204</span>
 <span id="205">205</span>
-<span id="206">206</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json</span>::{<span class="ident">from_number</span>, <span class="ident">json</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json</span>::{<span class="ident">Value</span>, <span class="ident">NULL</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json</span>::{<span class="ident">from_number</span>, <span class="ident">json</span>, <span class="ident">Value</span>, <span class="ident">NULL</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::channel</span>::{<span class="ident">PermissionOverwrite</span>, <span class="ident">PermissionOverwriteType</span>, <span class="ident">VideoQualityMode</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::id::ChannelId</span>;
 
@@ -228,7 +226,7 @@
 <span class="doccomment">/// # use serenity::{http::Http, model::id::ChannelId};</span>
 <span class="doccomment">/// #</span>
 <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-<span class="doccomment">/// #     let http = Http::default();</span>
+<span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
 <span class="doccomment">/// #     let mut channel = ChannelId(0);</span>
 <span class="doccomment">/// // assuming a channel has already been bound</span>
 <span class="doccomment">/// if let Err(why) = channel.edit(&amp;http, |c| c.name(&quot;new name&quot;).topic(&quot;a test topic&quot;)).await {</span>
@@ -281,8 +279,8 @@
     <span class="doccomment">/// The name of the channel.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Must be between 2 and 100 characters long.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">ToString</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">S</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert</span>(<span class="string">&quot;name&quot;</span>, <span class="ident">Value::from</span>(<span class="ident">name</span>.<span class="ident">to_string</span>()));
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert</span>(<span class="string">&quot;name&quot;</span>, <span class="ident">Value::String</span>(<span class="ident">name</span>.<span class="ident">into</span>()));
         <span class="self">self</span>
     }
 
@@ -299,8 +297,8 @@
     <span class="doccomment">/// This is for [text] channels only.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [text]: crate::model::channel::ChannelType::Text</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">topic</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">ToString</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">topic</span>: <span class="ident">S</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert</span>(<span class="string">&quot;topic&quot;</span>, <span class="ident">Value::from</span>(<span class="ident">topic</span>.<span class="ident">to_string</span>()));
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">topic</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">topic</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert</span>(<span class="string">&quot;topic&quot;</span>, <span class="ident">Value::String</span>(<span class="ident">topic</span>.<span class="ident">into</span>()));
         <span class="self">self</span>
     }
 
@@ -372,7 +370,7 @@
     <span class="doccomment">/// # use std::sync::Arc;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
-    <span class="doccomment">/// #     let http = Arc::new(Http::default());</span>
+    <span class="doccomment">/// #     let http = Arc::new(Http::new(&quot;token&quot;));</span>
     <span class="doccomment">/// #     let mut channel = ChannelId(0);</span>
     <span class="doccomment">/// use serenity::model::channel::{PermissionOverwrite, PermissionOverwriteType};</span>
     <span class="doccomment">/// use serenity::model::id::UserId;</span>
@@ -380,7 +378,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Assuming a channel has already been bound.</span>
     <span class="doccomment">/// let permissions = vec![PermissionOverwrite {</span>
-    <span class="doccomment">///     allow: Permissions::READ_MESSAGES,</span>
+    <span class="doccomment">///     allow: Permissions::VIEW_CHANNEL,</span>
     <span class="doccomment">///     deny: Permissions::SEND_TTS_MESSAGES,</span>
     <span class="doccomment">///     kind: PermissionOverwriteType::Member(UserId(1234)),</span>
     <span class="doccomment">/// }];</span>
@@ -416,5 +414,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

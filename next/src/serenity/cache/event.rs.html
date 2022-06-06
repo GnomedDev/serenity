@@ -724,8 +724,6 @@
 <span id="719">719</span>
 <span id="720">720</span>
 <span id="721">721</span>
-<span id="722">722</span>
-<span id="723">723</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashSet</span>;
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Cache</span>, <span class="ident">CacheUpdate</span>};
@@ -920,13 +918,13 @@
             }
         }
 
-        <span class="kw">for</span> <span class="ident">pair</span> <span class="kw">in</span> <span class="ident">guild</span>.<span class="ident">channels</span>.<span class="ident">clone</span>().<span class="ident">into_iter</span>() {
+        <span class="kw">for</span> <span class="ident">pair</span> <span class="kw">in</span> <span class="ident">guild</span>.<span class="ident">channels</span>.<span class="ident">clone</span>() {
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Channel::Guild</span>(<span class="ident">channel</span>) <span class="op">=</span> <span class="ident">pair</span>.<span class="number">1</span> {
                 <span class="ident">cache</span>.<span class="ident">channels</span>.<span class="ident">insert</span>(<span class="ident">pair</span>.<span class="number">0</span>, <span class="ident">channel</span>);
             }
         }
 
-        <span class="kw">for</span> <span class="ident">pair</span> <span class="kw">in</span> <span class="ident">guild</span>.<span class="ident">channels</span>.<span class="ident">clone</span>().<span class="ident">into_iter</span>() {
+        <span class="kw">for</span> <span class="ident">pair</span> <span class="kw">in</span> <span class="ident">guild</span>.<span class="ident">channels</span>.<span class="ident">clone</span>() {
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Channel::Category</span>(<span class="ident">category</span>) <span class="op">=</span> <span class="ident">pair</span>.<span class="number">1</span> {
                 <span class="ident">cache</span>.<span class="ident">categories</span>.<span class="ident">insert</span>(<span class="ident">pair</span>.<span class="number">0</span>, <span class="ident">category</span>);
             }
@@ -1049,7 +1047,6 @@
                     <span class="ident">user</span>: <span class="self">self</span>.<span class="ident">user</span>.<span class="ident">clone</span>(),
                     <span class="ident">pending</span>: <span class="self">self</span>.<span class="ident">pending</span>,
                     <span class="ident">premium_since</span>: <span class="self">self</span>.<span class="ident">premium_since</span>,
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                     <span class="ident">permissions</span>: <span class="prelude-val">None</span>,
                     <span class="ident">avatar</span>: <span class="self">self</span>.<span class="ident">avatar</span>.<span class="ident">clone</span>(),
                     <span class="ident">communication_disabled_until</span>: <span class="self">self</span>.<span class="ident">communication_disabled_until</span>,
@@ -1288,7 +1285,6 @@
                         <span class="ident">roles</span>: <span class="macro">vec!</span>[],
                         <span class="ident">pending</span>: <span class="bool-val">false</span>,
                         <span class="ident">premium_since</span>: <span class="prelude-val">None</span>,
-                        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
                         <span class="ident">permissions</span>: <span class="prelude-val">None</span>,
                         <span class="ident">avatar</span>: <span class="prelude-val">None</span>,
                         <span class="ident">communication_disabled_until</span>: <span class="prelude-val">None</span>,
@@ -1450,5 +1446,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

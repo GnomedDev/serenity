@@ -170,25 +170,26 @@
 <span id="165">165</span>
 <span id="166">166</span>
 <span id="167">167</span>
+<span id="168">168</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::builder::EditSticker</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::http::Http</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::id</span>::{<span class="ident">GuildId</span>, <span class="ident">StickerId</span>, <span class="ident">StickerPackId</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model</span>::{
-    <span class="ident">id</span>::{<span class="ident">GuildId</span>, <span class="ident">StickerId</span>, <span class="ident">StickerPackId</span>},
-    <span class="ident">user::User</span>,
-    <span class="ident">utils::comma_separated_string</span>,
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::user::User</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::utils::comma_separated_string</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sticker_id</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sticker_item</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sticker_pack</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">sticker_id</span>::<span class="kw-2">*</span>, <span class="ident">sticker_item</span>::<span class="kw-2">*</span>, <span class="ident">sticker_pack</span>::<span class="kw-2">*</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sticker_id</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sticker_item</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sticker_pack</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// A sticker sent with a message.</span>
 <span class="doccomment">///</span>
@@ -284,6 +285,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Note**: This will only be `None` if the format_type is unknown.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">sticker_url</span>(<span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">format_type</span>)
     }
@@ -338,5 +340,5 @@
     <span class="prelude-val">Some</span>(<span class="macro">cdn!</span>(<span class="string">&quot;/stickers/{}.{}&quot;</span>, <span class="ident">sticker_id</span>.<span class="number">0</span>, <span class="ident">ext</span>))
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

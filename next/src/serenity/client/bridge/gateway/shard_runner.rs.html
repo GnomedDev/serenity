@@ -694,26 +694,13 @@
 <span id="689">689</span>
 <span id="690">690</span>
 <span id="691">691</span>
-<span id="692">692</span>
-<span id="693">693</span>
-<span id="694">694</span>
-<span id="695">695</span>
-<span id="696">696</span>
-<span id="697">697</span>
-<span id="698">698</span>
-<span id="699">699</span>
-<span id="700">700</span>
-<span id="701">701</span>
-<span id="702">702</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">borrow::Cow</span>, <span class="ident">sync::Arc</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
-<span class="kw">use</span> <span class="ident">async_tungstenite::tungstenite</span>::{
-    <span class="self">self</span>,
-    <span class="ident">error::Error</span> <span class="kw">as</span> <span class="ident">TungsteniteError</span>,
-    <span class="ident">protocol::frame::CloseFrame</span>,
-};
+<span class="kw">use</span> <span class="ident">async_tungstenite::tungstenite</span>;
+<span class="kw">use</span> <span class="ident">async_tungstenite::tungstenite::error::Error</span> <span class="kw">as</span> <span class="ident">TungsteniteError</span>;
+<span class="kw">use</span> <span class="ident">async_tungstenite::tungstenite::protocol::frame::CloseFrame</span>;
 <span class="kw">use</span> <span class="ident">futures::channel::mpsc</span>::{<span class="self">self</span>, <span class="ident">UnboundedReceiver</span> <span class="kw">as</span> <span class="ident">Receiver</span>, <span class="ident">UnboundedSender</span> <span class="kw">as</span> <span class="ident">Sender</span>};
-<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">SinkExt</span>, <span class="ident">StreamExt</span>};
 <span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
 <span class="kw">use</span> <span class="ident">tokio::sync::RwLock</span>;
 <span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">debug</span>, <span class="ident">error</span>, <span class="ident">info</span>, <span class="ident">instrument</span>, <span class="ident">trace</span>, <span class="ident">warn</span>};
@@ -725,18 +712,23 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::bridge::voice::VoiceGatewayManager</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client::dispatch</span>::{<span class="ident">dispatch</span>, <span class="ident">DispatchEvent</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::client</span>::{<span class="ident">EventHandler</span>, <span class="ident">RawEventHandler</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::collector</span>::{<span class="ident">ComponentInteractionFilter</span>, <span class="ident">ModalInteractionFilter</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::collector</span>::{<span class="ident">EventFilter</span>, <span class="ident">LazyArc</span>, <span class="ident">LazyReactionAction</span>, <span class="ident">MessageFilter</span>, <span class="ident">ReactionFilter</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::collector</span>::{
+    <span class="ident">ComponentInteractionFilter</span>,
+    <span class="ident">EventFilter</span>,
+    <span class="ident">LazyArc</span>,
+    <span class="ident">LazyReactionAction</span>,
+    <span class="ident">MessageFilter</span>,
+    <span class="ident">ModalInteractionFilter</span>,
+    <span class="ident">ReactionFilter</span>,
+};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;framework&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::framework::Framework</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::gateway</span>::{<span class="ident">GatewayError</span>, <span class="ident">InterMessage</span>, <span class="ident">ReconnectType</span>, <span class="ident">Shard</span>, <span class="ident">ShardAction</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::internal::ws_impl</span>::{<span class="ident">ReceiverExt</span>, <span class="ident">SenderExt</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::application::interaction::Interaction</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::event</span>::{<span class="ident">Event</span>, <span class="ident">GatewayEvent</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::interactions::Interaction</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::CacheAndHttp</span>;
 
 <span class="doccomment">/// A runner for managing a [`Shard`] and its respective WebSocket client.</span>
@@ -745,7 +737,7 @@
     <span class="ident">event_handler</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">EventHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">raw_event_handler</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RawEventHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;framework&quot;</span>)]</span>
-    <span class="ident">framework</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Framework</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+    <span class="ident">framework</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Framework</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">manager_tx</span>: <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ShardManagerMessage</span><span class="op">&gt;</span>,
     <span class="comment">// channel to receive messages from the shard manager and dispatches</span>
     <span class="ident">runner_rx</span>: <span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">InterMessage</span><span class="op">&gt;</span>,
@@ -761,9 +753,9 @@
     <span class="ident">message_filters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageFilter</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
     <span class="ident">reaction_filters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ReactionFilter</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
     <span class="ident">component_interaction_filters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ComponentInteractionFilter</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
     <span class="ident">modal_interaction_filters</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ModalInteractionFilter</span><span class="op">&gt;</span>,
 }
 
@@ -791,9 +783,9 @@
             <span class="ident">message_filters</span>: <span class="ident">Vec::new</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
             <span class="ident">reaction_filters</span>: <span class="ident">Vec::new</span>(),
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
             <span class="ident">component_interaction_filters</span>: <span class="macro">vec!</span>[],
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
             <span class="ident">modal_interaction_filters</span>: <span class="macro">vec!</span>[],
         }
     }
@@ -942,7 +934,7 @@
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reaction</span> <span class="op">=</span> <span class="ident">LazyReactionAction::new</span>(<span class="kw-2">&amp;</span><span class="ident">reaction_event</span>.<span class="ident">reaction</span>, <span class="bool-val">false</span>);
                 <span class="ident">retain</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">reaction_filters</span>, <span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">send_reaction</span>(<span class="kw-2">&amp;mut</span> <span class="ident">reaction</span>));
             },
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
             <span class="ident">Event::InteractionCreate</span>(<span class="kw-2">ref</span> <span class="ident">interaction_event</span>) =&gt; {
                 <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">interaction_event</span>.<span class="ident">interaction</span> {
                     <span class="ident">Interaction::MessageComponent</span>(<span class="ident">interaction</span>) =&gt; {
@@ -1009,15 +1001,15 @@
         }
 
         <span class="comment">// Send a Close Frame to Discord, which allows a bot to &quot;log off&quot;</span>
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::let_underscore_must_use</span>)]</span>
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">shard</span>
-            .<span class="ident">client</span>
-            .<span class="ident">close</span>(<span class="prelude-val">Some</span>(<span class="ident">CloseFrame</span> {
-                <span class="ident">code</span>: <span class="ident">close_code</span>.<span class="ident">into</span>(),
-                <span class="ident">reason</span>: <span class="ident">Cow::from</span>(<span class="string">&quot;&quot;</span>),
-            }))
-            .<span class="kw">await</span>;
+        <span class="ident">drop</span>(
+            <span class="self">self</span>.<span class="ident">shard</span>
+                .<span class="ident">client</span>
+                .<span class="ident">close</span>(<span class="prelude-val">Some</span>(<span class="ident">CloseFrame</span> {
+                    <span class="ident">code</span>: <span class="ident">close_code</span>.<span class="ident">into</span>(),
+                    <span class="ident">reason</span>: <span class="ident">Cow::from</span>(<span class="string">&quot;&quot;</span>),
+                }))
+                .<span class="kw">await</span>,
+        );
 
         <span class="comment">// In return, we wait for either a Close Frame response, or an error, after which this WS is deemed</span>
         <span class="comment">// disconnected from Discord.</span>
@@ -1073,124 +1065,113 @@
     <span class="attribute">#[<span class="ident">instrument</span>(<span class="ident">skip</span>(<span class="self">self</span>))]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle_rx_value</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">InterMessage</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="ident">InterMessage::Client</span>(<span class="ident">value</span>) =&gt; <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">value</span> {
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::Restart</span>(<span class="ident">id</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">checked_shutdown</span>(<span class="ident">id</span>, <span class="number">4000</span>).<span class="kw">await</span>
-                },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::Shutdown</span>(<span class="ident">id</span>, <span class="ident">code</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">checked_shutdown</span>(<span class="ident">id</span>, <span class="ident">code</span>).<span class="kw">await</span>
-                },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShutdownAll</span>) =&gt; {
-                    <span class="comment">// This variant should never be received.</span>
-                    <span class="macro">warn!</span>(<span class="string">&quot;[ShardRunner {:?}] Received a ShutdownAll?&quot;</span>, <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>(),);
+            <span class="ident">InterMessage::Client</span>(<span class="ident">value</span>) =&gt; <span class="kw">match</span> <span class="ident">value</span> {
+                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">msg</span>) =&gt; <span class="kw">match</span> <span class="ident">msg</span> {
+                    <span class="ident">ShardManagerMessage::Restart</span>(<span class="ident">id</span>) =&gt; <span class="self">self</span>.<span class="ident">checked_shutdown</span>(<span class="ident">id</span>, <span class="number">4000</span>).<span class="kw">await</span>,
+                    <span class="ident">ShardManagerMessage::Shutdown</span>(<span class="ident">id</span>, <span class="ident">code</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">checked_shutdown</span>(<span class="ident">id</span>, <span class="ident">code</span>).<span class="kw">await</span>
+                    },
+                    <span class="ident">ShardManagerMessage::ShutdownAll</span> =&gt; {
+                        <span class="comment">// This variant should never be received.</span>
+                        <span class="macro">warn!</span>(
+                            <span class="string">&quot;[ShardRunner {:?}] Received a ShutdownAll?&quot;</span>,
+                            <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>(),
+                        );
 
-                    <span class="bool-val">true</span>
-                },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShardUpdate</span> {
-                    ..
-                }) =&gt; {
-                    <span class="comment">// nb: not sent here</span>
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="ident">ShardManagerMessage::ShardUpdate</span> {
+                        ..
+                    }
+                    <span class="op">|</span> <span class="ident">ShardManagerMessage::ShutdownInitiated</span>
+                    <span class="op">|</span> <span class="ident">ShardManagerMessage::ShutdownFinished</span>(<span class="kw">_</span>) =&gt; {
+                        <span class="comment">// nb: not sent here</span>
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="ident">ShardManagerMessage::ShardDisallowedGatewayIntents</span>
+                    <span class="op">|</span> <span class="ident">ShardManagerMessage::ShardInvalidAuthentication</span>
+                    <span class="op">|</span> <span class="ident">ShardManagerMessage::ShardInvalidGatewayIntents</span> =&gt; {
+                        <span class="comment">// These variants should never be received.</span>
+                        <span class="macro">warn!</span>(<span class="string">&quot;[ShardRunner {:?}] Received a ShardError?&quot;</span>, <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>(),);
 
-                    <span class="bool-val">true</span>
+                        <span class="bool-val">true</span>
+                    },
                 },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShutdownInitiated</span>) =&gt; {
-                    <span class="comment">// nb: not sent here</span>
+                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">msg</span>) =&gt; <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">msg</span> {
+                    <span class="ident">ShardRunnerMessage::ChunkGuild</span> {
+                        <span class="ident">guild_id</span>,
+                        <span class="ident">limit</span>,
+                        <span class="ident">filter</span>,
+                        <span class="ident">nonce</span>,
+                    } =&gt; <span class="self">self</span>
+                        .<span class="ident">shard</span>
+                        .<span class="ident">chunk_guild</span>(<span class="ident">guild_id</span>, <span class="ident">limit</span>, <span class="ident">filter</span>, <span class="ident">nonce</span>.<span class="ident">as_deref</span>())
+                        .<span class="kw">await</span>
+                        .<span class="ident">is_ok</span>(),
+                    <span class="ident">ShardRunnerMessage::Close</span>(<span class="ident">code</span>, <span class="ident">reason</span>) =&gt; {
+                        <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">reason</span>.<span class="ident">unwrap_or_default</span>();
+                        <span class="kw">let</span> <span class="ident">close</span> <span class="op">=</span> <span class="ident">CloseFrame</span> {
+                            <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">into</span>(),
+                            <span class="ident">reason</span>: <span class="ident">Cow::from</span>(<span class="ident">reason</span>),
+                        };
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">client</span>.<span class="ident">close</span>(<span class="prelude-val">Some</span>(<span class="ident">close</span>)).<span class="kw">await</span>.<span class="ident">is_ok</span>()
+                    },
+                    <span class="ident">ShardRunnerMessage::Message</span>(<span class="ident">msg</span>) =&gt; <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span>.<span class="ident">is_ok</span>(),
+                    <span class="ident">ShardRunnerMessage::SetActivity</span>(<span class="ident">activity</span>) =&gt; {
+                        <span class="comment">// To avoid a clone of `activity`, we do a little bit of</span>
+                        <span class="comment">// trickery here:</span>
+                        <span class="comment">//</span>
+                        <span class="comment">// First, we obtain a reference to the current presence of</span>
+                        <span class="comment">// the shard, and create a new presence tuple of the new</span>
+                        <span class="comment">// activity we received over the channel as well as the</span>
+                        <span class="comment">// online status that the shard already had.</span>
+                        <span class="comment">//</span>
+                        <span class="comment">// We then (attempt to) send the websocket message with the</span>
+                        <span class="comment">// status update, expressively returning:</span>
+                        <span class="comment">//</span>
+                        <span class="comment">// - whether the message successfully sent</span>
+                        <span class="comment">// - the original activity we received over the channel</span>
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_activity</span>(<span class="ident">activity</span>);
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
+                    },
+                    <span class="ident">ShardRunnerMessage::SetPresence</span>(<span class="ident">status</span>, <span class="ident">activity</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_presence</span>(<span class="ident">status</span>, <span class="ident">activity</span>);
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
+                    },
+                    <span class="ident">ShardRunnerMessage::SetStatus</span>(<span class="ident">status</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_status</span>(<span class="ident">status</span>);
+                        <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
+                    },
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+                    <span class="ident">ShardRunnerMessage::SetEventFilter</span>(<span class="ident">collector</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">event_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
 
-                    <span class="bool-val">true</span>
-                },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShutdownFinished</span>(<span class="kw">_</span>)) =&gt; {
-                    <span class="comment">// nb: not sent here</span>
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+                    <span class="ident">ShardRunnerMessage::SetMessageFilter</span>(<span class="ident">collector</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">message_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
 
-                    <span class="bool-val">true</span>
-                },
-                <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShardDisallowedGatewayIntents</span>)
-                <span class="op">|</span> <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShardInvalidAuthentication</span>)
-                <span class="op">|</span> <span class="ident">ShardClientMessage::Manager</span>(<span class="ident">ShardManagerMessage::ShardInvalidGatewayIntents</span>) =&gt; {
-                    <span class="comment">// These variants should never be received.</span>
-                    <span class="macro">warn!</span>(<span class="string">&quot;[ShardRunner {:?}] Received a ShardError?&quot;</span>, <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>(),);
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+                    <span class="ident">ShardRunnerMessage::SetReactionFilter</span>(<span class="ident">collector</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">reaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
 
-                    <span class="bool-val">true</span>
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::ChunkGuild</span> {
-                    <span class="ident">guild_id</span>,
-                    <span class="ident">limit</span>,
-                    <span class="ident">filter</span>,
-                    <span class="ident">nonce</span>,
-                }) =&gt; {
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">chunk_guild</span>(<span class="ident">guild_id</span>, <span class="ident">limit</span>, <span class="ident">filter</span>, <span class="ident">nonce</span>.<span class="ident">as_deref</span>()).<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::Close</span>(<span class="ident">code</span>, <span class="ident">reason</span>)) =&gt; {
-                    <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">reason</span>.<span class="ident">unwrap_or_default</span>();
-                    <span class="kw">let</span> <span class="ident">close</span> <span class="op">=</span> <span class="ident">CloseFrame</span> {
-                        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">into</span>(),
-                        <span class="ident">reason</span>: <span class="ident">Cow::from</span>(<span class="ident">reason</span>),
-                    };
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">client</span>.<span class="ident">close</span>(<span class="prelude-val">Some</span>(<span class="ident">close</span>)).<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::Message</span>(<span class="ident">msg</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">client</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetActivity</span>(<span class="ident">activity</span>)) =&gt; {
-                    <span class="comment">// To avoid a clone of `activity`, we do a little bit of</span>
-                    <span class="comment">// trickery here:</span>
-                    <span class="comment">//</span>
-                    <span class="comment">// First, we obtain a reference to the current presence of</span>
-                    <span class="comment">// the shard, and create a new presence tuple of the new</span>
-                    <span class="comment">// activity we received over the channel as well as the</span>
-                    <span class="comment">// online status that the shard already had.</span>
-                    <span class="comment">//</span>
-                    <span class="comment">// We then (attempt to) send the websocket message with the</span>
-                    <span class="comment">// status update, expressively returning:</span>
-                    <span class="comment">//</span>
-                    <span class="comment">// - whether the message successfully sent</span>
-                    <span class="comment">// - the original activity we received over the channel</span>
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_activity</span>(<span class="ident">activity</span>);
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+                    <span class="ident">ShardRunnerMessage::SetComponentInteractionFilter</span>(<span class="ident">collector</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">component_interaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
 
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetPresence</span>(<span class="ident">status</span>, <span class="ident">activity</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_presence</span>(<span class="ident">status</span>, <span class="ident">activity</span>);
+                        <span class="bool-val">true</span>
+                    },
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
+                    <span class="ident">ShardRunnerMessage::SetModalInteractionFilter</span>(<span class="ident">collector</span>) =&gt; {
+                        <span class="self">self</span>.<span class="ident">modal_interaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
 
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetStatus</span>(<span class="ident">status</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">set_status</span>(<span class="ident">status</span>);
-
-                    <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">update_presence</span>().<span class="kw">await</span>.<span class="ident">is_ok</span>()
-                },
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetEventFilter</span>(<span class="ident">collector</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">event_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
-
-                    <span class="bool-val">true</span>
-                },
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetMessageFilter</span>(<span class="ident">collector</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">message_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
-
-                    <span class="bool-val">true</span>
-                },
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetReactionFilter</span>(<span class="ident">collector</span>)) =&gt; {
-                    <span class="self">self</span>.<span class="ident">reaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
-
-                    <span class="bool-val">true</span>
-                },
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetComponentInteractionFilter</span>(
-                    <span class="ident">collector</span>,
-                )) =&gt; {
-                    <span class="self">self</span>.<span class="ident">component_interaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
-
-                    <span class="bool-val">true</span>
-                },
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>))]</span>
-                <span class="ident">ShardClientMessage::Runner</span>(<span class="ident">ShardRunnerMessage::SetModalInteractionFilter</span>(
-                    <span class="ident">collector</span>,
-                )) =&gt; {
-                    <span class="self">self</span>.<span class="ident">modal_interaction_filters</span>.<span class="ident">push</span>(<span class="ident">collector</span>);
-
-                    <span class="bool-val">true</span>
+                        <span class="bool-val">true</span>
+                    },
                 },
             },
             <span class="ident">InterMessage::Json</span>(<span class="ident">value</span>) =&gt; {
@@ -1249,9 +1230,7 @@
                         <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>(),
                     );
 
-                    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::let_underscore_must_use</span>)]</span>
-                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">request_restart</span>().<span class="kw">await</span>;
-
+                    <span class="ident">drop</span>(<span class="self">self</span>.<span class="ident">request_restart</span>().<span class="kw">await</span>);
                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>);
                 },
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">break</span>,
@@ -1385,12 +1364,11 @@
 
     <span class="attribute">#[<span class="ident">instrument</span>(<span class="ident">skip</span>(<span class="self">self</span>))]</span>
     <span class="kw">fn</span> <span class="ident">update_manager</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::let_underscore_must_use</span>)]</span>
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">manager_tx</span>.<span class="ident">unbounded_send</span>(<span class="ident">ShardManagerMessage::ShardUpdate</span> {
+        <span class="ident">drop</span>(<span class="self">self</span>.<span class="ident">manager_tx</span>.<span class="ident">unbounded_send</span>(<span class="ident">ShardManagerMessage::ShardUpdate</span> {
             <span class="ident">id</span>: <span class="ident">ShardId</span>(<span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">shard_info</span>()[<span class="number">0</span>]),
             <span class="ident">latency</span>: <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">latency</span>(),
             <span class="ident">stage</span>: <span class="self">self</span>.<span class="ident">shard</span>.<span class="ident">stage</span>(),
-        });
+        }));
     }
 }
 
@@ -1400,7 +1378,7 @@
     <span class="kw">pub</span> <span class="ident">event_handler</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">EventHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">raw_event_handler</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">RawEventHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;framework&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">framework</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Framework</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">framework</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Framework</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">manager_tx</span>: <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">ShardManagerMessage</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">shard</span>: <span class="ident">Shard</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;voice&quot;</span>)]</span>
@@ -1408,5 +1386,5 @@
     <span class="kw">pub</span> <span class="ident">cache_and_http</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CacheAndHttp</span><span class="op">&gt;</span>,
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>
