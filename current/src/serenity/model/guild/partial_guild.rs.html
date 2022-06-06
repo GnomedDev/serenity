@@ -1793,21 +1793,82 @@
 <span id="1788">1788</span>
 <span id="1789">1789</span>
 <span id="1790">1790</span>
-</pre><pre class="rust"><code><span class="comment">// FIXME: Remove after the removal of the `̀nsfw` field.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-
-<span class="kw">use</span> <span class="ident">serde::de::Error</span> <span class="kw">as</span> <span class="ident">DeError</span>;
+<span id="1791">1791</span>
+<span id="1792">1792</span>
+<span id="1793">1793</span>
+<span id="1794">1794</span>
+<span id="1795">1795</span>
+<span id="1796">1796</span>
+<span id="1797">1797</span>
+<span id="1798">1798</span>
+<span id="1799">1799</span>
+<span id="1800">1800</span>
+<span id="1801">1801</span>
+<span id="1802">1802</span>
+<span id="1803">1803</span>
+<span id="1804">1804</span>
+<span id="1805">1805</span>
+<span id="1806">1806</span>
+<span id="1807">1807</span>
+<span id="1808">1808</span>
+<span id="1809">1809</span>
+<span id="1810">1810</span>
+<span id="1811">1811</span>
+<span id="1812">1812</span>
+<span id="1813">1813</span>
+<span id="1814">1814</span>
+<span id="1815">1815</span>
+<span id="1816">1816</span>
+<span id="1817">1817</span>
+<span id="1818">1818</span>
+<span id="1819">1819</span>
+<span id="1820">1820</span>
+<span id="1821">1821</span>
+<span id="1822">1822</span>
+<span id="1823">1823</span>
+<span id="1824">1824</span>
+<span id="1825">1825</span>
+<span id="1826">1826</span>
+<span id="1827">1827</span>
+<span id="1828">1828</span>
+<span id="1829">1829</span>
+<span id="1830">1830</span>
+<span id="1831">1831</span>
+<span id="1832">1832</span>
+<span id="1833">1833</span>
+<span id="1834">1834</span>
+<span id="1835">1835</span>
+<span id="1836">1836</span>
+<span id="1837">1837</span>
+<span id="1838">1838</span>
+<span id="1839">1839</span>
+<span id="1840">1840</span>
+<span id="1841">1841</span>
+<span id="1842">1842</span>
+<span id="1843">1843</span>
+<span id="1844">1844</span>
+<span id="1845">1845</span>
+<span id="1846">1846</span>
+<span id="1847">1847</span>
+<span id="1848">1848</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde::de::Error</span> <span class="kw">as</span> <span class="ident">DeError</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">error</span>, <span class="ident">warn</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::builder</span>::{
+    <span class="ident">CreateApplicationCommand</span>,
+    <span class="ident">CreateApplicationCommandPermissionsData</span>,
+    <span class="ident">CreateApplicationCommands</span>,
+    <span class="ident">CreateApplicationCommandsPermissions</span>,
     <span class="ident">CreateChannel</span>,
+    <span class="ident">CreateSticker</span>,
     <span class="ident">EditGuild</span>,
     <span class="ident">EditGuildWelcomeScreen</span>,
     <span class="ident">EditGuildWidget</span>,
     <span class="ident">EditMember</span>,
     <span class="ident">EditRole</span>,
+    <span class="ident">EditSticker</span>,
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;utils&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cache::Cache</span>;
@@ -1822,18 +1883,12 @@
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::http</span>::{<span class="ident">CacheHttp</span>, <span class="ident">Http</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::json</span>::{<span class="ident">from_number</span>, <span class="ident">from_value</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::application::command</span>::{<span class="ident">Command</span>, <span class="ident">CommandPermission</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::utils</span>::{<span class="ident">deserialize_emojis</span>, <span class="ident">deserialize_roles</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>))]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">builder</span>::{
-        <span class="ident">CreateApplicationCommand</span>,
-        <span class="ident">CreateApplicationCommandPermissionsData</span>,
-        <span class="ident">CreateApplicationCommands</span>,
-        <span class="ident">CreateApplicationCommandsPermissions</span>,
-    },
-    <span class="ident">model::interactions::application_command</span>::{<span class="ident">ApplicationCommand</span>, <span class="ident">ApplicationCommandPermission</span>},
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::utils</span>::{<span class="ident">emojis</span>, <span class="ident">roles</span>, <span class="ident">stickers</span>};
 
 <span class="doccomment">/// Partial information about a [`Guild`]. This does not include information</span>
 <span class="doccomment">/// like member data.</span>
@@ -1860,7 +1915,7 @@
     <span class="doccomment">/// The channel id that the widget will generate an invite to, or null if set to no invite</span>
     <span class="kw">pub</span> <span class="ident">widget_channel_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span>,
     <span class="doccomment">/// All of the guild&#39;s custom emojis.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_emojis&quot;</span>, <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_emojis&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;emojis&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">emojis</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">EmojiId</span>, <span class="ident">Emoji</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Features enabled for the guild.</span>
     <span class="doccomment">///</span>
@@ -1880,11 +1935,8 @@
     <span class="doccomment">/// Whether or not the user is the owner of the guild.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="kw">pub</span> <span class="ident">owner</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The region that the voice servers that the guild uses are located in.</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Regions are now set per voice channel instead of globally.&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">region</span>: <span class="ident">String</span>,
     <span class="doccomment">/// A mapping of the guild&#39;s roles.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_roles&quot;</span>, <span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_roles&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;roles&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">roles</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">RoleId</span>, <span class="ident">Role</span><span class="op">&gt;</span>,
     <span class="doccomment">/// An identifying hash of the guild&#39;s splash icon.</span>
     <span class="doccomment">///</span>
@@ -1929,12 +1981,6 @@
     <span class="kw">pub</span> <span class="ident">approximate_member_count</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Approximate number of non-offline members in this guild.</span>
     <span class="kw">pub</span> <span class="ident">approximate_presence_count</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Whether or not this guild is designated as NSFW. See [`discord support article`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`discord support article`]: https://support.discord.com/hc/en-us/articles/1500005389362-NSFW-Server-Designation</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Removed in favor of Guild::nsfw_level.&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">nsfw</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// The guild NSFW state. See [`discord support article`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`discord support article`]: https://support.discord.com/hc/en-us/articles/1500005389362-NSFW-Server-Designation</span>
@@ -1949,6 +1995,9 @@
     <span class="kw">pub</span> <span class="ident">max_members</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The user permissions in the guild.</span>
     <span class="kw">pub</span> <span class="ident">permissions</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// All of the guild&#39;s custom stickers.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;stickers&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">stickers</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">StickerId</span>, <span class="ident">Sticker</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;model&quot;</span>)]</span>
@@ -2053,15 +2102,17 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">channel_id_from_name</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel_id_from_name</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">cache</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Cache</span><span class="op">&gt;</span>,
         <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_ref</span>();
-        <span class="kw">let</span> <span class="ident">guild_channels</span> <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">as_ref</span>().<span class="ident">guild_channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">guild_channels</span> <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">as_ref</span>().<span class="ident">guild_channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">for</span> (<span class="ident">id</span>, <span class="ident">channel</span>) <span class="kw">in</span> <span class="ident">guild_channels</span>.<span class="ident">iter</span>() {
+        <span class="kw">for</span> <span class="ident">channel_entry</span> <span class="kw">in</span> <span class="ident">guild_channels</span>.<span class="ident">iter</span>() {
+            <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">channel</span>) <span class="op">=</span> <span class="ident">channel_entry</span>.<span class="ident">pair</span>();
+
             <span class="kw">if</span> <span class="ident">channel</span>.<span class="ident">name</span> <span class="op">==</span> <span class="ident">name</span> {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">id</span>);
             }
@@ -2107,7 +2158,7 @@
     <span class="doccomment">/// Refer to the documentation for [`Guild::create_emoji`] for more</span>
     <span class="doccomment">/// information.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the [Manage Emojis] permission.</span>
+    <span class="doccomment">/// Requires the [Manage Emojis and Stickers] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -2122,7 +2173,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`EditProfile::avatar`]: crate::builder::EditProfile::avatar</span>
     <span class="doccomment">/// [`utils::read_image`]: crate::utils::read_image</span>
-    <span class="doccomment">/// [Manage Emojis]: Permissions::MANAGE_EMOJIS</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_emoji</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -2152,23 +2203,20 @@
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">create_integration</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">integration_id</span>, <span class="ident">kind</span>).<span class="kw">await</span>
     }
 
-    <span class="doccomment">/// Creates a guild specific [`ApplicationCommand`]</span>
+    <span class="doccomment">/// Creates a guild specific [`Command`]</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// **Note**: Unlike global `ApplicationCommand`s, guild commands will update instantly.</span>
+    <span class="doccomment">/// **Note**: Unlike global `Command`s, guild commands will update instantly.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns the same possible errors as `create_global_application_command`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ApplicationCommand`]: crate::model::interactions::application_command::ApplicationCommand</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_errors_doc</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_application_command</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ApplicationCommand</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommand</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommand</span>,
     {
@@ -2185,23 +2233,20 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_application_commands</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ApplicationCommand</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommands</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommands</span>,
     {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">set_application_commands</span>(<span class="ident">http</span>, <span class="ident">f</span>).<span class="kw">await</span>
     }
 
-    <span class="doccomment">/// Creates a guild specific [`ApplicationCommandPermission`].</span>
+    <span class="doccomment">/// Creates a guild specific [`CommandPermission`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Note**: It will update instantly.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ApplicationCommandPermission`]: crate::model::interactions::application_command::ApplicationCommandPermission</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
@@ -2209,13 +2254,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_application_command_permission</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">command_id</span>: <span class="ident">CommandId</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ApplicationCommandPermission</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CommandPermission</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(
             <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommandPermissionsData</span>,
@@ -2235,12 +2279,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_application_commands_permissions</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ApplicationCommandPermission</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CommandPermission</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(
             <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommandsPermissions</span>,
@@ -2257,11 +2300,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_application_commands</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ApplicationCommand</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_application_commands</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get_application_commands</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
@@ -2273,12 +2312,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_application_command</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">command_id</span>: <span class="ident">CommandId</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ApplicationCommand</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get_application_command</span>(<span class="ident">http</span>, <span class="ident">command_id</span>).<span class="kw">await</span>
     }
 
@@ -2290,13 +2328,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_application_command</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">command_id</span>: <span class="ident">CommandId</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ApplicationCommand</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Command</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommand</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommand</span>,
     {
@@ -2311,7 +2348,6 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_application_command</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -2328,11 +2364,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_application_commands_permissions</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ApplicationCommandPermission</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CommandPermission</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get_application_commands_permissions</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
@@ -2344,12 +2379,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable_discord_api&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_application_command_permissions</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">command_id</span>: <span class="ident">CommandId</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ApplicationCommandPermission</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CommandPermission</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get_application_command_permissions</span>(<span class="ident">http</span>, <span class="ident">command_id</span>).<span class="kw">await</span>
     }
 
@@ -2373,6 +2407,34 @@
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">create_role</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">f</span>).<span class="kw">await</span>
     }
 
+    <span class="doccomment">/// Creates a new sticker in the guild with the data set, if any.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note**: Requires the [Manage Emojis and Stickers] permission.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`]</span>
+    <span class="doccomment">/// if the current user does not have permission to manage roles.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_sticker</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Sticker</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">CreateSticker</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">CreateSticker</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
+        {
+            <span class="kw">if</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>().<span class="ident">is_some</span>() {
+                <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">Permissions::MANAGE_EMOJIS_AND_STICKERS</span>;
+
+                <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">has_perms</span>(<span class="kw-2">&amp;</span><span class="ident">cache_http</span>, <span class="ident">req</span>).<span class="kw">await</span> {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Model</span>(<span class="ident">ModelError::InvalidPermissions</span>(<span class="ident">req</span>)));
+                }
+            }
+        }
+
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">create_sticker</span>(<span class="ident">cache_http</span>.<span class="ident">http</span>(), <span class="ident">f</span>).<span class="kw">await</span>
+    }
+
     <span class="doccomment">/// Deletes the current guild if the current user is the owner of the</span>
     <span class="doccomment">/// guild.</span>
     <span class="doccomment">///</span>
@@ -2389,14 +2451,14 @@
 
     <span class="doccomment">/// Deletes an [`Emoji`] from the guild.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the [Manage Emojis] permission.</span>
+    <span class="doccomment">/// Requires the [Manage Emojis and Stickers] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission,</span>
     <span class="doccomment">/// or if an emoji with that Id does not exist in the guild.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Manage Emojis]: Permissions::MANAGE_EMOJIS</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_emoji</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -2447,6 +2509,25 @@
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_role</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">role_id</span>).<span class="kw">await</span>
     }
 
+    <span class="doccomment">/// Deletes a [`Sticker`] by Id from the guild.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Requires the [Manage Emojis and Stickers] permission.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission</span>
+    <span class="doccomment">/// to delete the sticker.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_sticker</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
+        <span class="ident">sticker_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StickerId</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_sticker</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">sticker_id</span>).<span class="kw">await</span>
+    }
+
     <span class="doccomment">/// Edits the current guild with new data where specified.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Note**: Requires the current user to have the [Manage Guild]</span>
@@ -2473,12 +2554,6 @@
                 <span class="self">self</span>.<span class="ident">mfa_level</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">mfa_level</span>;
                 <span class="self">self</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">name</span>;
                 <span class="self">self</span>.<span class="ident">owner_id</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">owner_id</span>;
-
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-                {
-                    <span class="self">self</span>.<span class="ident">region</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">region</span>;
-                }
-
                 <span class="self">self</span>.<span class="ident">roles</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">roles</span>;
                 <span class="self">self</span>.<span class="ident">splash</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">splash</span>;
                 <span class="self">self</span>.<span class="ident">verification_level</span> <span class="op">=</span> <span class="ident">guild</span>.<span class="ident">verification_level</span>;
@@ -2494,14 +2569,14 @@
     <span class="doccomment">/// Also see [`Emoji::edit`] if you have the `cache` and `methods` features</span>
     <span class="doccomment">/// enabled.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the [Manage Emojis] permission.</span>
+    <span class="doccomment">/// Requires the [Manage Emojis and Stickers] permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission,</span>
     <span class="doccomment">/// or if an emoji with that Id does not exist in the guild.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Manage Emojis]: Permissions::MANAGE_EMOJIS</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_emoji</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -2623,6 +2698,37 @@
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">edit_role_position</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">role_id</span>, <span class="ident">position</span>).<span class="kw">await</span>
     }
 
+    <span class="doccomment">/// Edits a sticker, optionally setting its fields.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Requires the [Manage Emojis and Stickers] permission.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Rename a sticker:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust,ignore</span>
+    <span class="doccomment">/// guild.edit_sticker(&amp;context, StickerId(7), |r| r.name(&quot;Bun bun meow&quot;));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns [`Error::Http`] if the current user lacks permission.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
+    <span class="doccomment">/// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_sticker</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
+        <span class="ident">sticker_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StickerId</span><span class="op">&gt;</span>,
+        <span class="ident">f</span>: <span class="ident">F</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Sticker</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">EditSticker</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">EditSticker</span>,
+    {
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">edit_sticker</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">sticker_id</span>, <span class="ident">f</span>).<span class="kw">await</span>
+    }
+
     <span class="doccomment">/// Edits the [`GuildWelcomeScreen`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
@@ -2630,7 +2736,6 @@
     <span class="doccomment">/// Returns an [`Error::Http`] if some mandatory fields are not provided.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`GuildWelcomeScreen`]: super::guild::GuildWelcomeScreen</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_welcome_screen</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -2650,7 +2755,6 @@
     <span class="doccomment">/// permission.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`GuildWelcomeScreen`]: super::guild::GuildWelcomeScreen</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_widget</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">GuildWidget</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">EditGuildWidget</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">EditGuildWidget</span>,
@@ -2714,21 +2818,17 @@
 
         <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="ident">cache</span>
             .<span class="ident">as_ref</span>()
-            .<span class="ident">guild</span>(<span class="self">self</span>.<span class="ident">id</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>
+            .<span class="ident">guild</span>(<span class="self">self</span>.<span class="ident">id</span>)<span class="question-mark">?</span>
             .<span class="ident">members</span>
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">lhs_id</span>)<span class="question-mark">?</span>
             .<span class="ident">highest_role_info</span>(<span class="kw-2">&amp;</span><span class="ident">cache</span>)
-            .<span class="kw">await</span>
             .<span class="ident">unwrap_or</span>((<span class="ident">RoleId</span>(<span class="number">0</span>), <span class="number">0</span>));
         <span class="kw">let</span> <span class="ident">rhs</span> <span class="op">=</span> <span class="ident">cache</span>
             .<span class="ident">as_ref</span>()
-            .<span class="ident">guild</span>(<span class="self">self</span>.<span class="ident">id</span>)
-            .<span class="kw">await</span><span class="question-mark">?</span>
+            .<span class="ident">guild</span>(<span class="self">self</span>.<span class="ident">id</span>)<span class="question-mark">?</span>
             .<span class="ident">members</span>
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">rhs_id</span>)<span class="question-mark">?</span>
             .<span class="ident">highest_role_info</span>(<span class="kw-2">&amp;</span><span class="ident">cache</span>)
-            .<span class="kw">await</span>
             .<span class="ident">unwrap_or</span>((<span class="ident">RoleId</span>(<span class="number">0</span>), <span class="number">0</span>));
 
         <span class="comment">// If LHS and RHS both have no top position or have the same role ID,</span>
@@ -2788,13 +2888,12 @@
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Permissions::all</span>());
         }
 
-        <span class="kw">let</span> <span class="ident">everyone</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">roles</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">RoleId</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">everyone</span>) =&gt; <span class="ident">everyone</span>,
-            <span class="prelude-val">None</span> =&gt; {
-                <span class="macro">error!</span>(<span class="string">&quot;@everyone role ({}) missing in &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">name</span>,);
+        <span class="kw">let</span> <span class="ident">everyone</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">everyone</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">roles</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">RoleId</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)) {
+            <span class="ident">everyone</span>
+        } <span class="kw">else</span> {
+            <span class="macro">error!</span>(<span class="string">&quot;@everyone role ({}) missing in &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="self">self</span>.<span class="ident">name</span>,);
 
-                <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Permissions::empty</span>());
-            },
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Permissions::empty</span>());
         };
 
         <span class="kw">let</span> <span class="ident">member</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">member</span>(<span class="ident">cache_http</span>, <span class="kw-2">&amp;</span><span class="ident">user_id</span>).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -2899,7 +2998,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">has_perms</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>, <span class="kw-2">mut</span> <span class="ident">permissions</span>: <span class="ident">Permissions</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">cache_http</span>.<span class="ident">cache</span>() {
-            <span class="kw">let</span> <span class="ident">user_id</span> <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">current_user</span>().<span class="kw">await</span>.<span class="ident">id</span>;
+            <span class="kw">let</span> <span class="ident">user_id</span> <span class="op">=</span> <span class="ident">cache</span>.<span class="ident">current_user</span>().<span class="ident">id</span>;
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">perms</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">member_permissions</span>(<span class="kw-2">&amp;</span><span class="ident">cache_http</span>, <span class="ident">user_id</span>).<span class="kw">await</span> {
                 <span class="ident">permissions</span>.<span class="ident">remove</span>(<span class="ident">perms</span>);
@@ -2928,11 +3027,11 @@
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">kick</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">user_id</span>).<span class="kw">await</span>
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In addition to the reasons [`Self::kick`] may return an error,</span>
     <span class="doccomment">/// can also return an error if the reason is too long.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">kick_with_reason</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -2943,13 +3042,15 @@
     }
 
     <span class="doccomment">/// Returns a formatted URL of the guild&#39;s icon, if the guild has an icon.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icon_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">icon</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">icon</span><span class="op">|</span> <span class="macro">format!</span>(<span class="macro">cdn!</span>(<span class="string">&quot;/icons/{}/{}.webp&quot;</span>), <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">icon</span>))
+        <span class="self">self</span>.<span class="ident">icon</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">icon</span><span class="op">|</span> <span class="macro">cdn!</span>(<span class="string">&quot;/icons/{}/{}.webp&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">icon</span>))
     }
 
     <span class="doccomment">/// Returns a formatted URL of the guild&#39;s banner, if the guild has a banner.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">banner_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">banner</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">banner</span><span class="op">|</span> <span class="macro">format!</span>(<span class="macro">cdn!</span>(<span class="string">&quot;/banners/{}/{}.webp&quot;</span>), <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">banner</span>))
+        <span class="self">self</span>.<span class="ident">banner</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">banner</span><span class="op">|</span> <span class="macro">cdn!</span>(<span class="string">&quot;/banners/{}/{}.webp&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">banner</span>))
     }
 
     <span class="doccomment">/// Gets all [`Emoji`]s of this guild via HTTP.</span>
@@ -3040,7 +3141,7 @@
     <span class="doccomment">/// may also return [`Error::NotInRange`] if the input is</span>
     <span class="doccomment">/// not within range.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`User`]: ../user/struct.User.html</span>
+    <span class="doccomment">/// [`User`]: crate::model::user::User</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">members</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -3126,8 +3227,8 @@
     <span class="doccomment">/// [`utils::shard_id`]: crate::utils::shard_id</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;utils&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cache</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Cache</span><span class="op">&gt;</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">cache</span>).<span class="kw">await</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cache</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Cache</span><span class="op">&gt;</span>) -&gt; <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">cache</span>)
     }
 
     <span class="doccomment">/// Returns the Id of the shard associated with the guild.</span>
@@ -3152,16 +3253,15 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;utils&quot;</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cache&quot;</span>)))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_count</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">shard_count</span>).<span class="kw">await</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shard_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_count</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">shard_id</span>(<span class="ident">shard_count</span>)
     }
 
     <span class="doccomment">/// Returns the formatted URL of the guild&#39;s splash image, if one exists.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">splash_url</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">splash</span>
-            .<span class="ident">as_ref</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">splash</span><span class="op">|</span> <span class="macro">format!</span>(<span class="macro">cdn!</span>(<span class="string">&quot;/splashes/{}/{}.webp?size=4096&quot;</span>), <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">splash</span>))
+        <span class="self">self</span>.<span class="ident">splash</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">splash</span><span class="op">|</span> <span class="macro">cdn!</span>(<span class="string">&quot;/splashes/{}/{}.webp?size=4096&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>, <span class="ident">splash</span>))
     }
 
     <span class="doccomment">/// Starts an integration sync for the given integration Id.</span>
@@ -3249,7 +3349,7 @@
     <span class="doccomment">/// impl EventHandler for Handler {</span>
     <span class="doccomment">///     async fn message(&amp;self, context: Context, msg: Message) {</span>
     <span class="doccomment">///         if let Some(guild_id) = msg.guild_id {</span>
-    <span class="doccomment">///             if let Some(guild) = guild_id.to_guild_cached(&amp;context).await {</span>
+    <span class="doccomment">///             if let Some(guild) = guild_id.to_guild_cached(&amp;context) {</span>
     <span class="doccomment">///                 if let Some(role) = guild.role_by_name(&quot;role_name&quot;) {</span>
     <span class="doccomment">///                     println!(&quot;Obtained role&#39;s reference: {:?}&quot;, role);</span>
     <span class="doccomment">///                 }</span>
@@ -3258,50 +3358,46 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut client = Client::builder(&quot;token&quot;).event_handler(Handler).await?;</span>
+    <span class="doccomment">/// let mut client =</span>
+    <span class="doccomment">///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// client.start().await?;</span>
     <span class="doccomment">/// #    Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">role_by_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">role_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Role</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">roles</span>.<span class="ident">values</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">role</span><span class="op">|</span> <span class="ident">role_name</span> <span class="op">==</span> <span class="ident">role</span>.<span class="ident">name</span>)
     }
 
     <span class="doccomment">/// Returns a future that will await one message sent in this guild.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reply</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">shard_messenger</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">CollectReply</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reply</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_messenger</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>) -&gt; <span class="ident">CollectReply</span> {
         <span class="ident">CollectReply::new</span>(<span class="ident">shard_messenger</span>).<span class="ident">guild_id</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Returns a stream builder which can be awaited to obtain a stream of messages in this guild.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_replies</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_replies</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">shard_messenger</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">MessageCollectorBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">shard_messenger</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">MessageCollectorBuilder</span> {
         <span class="ident">MessageCollectorBuilder::new</span>(<span class="ident">shard_messenger</span>).<span class="ident">guild_id</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Await a single reaction in this guild.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reaction</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">shard_messenger</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">CollectReaction</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">shard_messenger</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>) -&gt; <span class="ident">CollectReaction</span> {
         <span class="ident">CollectReaction::new</span>(<span class="ident">shard_messenger</span>).<span class="ident">guild_id</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Returns a stream builder which can be awaited to obtain a stream of reactions sent in this guild.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reactions</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">await_reactions</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">shard_messenger</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">ReactionCollectorBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">shard_messenger</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">ShardMessenger</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">ReactionCollectorBuilder</span> {
         <span class="ident">ReactionCollectorBuilder::new</span>(<span class="ident">shard_messenger</span>).<span class="ident">guild_id</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="number">0</span>)
     }
 
@@ -3320,20 +3416,20 @@
     <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) -&gt; <span class="ident">StdResult</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">D::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">JsonMap::deserialize</span>(<span class="ident">deserializer</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">get</span>(<span class="string">&quot;id&quot;</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_str</span>()).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>().<span class="ident">ok</span>());
+        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">map</span>.<span class="ident">get</span>(<span class="string">&quot;id&quot;</span>).<span class="ident">and_then</span>(<span class="ident">Value::as_str</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>().<span class="ident">ok</span>());
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">guild_id</span>) <span class="op">=</span> <span class="ident">id</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">array</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">get_mut</span>(<span class="string">&quot;roles&quot;</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_array_mut</span>()) {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">array</span>) <span class="op">=</span> <span class="ident">map</span>.<span class="ident">get_mut</span>(<span class="string">&quot;roles&quot;</span>).<span class="ident">and_then</span>(<span class="ident">Value::as_array_mut</span>) {
                 <span class="kw">for</span> <span class="ident">value</span> <span class="kw">in</span> <span class="ident">array</span> {
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">role</span>) <span class="op">=</span> <span class="ident">value</span>.<span class="ident">as_object_mut</span>() {
-                        <span class="ident">role</span>.<span class="ident">insert</span>(<span class="string">&quot;guild_id&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">Value::Number</span>(<span class="ident">Number::from</span>(<span class="ident">guild_id</span>)));
+                        <span class="ident">role</span>.<span class="ident">insert</span>(<span class="string">&quot;guild_id&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">from_number</span>(<span class="ident">guild_id</span>));
                     }
                 }
             }
         }
 
         <span class="kw">let</span> <span class="ident">afk_channel_id</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;afk_channel_id&quot;</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">serde_json::from_value</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">from_value</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
             <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
         <span class="kw">let</span> <span class="ident">afk_timeout</span> <span class="op">=</span> <span class="ident">map</span>
@@ -3349,12 +3445,12 @@
         <span class="kw">let</span> <span class="ident">emojis</span> <span class="op">=</span> <span class="ident">map</span>
             .<span class="ident">remove</span>(<span class="string">&quot;emojis&quot;</span>)
             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild emojis&quot;</span>))
-            .<span class="ident">and_then</span>(<span class="ident">deserialize_emojis</span>)
+            .<span class="ident">and_then</span>(<span class="ident">emojis::deserialize</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">map</span>
             .<span class="ident">remove</span>(<span class="string">&quot;features&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild features&quot;</span>))
-            .<span class="ident">and_then</span>(<span class="ident">serde_json::from_value</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>)
+            .<span class="ident">ok_or</span>(<span class="ident">Error::Other</span>(<span class="string">&quot;expected guild features&quot;</span>))
+            .<span class="ident">and_then</span>(<span class="ident">from_value</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">icon</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;icon&quot;</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="prelude-ty">Option</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
@@ -3380,15 +3476,10 @@
             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild owner_id&quot;</span>))
             .<span class="ident">and_then</span>(<span class="ident">UserId::deserialize</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">region</span> <span class="op">=</span> <span class="ident">map</span>
-            .<span class="ident">remove</span>(<span class="string">&quot;region&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild region&quot;</span>))
-            .<span class="ident">and_then</span>(<span class="ident">String::deserialize</span>)
-            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">roles</span> <span class="op">=</span> <span class="ident">map</span>
             .<span class="ident">remove</span>(<span class="string">&quot;roles&quot;</span>)
             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild roles&quot;</span>))
-            .<span class="ident">and_then</span>(<span class="ident">deserialize_roles</span>)
+            .<span class="ident">and_then</span>(<span class="ident">roles::deserialize</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">splash</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;splash&quot;</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="prelude-ty">Option</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
@@ -3408,7 +3499,10 @@
             <span class="prelude-val">None</span> =&gt; <span class="ident">PremiumTier::default</span>(),
         };
         <span class="kw">let</span> <span class="ident">premium_subscription_count</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;premium_subscription_count&quot;</span>) {
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd-json&quot;</span>))]</span>
             <span class="prelude-val">Some</span>(<span class="ident">Value::Null</span>) <span class="op">|</span> <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd-json&quot;</span>)]</span>
+            <span class="prelude-val">Some</span>(<span class="ident">Value::Static</span>(<span class="ident">StaticNode::Null</span>)) <span class="op">|</span> <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">u64::deserialize</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
         };
         <span class="kw">let</span> <span class="ident">banner</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;banner&quot;</span>) {
@@ -3424,40 +3518,24 @@
             <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">approximate_member_count</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;approximate_member_count&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>(
-                <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;approximate_member_count&quot;</span>)
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected approximate_member_count&quot;</span>))
-                    .<span class="ident">and_then</span>(<span class="ident">u64::deserialize</span>)
-                    .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            ),
-            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
-        };
-
-        <span class="kw">let</span> <span class="ident">approximate_presence_count</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;approximate_presence_count&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>(
-                <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;approximate_presence_count&quot;</span>)
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected approximate_presence_count&quot;</span>))
-                    .<span class="ident">and_then</span>(<span class="ident">u64::deserialize</span>)
-                    .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            ),
-            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
-        };
-
-        <span class="kw">let</span> <span class="ident">owner</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;owner&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="ident">map</span>
-                .<span class="ident">remove</span>(<span class="string">&quot;owner&quot;</span>)
-                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected owner&quot;</span>))
-                .<span class="ident">and_then</span>(<span class="ident">bool::deserialize</span>)
-                .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            <span class="bool-val">false</span> =&gt; <span class="bool-val">false</span>,
-        };
-
-        <span class="kw">let</span> <span class="ident">nsfw</span> <span class="op">=</span> <span class="ident">map</span>
-            .<span class="ident">remove</span>(<span class="string">&quot;nsfw&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected approximate_presence_count&quot;</span>))
-            .<span class="ident">and_then</span>(<span class="ident">bool::deserialize</span>)
+        <span class="kw">let</span> <span class="ident">approximate_member_count</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;approximate_member_count&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">u64::deserialize</span>)
+            .<span class="ident">transpose</span>()
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="ident">approximate_presence_count</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;approximate_presence_count&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">u64::deserialize</span>)
+            .<span class="ident">transpose</span>()
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="ident">owner</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;owner&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">bool::deserialize</span>)
+            .<span class="ident">transpose</span>()
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>
+            .<span class="ident">unwrap_or_default</span>();
 
         <span class="kw">let</span> <span class="ident">nsfw_level</span> <span class="op">=</span> <span class="ident">map</span>
             .<span class="ident">remove</span>(<span class="string">&quot;nsfw_level&quot;</span>)
@@ -3465,30 +3543,19 @@
             .<span class="ident">and_then</span>(<span class="ident">NsfwLevel::deserialize</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">max_video_channel_users</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;max_video_channel_users&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>(
-                <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;max_video_channel_users&quot;</span>)
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected max_video_channel_users&quot;</span>))
-                    .<span class="ident">and_then</span>(<span class="ident">u64::deserialize</span>)
-                    .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            ),
-            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
-        };
+        <span class="kw">let</span> <span class="ident">max_video_channel_users</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;max_video_channel_users&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">u64::deserialize</span>)
+            .<span class="ident">transpose</span>()
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">max_presences</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;max_presences&quot;</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="prelude-ty">Option</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
             <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">max_members</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;max_members&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>(
-                <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;max_members&quot;</span>)
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected max_members&quot;</span>))
-                    .<span class="ident">and_then</span>(<span class="ident">u64::deserialize</span>)
-                    .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            ),
-            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
-        };
+        <span class="kw">let</span> <span class="ident">max_members</span> <span class="op">=</span>
+            <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;max_members&quot;</span>).<span class="ident">map</span>(<span class="ident">u64::deserialize</span>).<span class="ident">transpose</span>().<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">discovery_splash</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;discovery_splash&quot;</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="prelude-ty">Option</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="ident">::deserialize</span>(<span class="ident">v</span>).<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
@@ -3531,17 +3598,18 @@
             <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">welcome_screen</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">contains_key</span>(<span class="string">&quot;welcome_screen&quot;</span>) {
-            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>(
-                <span class="ident">map</span>.<span class="ident">remove</span>(<span class="string">&quot;welcome_screen&quot;</span>)
-                    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected welcome_screen&quot;</span>))
-                    .<span class="ident">and_then</span>(<span class="ident">GuildWelcomeScreen::deserialize</span>)
-                    .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>,
-            ),
-            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
-        };
+        <span class="kw">let</span> <span class="ident">welcome_screen</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;welcome_screen&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">GuildWelcomeScreen::deserialize</span>)
+            .<span class="ident">transpose</span>()
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
 
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
+        <span class="kw">let</span> <span class="ident">stickers</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;stickers&quot;</span>)
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">DeError::custom</span>(<span class="string">&quot;expected guild stickers&quot;</span>))
+            .<span class="ident">and_then</span>(<span class="ident">stickers::deserialize</span>)
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
+
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">application_id</span>,
             <span class="ident">id</span>,
@@ -3557,7 +3625,6 @@
             <span class="ident">name</span>,
             <span class="ident">owner_id</span>,
             <span class="ident">owner</span>,
-            <span class="ident">region</span>,
             <span class="ident">roles</span>,
             <span class="ident">splash</span>,
             <span class="ident">discovery_splash</span>,
@@ -3574,15 +3641,64 @@
             <span class="ident">welcome_screen</span>,
             <span class="ident">approximate_member_count</span>,
             <span class="ident">approximate_presence_count</span>,
-            <span class="ident">nsfw</span>,
             <span class="ident">nsfw_level</span>,
             <span class="ident">max_video_channel_users</span>,
             <span class="ident">max_presences</span>,
             <span class="ident">max_members</span>,
             <span class="ident">permissions</span>,
+            <span class="ident">stickers</span>,
         })
     }
 }
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Guild</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PartialGuild</span> {
+    <span class="doccomment">/// Converts this [`Guild`] instance into a [`PartialGuild`]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`PartialGuild`] is not a strict subset and contains some data specific to the current user</span>
+    <span class="doccomment">/// that [`Guild`] does not contain. Therefore, this method needs access to cache and HTTP to</span>
+    <span class="doccomment">/// generate the missing data</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">guild</span>: <span class="ident">Guild</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">application_id</span>: <span class="ident">guild</span>.<span class="ident">application_id</span>,
+            <span class="ident">id</span>: <span class="ident">guild</span>.<span class="ident">id</span>,
+            <span class="ident">afk_channel_id</span>: <span class="ident">guild</span>.<span class="ident">afk_channel_id</span>,
+            <span class="ident">afk_timeout</span>: <span class="ident">guild</span>.<span class="ident">afk_timeout</span>,
+            <span class="ident">default_message_notifications</span>: <span class="ident">guild</span>.<span class="ident">default_message_notifications</span>,
+            <span class="ident">widget_enabled</span>: <span class="ident">guild</span>.<span class="ident">widget_enabled</span>,
+            <span class="ident">widget_channel_id</span>: <span class="ident">guild</span>.<span class="ident">widget_channel_id</span>,
+            <span class="ident">emojis</span>: <span class="ident">guild</span>.<span class="ident">emojis</span>,
+            <span class="ident">features</span>: <span class="ident">guild</span>.<span class="ident">features</span>,
+            <span class="ident">icon</span>: <span class="ident">guild</span>.<span class="ident">icon</span>,
+            <span class="ident">mfa_level</span>: <span class="ident">guild</span>.<span class="ident">mfa_level</span>,
+            <span class="ident">name</span>: <span class="ident">guild</span>.<span class="ident">name</span>,
+            <span class="ident">owner_id</span>: <span class="ident">guild</span>.<span class="ident">owner_id</span>,
+            <span class="comment">// Not very good, but PartialGuild deserialization uses .unwrap_or_default() too</span>
+            <span class="ident">owner</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">roles</span>: <span class="ident">guild</span>.<span class="ident">roles</span>,
+            <span class="ident">splash</span>: <span class="ident">guild</span>.<span class="ident">splash</span>,
+            <span class="ident">discovery_splash</span>: <span class="ident">guild</span>.<span class="ident">discovery_splash</span>,
+            <span class="ident">system_channel_id</span>: <span class="ident">guild</span>.<span class="ident">system_channel_id</span>,
+            <span class="ident">system_channel_flags</span>: <span class="ident">guild</span>.<span class="ident">system_channel_flags</span>,
+            <span class="ident">rules_channel_id</span>: <span class="ident">guild</span>.<span class="ident">rules_channel_id</span>,
+            <span class="ident">public_updates_channel_id</span>: <span class="ident">guild</span>.<span class="ident">public_updates_channel_id</span>,
+            <span class="ident">verification_level</span>: <span class="ident">guild</span>.<span class="ident">verification_level</span>,
+            <span class="ident">description</span>: <span class="ident">guild</span>.<span class="ident">description</span>,
+            <span class="ident">premium_tier</span>: <span class="ident">guild</span>.<span class="ident">premium_tier</span>,
+            <span class="ident">premium_subscription_count</span>: <span class="ident">guild</span>.<span class="ident">premium_subscription_count</span>,
+            <span class="ident">banner</span>: <span class="ident">guild</span>.<span class="ident">banner</span>,
+            <span class="ident">vanity_url_code</span>: <span class="ident">guild</span>.<span class="ident">vanity_url_code</span>,
+            <span class="ident">welcome_screen</span>: <span class="ident">guild</span>.<span class="ident">welcome_screen</span>,
+            <span class="ident">approximate_member_count</span>: <span class="ident">guild</span>.<span class="ident">approximate_member_count</span>,
+            <span class="ident">approximate_presence_count</span>: <span class="ident">guild</span>.<span class="ident">approximate_presence_count</span>,
+            <span class="ident">nsfw_level</span>: <span class="ident">guild</span>.<span class="ident">nsfw_level</span>,
+            <span class="ident">max_video_channel_users</span>: <span class="ident">guild</span>.<span class="ident">max_video_channel_users</span>,
+            <span class="ident">max_presences</span>: <span class="ident">guild</span>.<span class="ident">max_presences</span>,
+            <span class="ident">max_members</span>: <span class="ident">guild</span>.<span class="ident">max_members</span>,
+            <span class="ident">permissions</span>: <span class="prelude-val">None</span>,
+            <span class="ident">stickers</span>: <span class="ident">guild</span>.<span class="ident">stickers</span>,
+        }
+    }
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>

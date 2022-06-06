@@ -459,6 +459,11 @@
 <span id="454">454</span>
 <span id="455">455</span>
 <span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
 </pre><pre class="rust"><code><span class="comment">// Disable this lint to avoid it wanting to change `0xABCDEF` to `0xAB_CDEF`.</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::unreadable_literal</span>)]</span>
 
@@ -476,17 +481,14 @@
 <span class="doccomment">/// via [`Self::g`]:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// # extern crate serde_json;</span>
-<span class="doccomment">/// # extern crate serenity;</span>
-<span class="doccomment">/// #</span>
-<span class="doccomment">/// # use serde_json::json;</span>
+<span class="doccomment">/// # use serde_json::{json, from_value};</span>
 <span class="doccomment">/// # use serenity::model::guild::Role;</span>
 <span class="doccomment">/// # use serenity::model::id::RoleId;</span>
 <span class="doccomment">/// # use serenity::model::id::GuildId;</span>
 <span class="doccomment">/// # use serenity::model::permissions;</span>
 <span class="doccomment">/// #</span>
 <span class="doccomment">/// # fn main() {</span>
-<span class="doccomment">/// # let role = serde_json::from_value::&lt;Role&gt;(json!({</span>
+<span class="doccomment">/// # let role = from_value::&lt;Role&gt;(json!({</span>
 <span class="doccomment">/// #     &quot;color&quot;: Colour::BLURPLE,</span>
 <span class="doccomment">/// #     &quot;hoist&quot;: false,</span>
 <span class="doccomment">/// #     &quot;id&quot;: RoleId(1),</span>
@@ -551,6 +553,7 @@
     <span class="doccomment">/// assert_eq!(colour.tuple(), (100, 76, 67));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Colour</span> {
         <span class="ident">Colour</span>(<span class="ident">value</span>)
     }
@@ -584,6 +587,7 @@
     <span class="comment">// Clippy wants to use `u32::from` instead `as`-casts,</span>
     <span class="comment">// but this not doable as `u32::from` is not a const fn.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_lossless</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_rgb</span>(<span class="ident">red</span>: <span class="ident">u8</span>, <span class="ident">green</span>: <span class="ident">u8</span>, <span class="ident">blue</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Colour</span> {
         <span class="ident">Colour</span>((<span class="ident">red</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span> <span class="op">|</span> (<span class="ident">green</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span> <span class="op">|</span> <span class="ident">blue</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
@@ -597,6 +601,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Colour::new(6573123).r(), 100);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">r</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         ((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
@@ -610,6 +615,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Colour::new(6573123).g(), 76);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">g</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         ((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
@@ -622,6 +628,8 @@
     <span class="doccomment">/// use serenity::utils::Colour;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Colour::new(6573123).b(), 67);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">b</span>(<span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         (<span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
@@ -638,6 +646,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Colour::new(6573123).tuple(), (100, 76, 67));</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">tuple</span>(<span class="self">self</span>) -&gt; (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>) {
         (<span class="self">self</span>.<span class="ident">r</span>(), <span class="self">self</span>.<span class="ident">g</span>(), <span class="self">self</span>.<span class="ident">b</span>())
     }
@@ -654,6 +663,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Colour::new(6573123).hex(), &quot;644C43&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hex</span>(<span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="macro">format!</span>(<span class="string">&quot;{:06X}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
@@ -916,5 +926,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (5f3700105 2022-03-22)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
 </body></html>
