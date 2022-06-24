@@ -11,8 +11,10 @@ use serde::{Deserialize, Serialize};
 use super::prelude::*;
 #[cfg(feature = "model")]
 use crate::builder::{CreateBotAuthParameters, CreateMessage, EditProfile};
+#[cfg(all(feature = "cache", feature = "temp_cache"))]
+use crate::cache::CacheRef;
 #[cfg(all(feature = "cache", feature = "model"))]
-use crate::cache::{Cache, UserRef};
+use crate::cache::{Cache, MaybeCached, UserRef};
 #[cfg(feature = "collector")]
 use crate::client::bridge::gateway::ShardMessenger;
 #[cfg(feature = "collector")]
@@ -913,7 +915,7 @@ impl User {
     /// See [`UserId::to_user`] for what errors may be returned.
     #[inline]
     pub async fn refresh(&mut self, cache_http: impl CacheHttp) -> Result<()> {
-        *self = self.id.to_user(cache_http).await?;
+        *self = self.id.to_user(&cache_http).await?.into_owned();
 
         Ok(())
     }
@@ -1085,12 +1087,15 @@ impl UserId {
     /// May also return an [`Error::Json`] if there is an error in
     /// deserializing the user.
     #[inline]
-    pub async fn to_user(self, cache_http: impl CacheHttp) -> Result<User> {
+    pub async fn to_user(
+        self,
+        cache_http: &impl CacheHttp,
+    ) -> Result<MaybeCached<'_, UserId, User>> {
         #[cfg(feature = "cache")]
         {
             if let Some(cache) = cache_http.cache() {
                 if let Some(user) = cache.user(self) {
-                    return Ok(user.clone());
+                    return Ok(MaybeCached::Cached(user));
                 }
             }
         }
@@ -1100,11 +1105,15 @@ impl UserId {
         #[cfg(all(feature = "cache", feature = "temp_cache"))]
         {
             if let Some(cache) = cache_http.cache() {
-                cache.temp_users.insert(user.id, Arc::new(user.clone()));
+                let user = Arc::new(user);
+                cache.temp_users.insert(user.id, user.clone());
+
+                // Avoids having to clone the user to insert it into the cache
+                return Ok(MaybeCached::Cached(CacheRef::from_arc(user)));
             }
         }
 
-        Ok(user)
+        Ok(MaybeCached::Owned(user))
     }
 }
 

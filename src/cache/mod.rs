@@ -79,7 +79,7 @@ impl<'a, K, V> CacheRef<'a, K, V> {
     }
 
     #[cfg(feature = "temp_cache")]
-    fn from_arc(inner: Arc<V>) -> Self {
+    pub(crate) fn from_arc(inner: Arc<V>) -> Self {
         Self::new(CacheRefInner::Arc(inner))
     }
 
@@ -101,6 +101,31 @@ impl<K: Eq + Hash, V> std::ops::Deref for CacheRef<'_, K, V> {
             CacheRefInner::Arc(inner) => inner,
             CacheRefInner::DashRef(inner) => inner.value(),
             CacheRefInner::ReadGuard(inner) => inner,
+        }
+    }
+}
+
+pub enum MaybeCached<'a, K, V> {
+    Cached(CacheRef<'a, K, V>),
+    Owned(V),
+}
+
+impl<K: Eq + Hash, V: ToOwned<Owned = V>> MaybeCached<'_, K, V> {
+    pub fn into_owned(self) -> <V as ToOwned>::Owned {
+        match self {
+            Self::Cached(inner) => inner.to_owned(),
+            Self::Owned(inner) => inner,
+        }
+    }
+}
+
+impl<K: Eq + Hash, V> std::ops::Deref for MaybeCached<'_, K, V> {
+    type Target = V;
+
+    fn deref(&self) -> &Self::Target {
+        match self {
+            MaybeCached::Cached(inner) => &*inner,
+            MaybeCached::Owned(inner) => inner,
         }
     }
 }

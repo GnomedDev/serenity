@@ -11,6 +11,7 @@ use serde::ser::{Serialize, SerializeMap, Serializer};
 #[cfg(feature = "model")]
 use tracing::warn;
 
+use crate::cache::MaybeCached;
 #[cfg(feature = "model")]
 use crate::http::{CacheHttp, Http};
 use crate::internal::prelude::*;
@@ -194,7 +195,10 @@ impl Reaction {
     ///
     /// Returns [`Error::Http`] if the user that made the reaction is unable to be
     /// retrieved from the API.
-    pub async fn user(&self, cache_http: impl CacheHttp) -> Result<User> {
+    pub async fn user<'a>(
+        &self,
+        cache_http: &'a impl CacheHttp,
+    ) -> Result<MaybeCached<'a, UserId, User>> {
         if let Some(id) = self.user_id {
             id.to_user(cache_http).await
         } else {
@@ -203,11 +207,11 @@ impl Reaction {
             #[cfg(feature = "cache")]
             {
                 if let Some(cache) = cache_http.cache() {
-                    return Ok(User::from(&*cache.current_user()));
+                    return Ok(MaybeCached::Owned(User::from(&*cache.current_user())));
                 }
             }
 
-            Ok(cache_http.http().get_current_user().await?.into())
+            cache_http.http().get_current_user().await.map(Into::into).map(MaybeCached::Owned)
         }
     }
 
