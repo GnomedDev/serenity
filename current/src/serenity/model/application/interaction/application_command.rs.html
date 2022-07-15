@@ -727,17 +727,6 @@
 <span id="721">721</span>
 <span id="722">722</span>
 <span id="723">723</span>
-<span id="724">724</span>
-<span id="725">725</span>
-<span id="726">726</span>
-<span id="727">727</span>
-<span id="728">728</span>
-<span id="729">729</span>
-<span id="730">730</span>
-<span id="731">731</span>
-<span id="732">732</span>
-<span id="733">733</span>
-<span id="734">734</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
 <span class="kw">use</span> <span class="ident">serde::de::Error</span> <span class="kw">as</span> <span class="ident">DeError</span>;
@@ -775,6 +764,7 @@
 };
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::user::User</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::utils::deserialize_options_with_resolved</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::Permissions</span>;
 
 <span class="doccomment">/// An interaction when a user invokes a slash command.</span>
 <span class="doccomment">///</span>
@@ -807,6 +797,8 @@
     <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
     <span class="doccomment">/// Always `1`.</span>
     <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">u8</span>,
+    <span class="doccomment">/// Permissions the app or bot has within the channel the interaction was sent from.</span>
+    <span class="kw">pub</span> <span class="ident">app_permissions</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Permissions</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The selected language of the invoking user.</span>
     <span class="kw">pub</span> <span class="ident">locale</span>: <span class="ident">String</span>,
     <span class="doccomment">/// The guild&#39;s preferred locale.</span>
@@ -820,8 +812,6 @@
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns an [`Error::Http`] if there is no interaction response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_interaction_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
         <span class="ident">http</span>.<span class="ident">as_ref</span>().<span class="ident">get_original_interaction_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">token</span>).<span class="kw">await</span>
     }
@@ -836,10 +826,6 @@
     <span class="doccomment">/// May also return an [`Error::Http`] if the API returns an error,</span>
     <span class="doccomment">/// or an [`Error::Json`] if there is an error in deserializing the</span>
     <span class="doccomment">/// API response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Model`]: crate::error::Error::Model</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_interaction_response</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -892,10 +878,6 @@
     <span class="doccomment">/// Returns [`Error::Model`] if the edited content is too long.</span>
     <span class="doccomment">/// May also return [`Error::Http`] if the API returns an error,</span>
     <span class="doccomment">/// or an [`Error::Json`] if there is an error deserializing the response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Model`]: crate::error::Error::Model</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_original_interaction_response</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -933,10 +915,6 @@
     <span class="doccomment">/// Will return [`Error::Model`] if the content is too long.</span>
     <span class="doccomment">/// May also return [`Error::Http`] if the API returns an error,</span>
     <span class="doccomment">/// or a [`Error::Json`] if there is an error in deserializing the response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Model`]: crate::error::Error::Model</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_followup_message</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -983,10 +961,6 @@
     <span class="doccomment">/// Will return [`Error::Model`] if the content is too long.</span>
     <span class="doccomment">/// May also return [`Error::Http`] if the API returns an error,</span>
     <span class="doccomment">/// or a [`Error::Json`] if there is an error in deserializing the response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Model`]: crate::error::Error::Model</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">edit_followup_message</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">M</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -1056,9 +1030,6 @@
     <span class="doccomment">/// May also return an [`Error::Http`] if the API returns an error,</span>
     <span class="doccomment">/// or an [`Error::Json`] if there is an error in deserializing the</span>
     <span class="doccomment">/// API response.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Error::Http`]: crate::error::Error::Http</span>
-    <span class="doccomment">/// [`Error::Json`]: crate::error::Error::Json</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">defer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">create_interaction_response</span>(<span class="ident">http</span>, <span class="op">|</span><span class="ident">f</span><span class="op">|</span> {
             <span class="ident">f</span>.<span class="ident">kind</span>(<span class="ident">InteractionResponseType::DeferredChannelMessageWithSource</span>)
@@ -1152,6 +1123,12 @@
             .<span class="ident">and_then</span>(<span class="ident">u8::deserialize</span>)
             .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
 
+        <span class="kw">let</span> <span class="ident">app_permissions</span> <span class="op">=</span> <span class="ident">map</span>
+            .<span class="ident">remove</span>(<span class="string">&quot;app_permissions&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">Permissions::deserialize</span>)
+            .<span class="ident">transpose</span>()
+            .<span class="ident">map_err</span>(<span class="ident">DeError::custom</span>)<span class="question-mark">?</span>;
+
         <span class="kw">let</span> <span class="ident">guild_locale</span> <span class="op">=</span> <span class="ident">map</span>
             .<span class="ident">remove</span>(<span class="string">&quot;guild_locale&quot;</span>)
             .<span class="ident">map</span>(<span class="ident">String::deserialize</span>)
@@ -1175,6 +1152,7 @@
             <span class="ident">user</span>,
             <span class="ident">token</span>,
             <span class="ident">version</span>,
+            <span class="ident">app_permissions</span>,
             <span class="ident">locale</span>,
             <span class="ident">guild_locale</span>,
         })
