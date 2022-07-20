@@ -1,9 +1,10 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/permissions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>permissions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../serenity/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/permissions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>permissions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../serenity/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../../serenity/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -829,6 +830,16 @@
 <span id="824">824</span>
 <span id="825">825</span>
 <span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A set of permissions for a role or user. These can be assigned directly</span>
 <span class="doccomment">//! to a role or as a channel&#39;s permission overrides.</span>
 <span class="doccomment">//!</span>
@@ -1206,6 +1217,7 @@
     <span class="ident">kick_members</span>: <span class="string">&quot;Kick Members&quot;</span>,
     <span class="ident">manage_channels</span>: <span class="string">&quot;Manage Channels&quot;</span>,
     <span class="ident">manage_emojis_and_stickers</span>: <span class="string">&quot;Manage Emojis and Stickers&quot;</span>,
+    <span class="ident">manage_events</span>: <span class="string">&quot;Manage Events&quot;</span>,
     <span class="ident">manage_guild</span>: <span class="string">&quot;Manage Guilds&quot;</span>,
     <span class="ident">manage_messages</span>: <span class="string">&quot;Manage Messages&quot;</span>,
     <span class="ident">manage_nicknames</span>: <span class="string">&quot;Manage Nicknames&quot;</span>,
@@ -1241,7 +1253,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Add Reactions]: Self::ADD_REACTIONS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_reactions</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">add_reactions</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::ADD_REACTIONS</span>)
     }
 
@@ -1250,7 +1262,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Administrator]: Self::ADMINISTRATOR</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">administrator</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">administrator</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::ADMINISTRATOR</span>)
     }
 
@@ -1259,7 +1271,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Attach Files]: Self::ATTACH_FILES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach_files</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">attach_files</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::ATTACH_FILES</span>)
     }
 
@@ -1268,7 +1280,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Ban Members]: Self::BAN_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ban_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ban_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::BAN_MEMBERS</span>)
     }
 
@@ -1277,7 +1289,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Change Nickname]: Self::CHANGE_NICKNAME</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">change_nickname</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">change_nickname</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::CHANGE_NICKNAME</span>)
     }
 
@@ -1286,7 +1298,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Connect]: Self::CONNECT</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::CONNECT</span>)
     }
 
@@ -1295,7 +1307,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [View Audit Log]: Self::VIEW_AUDIT_LOG</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">view_audit_log</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">view_audit_log</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::VIEW_AUDIT_LOG</span>)
     }
 
@@ -1304,7 +1316,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [View Channel]: Self::VIEW_CHANNEL</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">view_channel</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">view_channel</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::VIEW_CHANNEL</span>)
     }
 
@@ -1313,7 +1325,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [View Guild Insights]: Self::VIEW_GUILD_INSIGHTS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">view_guild_insights</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">view_guild_insights</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::VIEW_GUILD_INSIGHTS</span>)
     }
 
@@ -1322,7 +1334,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Priority Speaker]: Self::PRIORITY_SPEAKER</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">priority_speaker</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">priority_speaker</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::PRIORITY_SPEAKER</span>)
     }
 
@@ -1331,7 +1343,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Stream]: Self::STREAM</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stream</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">stream</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::STREAM</span>)
     }
 
@@ -1340,7 +1352,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Create Instant Invite]: Self::CREATE_INSTANT_INVITE</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_instant_invite</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">create_instant_invite</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::CREATE_INSTANT_INVITE</span>)
     }
 
@@ -1349,7 +1361,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Create Private Threads]: Self::CREATE_PRIVATE_THREADS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_private_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">create_private_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::CREATE_PRIVATE_THREADS</span>)
     }
 
@@ -1358,7 +1370,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Create Public Threads]: Self::CREATE_PUBLIC_THREADS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_public_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">create_public_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::CREATE_PUBLIC_THREADS</span>)
     }
 
@@ -1367,7 +1379,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Deafen Members]: Self::DEAFEN_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deafen_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">deafen_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::DEAFEN_MEMBERS</span>)
     }
 
@@ -1376,7 +1388,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Embed Links]: Self::EMBED_LINKS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">embed_links</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">embed_links</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::EMBED_LINKS</span>)
     }
 
@@ -1385,7 +1397,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use External Emojis]: Self::USE_EXTERNAL_EMOJIS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">external_emojis</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">external_emojis</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_EXTERNAL_EMOJIS</span>)
     }
 
@@ -1394,7 +1406,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Kick Members]: Self::KICK_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kick_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">kick_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::KICK_MEMBERS</span>)
     }
 
@@ -1403,7 +1415,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Channels]: Self::MANAGE_CHANNELS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_channels</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_channels</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_CHANNELS</span>)
     }
 
@@ -1412,8 +1424,17 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Emojis and Stickers]: Self::MANAGE_EMOJIS_AND_STICKERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_emojis_and_stickers</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_emojis_and_stickers</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_EMOJIS_AND_STICKERS</span>)
+    }
+
+    <span class="doccomment">/// Shorthand for checking that the set of permissions contains the</span>
+    <span class="doccomment">/// [Manage Events] permission.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [Manage Events]: Self::MANAGE_EVENTS</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_events</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_EVENTS</span>)
     }
 
     <span class="doccomment">/// Shorthand for checking that the set of permissions contains the</span>
@@ -1421,7 +1442,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Guild]: Self::MANAGE_GUILD</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_guild</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_guild</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_GUILD</span>)
     }
 
@@ -1430,7 +1451,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Messages]: Self::MANAGE_MESSAGES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_MESSAGES</span>)
     }
 
@@ -1439,7 +1460,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Nicknames]: Self::MANAGE_NICKNAMES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_nicknames</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_nicknames</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_NICKNAMES</span>)
     }
 
@@ -1448,7 +1469,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Roles]: Self::MANAGE_ROLES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_roles</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_roles</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_ROLES</span>)
     }
 
@@ -1457,7 +1478,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Threads]: Self::MANAGE_THREADS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_THREADS</span>)
     }
 
@@ -1466,7 +1487,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Manage Webhooks]: Self::MANAGE_WEBHOOKS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manage_webhooks</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">manage_webhooks</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MANAGE_WEBHOOKS</span>)
     }
 
@@ -1475,7 +1496,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Mention Everyone]: Self::MENTION_EVERYONE</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mention_everyone</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mention_everyone</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MENTION_EVERYONE</span>)
     }
 
@@ -1484,7 +1505,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Moderate Members]: Self::MODERATE_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">moderate_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">moderate_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MODERATE_MEMBERS</span>)
     }
 
@@ -1493,7 +1514,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Move Members]: Self::MOVE_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">move_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MOVE_MEMBERS</span>)
     }
 
@@ -1502,7 +1523,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Mute Members]: Self::MUTE_MEMBERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mute_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mute_members</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::MUTE_MEMBERS</span>)
     }
 
@@ -1511,7 +1532,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Read Message History]: Self::READ_MESSAGE_HISTORY</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_message_history</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">read_message_history</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::READ_MESSAGE_HISTORY</span>)
     }
 
@@ -1520,7 +1541,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Send Messages]: Self::SEND_MESSAGES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">send_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::SEND_MESSAGES</span>)
     }
 
@@ -1529,7 +1550,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Send Messages in Threads]: Self::SEND_MESSAGES_IN_THREADS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_messages_in_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">send_messages_in_threads</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::SEND_MESSAGES_IN_THREADS</span>)
     }
 
@@ -1538,7 +1559,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Send TTS Messages]: Self::SEND_TTS_MESSAGES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_tts_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">send_tts_messages</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::SEND_TTS_MESSAGES</span>)
     }
 
@@ -1547,7 +1568,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Speak]: Self::SPEAK</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">speak</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">speak</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::SPEAK</span>)
     }
 
@@ -1556,7 +1577,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Request To Speak]: Self::REQUEST_TO_SPEAK</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">request_to_speak</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">request_to_speak</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::REQUEST_TO_SPEAK</span>)
     }
 
@@ -1565,7 +1586,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use Embedded Activities]: Self::USE_EMBEDDED_ACTIVITIES</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_embedded_activities</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">use_embedded_activities</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_EMBEDDED_ACTIVITIES</span>)
     }
 
@@ -1574,7 +1595,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use External Emojis]: Self::USE_EXTERNAL_EMOJIS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_external_emojis</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">use_external_emojis</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_EXTERNAL_EMOJIS</span>)
     }
 
@@ -1583,7 +1604,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use External Stickers]: Self::USE_EXTERNAL_STICKERS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_external_stickers</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">use_external_stickers</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_EXTERNAL_STICKERS</span>)
     }
 
@@ -1592,7 +1613,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use Application Commands]: Self::USE_APPLICATION_COMMANDS</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_application_commands</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">use_application_commands</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_APPLICATION_COMMANDS</span>)
     }
 
@@ -1601,7 +1622,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [Use VAD]: Self::USE_VAD</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_vad</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">use_vad</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="ident"><span class="self">Self</span>::USE_VAD</span>)
     }
 }
@@ -1656,5 +1677,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (3c17c84a3 2022-03-21)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="serenity" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (10f4ce324 2022-06-22)" ></div>
 </body></html>
