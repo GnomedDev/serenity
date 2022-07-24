@@ -9,10 +9,7 @@ use serenity::builder::{
     CreateInteractionResponseData,
 };
 use serenity::model::application::command::{Command, CommandOptionType};
-use serenity::model::application::interaction::application_command::{
-    ResolvedOption,
-    ResolvedValue,
-};
+use serenity::model::application::interaction::application_command::CommandDataOptionValue;
 use serenity::model::application::interaction::{Interaction, InteractionResponseType};
 use serenity::model::gateway::Ready;
 use serenity::model::id::GuildId;
@@ -29,21 +26,32 @@ impl EventHandler for Handler {
             let content = match command.data.name.as_str() {
                 "ping" => "Hey, I'm alive!".to_string(),
                 "id" => {
-                    if let Some(ResolvedOption {
-                        value: ResolvedValue::User(user, _), ..
-                    }) = command.data.options().get(0)
-                    {
+                    let options = command
+                        .data
+                        .options
+                        .get(0)
+                        .expect("Expected user option")
+                        .resolved
+                        .as_ref()
+                        .expect("Expected user object");
+
+                    if let CommandDataOptionValue::User(user, _member) = options {
                         format!("{}'s id is {}", user.tag(), user.id)
                     } else {
                         "Please provide a valid user".to_string()
                     }
                 },
                 "attachmentinput" => {
-                    if let Some(ResolvedOption {
-                        value: ResolvedValue::Attachment(attachment),
-                        ..
-                    }) = command.data.options().get(0)
-                    {
+                    let options = command
+                        .data
+                        .options
+                        .get(0)
+                        .expect("Expected attachment option")
+                        .resolved
+                        .as_ref()
+                        .expect("Expected attachment object");
+
+                    if let CommandDataOptionValue::Attachment(attachment) = options {
                         format!(
                             "Attachment name: {}, attachment size: {}",
                             attachment.filename, attachment.size
