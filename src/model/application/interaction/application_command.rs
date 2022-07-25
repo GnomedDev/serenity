@@ -12,7 +12,6 @@ use crate::builder::{
 #[cfg(feature = "http")]
 use crate::http::Http;
 use crate::internal::prelude::*;
-use crate::model::Permissions;
 use crate::model::application::command::{CommandOptionType, CommandType};
 use crate::model::application::interaction::add_guild_id_to_resolved;
 #[cfg(feature = "http")]
@@ -37,6 +36,7 @@ use crate::model::utils::{
     remove_from_map,
     remove_from_map_opt,
 };
+use crate::model::Permissions;
 
 /// An interaction when a user invokes a slash command.
 ///

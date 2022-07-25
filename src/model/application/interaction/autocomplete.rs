@@ -6,9 +6,9 @@ use crate::builder::CreateAutocompleteResponse;
 #[cfg(feature = "http")]
 use crate::http::Http;
 use crate::internal::prelude::*;
-use crate::model::application::interaction::application_command::CommandData;
 #[cfg(feature = "http")]
-use crate::model::application::interaction::{add_guild_id_to_resolved, InteractionResponseType};
+use crate::model::application::interaction::add_guild_id_to_resolved;
+use crate::model::application::interaction::application_command::CommandData;
 use crate::model::guild::Member;
 use crate::model::id::{ApplicationId, ChannelId, GuildId, InteractionId};
 use crate::model::user::User;
@@ -57,26 +57,12 @@ impl AutocompleteInteraction {
     /// Returns an [`Error::Http`] if the API returns an error.
     ///
     /// [`Error::Http`]: crate::error::Error::Http
-    pub async fn create_autocomplete_response<F>(&self, http: impl AsRef<Http>, f: F) -> Result<()>
-    where
-        F: FnOnce(&mut CreateAutocompleteResponse) -> &mut CreateAutocompleteResponse,
-    {
-        #[derive(Serialize)]
-        struct AutocompleteResponse {
-            data: CreateAutocompleteResponse,
-            #[serde(rename = "type")]
-            kind: InteractionResponseType,
-        }
-
-        let mut response = CreateAutocompleteResponse::default();
-        f(&mut response);
-
-        let map = AutocompleteResponse {
-            data: response,
-            kind: InteractionResponseType::Autocomplete,
-        };
-
-        http.as_ref().create_interaction_response(self.id.get(), &self.token, &map).await
+    pub async fn create_autocomplete_response(
+        &self,
+        http: impl AsRef<Http>,
+        autocomplete_response: CreateAutocompleteResponse,
+    ) -> Result<()> {
+        autocomplete_response.execute(http, self.id, &self.token).await
     }
 }
 
