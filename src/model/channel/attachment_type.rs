@@ -19,67 +19,87 @@ use crate::error::{Error, Result};
 #[non_exhaustive]
 pub enum AttachmentType<'a> {
     /// Indicates that the [`AttachmentType`] is a byte slice with a filename.
-    Bytes { data: Cow<'a, [u8]>, filename: String },
+    Bytes { data: Cow<'static, [u8]>, filename: Cow<'static, str> },
     /// Indicates that the [`AttachmentType`] is a [`File`]
-    File { file: &'a File, filename: String },
+    File { file: &'a File, filename: Cow<'static, str> },
     /// Indicates that the [`AttachmentType`] is a [`Path`]
     Path(&'a Path),
     /// Indicates that the [`AttachmentType`] is an image URL.
     Image(Url),
 }
 
+async fn data_path(path: &Path) -> Result<Vec<u8>> {
+    tokio::fs::read(path).await.map_err(Into::into)
+}
+
+async fn data_file(file: &File) -> Result<Vec<u8>> {
+    let mut data_buf = Vec::new();
+    file.try_clone().await?.read_to_end(&mut data_buf).await?;
+    Ok(data_buf)
+}
+
+async fn data_image(client: &Client, url: Url) -> Result<Vec<u8>> {
+    let response = client.get(url).send().await?;
+    Ok(response.bytes().await?.to_vec())
+}
+
 #[cfg(feature = "http")]
 impl<'a> AttachmentType<'a> {
-    pub(crate) async fn data(&self, client: &Client) -> Result<Vec<u8>> {
-        let data = match self {
+    pub(crate) async fn deconstruct(
+        self,
+        client: &Client,
+    ) -> Result<(Cow<'static, [u8]>, Option<Cow<'static, str>>)> {
+        Ok(match self {
             Self::Bytes {
-                data, ..
-            } => data.clone().into_owned(),
+                data,
+                filename,
+            } => (data, Some(filename)),
             Self::File {
-                file, ..
+                file,
+                filename,
             } => {
-                let mut buf = Vec::new();
-                file.try_clone().await?.read_to_end(&mut buf).await?;
-                buf
+                let data = data_file(file).await?;
+                (data.into(), Some(filename))
             },
             Self::Path(path) => {
-                let mut file = File::open(path).await?;
-                let mut buf = Vec::new();
-                file.read_to_end(&mut buf).await?;
-                buf
+                let filename =
+                    path.file_name().map(|filename| filename.to_string_lossy().to_string());
+                let data = data_path(path).await?;
+
+                (data.into(), filename.map(Cow::from))
             },
             Self::Image(url) => {
-                let response = client.get(url.clone()).send().await?;
-                response.bytes().await?.to_vec()
+                let filename = match url.path_segments().and_then(Iterator::last) {
+                    Some(filename) => filename.to_string().into(),
+                    None => return Err(Error::Url(url.to_string())),
+                };
+
+                let data = data_image(client, url).await?;
+                (data.into(), Some(filename))
             },
-        };
-        Ok(data)
+        })
     }
 
-    pub(crate) fn filename(&self) -> Result<Option<String>> {
-        match self {
+    pub(crate) async fn data(self, client: &Client) -> Result<Cow<'static, [u8]>> {
+        Ok(match self {
             Self::Bytes {
-                filename, ..
-            }
-            | Self::File {
-                filename, ..
-            } => Ok(Some(filename.to_string())),
-            Self::Path(path) => {
-                Ok(path.file_name().map(|filename| filename.to_string_lossy().to_string()))
-            },
-            Self::Image(url) => match url.path_segments().and_then(Iterator::last) {
-                Some(filename) => Ok(Some(filename.to_string())),
-                None => Err(Error::Url(url.to_string())),
-            },
-        }
+                data, ..
+            } => data,
+            Self::File {
+                file, ..
+            } => data_file(file).await?.into(),
+
+            Self::Path(path) => data_path(path).await?.into(),
+            Self::Image(url) => data_image(client, url).await?.into(),
+        })
     }
 }
 
-impl<'a> From<(&'a [u8], &str)> for AttachmentType<'a> {
-    fn from(params: (&'a [u8], &str)) -> AttachmentType<'a> {
+impl From<(Cow<'static, [u8]>, Cow<'static, str>)> for AttachmentType<'static> {
+    fn from((data, filename): (Cow<'static, [u8]>, Cow<'static, str>)) -> Self {
         AttachmentType::Bytes {
-            data: Cow::Borrowed(params.0),
-            filename: params.1.to_string(),
+            data,
+            filename,
         }
     }
 }
@@ -87,7 +107,7 @@ impl<'a> From<(&'a [u8], &str)> for AttachmentType<'a> {
 impl<'a> From<&'a str> for AttachmentType<'a> {
     /// Constructs an [`AttachmentType`] from a string.
     /// This string may refer to the path of a file on disk, or the http url to an image on the internet.
-    fn from(s: &'a str) -> AttachmentType<'_> {
+    fn from(s: &'a str) -> Self {
         match Url::parse(s) {
             Ok(url) => AttachmentType::Image(url),
             Err(_) => AttachmentType::Path(Path::new(s)),
@@ -107,11 +127,11 @@ impl<'a> From<&'a PathBuf> for AttachmentType<'a> {
     }
 }
 
-impl<'a> From<(&'a File, &str)> for AttachmentType<'a> {
-    fn from(f: (&'a File, &str)) -> AttachmentType<'a> {
+impl<'a> From<(&'a File, Cow<'static, str>)> for AttachmentType<'a> {
+    fn from((file, filename): (&'a File, Cow<'static, str>)) -> AttachmentType<'a> {
         AttachmentType::File {
-            file: f.0,
-            filename: f.1.to_string(),
+            file,
+            filename,
         }
     }
 }
