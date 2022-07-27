@@ -729,10 +729,12 @@ impl GuildChannel {
     ///             };
     ///
     ///             let builder = CreateMessage::default().content("here's a cat");
-    ///             let _ = msg
-    ///                 .channel_id
-    ///                 .send_files(&context.http, vec![(&file, "cat.png")], builder)
-    ///                 .await;
+    ///             let attachment = AttachmentType::File {
+    ///                 file: &file,
+    ///                 filename: "cat.png".into(),
+    ///             };
+    ///
+    ///             let _ = msg.channel_id.send_files(&context.http, vec![attachment], builder).await;
     ///         }
     ///     }
     /// }

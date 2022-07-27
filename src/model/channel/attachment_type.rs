@@ -28,16 +28,19 @@ pub enum AttachmentType<'a> {
     Image(Url),
 }
 
+#[cfg(feature = "http")]
 async fn data_path(path: &Path) -> Result<Vec<u8>> {
     tokio::fs::read(path).await.map_err(Into::into)
 }
 
+#[cfg(feature = "http")]
 async fn data_file(file: &File) -> Result<Vec<u8>> {
     let mut data_buf = Vec::new();
     file.try_clone().await?.read_to_end(&mut data_buf).await?;
     Ok(data_buf)
 }
 
+#[cfg(feature = "http")]
 async fn data_image(client: &Client, url: Url) -> Result<Vec<u8>> {
     let response = client.get(url).send().await?;
     Ok(response.bytes().await?.to_vec())
