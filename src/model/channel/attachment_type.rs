@@ -19,7 +19,7 @@ use crate::error::{Error, Result};
 #[non_exhaustive]
 pub enum AttachmentType<'a> {
     /// Indicates that the [`AttachmentType`] is a byte slice with a filename.
-    Bytes { data: Cow<'static, [u8]>, filename: Cow<'static, str> },
+    Bytes { data: Vec<u8>, filename: Cow<'static, str> },
     /// Indicates that the [`AttachmentType`] is a [`File`]
     File { file: &'a File, filename: Cow<'static, str> },
     /// Indicates that the [`AttachmentType`] is a [`Path`]
@@ -51,7 +51,7 @@ impl<'a> AttachmentType<'a> {
     pub(crate) async fn deconstruct(
         self,
         client: &Client,
-    ) -> Result<(Cow<'static, [u8]>, Option<Cow<'static, str>>)> {
+    ) -> Result<(Vec<u8>, Option<Cow<'static, str>>)> {
         Ok(match self {
             Self::Bytes {
                 data,
@@ -62,14 +62,14 @@ impl<'a> AttachmentType<'a> {
                 filename,
             } => {
                 let data = data_file(file).await?;
-                (data.into(), Some(filename))
+                (data, Some(filename))
             },
             Self::Path(path) => {
                 let filename =
                     path.file_name().map(|filename| filename.to_string_lossy().to_string());
                 let data = data_path(path).await?;
 
-                (data.into(), filename.map(Cow::from))
+                (data, filename.map(Cow::from))
             },
             Self::Image(url) => {
                 let filename = match url.path_segments().and_then(Iterator::last) {
@@ -78,31 +78,33 @@ impl<'a> AttachmentType<'a> {
                 };
 
                 let data = data_image(client, url).await?;
-                (data.into(), Some(filename))
+                (data, Some(filename))
             },
         })
     }
 
-    pub(crate) async fn data(self, client: &Client) -> Result<Cow<'static, [u8]>> {
+    pub(crate) async fn data(self, client: &Client) -> Result<Vec<u8>> {
         Ok(match self {
             Self::Bytes {
                 data, ..
             } => data,
             Self::File {
                 file, ..
-            } => data_file(file).await?.into(),
-
-            Self::Path(path) => data_path(path).await?.into(),
-            Self::Image(url) => data_image(client, url).await?.into(),
+            } => data_file(file).await?,
+            Self::Path(path) => data_path(path).await?,
+            Self::Image(url) => data_image(client, url).await?,
         })
     }
 }
 
-impl From<(Cow<'static, [u8]>, Cow<'static, str>)> for AttachmentType<'static> {
-    fn from((data, filename): (Cow<'static, [u8]>, Cow<'static, str>)) -> Self {
+impl<'a, S> From<(&[u8], S)> for AttachmentType<'a>
+where
+    S: Into<Cow<'static, str>>,
+{
+    fn from((data, filename): (&[u8], S)) -> Self {
         AttachmentType::Bytes {
-            data,
-            filename,
+            data: data.to_vec(),
+            filename: filename.into(),
         }
     }
 }
@@ -130,11 +132,14 @@ impl<'a> From<&'a PathBuf> for AttachmentType<'a> {
     }
 }
 
-impl<'a> From<(&'a File, Cow<'static, str>)> for AttachmentType<'a> {
-    fn from((file, filename): (&'a File, Cow<'static, str>)) -> AttachmentType<'a> {
+impl<'a, S> From<(&'a File, S)> for AttachmentType<'a>
+where
+    S: Into<Cow<'static, str>>,
+{
+    fn from((file, filename): (&'a File, S)) -> AttachmentType<'a> {
         AttachmentType::File {
             file,
-            filename,
+            filename: filename.into(),
         }
     }
 }

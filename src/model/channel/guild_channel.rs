@@ -719,22 +719,9 @@ impl GuildChannel {
     ///                 return;
     ///             }
     ///
-    ///             let file = match File::open("./cat.png").await {
-    ///                 Ok(file) => file,
-    ///                 Err(why) => {
-    ///                     println!("Err opening file: {:?}", why);
-    ///
-    ///                     return;
-    ///                 },
-    ///             };
-    ///
-    ///             let builder = CreateMessage::default().content("here's a cat");
-    ///             let attachment = AttachmentType::File {
-    ///                 file: &file,
-    ///                 filename: "cat.png".into(),
-    ///             };
-    ///
-    ///             let _ = msg.channel_id.send_files(&context.http, vec![attachment], builder).await;
+    ///             let builder =
+    ///                 CreateMessage::default().content("here's a cat").add_file("./cat.png");
+    ///             let _ = msg.channel_id.send_message(&context.http, builder).await;
     ///         }
     ///     }
     /// }

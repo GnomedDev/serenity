@@ -678,20 +678,12 @@ impl ChannelId {
     ///
     /// let channel_id = ChannelId::new(7);
     ///
-    /// let f1 = File::open("my_file.jpg").await?;
-    /// let f2 = File::open("my_file2.jpg").await?;
+    /// let p1 = "my_file.jpg";
+    /// let p2 = "my_file2.jpg";
+    /// let f1 = File::open(p1).await?;
+    /// let f2 = File::open(p2).await?;
     ///
-    /// let attachment1 = AttachmentType::File {
-    ///     file: &f1,
-    ///     filename: "my_file.jpg".into(),
-    /// };
-    ///
-    /// let attachment2 = AttachmentType::File {
-    ///     file: &f2,
-    ///     filename: "my_file2.jpg".into(),
-    /// };
-    ///
-    /// let files = vec![attachment1, attachment2];
+    /// let files = vec![(&f1, p1), (&f2, p2)];
     ///
     /// let builder = CreateMessage::default().content("some files");
     /// channel_id.send_files(&http, files, builder).await?;
