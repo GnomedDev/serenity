@@ -36,16 +36,20 @@ pub const NULL: Value = Value::Null;
 #[cfg(feature = "simd-json")]
 pub const NULL: Value = Value::Static(simd_json::StaticNode::Null);
 
+/// # Errors
+/// Errors if decoding or fetching the bytes of the response fail
 #[cfg(all(feature = "http", not(feature = "simd-json")))]
-pub(crate) async fn decode_resp<T: serde::de::DeserializeOwned>(
+pub async fn decode_resp<T: serde::de::DeserializeOwned>(
     resp: reqwest::Response,
 ) -> Result<T> {
     let bytes = resp.bytes().await?;
     serde_json::from_slice(&bytes).map_err(From::from)
 }
 
+/// # Errors
+/// Errors if decoding or fetching the bytes of the response fail
 #[cfg(all(feature = "http", feature = "simd-json"))]
-pub(crate) async fn decode_resp<T: serde::de::DeserializeOwned>(
+pub async fn decode_resp<T: serde::de::DeserializeOwned>(
     resp: reqwest::Response,
 ) -> Result<T> {
     let mut bytes = resp.bytes().await?.to_vec();
