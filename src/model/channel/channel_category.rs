@@ -1,5 +1,5 @@
-#[cfg(feature = "model")]
-use crate::builder::EditChannel;
+// #[cfg(feature = "model")]
+// use crate::builder::EditChannel;
 #[cfg(feature = "model")]
 use crate::http::{CacheHttp, Http};
 use crate::model::prelude::*;
@@ -14,8 +14,8 @@ pub struct ChannelCategory {
     pub guild_id: GuildId,
     /// If this category belongs to another category.
     pub parent_id: Option<ChannelId>,
-    /// The position of this category.
-    pub position: i64,
+    // /// The position of this category.
+    // pub position: i64,
     /// Indicator of the type of channel this is.
     ///
     /// This should always be [`ChannelType::Category`].
@@ -23,9 +23,9 @@ pub struct ChannelCategory {
     pub kind: ChannelType,
     /// The name of the category.
     pub name: String,
-    /// Whether this category is nsfw. (This'll be inherited by all channels in this category)
-    #[serde(default)]
-    pub nsfw: bool,
+    // /// Whether this category is nsfw. (This'll be inherited by all channels in this category)
+    // #[serde(default)]
+    // pub nsfw: bool,
     /// Permission overwrites for the [`GuildChannel`]s.
     pub permission_overwrites: Vec<PermissionOverwrite>,
 }
@@ -87,68 +87,68 @@ impl ChannelCategory {
         self.id.delete(&cache_http.http()).await.map(|_| ())
     }
 
-    /// Edits the category's settings.
-    ///
-    /// Refer to the documentation for [`EditChannel`] for a full list of methods.
-    ///
-    /// **Note**: Requires the [Manage Channels] permission. Modifying permissions via
-    /// [`EditChannel::permissions`] also requires the [Manage Roles] permission.
-    ///
-    /// # Examples
-    ///
-    /// Change a category's name:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::builder::EditChannel;
-    /// # use serenity::http::Http;
-    /// # use serenity::model::id::ChannelId;
-    /// # async fn run() {
-    /// #     let http = Http::new("token");
-    /// #     let category = ChannelId::new(1234);
-    /// let builder = EditChannel::default().name("test");
-    /// category.edit(&http, builder).await;
-    /// # }
-    /// ```
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Manage Channels]: Permissions::MANAGE_CHANNELS
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
-    pub async fn edit(&mut self, cache_http: impl CacheHttp, builder: EditChannel) -> Result<()> {
-        let GuildChannel {
-            id,
-            guild_id,
-            parent_id,
-            position,
-            kind,
-            name,
-            nsfw,
-            permission_overwrites,
-            ..
-        } = self.id.edit(cache_http, builder).await?;
+    // /// Edits the category's settings.
+    // ///
+    // /// Refer to the documentation for [`EditChannel`] for a full list of methods.
+    // ///
+    // /// **Note**: Requires the [Manage Channels] permission. Modifying permissions via
+    // /// [`EditChannel::permissions`] also requires the [Manage Roles] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Change a category's name:
+    // ///
+    // /// ```rust,no_run
+    // /// # use serenity::builder::EditChannel;
+    // /// # use serenity::http::Http;
+    // /// # use serenity::model::id::ChannelId;
+    // /// # async fn run() {
+    // /// #     let http = Http::new("token");
+    // /// #     let category = ChannelId::new(1234);
+    // /// let builder = EditChannel::default().name("test");
+    // /// category.edit(&http, builder).await;
+    // /// # }
+    // /// ```
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Manage Channels]: Permissions::MANAGE_CHANNELS
+    // /// [Manage Roles]: Permissions::MANAGE_ROLES
+    // pub async fn edit(&mut self, cache_http: impl CacheHttp, builder: EditChannel) -> Result<()> {
+    //     let GuildChannel {
+    //         id,
+    //         guild_id,
+    //         parent_id,
+    //         position,
+    //         kind,
+    //         name,
+    //         nsfw,
+    //         permission_overwrites,
+    //         ..
+    //     } = self.id.edit(cache_http, builder).await?;
 
-        *self = ChannelCategory {
-            id,
-            guild_id,
-            parent_id,
-            position,
-            kind,
-            name,
-            nsfw,
-            permission_overwrites,
-        };
+    //     *self = ChannelCategory {
+    //         id,
+    //         guild_id,
+    //         parent_id,
+    //         position,
+    //         kind,
+    //         name,
+    //         nsfw,
+    //         permission_overwrites,
+    //     };
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
-    #[inline]
-    #[must_use]
-    pub fn is_nsfw(&self) -> bool {
-        self.kind == ChannelType::Text && self.nsfw
-    }
+    // #[inline]
+    // #[must_use]
+    // pub fn is_nsfw(&self) -> bool {
+    //     self.kind == ChannelType::Text && self.nsfw
+    // }
 
     /// Returns the name of the category.
     #[must_use]

@@ -7,14 +7,14 @@ use crate::builder::{
     CreateApplicationCommand,
     CreateApplicationCommandPermissionsData,
     CreateChannel,
-    CreateSticker,
+    // CreateSticker,
     EditAutoModRule,
-    EditGuild,
-    EditGuildWelcomeScreen,
+    // EditGuild,
+    // EditGuildWelcomeScreen,
     EditGuildWidget,
     EditMember,
-    EditRole,
-    EditSticker,
+    // EditRole,
+    // EditSticker,
 };
 #[cfg(all(feature = "cache", feature = "utils", feature = "client"))]
 use crate::cache::Cache;
@@ -32,11 +32,11 @@ use crate::model::guild::automod::Rule;
 use crate::model::prelude::*;
 use crate::model::utils::{
     add_guild_id_to_map,
-    emojis,
+    // emojis,
     remove_from_map,
     remove_from_map_opt,
     roles,
-    stickers,
+    // stickers,
 };
 
 /// Partial information about a [`Guild`]. This does not include information
@@ -44,109 +44,109 @@ use crate::model::utils::{
 #[derive(Clone, Debug, Serialize)]
 #[non_exhaustive]
 pub struct PartialGuild {
-    /// Application ID of the guild creator if it is bot-created.
-    pub application_id: Option<ApplicationId>,
+    // /// Application ID of the guild creator if it is bot-created.
+    // pub application_id: Option<ApplicationId>,
     /// The unique Id identifying the guild.
     ///
     /// This is equivalent to the Id of the default role (`@everyone`) and also
     /// that of the default channel (typically `#general`).
     pub id: GuildId,
-    /// Id of a voice channel that's considered the AFK channel.
-    pub afk_channel_id: Option<ChannelId>,
-    /// The amount of seconds a user can not show any activity in a voice
-    /// channel before being moved to an AFK channel -- if one exists.
-    pub afk_timeout: u64,
-    /// Indicator of whether notifications for all messages are enabled by
-    /// default in the guild.
-    pub default_message_notifications: DefaultMessageNotificationLevel,
-    /// Whether or not the guild widget is enabled.
-    pub widget_enabled: Option<bool>,
-    /// The channel id that the widget will generate an invite to, or null if set to no invite
-    pub widget_channel_id: Option<ChannelId>,
-    /// All of the guild's custom emojis.
-    #[serde(with = "emojis")]
-    pub emojis: HashMap<EmojiId, Emoji>,
+    // /// Id of a voice channel that's considered the AFK channel.
+    // pub afk_channel_id: Option<ChannelId>,
+    // /// The amount of seconds a user can not show any activity in a voice
+    // /// channel before being moved to an AFK channel -- if one exists.
+    // pub afk_timeout: u64,
+    // /// Indicator of whether notifications for all messages are enabled by
+    // /// default in the guild.
+    // pub default_message_notifications: DefaultMessageNotificationLevel,
+    // /// Whether or not the guild widget is enabled.
+    // pub widget_enabled: Option<bool>,
+    // /// The channel id that the widget will generate an invite to, or null if set to no invite
+    // pub widget_channel_id: Option<ChannelId>,
+    // /// All of the guild's custom emojis.
+    // #[serde(with = "emojis")]
+    // pub emojis: HashMap<EmojiId, Emoji>,
     /// Features enabled for the guild.
     ///
     /// Refer to [`Guild::features`] for more information.
     pub features: Vec<String>,
-    /// The hash of the icon used by the guild.
-    ///
-    /// In the client, this appears on the guild list on the left-hand side.
-    pub icon: Option<String>,
-    /// Indicator of whether the guild requires multi-factor authentication for
-    /// [`Role`]s or [`User`]s with moderation permissions.
-    pub mfa_level: MfaLevel,
+    // /// The hash of the icon used by the guild.
+    // ///
+    // /// In the client, this appears on the guild list on the left-hand side.
+    // pub icon: Option<String>,
+    // /// Indicator of whether the guild requires multi-factor authentication for
+    // /// [`Role`]s or [`User`]s with moderation permissions.
+    // pub mfa_level: MfaLevel,
     /// The name of the guild.
     pub name: String,
     /// The Id of the [`User`] who owns the guild.
     pub owner_id: UserId,
-    /// Whether or not the user is the owner of the guild.
-    #[serde(default)]
-    pub owner: bool,
+    // /// Whether or not the user is the owner of the guild.
+    // #[serde(default)]
+    // pub owner: bool,
     /// A mapping of the guild's roles.
     #[serde(with = "roles")]
     pub roles: HashMap<RoleId, Role>,
-    /// An identifying hash of the guild's splash icon.
-    ///
-    /// If the `InviteSplash` feature is enabled, this can be used to generate
-    /// a URL to a splash image.
-    pub splash: Option<String>,
-    /// An identifying hash of the guild discovery's splash icon.
-    ///
-    /// **Note**: Only present for guilds with the `DISCOVERABLE` feature.
-    pub discovery_splash: Option<String>,
-    /// The ID of the channel to which system messages are sent.
-    pub system_channel_id: Option<ChannelId>,
-    /// System channel flags.
-    pub system_channel_flags: SystemChannelFlags,
-    /// The id of the channel where rules and/or guidelines are displayed.
-    ///
-    /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
-    pub rules_channel_id: Option<ChannelId>,
-    /// The id of the channel where admins and moderators of Community guilds
-    /// receive notices from Discord.
-    ///
-    /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
-    pub public_updates_channel_id: Option<ChannelId>,
-    /// Indicator of the current verification level of the guild.
-    pub verification_level: VerificationLevel,
-    /// The guild's description, if it has one.
-    pub description: Option<String>,
-    /// The server's premium boosting level.
-    #[serde(default)]
-    pub premium_tier: PremiumTier,
+    // /// An identifying hash of the guild's splash icon.
+    // ///
+    // /// If the `InviteSplash` feature is enabled, this can be used to generate
+    // /// a URL to a splash image.
+    // pub splash: Option<String>,
+    // /// An identifying hash of the guild discovery's splash icon.
+    // ///
+    // /// **Note**: Only present for guilds with the `DISCOVERABLE` feature.
+    // pub discovery_splash: Option<String>,
+    // /// The ID of the channel to which system messages are sent.
+    // pub system_channel_id: Option<ChannelId>,
+    // /// System channel flags.
+    // pub system_channel_flags: SystemChannelFlags,
+    // /// The id of the channel where rules and/or guidelines are displayed.
+    // ///
+    // /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
+    // pub rules_channel_id: Option<ChannelId>,
+    // /// The id of the channel where admins and moderators of Community guilds
+    // /// receive notices from Discord.
+    // ///
+    // /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
+    // pub public_updates_channel_id: Option<ChannelId>,
+    // /// Indicator of the current verification level of the guild.
+    // pub verification_level: VerificationLevel,
+    // /// The guild's description, if it has one.
+    // pub description: Option<String>,
+    // /// The server's premium boosting level.
+    // #[serde(default)]
+    // pub premium_tier: PremiumTier,
     /// The total number of users currently boosting this server.
-    pub premium_subscription_count: u64,
-    /// The guild's banner, if it has one.
-    pub banner: Option<String>,
-    /// The vanity url code for the guild, if it has one.
-    pub vanity_url_code: Option<String>,
-    /// The welcome screen of the guild.
-    ///
-    /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
-    pub welcome_screen: Option<GuildWelcomeScreen>,
-    /// Approximate number of members in this guild.
-    pub approximate_member_count: Option<u64>,
-    /// Approximate number of non-offline members in this guild.
-    pub approximate_presence_count: Option<u64>,
-    /// The guild NSFW state. See [`discord support article`].
-    ///
-    /// [`discord support article`]: https://support.discord.com/hc/en-us/articles/1500005389362-NSFW-Server-Designation
-    pub nsfw_level: NsfwLevel,
-    /// The maximum amount of users in a video channel.
-    pub max_video_channel_users: Option<u64>,
-    /// The maximum number of presences for the guild. The default value is currently 25000.
-    ///
-    /// **Note**: It is in effect when it is `None`.
-    pub max_presences: Option<u64>,
-    /// The maximum number of members for the guild.
-    pub max_members: Option<u64>,
+    // pub premium_subscription_count: u64,
+    // /// The guild's banner, if it has one.
+    // pub banner: Option<String>,
+    // /// The vanity url code for the guild, if it has one.
+    // pub vanity_url_code: Option<String>,
+    // /// The welcome screen of the guild.
+    // ///
+    // /// **Note**: Only available on `COMMUNITY` guild, see [`Self::features`].
+    // pub welcome_screen: Option<GuildWelcomeScreen>,
+    // /// Approximate number of members in this guild.
+    // pub approximate_member_count: Option<u64>,
+    // /// Approximate number of non-offline members in this guild.
+    // pub approximate_presence_count: Option<u64>,
+    // /// The guild NSFW state. See [`discord support article`].
+    // ///
+    // /// [`discord support article`]: https://support.discord.com/hc/en-us/articles/1500005389362-NSFW-Server-Designation
+    // pub nsfw_level: NsfwLevel,
+    // /// The maximum amount of users in a video channel.
+    // pub max_video_channel_users: Option<u64>,
+    // /// The maximum number of presences for the guild. The default value is currently 25000.
+    // ///
+    // /// **Note**: It is in effect when it is `None`.
+    // pub max_presences: Option<u64>,
+    // /// The maximum number of members for the guild.
+    // pub max_members: Option<u64>,
     /// The user permissions in the guild.
     pub permissions: Option<String>,
-    /// All of the guild's custom stickers.
-    #[serde(with = "stickers")]
-    pub stickers: HashMap<StickerId, Sticker>,
+    // /// All of the guild's custom stickers.
+    // #[serde(with = "stickers")]
+    // pub stickers: HashMap<StickerId, Sticker>,
 }
 
 #[cfg(feature = "model")]
@@ -306,27 +306,27 @@ impl PartialGuild {
         self.id.bans(&http).await
     }
 
-    /// Gets a list of the guild's audit log entries
-    ///
-    /// **Note**: Requires the [View Audit Log] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission,
-    /// or if an invalid value is given.
-    ///
-    /// [View Audit Log]: Permissions::VIEW_AUDIT_LOG
-    #[inline]
-    pub async fn audit_logs(
-        self,
-        http: impl AsRef<Http>,
-        action_type: Option<u8>,
-        user_id: Option<UserId>,
-        before: Option<AuditLogEntryId>,
-        limit: Option<u8>,
-    ) -> Result<AuditLogs> {
-        self.id.audit_logs(http, action_type, user_id, before, limit).await
-    }
+    // /// Gets a list of the guild's audit log entries
+    // ///
+    // /// **Note**: Requires the [View Audit Log] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission,
+    // /// or if an invalid value is given.
+    // ///
+    // /// [View Audit Log]: Permissions::VIEW_AUDIT_LOG
+    // #[inline]
+    // pub async fn audit_logs(
+    //     self,
+    //     http: impl AsRef<Http>,
+    //     action_type: Option<u8>,
+    //     user_id: Option<UserId>,
+    //     before: Option<AuditLogEntryId>,
+    //     limit: Option<u8>,
+    // ) -> Result<AuditLogs> {
+    //     self.id.audit_logs(http, action_type, user_id, before, limit).await
+    // }
 
     /// Gets all of the guild's channels over the REST API.
     ///
@@ -404,36 +404,36 @@ impl PartialGuild {
         self.id.create_channel(cache_http, builder).await
     }
 
-    /// Creates an emoji in the guild with a name and base64-encoded image.
-    ///
-    /// Refer to the documentation for [`Guild::create_emoji`] for more
-    /// information.
-    ///
-    /// Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// # Examples
-    ///
-    /// See the [`EditProfile::avatar`] example for an in-depth example as to
-    /// how to read an image from the filesystem and encode it as base64. Most
-    /// of the example can be applied similarly for this method.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission,
-    /// if the emoji name is too long, or if the image is too large.
-    ///
-    /// [`EditProfile::avatar`]: crate::builder::EditProfile::avatar
-    /// [`utils::read_image`]: crate::utils::read_image
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    #[inline]
-    pub async fn create_emoji(
-        &self,
-        http: impl AsRef<Http>,
-        name: &str,
-        image: &str,
-    ) -> Result<Emoji> {
-        self.id.create_emoji(&http, name, image).await
-    }
+    // /// Creates an emoji in the guild with a name and base64-encoded image.
+    // ///
+    // /// Refer to the documentation for [`Guild::create_emoji`] for more
+    // /// information.
+    // ///
+    // /// Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// See the [`EditProfile::avatar`] example for an in-depth example as to
+    // /// how to read an image from the filesystem and encode it as base64. Most
+    // /// of the example can be applied similarly for this method.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission,
+    // /// if the emoji name is too long, or if the image is too large.
+    // ///
+    // /// [`EditProfile::avatar`]: crate::builder::EditProfile::avatar
+    // /// [`utils::read_image`]: crate::utils::read_image
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // #[inline]
+    // pub async fn create_emoji(
+    //     &self,
+    //     http: impl AsRef<Http>,
+    //     name: &str,
+    //     image: &str,
+    // ) -> Result<Emoji> {
+    //     self.id.create_emoji(&http, name, image).await
+    // }
 
     /// Creates an integration for the guild.
     ///
@@ -573,40 +573,40 @@ impl PartialGuild {
         self.id.get_application_command_permissions(http, command_id).await
     }
 
-    /// Creates a new role in the guild with the data set, if any.
-    ///
-    /// See the documentation for [`Guild::create_role`] on how to use this.
-    ///
-    /// **Note**: Requires the [Manage Roles] permission.
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
-    #[inline]
-    pub async fn create_role(&self, cache_http: impl CacheHttp, builder: EditRole) -> Result<Role> {
-        self.id.create_role(cache_http, builder).await
-    }
+    // /// Creates a new role in the guild with the data set, if any.
+    // ///
+    // /// See the documentation for [`Guild::create_role`] on how to use this.
+    // ///
+    // /// **Note**: Requires the [Manage Roles] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Manage Roles]: Permissions::MANAGE_ROLES
+    // #[inline]
+    // pub async fn create_role(&self, cache_http: impl CacheHttp, builder: EditRole) -> Result<Role> {
+    //     self.id.create_role(cache_http, builder).await
+    // }
 
-    /// Creates a new sticker in the guild with the data set, if any.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    pub async fn create_sticker<'a>(
-        &self,
-        cache_http: impl CacheHttp,
-        builder: CreateSticker<'a>,
-    ) -> Result<Sticker> {
-        self.id.create_sticker(cache_http, builder).await
-    }
+    // /// Creates a new sticker in the guild with the data set, if any.
+    // ///
+    // /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // pub async fn create_sticker<'a>(
+    //     &self,
+    //     cache_http: impl CacheHttp,
+    //     builder: CreateSticker<'a>,
+    // ) -> Result<Sticker> {
+    //     self.id.create_sticker(cache_http, builder).await
+    // }
 
     /// Deletes the current guild if the current user is the owner of the
     /// guild.
@@ -701,57 +701,57 @@ impl PartialGuild {
         self.id.delete_sticker(&http, sticker_id).await
     }
 
-    /// Edits the current guild with new data where specified.
-    ///
-    /// **Note**: Requires the [Manage Guild] permission.
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn edit(&mut self, cache_http: impl CacheHttp, builder: EditGuild) -> Result<()> {
-        let guild = self.id.edit(cache_http, builder).await?;
+    // /// Edits the current guild with new data where specified.
+    // ///
+    // /// **Note**: Requires the [Manage Guild] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Manage Guild]: Permissions::MANAGE_GUILD
+    // pub async fn edit(&mut self, cache_http: impl CacheHttp, builder: EditGuild) -> Result<()> {
+    //     let guild = self.id.edit(cache_http, builder).await?;
 
-        self.afk_channel_id = guild.afk_channel_id;
-        self.afk_timeout = guild.afk_timeout;
-        self.default_message_notifications = guild.default_message_notifications;
-        self.emojis = guild.emojis;
-        self.features = guild.features;
-        self.icon = guild.icon;
-        self.mfa_level = guild.mfa_level;
-        self.name = guild.name;
-        self.owner_id = guild.owner_id;
-        self.roles = guild.roles;
-        self.splash = guild.splash;
-        self.verification_level = guild.verification_level;
+    //     self.afk_channel_id = guild.afk_channel_id;
+    //     self.afk_timeout = guild.afk_timeout;
+    //     self.default_message_notifications = guild.default_message_notifications;
+    //     self.emojis = guild.emojis;
+    //     self.features = guild.features;
+    //     self.icon = guild.icon;
+    //     self.mfa_level = guild.mfa_level;
+    //     self.name = guild.name;
+    //     self.owner_id = guild.owner_id;
+    //     self.roles = guild.roles;
+    //     self.splash = guild.splash;
+    //     self.verification_level = guild.verification_level;
 
-        Ok(())
-    }
+    //     Ok(())
+    // }
 
-    /// Edits an [`Emoji`]'s name in the guild.
-    ///
-    /// Also see [`Emoji::edit`] if you have the `cache` and `methods` features
-    /// enabled.
-    ///
-    /// Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission,
-    /// or if an emoji with that Id does not exist in the guild.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    #[inline]
-    pub async fn edit_emoji(
-        &self,
-        http: impl AsRef<Http>,
-        emoji_id: impl Into<EmojiId>,
-        name: &str,
-    ) -> Result<Emoji> {
-        self.id.edit_emoji(&http, emoji_id, name).await
-    }
+    // /// Edits an [`Emoji`]'s name in the guild.
+    // ///
+    // /// Also see [`Emoji::edit`] if you have the `cache` and `methods` features
+    // /// enabled.
+    // ///
+    // /// Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission,
+    // /// or if an emoji with that Id does not exist in the guild.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // #[inline]
+    // pub async fn edit_emoji(
+    //     &self,
+    //     http: impl AsRef<Http>,
+    //     emoji_id: impl Into<EmojiId>,
+    //     name: &str,
+    // ) -> Result<Emoji> {
+    //     self.id.edit_emoji(&http, emoji_id, name).await
+    // }
 
     /// Edits the properties a guild member, such as muting or nicknaming them. Returns the new
     /// member.
@@ -797,29 +797,29 @@ impl PartialGuild {
         self.id.edit_nickname(&http, new_nickname).await
     }
 
-    /// Edits a role, optionally setting its fields.
-    ///
-    /// **Note**: Requires the [Manage Roles] permission.
-    ///
-    /// # Examples
-    ///
-    /// See the documentation of [`GuildId::edit_role`] for details.
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
-    #[inline]
-    pub async fn edit_role(
-        self,
-        cache_http: impl CacheHttp,
-        role_id: impl Into<RoleId>,
-        builder: EditRole,
-    ) -> Result<Role> {
-        self.id.edit_role(cache_http, role_id, builder).await
-    }
+    // /// Edits a role, optionally setting its fields.
+    // ///
+    // /// **Note**: Requires the [Manage Roles] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// See the documentation of [`GuildId::edit_role`] for details.
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Manage Roles]: Permissions::MANAGE_ROLES
+    // #[inline]
+    // pub async fn edit_role(
+    //     self,
+    //     cache_http: impl CacheHttp,
+    //     role_id: impl Into<RoleId>,
+    //     builder: EditRole,
+    // ) -> Result<Role> {
+    //     self.id.edit_role(cache_http, role_id, builder).await
+    // }
 
     /// Edits the order of [`Role`]s
     /// Requires the [Manage Roles] permission.
@@ -848,61 +848,61 @@ impl PartialGuild {
         self.id.edit_role_position(&http, role_id, position).await
     }
 
-    /// Edits a sticker.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// # Examples
-    ///
-    /// Rename a sticker:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::guild::PartialGuild;
-    /// # use serenity::model::id::GuildId;
-    /// use serenity::builder::EditSticker;
-    /// use serenity::model::id::StickerId;
-    ///
-    /// # async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let http = Http::new("token");
-    /// # let guild = PartialGuild::get(&http, GuildId::new(7)).await?;
-    /// let builder = EditSticker::default().name("Bun bun meow");
-    /// guild.edit_sticker(&http, StickerId::new(7), builder).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission, or if invalid data is given.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    #[inline]
-    pub async fn edit_sticker(
-        &self,
-        http: impl AsRef<Http>,
-        sticker_id: impl Into<StickerId>,
-        builder: EditSticker,
-    ) -> Result<Sticker> {
-        self.id.edit_sticker(http, sticker_id, builder).await
-    }
+    // /// Edits a sticker.
+    // ///
+    // /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Rename a sticker:
+    // ///
+    // /// ```rust,no_run
+    // /// # use serenity::http::Http;
+    // /// # use serenity::model::guild::PartialGuild;
+    // /// # use serenity::model::id::GuildId;
+    // /// use serenity::builder::EditSticker;
+    // /// use serenity::model::id::StickerId;
+    // ///
+    // /// # async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    // /// # let http = Http::new("token");
+    // /// # let guild = PartialGuild::get(&http, GuildId::new(7)).await?;
+    // /// let builder = EditSticker::default().name("Bun bun meow");
+    // /// guild.edit_sticker(&http, StickerId::new(7), builder).await?;
+    // /// # Ok(())
+    // /// # }
+    // /// ```
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission, or if invalid data is given.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // #[inline]
+    // pub async fn edit_sticker(
+    //     &self,
+    //     http: impl AsRef<Http>,
+    //     sticker_id: impl Into<StickerId>,
+    //     builder: EditSticker,
+    // ) -> Result<Sticker> {
+    //     self.id.edit_sticker(http, sticker_id, builder).await
+    // }
 
-    /// Edits the guild's welcome screen.
-    ///
-    /// **Note**: Requires the [Manage Guild] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn edit_welcome_screen(
-        &self,
-        http: impl AsRef<Http>,
-        builder: EditGuildWelcomeScreen,
-    ) -> Result<GuildWelcomeScreen> {
-        self.id.edit_welcome_screen(http, builder).await
-    }
+    // /// Edits the guild's welcome screen.
+    // ///
+    // /// **Note**: Requires the [Manage Guild] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission.
+    // ///
+    // /// [Manage Guild]: Permissions::MANAGE_GUILD
+    // pub async fn edit_welcome_screen(
+    //     &self,
+    //     http: impl AsRef<Http>,
+    //     builder: EditGuildWelcomeScreen,
+    // ) -> Result<GuildWelcomeScreen> {
+    //     self.id.edit_welcome_screen(http, builder).await
+    // }
 
     /// Edits the guild's widget.
     ///
@@ -921,16 +921,16 @@ impl PartialGuild {
         self.id.edit_widget(http, builder).await
     }
 
-    /// Gets a partial amount of guild data by its Id.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user is not
-    /// in the guild.
-    #[inline]
-    pub async fn get(http: impl AsRef<Http>, guild_id: impl Into<GuildId>) -> Result<PartialGuild> {
-        guild_id.into().to_partial_guild(&http).await
-    }
+    // /// Gets a partial amount of guild data by its Id.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user is not
+    // /// in the guild.
+    // #[inline]
+    // pub async fn get(http: impl AsRef<Http>, guild_id: impl Into<GuildId>) -> Result<PartialGuild> {
+    //     guild_id.into().to_partial_guild(&http).await
+    // }
 
     /// Returns which of two [`User`]s has a higher [`Member`] hierarchy.
     ///
@@ -1198,38 +1198,38 @@ impl PartialGuild {
         self.id.kick_with_reason(&http, user_id, reason).await
     }
 
-    /// Returns a formatted URL of the guild's icon, if the guild has an icon.
-    #[must_use]
-    pub fn icon_url(&self) -> Option<String> {
-        self.icon.as_ref().map(|icon| cdn!("/icons/{}/{}.webp", self.id, icon))
-    }
+    // /// Returns a formatted URL of the guild's icon, if the guild has an icon.
+    // #[must_use]
+    // pub fn icon_url(&self) -> Option<String> {
+    //     self.icon.as_ref().map(|icon| cdn!("/icons/{}/{}.webp", self.id, icon))
+    // }
 
-    /// Returns a formatted URL of the guild's banner, if the guild has a banner.
-    #[must_use]
-    pub fn banner_url(&self) -> Option<String> {
-        self.banner.as_ref().map(|banner| cdn!("/banners/{}/{}.webp", self.id, banner))
-    }
+    // /// Returns a formatted URL of the guild's banner, if the guild has a banner.
+    // #[must_use]
+    // pub fn banner_url(&self) -> Option<String> {
+    //     self.banner.as_ref().map(|banner| cdn!("/banners/{}/{}.webp", self.id, banner))
+    // }
 
-    /// Gets all [`Emoji`]s of this guild via HTTP.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the guild is unavailable.
-    #[inline]
-    pub async fn emojis(&self, http: impl AsRef<Http>) -> Result<Vec<Emoji>> {
-        self.id.emojis(http).await
-    }
+    // /// Gets all [`Emoji`]s of this guild via HTTP.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the guild is unavailable.
+    // #[inline]
+    // pub async fn emojis(&self, http: impl AsRef<Http>) -> Result<Vec<Emoji>> {
+    //     self.id.emojis(http).await
+    // }
 
-    /// Gets an [`Emoji`] of this guild by its ID via HTTP.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if an [`Emoji`] with the given Id does
-    /// not exist for the guild.
-    #[inline]
-    pub async fn emoji(&self, http: impl AsRef<Http>, emoji_id: EmojiId) -> Result<Emoji> {
-        self.id.emoji(http, emoji_id).await
-    }
+    // /// Gets an [`Emoji`] of this guild by its ID via HTTP.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if an [`Emoji`] with the given Id does
+    // /// not exist for the guild.
+    // #[inline]
+    // pub async fn emoji(&self, http: impl AsRef<Http>, emoji_id: EmojiId) -> Result<Emoji> {
+    //     self.id.emoji(http, emoji_id).await
+    // }
 
     /// Gets all integration of the guild.
     ///
@@ -1245,19 +1245,19 @@ impl PartialGuild {
         self.id.integrations(&http).await
     }
 
-    /// Gets all of the guild's invites.
-    ///
-    /// Requires the [Manage Guild] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Manage Guild]: Permissions::MANAGE_GUILD
-    #[inline]
-    pub async fn invites(&self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
-        self.id.invites(&http).await
-    }
+    // /// Gets all of the guild's invites.
+    // ///
+    // /// Requires the [Manage Guild] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission.
+    // ///
+    // /// [Manage Guild]: Permissions::MANAGE_GUILD
+    // #[inline]
+    // pub async fn invites(&self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
+    //     self.id.invites(&http).await
+    // }
 
     /// Leaves the guild.
     ///
@@ -1414,12 +1414,12 @@ impl PartialGuild {
         self.id.shard_id(shard_count)
     }
 
-    /// Returns the formatted URL of the guild's splash image, if one exists.
-    #[inline]
-    #[must_use]
-    pub fn splash_url(&self) -> Option<String> {
-        self.splash.as_ref().map(|splash| cdn!("/splashes/{}/{}.webp?size=4096", self.id, splash))
-    }
+    // /// Returns the formatted URL of the guild's splash image, if one exists.
+    // #[inline]
+    // #[must_use]
+    // pub fn splash_url(&self) -> Option<String> {
+    //     self.splash.as_ref().map(|splash| cdn!("/splashes/{}/{}.webp?size=4096", self.id, splash))
+    // }
 
     /// Starts an integration sync for the given integration Id.
     ///
@@ -1565,11 +1565,11 @@ impl<'de> Deserialize<'de> for PartialGuild {
 
         add_guild_id_to_map(&mut map, "roles", id);
 
-        let emojis = map
-            .remove("emojis")
-            .ok_or_else(|| DeError::custom("expected guild emojis"))
-            .and_then(emojis::deserialize)
-            .map_err(DeError::custom)?;
+        // let emojis = map
+        //     .remove("emojis")
+        //     .ok_or_else(|| DeError::custom("expected guild emojis"))
+        //     .and_then(emojis::deserialize)
+        //     .map_err(DeError::custom)?;
 
         let roles = map
             .remove("roles")
@@ -1577,63 +1577,63 @@ impl<'de> Deserialize<'de> for PartialGuild {
             .and_then(roles::deserialize)
             .map_err(DeError::custom)?;
 
-        let premium_subscription_count = match map.remove("premium_subscription_count") {
-            #[cfg(not(feature = "simd-json"))]
-            Some(Value::Null) | None => 0,
-            #[cfg(feature = "simd-json")]
-            Some(Value::Static(StaticNode::Null)) | None => 0,
-            Some(v) => u64::deserialize(v).map_err(DeError::custom)?,
-        };
+        // let premium_subscription_count = match map.remove("premium_subscription_count") {
+        //     #[cfg(not(feature = "simd-json"))]
+        //     Some(Value::Null) | None => 0,
+        //     #[cfg(feature = "simd-json")]
+        //     Some(Value::Static(StaticNode::Null)) | None => 0,
+        //     Some(v) => u64::deserialize(v).map_err(DeError::custom)?,
+        // };
 
-        let stickers = map
-            .remove("stickers")
-            .ok_or_else(|| DeError::custom("expected guild stickers"))
-            .and_then(stickers::deserialize)
-            .map_err(DeError::custom)?;
+        // let stickers = map
+        //     .remove("stickers")
+        //     .ok_or_else(|| DeError::custom("expected guild stickers"))
+        //     .and_then(stickers::deserialize)
+        //     .map_err(DeError::custom)?;
 
         Ok(Self {
             id,
-            emojis,
+            // emojis,
             roles,
-            premium_subscription_count,
-            stickers,
-            afk_channel_id: remove_from_map_opt(&mut map, "afk_channel_id")?.flatten(),
-            afk_timeout: remove_from_map(&mut map, "afk_timeout")?,
-            application_id: remove_from_map_opt(&mut map, "application_id")?.flatten(),
-            default_message_notifications: remove_from_map(
-                &mut map,
-                "default_message_notifications",
-            )?,
+            // premium_subscription_count,
+            // stickers,
+            // afk_channel_id: remove_from_map_opt(&mut map, "afk_channel_id")?.flatten(),
+            // afk_timeout: remove_from_map(&mut map, "afk_timeout")?,
+            // application_id: remove_from_map_opt(&mut map, "application_id")?.flatten(),
+            // default_message_notifications: remove_from_map(
+            //     &mut map,
+            //     "default_message_notifications",
+            // )?,
             features: remove_from_map(&mut map, "features")?,
-            widget_enabled: remove_from_map_opt(&mut map, "widget_enabled")?.flatten(),
-            widget_channel_id: remove_from_map_opt(&mut map, "widget_channel_id")?.flatten(),
-            icon: remove_from_map_opt(&mut map, "icon")?.flatten(),
-            mfa_level: remove_from_map(&mut map, "mfa_level")?,
+            // widget_enabled: remove_from_map_opt(&mut map, "widget_enabled")?.flatten(),
+            // widget_channel_id: remove_from_map_opt(&mut map, "widget_channel_id")?.flatten(),
+            // icon: remove_from_map_opt(&mut map, "icon")?.flatten(),
+            // mfa_level: remove_from_map(&mut map, "mfa_level")?,
             name: remove_from_map(&mut map, "name")?,
             owner_id: remove_from_map(&mut map, "owner_id")?,
-            owner: remove_from_map_opt(&mut map, "owner")?.unwrap_or_default(),
-            splash: remove_from_map_opt(&mut map, "splash")?.flatten(),
-            discovery_splash: remove_from_map_opt(&mut map, "discovery_splash")?.flatten(),
-            system_channel_id: remove_from_map_opt(&mut map, "system_channel_id")?.flatten(),
-            system_channel_flags: remove_from_map(&mut map, "system_channel_flags")?,
-            rules_channel_id: remove_from_map_opt(&mut map, "rules_channel_id")?.flatten(),
-            public_updates_channel_id: remove_from_map_opt(&mut map, "public_updates_channel_id")?
-                .flatten(),
-            verification_level: remove_from_map(&mut map, "verification_level")?,
-            description: remove_from_map_opt(&mut map, "description")?.flatten(),
-            premium_tier: remove_from_map_opt(&mut map, "premium_tier")?.unwrap_or_default(),
-            banner: remove_from_map_opt(&mut map, "banner")?.flatten(),
-            vanity_url_code: remove_from_map_opt(&mut map, "vanity_url_code")?.flatten(),
-            welcome_screen: remove_from_map_opt(&mut map, "welcome_screen")?,
-            approximate_member_count: remove_from_map_opt(&mut map, "approximate_member_count")?,
-            approximate_presence_count: remove_from_map_opt(
-                &mut map,
-                "approximate_presence_count",
-            )?,
-            nsfw_level: remove_from_map(&mut map, "nsfw_level")?,
-            max_video_channel_users: remove_from_map(&mut map, "max_video_channel_users")?,
-            max_presences: remove_from_map_opt(&mut map, "max_presences")?.flatten(),
-            max_members: remove_from_map_opt(&mut map, "max_members")?.flatten(),
+            // owner: remove_from_map_opt(&mut map, "owner")?.unwrap_or_default(),
+            // splash: remove_from_map_opt(&mut map, "splash")?.flatten(),
+            // discovery_splash: remove_from_map_opt(&mut map, "discovery_splash")?.flatten(),
+            // system_channel_id: remove_from_map_opt(&mut map, "system_channel_id")?.flatten(),
+            // system_channel_flags: remove_from_map(&mut map, "system_channel_flags")?,
+            // rules_channel_id: remove_from_map_opt(&mut map, "rules_channel_id")?.flatten(),
+            // public_updates_channel_id: remove_from_map_opt(&mut map, "public_updates_channel_id")?
+            //     .flatten(),
+            // verification_level: remove_from_map(&mut map, "verification_level")?,
+            // description: remove_from_map_opt(&mut map, "description")?.flatten(),
+            // premium_tier: remove_from_map_opt(&mut map, "premium_tier")?.unwrap_or_default(),
+            // banner: remove_from_map_opt(&mut map, "banner")?.flatten(),
+            // vanity_url_code: remove_from_map_opt(&mut map, "vanity_url_code")?.flatten(),
+            // welcome_screen: remove_from_map_opt(&mut map, "welcome_screen")?,
+            // approximate_member_count: remove_from_map_opt(&mut map, "approximate_member_count")?,
+            // approximate_presence_count: remove_from_map_opt(
+            //     &mut map,
+            //     "approximate_presence_count",
+            // )?,
+            // nsfw_level: remove_from_map(&mut map, "nsfw_level")?,
+            // max_video_channel_users: remove_from_map(&mut map, "max_video_channel_users")?,
+            // max_presences: remove_from_map_opt(&mut map, "max_presences")?.flatten(),
+            // max_members: remove_from_map_opt(&mut map, "max_members")?.flatten(),
             permissions: remove_from_map_opt(&mut map, "permissions")?.unwrap_or_default(),
         })
     }
@@ -1647,43 +1647,43 @@ impl From<Guild> for PartialGuild {
     /// generate the missing data
     fn from(guild: Guild) -> Self {
         Self {
-            application_id: guild.application_id,
+            // application_id: guild.application_id,
             id: guild.id,
-            afk_channel_id: guild.afk_channel_id,
-            afk_timeout: guild.afk_timeout,
-            default_message_notifications: guild.default_message_notifications,
-            widget_enabled: guild.widget_enabled,
-            widget_channel_id: guild.widget_channel_id,
-            emojis: guild.emojis,
+            // afk_channel_id: guild.afk_channel_id,
+            // afk_timeout: guild.afk_timeout,
+            // default_message_notifications: guild.default_message_notifications,
+            // widget_enabled: guild.widget_enabled,
+            // widget_channel_id: guild.widget_channel_id,
+            // emojis: guild.emojis,
             features: guild.features,
-            icon: guild.icon,
-            mfa_level: guild.mfa_level,
+            // icon: guild.icon,
+            // mfa_level: guild.mfa_level,
             name: guild.name,
             owner_id: guild.owner_id,
-            // Not very good, but PartialGuild deserialization uses .unwrap_or_default() too
-            owner: Default::default(),
+            // // Not very good, but PartialGuild deserialization uses .unwrap_or_default() too
+            // owner: Default::default(),
             roles: guild.roles,
-            splash: guild.splash,
-            discovery_splash: guild.discovery_splash,
-            system_channel_id: guild.system_channel_id,
-            system_channel_flags: guild.system_channel_flags,
-            rules_channel_id: guild.rules_channel_id,
-            public_updates_channel_id: guild.public_updates_channel_id,
-            verification_level: guild.verification_level,
-            description: guild.description,
-            premium_tier: guild.premium_tier,
-            premium_subscription_count: guild.premium_subscription_count,
-            banner: guild.banner,
-            vanity_url_code: guild.vanity_url_code,
-            welcome_screen: guild.welcome_screen,
-            approximate_member_count: guild.approximate_member_count,
-            approximate_presence_count: guild.approximate_presence_count,
-            nsfw_level: guild.nsfw_level,
-            max_video_channel_users: guild.max_video_channel_users,
-            max_presences: guild.max_presences,
-            max_members: guild.max_members,
+            // splash: guild.splash,
+            // discovery_splash: guild.discovery_splash,
+            // system_channel_id: guild.system_channel_id,
+            // system_channel_flags: guild.system_channel_flags,
+            // rules_channel_id: guild.rules_channel_id,
+            // public_updates_channel_id: guild.public_updates_channel_id,
+            // verification_level: guild.verification_level,
+            // description: guild.description,
+            // premium_tier: guild.premium_tier,
+            // premium_subscription_count: guild.premium_subscription_count,
+            // banner: guild.banner,
+            // vanity_url_code: guild.vanity_url_code,
+            // welcome_screen: guild.welcome_screen,
+            // approximate_member_count: guild.approximate_member_count,
+            // approximate_presence_count: guild.approximate_presence_count,
+            // nsfw_level: guild.nsfw_level,
+            // max_video_channel_users: guild.max_video_channel_users,
+            // max_presences: guild.max_presences,
+            // max_members: guild.max_members,
             permissions: None,
-            stickers: guild.stickers,
+            // stickers: guild.stickers,
         }
     }
 }

@@ -1,7 +1,7 @@
 use std::fmt::{self as fmt, Write};
 use std::ops::Add;
 
-use crate::model::guild::Emoji;
+// use crate::model::guild::Emoji;
 use crate::model::id::{ChannelId, RoleId, UserId};
 use crate::model::mention::Mentionable;
 
@@ -123,36 +123,36 @@ impl MessageBuilder {
         self
     }
 
-    /// Displays the given emoji in the built message.
-    ///
-    /// Refer to [`Emoji`]s [Display implementation] for more information on how
-    /// this is formatted.
-    ///
-    /// # Examples
-    ///
-    /// Mention an emoji in a message's content:
-    ///
-    /// ```rust
-    /// # use serde_json::{json, from_value};
-    /// # use serenity::model::guild::Emoji;
-    /// # use serenity::model::id::EmojiId;
-    /// # use serenity::utils::MessageBuilder;
-    ///
-    /// # let emoji = from_value::<Emoji>(json!({
-    /// #     "id": EmojiId::new(302516740095606785),
-    /// #     "name": "smugAnimeFace",
-    /// # })).unwrap();
-    ///
-    /// let message = MessageBuilder::new().push("foo ").emoji(&emoji).push(".").build();
-    ///
-    /// assert_eq!(message, "foo <:smugAnimeFace:302516740095606785>.");
-    /// ```
-    ///
-    /// [Display implementation]: crate::model::guild::Emoji#impl-Display
-    pub fn emoji(&mut self, emoji: &Emoji) -> &mut Self {
-        self._push(&emoji);
-        self
-    }
+    // /// Displays the given emoji in the built message.
+    // ///
+    // /// Refer to [`Emoji`]s [Display implementation] for more information on how
+    // /// this is formatted.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Mention an emoji in a message's content:
+    // ///
+    // /// ```rust
+    // /// # use serde_json::{json, from_value};
+    // /// # use serenity::model::guild::Emoji;
+    // /// # use serenity::model::id::EmojiId;
+    // /// # use serenity::utils::MessageBuilder;
+    // ///
+    // /// # let emoji = from_value::<Emoji>(json!({
+    // /// #     "id": EmojiId::new(302516740095606785),
+    // /// #     "name": "smugAnimeFace",
+    // /// # })).unwrap();
+    // ///
+    // /// let message = MessageBuilder::new().push("foo ").emoji(&emoji).push(".").build();
+    // ///
+    // /// assert_eq!(message, "foo <:smugAnimeFace:302516740095606785>.");
+    // /// ```
+    // ///
+    // /// [Display implementation]: crate::model::guild::Emoji#impl-Display
+    // pub fn emoji(&mut self, emoji: &Emoji) -> &mut Self {
+    //     self._push(&emoji);
+    //     self
+    // }
 
     /// Mentions something that implements the [`Mentionable`] trait.
     pub fn mention<M: Mentionable>(&mut self, item: &M) -> &mut Self {
@@ -1167,7 +1167,7 @@ fn normalize(text: &str) -> String {
 mod test {
     use super::ContentModifier::{Bold, Code, Italic, Spoiler};
     use super::MessageBuilder;
-    use crate::model::prelude::*;
+    // use crate::model::prelude::*;
 
     macro_rules! gen {
         ($($fn:ident => [$($text:expr => $expected:expr),+]),+) => ({
@@ -1197,29 +1197,29 @@ mod test {
         assert_ne!(content, "**test**test**");
     }
 
-    #[test]
-    fn mentions() {
-        let content_emoji = MessageBuilder::new()
-            .emoji(&Emoji {
-                animated: false,
-                available: true,
-                id: EmojiId::new(32),
-                name: "Rohrkatze".to_string(),
-                managed: false,
-                require_colons: true,
-                roles: vec![],
-                user: None,
-            })
-            .build();
-        let content_mentions = MessageBuilder::new()
-            .channel(ChannelId::new(1))
-            .mention(&UserId::new(2))
-            .role(RoleId::new(3))
-            .user(UserId::new(4))
-            .build();
-        assert_eq!(content_mentions, "<#1><@2><@&3><@4>");
-        assert_eq!(content_emoji, "<:Rohrkatze:32>");
-    }
+    // #[test]
+    // fn mentions() {
+    //     let content_emoji = MessageBuilder::new()
+    //         .emoji(&Emoji {
+    //             animated: false,
+    //             available: true,
+    //             id: EmojiId::new(32),
+    //             name: "Rohrkatze".to_string(),
+    //             managed: false,
+    //             require_colons: true,
+    //             roles: vec![],
+    //             user: None,
+    //         })
+    //         .build();
+    //     let content_mentions = MessageBuilder::new()
+    //         .channel(ChannelId::new(1))
+    //         .mention(&UserId::new(2))
+    //         .role(RoleId::new(3))
+    //         .user(UserId::new(4))
+    //         .build();
+    //     assert_eq!(content_mentions, "<#1><@2><@&3><@4>");
+    //     assert_eq!(content_emoji, "<:Rohrkatze:32>");
+    // }
 
     #[test]
     fn content() {

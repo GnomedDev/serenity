@@ -6,7 +6,7 @@ use futures::stream::Stream;
 
 #[cfg(feature = "model")]
 use crate::builder::{
-    CreateInvite,
+    // CreateInvite,
     CreateMessage,
     CreateStageInstance,
     CreateThread,
@@ -66,30 +66,30 @@ impl ChannelId {
         http.as_ref().broadcast_typing(self.get()).await
     }
 
-    /// Creates an invite for the given channel.
-    ///
-    /// **Note**: Requires the [Create Instant Invite] permission.
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
-    pub async fn create_invite(
-        self,
-        cache_http: impl CacheHttp,
-        builder: CreateInvite,
-    ) -> Result<RichInvite> {
-        builder
-            .execute(
-                cache_http,
-                self,
-                #[cfg(feature = "cache")]
-                None,
-            )
-            .await
-    }
+    // /// Creates an invite for the given channel.
+    // ///
+    // /// **Note**: Requires the [Create Instant Invite] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
+    // pub async fn create_invite(
+    //     self,
+    //     cache_http: impl CacheHttp,
+    //     builder: CreateInvite,
+    // ) -> Result<RichInvite> {
+    //     builder
+    //         .execute(
+    //             cache_http,
+    //             self,
+    //             #[cfg(feature = "cache")]
+    //             None,
+    //         )
+    //         .await
+    // }
 
     /// Creates a [permission overwrite][`PermissionOverwrite`] for either a
     /// single [`Member`] or [`Role`] within the channel.
@@ -420,49 +420,49 @@ impl ChannelId {
         Ok(channel)
     }
 
-    /// Gets all of the channel's invites.
-    ///
-    /// Requires the [Manage Channels] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Manage Channels]: Permissions::MANAGE_CHANNELS
-    #[inline]
-    pub async fn invites(self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
-        http.as_ref().get_channel_invites(self.get()).await
-    }
+    // /// Gets all of the channel's invites.
+    // ///
+    // /// Requires the [Manage Channels] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission.
+    // ///
+    // /// [Manage Channels]: Permissions::MANAGE_CHANNELS
+    // #[inline]
+    // pub async fn invites(self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
+    //     http.as_ref().get_channel_invites(self.get()).await
+    // }
 
-    /// Gets a message from the channel.
-    ///
-    /// If the cache feature is enabled the cache will be checked
-    /// first. If not found it will resort to an http request.
-    ///
-    /// Requires the [Read Message History] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
-    #[inline]
-    pub async fn message(
-        self,
-        cache_http: impl CacheHttp,
-        message_id: impl Into<MessageId>,
-    ) -> Result<Message> {
-        let message_id = message_id.into();
+    // /// Gets a message from the channel.
+    // ///
+    // /// If the cache feature is enabled the cache will be checked
+    // /// first. If not found it will resort to an http request.
+    // ///
+    // /// Requires the [Read Message History] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission.
+    // ///
+    // /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
+    // #[inline]
+    // pub async fn message(
+    //     self,
+    //     cache_http: impl CacheHttp,
+    //     message_id: impl Into<MessageId>,
+    // ) -> Result<Message> {
+    //     let message_id = message_id.into();
 
-        #[cfg(feature = "cache")]
-        if let Some(cache) = cache_http.cache() {
-            if let Some(message) = cache.message(self, message_id) {
-                return Ok(message);
-            }
-        }
+    //     #[cfg(feature = "cache")]
+    //     if let Some(cache) = cache_http.cache() {
+    //         if let Some(message) = cache.message(self, message_id) {
+    //             return Ok(message);
+    //         }
+    //     }
 
-        cache_http.http().get_message(self.get(), message_id.get()).await
-    }
+    //     cache_http.http().get_message(self.get(), message_id.get()).await
+    // }
 
     /// Gets messages from the channel.
     ///

@@ -67,10 +67,10 @@ impl ArgumentConvert for Message {
             .or_else(extract_from_message_url)
             .ok_or(MessageParseError::Malformed)?;
 
-        #[cfg(feature = "cache")]
-        if let Some(msg) = ctx.cache.message(channel_id, message_id) {
-            return Ok(msg);
-        }
+        // #[cfg(feature = "cache")]
+        // if let Some(msg) = ctx.cache.message(channel_id, message_id) {
+        //     return Ok(msg);
+        // }
 
         if cfg!(feature = "http") {
             ctx.http

@@ -183,17 +183,17 @@ impl Channel {
         Ok(())
     }
 
-    /// Determines if the channel is NSFW.
-    #[inline]
-    #[must_use]
-    #[cfg(feature = "model")]
-    pub fn is_nsfw(&self) -> bool {
-        match self {
-            Self::Guild(channel) => channel.is_nsfw(),
-            Self::Category(category) => category.is_nsfw(),
-            Self::Private(_) => false,
-        }
-    }
+    // /// Determines if the channel is NSFW.
+    // #[inline]
+    // #[must_use]
+    // #[cfg(feature = "model")]
+    // pub fn is_nsfw(&self) -> bool {
+    //     match self {
+    //         Self::Guild(channel) => channel.is_nsfw(),
+    //         Self::Category(category) => category.is_nsfw(),
+    //         Self::Private(_) => false,
+    //     }
+    // }
 
     /// Retrieves the Id of the inner [`GuildChannel`], or
     /// [`PrivateChannel`].
@@ -207,19 +207,19 @@ impl Channel {
         }
     }
 
-    /// Retrieves the position of the inner [`GuildChannel`] or
-    /// [`ChannelCategory`].
-    ///
-    /// If other channel types are used it will return None.
-    #[inline]
-    #[must_use]
-    pub const fn position(&self) -> Option<i64> {
-        match self {
-            Self::Guild(channel) => Some(channel.position),
-            Self::Category(category) => Some(category.position),
-            _ => None,
-        }
-    }
+    // /// Retrieves the position of the inner [`GuildChannel`] or
+    // /// [`ChannelCategory`].
+    // ///
+    // /// If other channel types are used it will return None.
+    // #[inline]
+    // #[must_use]
+    // pub const fn position(&self) -> Option<i64> {
+    //     match self {
+    //         Self::Guild(channel) => Some(channel.position),
+    //         Self::Category(category) => Some(category.position),
+    //         _ => None,
+    //     }
+    // }
 }
 
 impl<'de> Deserialize<'de> for Channel {
@@ -476,88 +476,88 @@ pub struct ThreadsData {
     pub has_more: bool,
 }
 
-#[cfg(test)]
-mod test {
-    #[cfg(all(feature = "model", feature = "utils"))]
-    mod model_utils {
-        use crate::model::prelude::*;
+// #[cfg(test)]
+// mod test {
+//     #[cfg(all(feature = "model", feature = "utils"))]
+//     mod model_utils {
+//         use crate::model::prelude::*;
 
-        fn guild_channel() -> GuildChannel {
-            GuildChannel {
-                id: ChannelId::new(1),
-                bitrate: None,
-                parent_id: None,
-                guild_id: GuildId::new(2),
-                kind: ChannelType::Text,
-                last_message_id: None,
-                last_pin_timestamp: None,
-                name: "nsfw-stuff".to_string(),
-                permission_overwrites: vec![],
-                position: 0,
-                topic: None,
-                user_limit: None,
-                nsfw: false,
-                rate_limit_per_user: Some(0),
-                rtc_region: None,
-                video_quality_mode: None,
-                message_count: None,
-                member_count: None,
-                thread_metadata: None,
-                member: None,
-                default_auto_archive_duration: None,
-            }
-        }
+//         fn guild_channel() -> GuildChannel {
+//             GuildChannel {
+//                 id: ChannelId::new(1),
+//                 bitrate: None,
+//                 parent_id: None,
+//                 guild_id: GuildId::new(2),
+//                 kind: ChannelType::Text,
+//                 last_message_id: None,
+//                 last_pin_timestamp: None,
+//                 name: "nsfw-stuff".to_string(),
+//                 permission_overwrites: vec![],
+//                 position: 0,
+//                 topic: None,
+//                 user_limit: None,
+//                 nsfw: false,
+//                 rate_limit_per_user: Some(0),
+//                 rtc_region: None,
+//                 video_quality_mode: None,
+//                 message_count: None,
+//                 member_count: None,
+//                 thread_metadata: None,
+//                 member: None,
+//                 default_auto_archive_duration: None,
+//             }
+//         }
 
-        fn private_channel() -> PrivateChannel {
-            PrivateChannel {
-                id: ChannelId::new(1),
-                last_message_id: None,
-                last_pin_timestamp: None,
-                kind: ChannelType::Private,
-                recipient: User {
-                    id: UserId::new(2),
-                    avatar: None,
-                    bot: false,
-                    discriminator: 1,
-                    name: "ab".to_string(),
-                    public_flags: None,
-                    banner: None,
-                    accent_colour: None,
-                },
-            }
-        }
+//         fn private_channel() -> PrivateChannel {
+//             PrivateChannel {
+//                 id: ChannelId::new(1),
+//                 last_message_id: None,
+//                 last_pin_timestamp: None,
+//                 kind: ChannelType::Private,
+//                 recipient: User {
+//                     id: UserId::new(2),
+//                     avatar: None,
+//                     bot: false,
+//                     discriminator: 1,
+//                     name: "ab".to_string(),
+//                     public_flags: None,
+//                     banner: None,
+//                     accent_colour: None,
+//                 },
+//             }
+//         }
 
-        #[test]
-        fn nsfw_checks() {
-            let mut channel = guild_channel();
-            assert!(!channel.is_nsfw());
-            channel.kind = ChannelType::Voice;
-            assert!(!channel.is_nsfw());
+//         #[test]
+//         fn nsfw_checks() {
+//             let mut channel = guild_channel();
+//             assert!(!channel.is_nsfw());
+//             channel.kind = ChannelType::Voice;
+//             assert!(!channel.is_nsfw());
 
-            channel.kind = ChannelType::Text;
-            channel.name = "nsfw-".to_string();
-            assert!(!channel.is_nsfw());
+//             channel.kind = ChannelType::Text;
+//             channel.name = "nsfw-".to_string();
+//             assert!(!channel.is_nsfw());
 
-            channel.name = "nsfw".to_string();
-            assert!(!channel.is_nsfw());
-            channel.kind = ChannelType::Voice;
-            assert!(!channel.is_nsfw());
-            channel.kind = ChannelType::Text;
+//             channel.name = "nsfw".to_string();
+//             assert!(!channel.is_nsfw());
+//             channel.kind = ChannelType::Voice;
+//             assert!(!channel.is_nsfw());
+//             channel.kind = ChannelType::Text;
 
-            channel.name = "nsf".to_string();
-            channel.nsfw = true;
-            assert!(channel.is_nsfw());
-            channel.nsfw = false;
-            assert!(!channel.is_nsfw());
+//             channel.name = "nsf".to_string();
+//             channel.nsfw = true;
+//             assert!(channel.is_nsfw());
+//             channel.nsfw = false;
+//             assert!(!channel.is_nsfw());
 
-            let channel = Channel::Guild(channel);
-            assert!(!channel.is_nsfw());
+//             let channel = Channel::Guild(channel);
+//             assert!(!channel.is_nsfw());
 
-            let private_channel = private_channel();
-            assert!(!private_channel.is_nsfw());
-        }
-    }
-}
+//             let private_channel = private_channel();
+//             assert!(!private_channel.is_nsfw());
+//         }
+//     }
+// }
 
 #[cfg(all(feature = "cache", feature = "model", feature = "utils"))]
 #[derive(Debug)]

@@ -1,15 +1,15 @@
 use std::collections::HashSet;
 
 use super::{Cache, CacheUpdate};
-use crate::model::channel::{Channel, GuildChannel, Message};
+use crate::model::channel::{Channel, GuildChannel};
 use crate::model::event::{
     ChannelCreateEvent,
     ChannelDeleteEvent,
-    ChannelPinsUpdateEvent,
+    // ChannelPinsUpdateEvent,
     ChannelUpdateEvent,
     GuildCreateEvent,
     GuildDeleteEvent,
-    GuildEmojisUpdateEvent,
+    // GuildEmojisUpdateEvent,
     GuildMemberAddEvent,
     GuildMemberRemoveEvent,
     GuildMemberUpdateEvent,
@@ -17,12 +17,12 @@ use crate::model::event::{
     GuildRoleCreateEvent,
     GuildRoleDeleteEvent,
     GuildRoleUpdateEvent,
-    GuildStickersUpdateEvent,
+    // GuildStickersUpdateEvent,
     GuildUpdateEvent,
-    MessageCreateEvent,
-    MessageUpdateEvent,
-    PresenceUpdateEvent,
-    PresencesReplaceEvent,
+    // MessageCreateEvent,
+    // MessageUpdateEvent,
+    // PresenceUpdateEvent,
+    // PresencesReplaceEvent,
     ReadyEvent,
     ThreadCreateEvent,
     ThreadDeleteEvent,
@@ -32,7 +32,7 @@ use crate::model::event::{
 };
 use crate::model::gateway::ShardInfo;
 use crate::model::guild::{Guild, Member, Role};
-use crate::model::user::{CurrentUser, OnlineStatus};
+use crate::model::user::CurrentUser;
 use crate::model::voice::VoiceState;
 
 impl CacheUpdate for ChannelCreateEvent {
@@ -115,8 +115,8 @@ impl CacheUpdate for ChannelDeleteEvent {
             },
         };
 
-        // Remove the cached messages for the channel.
-        cache.messages.remove(&self.channel.id());
+        // // Remove the cached messages for the channel.
+        // cache.messages.remove(&self.channel.id());
 
         None
     }
@@ -158,25 +158,25 @@ impl CacheUpdate for ChannelUpdateEvent {
     }
 }
 
-impl CacheUpdate for ChannelPinsUpdateEvent {
-    type Output = ();
+// impl CacheUpdate for ChannelPinsUpdateEvent {
+//     type Output = ();
 
-    fn update(&mut self, cache: &Cache) -> Option<()> {
-        if let Some(mut channel) = cache.channels.get_mut(&self.channel_id) {
-            channel.last_pin_timestamp = self.last_pin_timestamp;
+//     fn update(&mut self, cache: &Cache) -> Option<()> {
+//         if let Some(mut channel) = cache.channels.get_mut(&self.channel_id) {
+//             channel.last_pin_timestamp = self.last_pin_timestamp;
 
-            return None;
-        }
+//             return None;
+//         }
 
-        if let Some(mut channel) = cache.private_channels.get_mut(&self.channel_id) {
-            channel.last_pin_timestamp = self.last_pin_timestamp;
+//         if let Some(mut channel) = cache.private_channels.get_mut(&self.channel_id) {
+//             channel.last_pin_timestamp = self.last_pin_timestamp;
 
-            return None;
-        }
+//             return None;
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
 impl CacheUpdate for GuildCreateEvent {
     type Output = ();
@@ -229,8 +229,8 @@ impl CacheUpdate for GuildDeleteEvent {
                             // Remove the channel from the cache.
                             cache.channels.remove(channel_id);
 
-                            // Remove the channel's cached messages.
-                            cache.messages.remove(channel_id);
+                            // // Remove the channel's cached messages.
+                            // cache.messages.remove(channel_id);
                         },
                         Channel::Category(_) => {
                             // Remove the category from the cache
@@ -247,17 +247,17 @@ impl CacheUpdate for GuildDeleteEvent {
     }
 }
 
-impl CacheUpdate for GuildEmojisUpdateEvent {
-    type Output = ();
+// impl CacheUpdate for GuildEmojisUpdateEvent {
+//     type Output = ();
 
-    fn update(&mut self, cache: &Cache) -> Option<()> {
-        if let Some(mut guild) = cache.guilds.get_mut(&self.guild_id) {
-            guild.emojis.clone_from(&self.emojis);
-        }
+//     fn update(&mut self, cache: &Cache) -> Option<()> {
+//         if let Some(mut guild) = cache.guilds.get_mut(&self.guild_id) {
+//             guild.emojis.clone_from(&self.emojis);
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
 impl CacheUpdate for GuildMemberAddEvent {
     type Output = ();
@@ -301,12 +301,12 @@ impl CacheUpdate for GuildMemberUpdateEvent {
             let item = if let Some(member) = guild.members.get_mut(&self.user.id) {
                 let item = Some(member.clone());
 
-                member.joined_at.clone_from(&Some(self.joined_at));
+                // member.joined_at.clone_from(&Some(self.joined_at));
                 member.nick.clone_from(&self.nick);
                 member.roles.clone_from(&self.roles);
                 member.user.clone_from(&self.user);
-                member.pending.clone_from(&self.pending);
-                member.premium_since.clone_from(&self.premium_since);
+                // member.pending.clone_from(&self.pending);
+                // member.premium_since.clone_from(&self.premium_since);
                 member.deaf.clone_from(&self.deaf);
                 member.mute.clone_from(&self.mute);
                 member.avatar.clone_from(&self.avatar);
@@ -321,13 +321,13 @@ impl CacheUpdate for GuildMemberUpdateEvent {
                 guild.members.insert(self.user.id, Member {
                     deaf: false,
                     guild_id: self.guild_id,
-                    joined_at: Some(self.joined_at),
+                    // joined_at: Some(self.joined_at),
                     mute: false,
                     nick: self.nick.clone(),
                     roles: self.roles.clone(),
                     user: self.user.clone(),
-                    pending: self.pending,
-                    premium_since: self.premium_since,
+                    // pending: self.pending,
+                    // premium_since: self.premium_since,
                     permissions: None,
                     avatar: self.avatar.clone(),
                     communication_disabled_until: self.communication_disabled_until,
@@ -392,202 +392,179 @@ impl CacheUpdate for GuildRoleUpdateEvent {
     }
 }
 
-impl CacheUpdate for GuildStickersUpdateEvent {
-    type Output = ();
+// impl CacheUpdate for GuildStickersUpdateEvent {
+//     type Output = ();
 
-    fn update(&mut self, cache: &Cache) -> Option<()> {
-        if let Some(mut guild) = cache.guilds.get_mut(&self.guild_id) {
-            guild.stickers.clone_from(&self.stickers);
-        }
+//     fn update(&mut self, cache: &Cache) -> Option<()> {
+//         if let Some(mut guild) = cache.guilds.get_mut(&self.guild_id) {
+//             guild.stickers.clone_from(&self.stickers);
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
 impl CacheUpdate for GuildUpdateEvent {
     type Output = ();
 
     fn update(&mut self, cache: &Cache) -> Option<()> {
         if let Some(mut guild) = cache.guilds.get_mut(&self.guild.id) {
-            guild.afk_channel_id.clone_from(&self.guild.afk_channel_id);
-            guild.afk_timeout = self.guild.afk_timeout;
-            guild.banner.clone_from(&self.guild.banner);
-            guild.discovery_splash.clone_from(&self.guild.discovery_splash);
             guild.features.clone_from(&self.guild.features);
-            guild.icon.clone_from(&self.guild.icon);
             guild.name.clone_from(&self.guild.name);
             guild.owner_id.clone_from(&self.guild.owner_id);
             guild.roles.clone_from(&self.guild.roles);
-            guild.splash.clone_from(&self.guild.splash);
-            guild.vanity_url_code.clone_from(&self.guild.vanity_url_code);
-            guild.welcome_screen.clone_from(&self.guild.welcome_screen);
-            guild.default_message_notifications = self.guild.default_message_notifications;
-            guild.max_members = self.guild.max_members;
-            guild.max_presences = self.guild.max_presences;
-            guild.max_video_channel_users = self.guild.max_video_channel_users;
-            guild.mfa_level = self.guild.mfa_level;
-            guild.nsfw_level = self.guild.nsfw_level;
-            guild.premium_subscription_count = self.guild.premium_subscription_count;
-            guild.premium_tier = self.guild.premium_tier;
-            guild.public_updates_channel_id = self.guild.public_updates_channel_id;
-            guild.rules_channel_id = self.guild.rules_channel_id;
-            guild.system_channel_flags = self.guild.system_channel_flags;
-            guild.system_channel_id = self.guild.system_channel_id;
-            guild.verification_level = self.guild.verification_level;
-            guild.widget_channel_id = self.guild.widget_channel_id;
-            guild.widget_enabled = self.guild.widget_enabled;
         }
 
         None
     }
 }
 
-impl CacheUpdate for MessageCreateEvent {
-    /// The oldest message, if the channel's message cache was already full.
-    type Output = Message;
+// impl CacheUpdate for MessageCreateEvent {
+//     /// The oldest message, if the channel's message cache was already full.
+//     type Output = Message;
 
-    fn update(&mut self, cache: &Cache) -> Option<Self::Output> {
-        let max = cache.settings().max_messages;
+//     fn update(&mut self, cache: &Cache) -> Option<Self::Output> {
+//         let max = cache.settings().max_messages;
 
-        if max == 0 {
-            return None;
-        }
+//         if max == 0 {
+//             return None;
+//         }
 
-        let mut messages =
-            cache.messages.entry(self.message.channel_id).or_insert_with(Default::default);
-        let mut queue =
-            cache.message_queue.entry(self.message.channel_id).or_insert_with(Default::default);
+//         let mut messages =
+//             cache.messages.entry(self.message.channel_id).or_insert_with(Default::default);
+//         let mut queue =
+//             cache.message_queue.entry(self.message.channel_id).or_insert_with(Default::default);
 
-        let mut removed_msg = None;
+//         let mut removed_msg = None;
 
-        if messages.len() == max {
-            if let Some(id) = queue.pop_front() {
-                removed_msg = messages.remove(&id);
-            }
-        }
+//         if messages.len() == max {
+//             if let Some(id) = queue.pop_front() {
+//                 removed_msg = messages.remove(&id);
+//             }
+//         }
 
-        queue.push_back(self.message.id);
-        messages.insert(self.message.id, self.message.clone());
+//         queue.push_back(self.message.id);
+//         messages.insert(self.message.id, self.message.clone());
 
-        removed_msg
-    }
-}
+//         removed_msg
+//     }
+// }
 
-impl CacheUpdate for MessageUpdateEvent {
-    type Output = Message;
+// impl CacheUpdate for MessageUpdateEvent {
+//     type Output = Message;
 
-    fn update(&mut self, cache: &Cache) -> Option<Self::Output> {
-        if let Some(mut messages) = cache.messages.get_mut(&self.channel_id) {
-            if let Some(mut message) = messages.get_mut(&self.id) {
-                let item = message.clone();
+//     fn update(&mut self, cache: &Cache) -> Option<Self::Output> {
+//         if let Some(mut messages) = cache.messages.get_mut(&self.channel_id) {
+//             if let Some(mut message) = messages.get_mut(&self.id) {
+//                 let item = message.clone();
 
-                if let Some(attachments) = self.attachments.clone() {
-                    message.attachments = attachments;
-                }
+//                 if let Some(attachments) = self.attachments.clone() {
+//                     message.attachments = attachments;
+//                 }
 
-                if let Some(content) = self.content.clone() {
-                    message.content = content;
-                }
+//                 if let Some(content) = self.content.clone() {
+//                     message.content = content;
+//                 }
 
-                if let Some(edited_timestamp) = self.edited_timestamp {
-                    message.edited_timestamp = Some(edited_timestamp);
-                }
+//                 if let Some(edited_timestamp) = self.edited_timestamp {
+//                     message.edited_timestamp = Some(edited_timestamp);
+//                 }
 
-                if let Some(mentions) = self.mentions.clone() {
-                    message.mentions = mentions;
-                }
+//                 if let Some(mentions) = self.mentions.clone() {
+//                     message.mentions = mentions;
+//                 }
 
-                if let Some(mention_everyone) = self.mention_everyone {
-                    message.mention_everyone = mention_everyone;
-                }
+//                 if let Some(mention_everyone) = self.mention_everyone {
+//                     message.mention_everyone = mention_everyone;
+//                 }
 
-                if let Some(mention_roles) = self.mention_roles.clone() {
-                    message.mention_roles = mention_roles;
-                }
+//                 if let Some(mention_roles) = self.mention_roles.clone() {
+//                     message.mention_roles = mention_roles;
+//                 }
 
-                if let Some(pinned) = self.pinned {
-                    message.pinned = pinned;
-                }
+//                 if let Some(pinned) = self.pinned {
+//                     message.pinned = pinned;
+//                 }
 
-                if self.flags.is_some() {
-                    message.flags = self.flags;
-                }
+//                 if self.flags.is_some() {
+//                     message.flags = self.flags;
+//                 }
 
-                return Some(item);
-            }
-        }
+//                 return Some(item);
+//             }
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
-impl CacheUpdate for PresenceUpdateEvent {
-    type Output = ();
+// impl CacheUpdate for PresenceUpdateEvent {
+//     type Output = ();
 
-    fn update(&mut self, cache: &Cache) -> Option<()> {
-        if let Some(user) = self.presence.user.to_user() {
-            cache.update_user_entry(&user);
-        }
+//     fn update(&mut self, cache: &Cache) -> Option<()> {
+//         if let Some(user) = self.presence.user.to_user() {
+//             cache.update_user_entry(&user);
+//         }
 
-        if let Some(user) = cache.user(self.presence.user.id) {
-            self.presence.user.update_with_user(&user);
-        }
+//         if let Some(user) = cache.user(self.presence.user.id) {
+//             self.presence.user.update_with_user(&user);
+//         }
 
-        if let Some(guild_id) = self.presence.guild_id {
-            if let Some(mut guild) = cache.guilds.get_mut(&guild_id) {
-                // If the member went offline, remove them from the presence list.
-                if self.presence.status == OnlineStatus::Offline {
-                    guild.presences.remove(&self.presence.user.id);
-                } else {
-                    guild.presences.insert(self.presence.user.id, self.presence.clone());
-                }
+//         if let Some(guild_id) = self.presence.guild_id {
+//             if let Some(mut guild) = cache.guilds.get_mut(&guild_id) {
+//                 // If the member went offline, remove them from the presence list.
+//                 if self.presence.status == OnlineStatus::Offline {
+//                     guild.presences.remove(&self.presence.user.id);
+//                 } else {
+//                     guild.presences.insert(self.presence.user.id, self.presence.clone());
+//                 }
 
-                // Create a partial member instance out of the presence update
-                // data.
-                if let Some(user) = self.presence.user.to_user() {
-                    guild.members.entry(self.presence.user.id).or_insert_with(|| Member {
-                        deaf: false,
-                        guild_id,
-                        joined_at: None,
-                        mute: false,
-                        nick: None,
-                        user,
-                        roles: vec![],
-                        pending: false,
-                        premium_since: None,
-                        permissions: None,
-                        avatar: None,
-                        communication_disabled_until: None,
-                    });
-                }
-            }
-        } else if self.presence.status == OnlineStatus::Offline {
-            cache.presences.remove(&self.presence.user.id);
-        } else {
-            cache.presences.insert(self.presence.user.id, self.presence.clone());
-        }
+//                 // Create a partial member instance out of the presence update
+//                 // data.
+//                 if let Some(user) = self.presence.user.to_user() {
+//                     guild.members.entry(self.presence.user.id).or_insert_with(|| Member {
+//                         deaf: false,
+//                         guild_id,
+//                         joined_at: None,
+//                         mute: false,
+//                         nick: None,
+//                         user,
+//                         roles: vec![],
+//                         pending: false,
+//                         premium_since: None,
+//                         permissions: None,
+//                         avatar: None,
+//                         communication_disabled_until: None,
+//                     });
+//                 }
+//             }
+//         } else if self.presence.status == OnlineStatus::Offline {
+//             cache.presences.remove(&self.presence.user.id);
+//         } else {
+//             cache.presences.insert(self.presence.user.id, self.presence.clone());
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
-impl CacheUpdate for PresencesReplaceEvent {
-    type Output = ();
+// impl CacheUpdate for PresencesReplaceEvent {
+//     type Output = ();
 
-    fn update(&mut self, cache: &Cache) -> Option<()> {
-        for presence in &self.presences {
-            cache.presences.insert(presence.user.id, presence.clone());
-        }
+//     fn update(&mut self, cache: &Cache) -> Option<()> {
+//         for presence in &self.presences {
+//             cache.presences.insert(presence.user.id, presence.clone());
+//         }
 
-        None
-    }
-}
+//         None
+//     }
+// }
 
 impl CacheUpdate for ReadyEvent {
     type Output = ();
 
     fn update(&mut self, cache: &Cache) -> Option<()> {
-        let mut ready = self.ready.clone();
+        let ready = self.ready.clone();
 
         for unavailable in ready.guilds {
             cache.guilds.remove(&unavailable.id);
@@ -618,16 +595,16 @@ impl CacheUpdate for ReadyEvent {
         // `ready.private_channels` will always be empty, and possibly be removed in the future.
         // So don't handle it at all.
 
-        for (user_id, presence) in &mut ready.presences {
-            if let Some(user) = presence.user.to_user() {
-                cache.update_user_entry(&user);
-            }
-            if let Some(user) = cache.user(user_id) {
-                presence.user.update_with_user(&user);
-            }
+        // for (user_id, presence) in &mut ready.presences {
+        //     if let Some(user) = presence.user.to_user() {
+        //         cache.update_user_entry(&user);
+        //     }
+        //     if let Some(user) = cache.user(user_id) {
+        //         presence.user.update_with_user(&user);
+        //     }
 
-            cache.presences.insert(*user_id, presence.clone());
-        }
+        //     cache.presences.insert(*user_id, presence.clone());
+        // }
 
         *cache.shard_count.write() = ready.shard.map_or(1, |s| s.total);
         *cache.user.write() = ready.user;

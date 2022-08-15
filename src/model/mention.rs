@@ -194,7 +194,7 @@ mentionable!(value:
     Member, value.user.id;
     User, value.id;
     Role, value.id;
-    Emoji, (value.id, value.animated);
+    // Emoji, (value.id, value.animated);
     EmojiIdentifier, (value.id, value.animated);
 );
 
@@ -211,44 +211,44 @@ mod test {
             guild_id: GuildId::new(1),
             kind: ChannelType::Text,
             id: ChannelId::new(4),
-            last_message_id: None,
-            last_pin_timestamp: None,
+            // last_message_id: None,
+            // last_pin_timestamp: None,
             name: "a".to_string(),
             permission_overwrites: vec![],
             position: 1,
-            topic: None,
+            // topic: None,
             user_limit: None,
-            nsfw: false,
+            // nsfw: false,
             rate_limit_per_user: Some(0),
             rtc_region: None,
-            video_quality_mode: None,
-            message_count: None,
-            member_count: None,
+            // video_quality_mode: None,
+            // message_count: None,
+            // member_count: None,
             thread_metadata: None,
-            member: None,
-            default_auto_archive_duration: None,
+            // member: None,
+            // default_auto_archive_duration: None,
         });
-        let emoji = Emoji {
-            animated: false,
-            available: true,
-            id: EmojiId::new(5),
-            name: "a".to_string(),
-            managed: true,
-            require_colons: true,
-            roles: vec![],
-            user: None,
-        };
+        // let emoji = Emoji {
+        //     animated: false,
+        //     available: true,
+        //     id: EmojiId::new(5),
+        //     name: "a".to_string(),
+        //     managed: true,
+        //     require_colons: true,
+        //     roles: vec![],
+        //     user: None,
+        // };
         let role = Role {
             id: RoleId::new(2),
             guild_id: GuildId::new(1),
-            colour: Colour::ROSEWATER,
-            hoist: false,
-            managed: false,
-            mentionable: false,
+            // colour: Colour::ROSEWATER,
+            // hoist: false,
+            // managed: false,
+            // mentionable: false,
             name: "fake role".to_string(),
             permissions: Permissions::empty(),
             position: 1,
-            tags: RoleTags::default(),
+            // tags: RoleTags::default(),
             icon: None,
             unicode_emoji: None,
         };
@@ -258,20 +258,20 @@ mod test {
             bot: false,
             discriminator: 4132,
             name: "fake".to_string(),
-            public_flags: None,
-            banner: None,
-            accent_colour: None,
+            // public_flags: None,
+            // banner: None,
+            // accent_colour: None,
         };
         let member = Member {
             deaf: false,
             guild_id: GuildId::new(2),
-            joined_at: None,
+            // joined_at: None,
             mute: false,
             nick: None,
             roles: vec![],
             user: user.clone(),
-            pending: false,
-            premium_since: None,
+            // pending: false,
+            // premium_since: None,
             permissions: None,
             avatar: None,
             communication_disabled_until: None,
@@ -280,7 +280,7 @@ mod test {
         assert_eq!(ChannelId::new(1).mention().to_string(), "<#1>");
         #[cfg(feature = "model")]
         assert_eq!(channel.mention().to_string(), "<#4>");
-        assert_eq!(emoji.mention().to_string(), "<:omitted:5>");
+        // assert_eq!(emoji.mention().to_string(), "<:omitted:5>");
         assert_eq!(member.mention().to_string(), "<@6>");
         assert_eq!(role.mention().to_string(), "<@&2>");
         assert_eq!(role.id.mention().to_string(), "<@&2>");

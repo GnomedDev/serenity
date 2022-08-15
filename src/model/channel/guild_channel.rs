@@ -4,7 +4,7 @@ use std::sync::Arc;
 
 #[cfg(feature = "model")]
 use crate::builder::{
-    CreateInvite,
+    // CreateInvite,
     CreateMessage,
     CreateStageInstance,
     CreateThread,
@@ -29,7 +29,7 @@ use crate::internal::prelude::*;
 #[cfg(feature = "model")]
 use crate::model::channel::AttachmentType;
 use crate::model::prelude::*;
-use crate::model::Timestamp;
+// use crate::model::Timestamp;
 
 /// Represents a guild's text, news, or voice channel. Some methods are available
 /// only for voice channels and some are only available for text channels.
@@ -60,14 +60,14 @@ pub struct GuildChannel {
     /// The type of the channel.
     #[serde(rename = "type")]
     pub kind: ChannelType,
-    /// The Id of the last message sent in the channel.
-    ///
-    /// **Note**: This is only available for text channels.
-    pub last_message_id: Option<MessageId>,
-    /// The timestamp of the time a pin was most recently made.
-    ///
-    /// **Note**: This is only available for text channels.
-    pub last_pin_timestamp: Option<Timestamp>,
+    // /// The Id of the last message sent in the channel.
+    // ///
+    // /// **Note**: This is only available for text channels.
+    // pub last_message_id: Option<MessageId>,
+    // /// The timestamp of the time a pin was most recently made.
+    // ///
+    // /// **Note**: This is only available for text channels.
+    // pub last_pin_timestamp: Option<Timestamp>,
     /// The name of the channel.
     pub name: String,
     /// Permission overwrites for [`Member`]s and for [`Role`]s.
@@ -79,20 +79,20 @@ pub struct GuildChannel {
     /// `0`.
     #[serde(default)]
     pub position: i64,
-    /// The topic of the channel.
-    ///
-    /// **Note**: This is only available for text and stage channels.
-    pub topic: Option<String>,
+    // /// The topic of the channel.
+    // ///
+    // /// **Note**: This is only available for text and stage channels.
+    // pub topic: Option<String>,
     /// The maximum number of members allowed in the channel.
     ///
     /// **Note**: This is only available for voice channels.
     pub user_limit: Option<u64>,
-    /// Used to tell if the channel is not safe for work.
-    /// Note however, it's recommended to use [`Self::is_nsfw`] as it's gonna be more accurate.
-    // This field can or can not be present sometimes, but if it isn't
-    // default to `false`.
-    #[serde(default)]
-    pub nsfw: bool,
+    // /// Used to tell if the channel is not safe for work.
+    // /// Note however, it's recommended to use [`Self::is_nsfw`] as it's gonna be more accurate.
+    // // This field can or can not be present sometimes, but if it isn't
+    // // default to `false`.
+    // #[serde(default)]
+    // pub nsfw: bool,
     /// A rate limit that applies per user and excludes bots.
     ///
     /// **Note**: This is only available for text channels excluding news
@@ -105,30 +105,30 @@ pub struct GuildChannel {
     /// **Note**: This is only available for voice and stage channels. [`None`]
     /// for voice and stage channels means automatic region selection.
     pub rtc_region: Option<String>,
-    /// The video quality mode for a voice channel.
-    pub video_quality_mode: Option<VideoQualityMode>,
-    /// An approximate count of messages in the thread.
-    ///
-    /// This is currently saturated at 255 to prevent breaking.
-    ///
-    /// **Note**: This is only available on thread channels.
-    pub message_count: Option<u32>,
-    /// An approximate count of users in a thread, stops counting at 50.
-    ///
-    /// **Note**: This is only available on thread channels.
-    pub member_count: Option<u8>,
+    // /// The video quality mode for a voice channel.
+    // pub video_quality_mode: Option<VideoQualityMode>,
+    // /// An approximate count of messages in the thread.
+    // ///
+    // /// This is currently saturated at 255 to prevent breaking.
+    // ///
+    // /// **Note**: This is only available on thread channels.
+    // pub message_count: Option<u32>,
+    // /// An approximate count of users in a thread, stops counting at 50.
+    // ///
+    // /// **Note**: This is only available on thread channels.
+    // pub member_count: Option<u8>,
     /// The thread metadata.
     ///
     /// **Note**: This is only available on thread channels.
     pub thread_metadata: Option<ThreadMetadata>,
-    /// Thread member object for the current user, if they have joined the thread,
-    /// only included on certain API endpoints.
-    pub member: Option<ThreadMember>,
-    /// Default duration for newly created threads, in minutes, to automatically
-    /// archive the thread after recent activity.
-    ///
-    /// **Note**: It can currently only be set to 60, 1440, 4320, 10080.
-    pub default_auto_archive_duration: Option<u64>,
+    // /// Thread member object for the current user, if they have joined the thread,
+    // /// only included on certain API endpoints.
+    // pub member: Option<ThreadMember>,
+    // /// Default duration for newly created threads, in minutes, to automatically
+    // /// archive the thread after recent activity.
+    // ///
+    // /// **Note**: It can currently only be set to 60, 1440, 4320, 10080.
+    // pub default_auto_archive_duration: Option<u64>,
 }
 
 #[cfg(feature = "model")]
@@ -157,41 +157,41 @@ impl GuildChannel {
         self.id.broadcast_typing(&http).await
     }
 
-    /// Creates an invite for the given channel.
-    ///
-    /// **Note**: Requires the [Create Instant Invite] permission.
-    ///
-    /// # Examples
-    ///
-    /// Create an invite that can only be used 5 times:
-    ///
-    /// ```rust,ignore
-    /// let builder = CreateBuilder::default().max_uses(5);
-    /// let invite = channel.create_invite(&context, builder).await;
-    /// ```
-    ///
-    /// # Errors
-    ///
-    /// If the `cache` is enabled, returns [`ModelError::InvalidPermissions`] if the current user
-    /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
-    ///
-    /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
-    #[inline]
-    #[cfg(feature = "utils")]
-    pub async fn create_invite(
-        &self,
-        cache_http: impl CacheHttp,
-        builder: CreateInvite,
-    ) -> Result<RichInvite> {
-        builder
-            .execute(
-                cache_http,
-                self.id,
-                #[cfg(feature = "cache")]
-                Some(self.guild_id),
-            )
-            .await
-    }
+    // /// Creates an invite for the given channel.
+    // ///
+    // /// **Note**: Requires the [Create Instant Invite] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Create an invite that can only be used 5 times:
+    // ///
+    // /// ```rust,ignore
+    // /// let builder = CreateBuilder::default().max_uses(5);
+    // /// let invite = channel.create_invite(&context, builder).await;
+    // /// ```
+    // ///
+    // /// # Errors
+    // ///
+    // /// If the `cache` is enabled, returns [`ModelError::InvalidPermissions`] if the current user
+    // /// lacks permission. Otherwise returns [`Error::Http`], as well as if invalid data is given.
+    // ///
+    // /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
+    // #[inline]
+    // #[cfg(feature = "utils")]
+    // pub async fn create_invite(
+    //     &self,
+    //     cache_http: impl CacheHttp,
+    //     builder: CreateInvite,
+    // ) -> Result<RichInvite> {
+    //     builder
+    //         .execute(
+    //             cache_http,
+    //             self.id,
+    //             #[cfg(feature = "cache")]
+    //             Some(self.guild_id),
+    //         )
+    //         .await
+    // }
 
     /// Creates a [permission overwrite][`PermissionOverwrite`] for either a
     /// single [`Member`] or [`Role`] within a [`Channel`].
@@ -586,48 +586,48 @@ impl GuildChannel {
         cache.as_ref().guild(self.guild_id)
     }
 
-    /// Gets all of the channel's invites.
-    ///
-    /// Requires the [Manage Channels] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Manage Channels]: Permissions::MANAGE_CHANNELS
-    #[inline]
-    pub async fn invites(&self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
-        self.id.invites(&http).await
-    }
+    // /// Gets all of the channel's invites.
+    // ///
+    // /// Requires the [Manage Channels] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission.
+    // ///
+    // /// [Manage Channels]: Permissions::MANAGE_CHANNELS
+    // #[inline]
+    // pub async fn invites(&self, http: impl AsRef<Http>) -> Result<Vec<RichInvite>> {
+    //     self.id.invites(&http).await
+    // }
 
-    /// Determines if the channel is NSFW.
-    ///
-    /// Only [text channels][`ChannelType::Text`] are taken into consideration
-    /// as being NSFW. [voice channels][`ChannelType::Voice`] are never NSFW.
-    #[inline]
-    #[must_use]
-    pub fn is_nsfw(&self) -> bool {
-        self.kind == ChannelType::Text && self.nsfw
-    }
+    // /// Determines if the channel is NSFW.
+    // ///
+    // /// Only [text channels][`ChannelType::Text`] are taken into consideration
+    // /// as being NSFW. [voice channels][`ChannelType::Voice`] are never NSFW.
+    // #[inline]
+    // #[must_use]
+    // pub fn is_nsfw(&self) -> bool {
+    //     self.kind == ChannelType::Text && self.nsfw
+    // }
 
-    /// Gets a message from the channel.
-    ///
-    /// Requires the [Read Message History] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission,
-    /// or if a message with the given Id does not exist in the channel.
-    ///
-    /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
-    #[inline]
-    pub async fn message(
-        &self,
-        cache_http: impl CacheHttp,
-        message_id: impl Into<MessageId>,
-    ) -> Result<Message> {
-        self.id.message(&cache_http, message_id).await
-    }
+    // /// Gets a message from the channel.
+    // ///
+    // /// Requires the [Read Message History] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission,
+    // /// or if a message with the given Id does not exist in the channel.
+    // ///
+    // /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
+    // #[inline]
+    // pub async fn message(
+    //     &self,
+    //     cache_http: impl CacheHttp,
+    //     message_id: impl Into<MessageId>,
+    // ) -> Result<Message> {
+    //     self.id.message(&cache_http, message_id).await
+    // }
 
     /// Gets messages from the channel.
     ///

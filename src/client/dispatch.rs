@@ -90,9 +90,9 @@ impl DispatchEvent {
             Self::Model(Event::GuildDelete(event)) => {
                 update(cache_and_http, event);
             },
-            Self::Model(Event::GuildEmojisUpdate(event)) => {
-                update(cache_and_http, event);
-            },
+            // Self::Model(Event::GuildEmojisUpdate(event)) => {
+            //     update(cache_and_http, event);
+            // },
             Self::Model(Event::GuildMemberAdd(event)) => {
                 update(cache_and_http, event);
             },
@@ -114,20 +114,20 @@ impl DispatchEvent {
             Self::Model(Event::GuildRoleUpdate(event)) => {
                 update(cache_and_http, event);
             },
-            Self::Model(Event::GuildStickersUpdate(event)) => {
-                update(cache_and_http, event);
-            },
+            // Self::Model(Event::GuildStickersUpdate(event)) => {
+            //     update(cache_and_http, event);
+            // },
             // Already handled by the framework check macro
             Self::Model(Event::MessageCreate(_)) => {},
-            Self::Model(Event::MessageUpdate(event)) => {
-                update(cache_and_http, event);
-            },
-            Self::Model(Event::PresencesReplace(event)) => {
-                update(cache_and_http, event);
-            },
-            Self::Model(Event::PresenceUpdate(event)) => {
-                update(cache_and_http, event);
-            },
+            // Self::Model(Event::MessageUpdate(event)) => {
+            //     update(cache_and_http, event);
+            // },
+            // Self::Model(Event::PresencesReplace(event)) => {
+            //     update(cache_and_http, event);
+            // },
+            // Self::Model(Event::PresenceUpdate(event)) => {
+            //     update(cache_and_http, event);
+            // },
             Self::Model(Event::Ready(event)) => {
                 update(cache_and_http, event);
             },
@@ -191,8 +191,8 @@ pub(crate) fn dispatch<'rec>(
                 }
             },
             (Some(h), None) => match event {
-                DispatchEvent::Model(Event::MessageCreate(mut event)) => {
-                    update(&cache_and_http, &mut event);
+                DispatchEvent::Model(Event::MessageCreate(event)) => {
+                    // update(&cache_and_http, &mut event);
 
                     #[cfg(not(feature = "cache"))]
                     let context = context(data, runner_tx, shard_id, &cache_and_http.http);
@@ -427,11 +427,11 @@ async fn handle_event(
                 },
             }
         },
-        Event::ChannelPinsUpdate(event) => {
-            spawn_named("dispatch::event_handler::channel_pins_update", async move {
-                event_handler.channel_pins_update(context, event).await;
-            });
-        },
+        // Event::ChannelPinsUpdate(event) => {
+        //     spawn_named("dispatch::event_handler::channel_pins_update", async move {
+        //         event_handler.channel_pins_update(context, event).await;
+        //     });
+        // },
         Event::ChannelUpdate(mut event) => {
             spawn_named("dispatch::event_handler::channel_update", async move {
                 feature_cache! {{
@@ -500,13 +500,13 @@ async fn handle_event(
                 }}
             });
         },
-        Event::GuildEmojisUpdate(mut event) => {
-            update(&cache_and_http, &mut event);
+        // Event::GuildEmojisUpdate(mut event) => {
+        //     update(&cache_and_http, &mut event);
 
-            spawn_named("dispatch::event_handler::guild_emojis_update", async move {
-                event_handler.guild_emojis_update(context, event.guild_id, event.emojis).await;
-            });
-        },
+        //     spawn_named("dispatch::event_handler::guild_emojis_update", async move {
+        //         event_handler.guild_emojis_update(context, event.guild_id, event.emojis).await;
+        //     });
+        // },
         Event::GuildIntegrationsUpdate(event) => {
             spawn_named("dispatch::event_handler::guild_integrations_update", async move {
                 event_handler.guild_integrations_update(context, event.guild_id).await;
@@ -584,13 +584,13 @@ async fn handle_event(
                 }}
             });
         },
-        Event::GuildStickersUpdate(mut event) => {
-            update(&cache_and_http, &mut event);
+        // Event::GuildStickersUpdate(mut event) => {
+        //     update(&cache_and_http, &mut event);
 
-            tokio::spawn(async move {
-                event_handler.guild_stickers_update(context, event.guild_id, event.stickers).await;
-            });
-        },
+        //     tokio::spawn(async move {
+        //         event_handler.guild_stickers_update(context, event.guild_id, event.stickers).await;
+        //     });
+        // },
         Event::GuildUpdate(mut event) => {
             spawn_named("dispatch::event_handler::guild_update", async move {
                 feature_cache! {{
@@ -632,32 +632,32 @@ async fn handle_event(
                     .await;
             });
         },
-        Event::MessageUpdate(mut event) => {
-            let _before = update(&cache_and_http, &mut event);
+        // Event::MessageUpdate(mut event) => {
+        //     let _before = update(&cache_and_http, &mut event);
 
-            spawn_named("dispatch::event_handler::message_update", async move {
-                feature_cache! {{
-                    let _after = cache_and_http.cache.message(event.channel_id, event.id);
-                    event_handler.message_update(context, _before, _after, event).await;
-                } else {
-                    event_handler.message_update(context, event).await;
-                }}
-            });
-        },
-        Event::PresencesReplace(mut event) => {
-            update(&cache_and_http, &mut event);
+        //     spawn_named("dispatch::event_handler::message_update", async move {
+        //         feature_cache! {{
+        //             let _after = cache_and_http.cache.message(event.channel_id, event.id);
+        //             event_handler.message_update(context, _before, _after, event).await;
+        //         } else {
+        //             event_handler.message_update(context, event).await;
+        //         }}
+        //     });
+        // },
+        // Event::PresencesReplace(mut event) => {
+        //     update(&cache_and_http, &mut event);
 
-            spawn_named("dispatch::event_handler::presence_replace", async move {
-                event_handler.presence_replace(context, event.presences).await;
-            });
-        },
-        Event::PresenceUpdate(mut event) => {
-            update(&cache_and_http, &mut event);
+        //     spawn_named("dispatch::event_handler::presence_replace", async move {
+        //         event_handler.presence_replace(context, event.presences).await;
+        //     });
+        // },
+        // Event::PresenceUpdate(mut event) => {
+        //     update(&cache_and_http, &mut event);
 
-            spawn_named("dispatch::event_handler::presence_update", async move {
-                event_handler.presence_update(context, event.presence).await;
-            });
-        },
+        //     spawn_named("dispatch::event_handler::presence_update", async move {
+        //         event_handler.presence_update(context, event.presence).await;
+        //     });
+        // },
         Event::ReactionAdd(event) => {
             spawn_named("dispatch::event_handler::reaction_add", async move {
                 event_handler.reaction_add(context, event.reaction).await;

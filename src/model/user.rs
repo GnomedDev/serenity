@@ -111,6 +111,7 @@ pub(crate) mod discriminator {
     ///     id: Option<u16>,
     /// }
     /// ```
+    #[cfg(test)]
     pub(crate) mod option {
         use std::fmt;
 
@@ -178,9 +179,9 @@ pub struct CurrentUser {
     #[serde(rename = "username")]
     pub name: String,
     pub verified: Option<bool>,
-    pub public_flags: Option<UserPublicFlags>,
-    pub banner: Option<String>,
-    pub accent_colour: Option<Colour>,
+    // pub public_flags: Option<UserPublicFlags>,
+    // pub banner: Option<String>,
+    // pub accent_colour: Option<Colour>,
 }
 
 #[cfg(feature = "model")]
@@ -525,9 +526,9 @@ impl Default for CurrentUser {
             mfa_enabled: Default::default(),
             name: String::default(),
             verified: None,
-            public_flags: None,
-            banner: None,
-            accent_colour: None,
+            // public_flags: None,
+            // banner: None,
+            // accent_colour: None,
         }
     }
 }
@@ -631,58 +632,58 @@ pub struct User {
     /// change if the username+discriminator pair becomes non-unique.
     #[serde(rename = "username")]
     pub name: String,
-    /// The public flags on a user's account
-    pub public_flags: Option<UserPublicFlags>,
-    /// Optional banner hash.
-    ///
-    /// **Note**: This will only be present if the user is fetched via Rest API,
-    /// e.g. with [`Http::get_user`].
-    pub banner: Option<String>,
-    /// The user's banner colour encoded as an integer representation of
-    /// hexadecimal colour code
-    ///
-    /// **Note**: This will only be present if the user is fetched via Rest API,
-    /// e.g. with [`Http::get_user`].
-    #[serde(rename = "accent_color")]
-    pub accent_colour: Option<Colour>,
+    // /// The public flags on a user's account
+    // pub public_flags: Option<UserPublicFlags>,
+    // /// Optional banner hash.
+    // ///
+    // /// **Note**: This will only be present if the user is fetched via Rest API,
+    // /// e.g. with [`Http::get_user`].
+    // pub banner: Option<String>,
+    // /// The user's banner colour encoded as an integer representation of
+    // /// hexadecimal colour code
+    // ///
+    // /// **Note**: This will only be present if the user is fetched via Rest API,
+    // /// e.g. with [`Http::get_user`].
+    // #[serde(rename = "accent_color")]
+    // pub accent_colour: Option<Colour>,
 }
 
-bitflags! {
-    /// User's public flags
-    #[derive(Default)]
-    pub struct UserPublicFlags: u32 {
-        /// User's flag as discord employee
-        const DISCORD_EMPLOYEE = 1 << 0;
-        /// User's flag as partnered server owner
-        const PARTNERED_SERVER_OWNER = 1 << 1;
-        /// User's flag as hypesquad events
-        const HYPESQUAD_EVENTS = 1 << 2;
-        /// User's flag as bug hunter level 1
-        const BUG_HUNTER_LEVEL_1 = 1 << 3;
-        /// User's flag as house bravery
-        const HOUSE_BRAVERY = 1 << 6;
-        /// User's flag as house brilliance
-        const HOUSE_BRILLIANCE = 1 << 7;
-        /// User's flag as house balance
-        const HOUSE_BALANCE = 1 << 8;
-        /// User's flag as early supporter
-        const EARLY_SUPPORTER = 1 << 9;
-        /// User's flag as team user
-        const TEAM_USER = 1 << 10;
-        /// User's flag as system
-        const SYSTEM = 1 << 12;
-        /// User's flag as bug hunter level 2
-        const BUG_HUNTER_LEVEL_2 = 1 << 14;
-        /// User's flag as verified bot
-        const VERIFIED_BOT = 1 << 16;
-        /// User's flag as early verified bot developer
-        const EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17;
-        /// User's flag as discord certified moderator
-        const DISCORD_CERTIFIED_MODERATOR = 1 << 18;
-        /// Bot's running with HTTP interactions
-        const BOT_HTTP_INTERACTIONS = 1 << 19;
-    }
-}
+// bitflags! {
+//     /// User's public flags
+//     #[derive(Default)]
+//     pub struct UserPublicFlags: u32 {
+//         /// User's flag as discord employee
+//         const DISCORD_EMPLOYEE = 1 << 0;
+//         /// User's flag as partnered server owner
+//         const PARTNERED_SERVER_OWNER = 1 << 1;
+//         /// User's flag as hypesquad events
+//         const HYPESQUAD_EVENTS = 1 << 2;
+//         /// User's flag as bug hunter level 1
+//         const BUG_HUNTER_LEVEL_1 = 1 << 3;
+//         /// User's flag as house bravery
+//         const HOUSE_BRAVERY = 1 << 6;
+//         /// User's flag as house brilliance
+//         const HOUSE_BRILLIANCE = 1 << 7;
+//         /// User's flag as house balance
+//         const HOUSE_BALANCE = 1 << 8;
+//         /// User's flag as early supporter
+//         const EARLY_SUPPORTER = 1 << 9;
+//         /// User's flag as team user
+//         const TEAM_USER = 1 << 10;
+//         /// User's flag as system
+//         const SYSTEM = 1 << 12;
+//         /// User's flag as bug hunter level 2
+//         const BUG_HUNTER_LEVEL_2 = 1 << 14;
+//         /// User's flag as verified bot
+//         const VERIFIED_BOT = 1 << 16;
+//         /// User's flag as early verified bot developer
+//         const EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17;
+//         /// User's flag as discord certified moderator
+//         const DISCORD_CERTIFIED_MODERATOR = 1 << 18;
+//         /// Bot's running with HTTP interactions
+//         const BOT_HTTP_INTERACTIONS = 1 << 19;
+//     }
+// }
 
 impl Default for User {
     /// Initializes a [`User`] with default values. Setting the following:
@@ -699,9 +700,9 @@ impl Default for User {
             bot: true,
             discriminator: 1432,
             name: "test".to_string(),
-            public_flags: None,
-            banner: None,
-            accent_colour: None,
+            // public_flags: None,
+            // banner: None,
+            // accent_colour: None,
         }
     }
 }
@@ -733,17 +734,17 @@ impl User {
         avatar_url(self.id, self.avatar.as_ref())
     }
 
-    /// Returns the formatted URL of the user's banner, if one exists.
-    ///
-    /// This will produce a WEBP image URL, or GIF if the user has a GIF banner.
-    ///
-    /// **Note**: This will only be present if the user is fetched via Rest API,
-    /// e.g. with [`Http::get_user`].
-    #[inline]
-    #[must_use]
-    pub fn banner_url(&self) -> Option<String> {
-        banner_url(self.id, self.banner.as_ref())
-    }
+    // /// Returns the formatted URL of the user's banner, if one exists.
+    // ///
+    // /// This will produce a WEBP image URL, or GIF if the user has a GIF banner.
+    // ///
+    // /// **Note**: This will only be present if the user is fetched via Rest API,
+    // /// e.g. with [`Http::get_user`].
+    // #[inline]
+    // #[must_use]
+    // pub fn banner_url(&self) -> Option<String> {
+    //     banner_url(self.id, self.banner.as_ref())
+    // }
 
     /// Creates a direct message channel between the [current user] and the
     /// user. This can also retrieve the channel if one already exists.
@@ -1125,9 +1126,9 @@ impl From<CurrentUser> for User {
             discriminator: user.discriminator,
             id: user.id,
             name: user.name,
-            public_flags: user.public_flags,
-            banner: user.banner,
-            accent_colour: user.accent_colour,
+            // public_flags: user.public_flags,
+            // banner: user.banner,
+            // accent_colour: user.accent_colour,
         }
     }
 }
@@ -1140,9 +1141,9 @@ impl<'a> From<&'a CurrentUser> for User {
             discriminator: user.discriminator,
             id: user.id,
             name: user.name.clone(),
-            public_flags: user.public_flags,
-            banner: user.banner.clone(),
-            accent_colour: user.accent_colour,
+            // public_flags: user.public_flags,
+            // banner: user.banner.clone(),
+            // accent_colour: user.accent_colour,
         }
     }
 }
@@ -1208,14 +1209,14 @@ fn static_avatar_url(user_id: UserId, hash: Option<&String>) -> Option<String> {
     hash.map(|hash| cdn!("/avatars/{}/{}.webp?size=1024", user_id, hash))
 }
 
-#[cfg(feature = "model")]
-fn banner_url(user_id: UserId, hash: Option<&String>) -> Option<String> {
-    hash.map(|hash| {
-        let ext = if hash.starts_with("a_") { "gif" } else { "webp" };
+// #[cfg(feature = "model")]
+// fn banner_url(user_id: UserId, hash: Option<&String>) -> Option<String> {
+//     hash.map(|hash| {
+//         let ext = if hash.starts_with("a_") { "gif" } else { "webp" };
 
-        cdn!("/banners/{}/{}.{}?size=1024", user_id.0, hash, ext)
-    })
-}
+//         cdn!("/banners/{}/{}.{}?size=1024", user_id.0, hash, ext)
+//     })
+// }
 
 #[cfg(feature = "model")]
 fn tag(name: &str, discriminator: u16) -> String {

@@ -53,8 +53,8 @@ pub use self::event_handler::{EventHandler, RawEventHandler};
 use super::gateway::GatewayError;
 #[cfg(feature = "cache")]
 pub use crate::cache::Cache;
-#[cfg(feature = "cache")]
-use crate::cache::Settings as CacheSettings;
+// #[cfg(feature = "cache")]
+// use crate::cache::Settings as CacheSettings;
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
 use crate::gateway::{ActivityData, PresenceData};
@@ -76,8 +76,8 @@ pub struct ClientBuilder {
     http: Option<Http>,
     fut: Option<BoxFuture<'static, Result<Client>>>,
     intents: GatewayIntents,
-    #[cfg(feature = "cache")]
-    cache_settings: Option<CacheSettings>,
+    // #[cfg(feature = "cache")]
+    // cache_settings: Option<CacheSettings>,
     #[cfg(feature = "framework")]
     framework: Option<Arc<dyn Framework + Send + Sync + 'static>>,
     #[cfg(feature = "voice")]
@@ -95,8 +95,8 @@ impl ClientBuilder {
             http: Some(http),
             fut: None,
             intents,
-            #[cfg(feature = "cache")]
-            cache_settings: Some(CacheSettings::new()),
+            // #[cfg(feature = "cache")]
+            // cache_settings: Some(CacheSettings::new()),
             #[cfg(feature = "framework")]
             framework: None,
             #[cfg(feature = "voice")]
@@ -182,28 +182,28 @@ impl ClientBuilder {
         self
     }
 
-    /// Sets the settings of the cache.
-    /// Refer to [`Settings`] for more information.
-    ///
-    /// [`Settings`]: CacheSettings
-    #[cfg(feature = "cache")]
-    pub fn cache_settings<F>(mut self, f: F) -> Self
-    where
-        F: FnOnce(&mut CacheSettings) -> &mut CacheSettings,
-    {
-        if let Some(settings) = &mut self.cache_settings {
-            f(settings);
-        }
+    // /// Sets the settings of the cache.
+    // /// Refer to [`Settings`] for more information.
+    // ///
+    // /// [`Settings`]: CacheSettings
+    // #[cfg(feature = "cache")]
+    // pub fn cache_settings<F>(mut self, f: F) -> Self
+    // where
+    //     F: FnOnce(&mut CacheSettings) -> &mut CacheSettings,
+    // {
+    //     if let Some(settings) = &mut self.cache_settings {
+    //         f(settings);
+    //     }
 
-        self
-    }
+    //     self
+    // }
 
-    /// Gets the cache settings. See [`Self::cache_settings`] for more info.
-    /// This can be unwrapped safely unless used after awaiting the builder.
-    #[cfg(feature = "cache")]
-    pub fn get_cache_settings(&self) -> Option<&CacheSettings> {
-        self.cache_settings.as_ref()
-    }
+    // /// Gets the cache settings. See [`Self::cache_settings`] for more info.
+    // /// This can be unwrapped safely unless used after awaiting the builder.
+    // #[cfg(feature = "cache")]
+    // pub fn get_cache_settings(&self) -> Option<&CacheSettings> {
+    //     self.cache_settings.as_ref()
+    // }
 
     /// Sets the command framework to be used. It will receive messages sent
     /// over the gateway and then consider - based on its settings - whether to
@@ -394,7 +394,7 @@ impl Future for ClientBuilder {
 
             let cache_and_http = Arc::new(CacheAndHttp {
                 #[cfg(feature = "cache")]
-                cache: Arc::new(Cache::new_with_settings(self.cache_settings.take().unwrap())),
+                cache: Arc::new(Cache::new()),
                 http: Arc::clone(&http),
             });
 

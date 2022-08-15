@@ -3,8 +3,8 @@ use std::cmp::Ordering;
 use std::error::Error as StdError;
 use std::fmt;
 
-#[cfg(feature = "model")]
-use crate::builder::EditRole;
+// #[cfg(feature = "model")]
+// use crate::builder::EditRole;
 #[cfg(all(feature = "cache", feature = "model"))]
 use crate::cache::Cache;
 #[cfg(all(feature = "cache", feature = "model", feature = "utils"))]
@@ -14,7 +14,7 @@ use crate::http::Http;
 #[cfg(all(feature = "cache", feature = "model"))]
 use crate::internal::prelude::*;
 use crate::model::prelude::*;
-use crate::model::utils::is_false;
+// use crate::model::utils::is_false;
 #[cfg(all(feature = "cache", feature = "model", feature = "utils"))]
 use crate::utils::parse_role;
 
@@ -32,22 +32,22 @@ pub struct Role {
     /// The Id of the Guild the Role is in.
     pub guild_id: GuildId,
     /// The colour of the role.
-    #[serde(rename = "color")]
-    pub colour: Colour,
-    /// Indicator of whether the role is pinned above lesser roles.
-    ///
-    /// In the client, this causes [`Member`]s in the role to be seen above
-    /// those in roles with a lower [`Self::position`].
-    pub hoist: bool,
-    /// Indicator of whether the role is managed by an integration service.
-    pub managed: bool,
-    /// Indicator of whether the role can be mentioned, similar to mentioning a
-    /// specific member or `@everyone`.
-    ///
-    /// Only members of the role will be notified if a role is mentioned with
-    /// this set to `true`.
-    #[serde(default)]
-    pub mentionable: bool,
+    // #[serde(rename = "color")]
+    // pub colour: Colour,
+    // /// Indicator of whether the role is pinned above lesser roles.
+    // ///
+    // /// In the client, this causes [`Member`]s in the role to be seen above
+    // /// those in roles with a lower [`Self::position`].
+    // pub hoist: bool,
+    // /// Indicator of whether the role is managed by an integration service.
+    // pub managed: bool,
+    // /// Indicator of whether the role can be mentioned, similar to mentioning a
+    // /// specific member or `@everyone`.
+    // ///
+    // /// Only members of the role will be notified if a role is mentioned with
+    // /// this set to `true`.
+    // #[serde(default)]
+    // pub mentionable: bool,
     /// The name of the role.
     pub name: String,
     /// A set of permissions that the role has been assigned.
@@ -61,12 +61,12 @@ pub struct Role {
     ///
     /// The `@everyone` role is usually either `-1` or `0`.
     pub position: i64,
-    /// The tags this role has. It can be used to determine if this role is a special role in this guild
-    /// such as guild subscriber role, or if the role is linked to an [`Integration`] or a bot.
-    ///
-    /// [`Integration`]: super::Integration
-    #[serde(default)]
-    pub tags: RoleTags,
+    // /// The tags this role has. It can be used to determine if this role is a special role in this guild
+    // /// such as guild subscriber role, or if the role is linked to an [`Integration`] or a bot.
+    // ///
+    // /// [`Integration`]: super::Integration
+    // #[serde(default)]
+    // pub tags: RoleTags,
     /// Role icon image hash.
     ///
     /// `role-icons/<role_id>/<hash>.png` - PNG, JPEG, WEBP
@@ -84,17 +84,17 @@ pub(crate) struct InterimRole {
     pub id: RoleId,
     #[serde(default)]
     pub guild_id: Option<GuildId>,
-    #[serde(rename = "color")]
-    pub colour: Colour,
-    pub hoist: bool,
-    pub managed: bool,
+    // #[serde(rename = "color")]
+    // pub colour: Colour,
+    // pub hoist: bool,
+    // pub managed: bool,
     #[serde(default)]
-    pub mentionable: bool,
+    // pub mentionable: bool,
     pub name: String,
     pub permissions: Permissions,
     pub position: i64,
-    #[serde(default)]
-    pub tags: RoleTags,
+    // #[serde(default)]
+    // pub tags: RoleTags,
 }
 
 impl From<InterimRole> for Role {
@@ -102,14 +102,14 @@ impl From<InterimRole> for Role {
         Self {
             id: r.id,
             guild_id: r.guild_id.expect("GuildID was not set on InterimRole"),
-            colour: r.colour,
-            hoist: r.hoist,
-            managed: r.managed,
-            mentionable: r.mentionable,
+            // colour: r.colour,
+            // hoist: r.hoist,
+            // managed: r.managed,
+            // mentionable: r.mentionable,
             name: r.name,
             permissions: r.permissions,
             position: r.position,
-            tags: r.tags,
+            // tags: r.tags,
             icon: None,
             unicode_emoji: None,
         }
@@ -133,25 +133,25 @@ impl Role {
         http.as_ref().delete_role(self.guild_id.get(), self.id.get()).await
     }
 
-    /// Edits a [`Role`], optionally setting its new fields.
-    ///
-    /// Requires the [Manage Roles] permission.
-    ///
-    /// # Examples
-    ///
-    /// See the documentation of [`EditRole`] for details.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user does not
-    /// have permission to Manage Roles.
-    ///
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
-    #[inline]
-    pub async fn edit(&mut self, http: impl AsRef<Http>, builder: EditRole) -> Result<()> {
-        *self = self.guild_id.edit_role(http.as_ref(), self.id, builder).await?;
-        Ok(())
-    }
+    // /// Edits a [`Role`], optionally setting its new fields.
+    // ///
+    // /// Requires the [Manage Roles] permission.
+    // ///
+    // /// # Examples
+    // ///
+    // /// See the documentation of [`EditRole`] for details.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user does not
+    // /// have permission to Manage Roles.
+    // ///
+    // /// [Manage Roles]: Permissions::MANAGE_ROLES
+    // #[inline]
+    // pub async fn edit(&mut self, http: impl AsRef<Http>, builder: EditRole) -> Result<()> {
+    //     *self = self.guild_id.edit_role(http.as_ref(), self.id, builder).await?;
+    //     Ok(())
+    // }
 
     /// Check that the role has the given permission.
     #[inline]
@@ -281,102 +281,102 @@ impl FromStrAndCache for Role {
     }
 }
 
-/// The tags of a [`Role`].
-#[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct RoleTags {
-    /// The Id of the bot the [`Role`] belongs to.
-    pub bot_id: Option<UserId>,
-    /// The Id of the integration the [`Role`] belongs to.
-    pub integration_id: Option<IntegrationId>,
-    /// Whether this is the guild's premium subscriber role.
-    #[serde(default, skip_serializing_if = "is_false", with = "premium_subscriber")]
-    pub premium_subscriber: bool,
-}
+// /// The tags of a [`Role`].
+// #[derive(Clone, Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct RoleTags {
+//     /// The Id of the bot the [`Role`] belongs to.
+//     pub bot_id: Option<UserId>,
+//     /// The Id of the integration the [`Role`] belongs to.
+//     pub integration_id: Option<IntegrationId>,
+//     /// Whether this is the guild's premium subscriber role.
+//     #[serde(default, skip_serializing_if = "is_false", with = "premium_subscriber")]
+//     pub premium_subscriber: bool,
+// }
 
-/// A premium subscriber role is reported with the field present and the value `null`.
-mod premium_subscriber {
-    use std::fmt;
+// /// A premium subscriber role is reported with the field present and the value `null`.
+// mod premium_subscriber {
+//     use std::fmt;
 
-    use serde::de::{Error, Visitor};
-    use serde::{Deserializer, Serializer};
+//     use serde::de::{Error, Visitor};
+//     use serde::{Deserializer, Serializer};
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(deserializer: D) -> Result<bool, D::Error> {
-        deserializer.deserialize_option(NullValueVisitor)
-    }
+//     pub fn deserialize<'de, D: Deserializer<'de>>(deserializer: D) -> Result<bool, D::Error> {
+//         deserializer.deserialize_option(NullValueVisitor)
+//     }
 
-    #[allow(clippy::trivially_copy_pass_by_ref)]
-    pub fn serialize<S: Serializer>(_: &bool, serializer: S) -> Result<S::Ok, S::Error> {
-        serializer.serialize_none()
-    }
+//     #[allow(clippy::trivially_copy_pass_by_ref)]
+//     pub fn serialize<S: Serializer>(_: &bool, serializer: S) -> Result<S::Ok, S::Error> {
+//         serializer.serialize_none()
+//     }
 
-    struct NullValueVisitor;
+//     struct NullValueVisitor;
 
-    impl<'de> Visitor<'de> for NullValueVisitor {
-        type Value = bool;
+//     impl<'de> Visitor<'de> for NullValueVisitor {
+//         type Value = bool;
 
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("null value")
-        }
+//         fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//             f.write_str("null value")
+//         }
 
-        fn visit_none<E: Error>(self) -> Result<Self::Value, E> {
-            Ok(true)
-        }
+//         fn visit_none<E: Error>(self) -> Result<Self::Value, E> {
+//             Ok(true)
+//         }
 
-        /// Called by the `simd_json` crate
-        fn visit_unit<E: Error>(self) -> Result<Self::Value, E> {
-            Ok(true)
-        }
-    }
-}
+//         /// Called by the `simd_json` crate
+//         fn visit_unit<E: Error>(self) -> Result<Self::Value, E> {
+//             Ok(true)
+//         }
+//     }
+// }
 
-#[cfg(test)]
-mod tests {
-    use serde_test::{assert_tokens, Token};
+// #[cfg(test)]
+// mod tests {
+//     use serde_test::{assert_tokens, Token};
 
-    use super::RoleTags;
+//     use super::RoleTags;
 
-    #[test]
-    fn premium_subscriber_role_serde() {
-        let value = RoleTags {
-            bot_id: None,
-            integration_id: None,
-            premium_subscriber: true,
-        };
+//     #[test]
+//     fn premium_subscriber_role_serde() {
+//         let value = RoleTags {
+//             bot_id: None,
+//             integration_id: None,
+//             premium_subscriber: true,
+//         };
 
-        assert_tokens(&value, &[
-            Token::Struct {
-                name: "RoleTags",
-                len: 3,
-            },
-            Token::Str("bot_id"),
-            Token::None,
-            Token::Str("integration_id"),
-            Token::None,
-            Token::Str("premium_subscriber"),
-            Token::None,
-            Token::StructEnd,
-        ]);
-    }
+//         assert_tokens(&value, &[
+//             Token::Struct {
+//                 name: "RoleTags",
+//                 len: 3,
+//             },
+//             Token::Str("bot_id"),
+//             Token::None,
+//             Token::Str("integration_id"),
+//             Token::None,
+//             Token::Str("premium_subscriber"),
+//             Token::None,
+//             Token::StructEnd,
+//         ]);
+//     }
 
-    #[test]
-    fn non_premium_subscriber_role_serde() {
-        let value = RoleTags {
-            bot_id: None,
-            integration_id: None,
-            premium_subscriber: false,
-        };
+//     #[test]
+//     fn non_premium_subscriber_role_serde() {
+//         let value = RoleTags {
+//             bot_id: None,
+//             integration_id: None,
+//             premium_subscriber: false,
+//         };
 
-        assert_tokens(&value, &[
-            Token::Struct {
-                name: "RoleTags",
-                len: 2,
-            },
-            Token::Str("bot_id"),
-            Token::None,
-            Token::Str("integration_id"),
-            Token::None,
-            Token::StructEnd,
-        ]);
-    }
-}
+//         assert_tokens(&value, &[
+//             Token::Struct {
+//                 name: "RoleTags",
+//                 len: 2,
+//             },
+//             Token::Str("bot_id"),
+//             Token::None,
+//             Token::Str("integration_id"),
+//             Token::None,
+//             Token::StructEnd,
+//         ]);
+//     }
+// }

@@ -12,7 +12,7 @@ use crate::http::{Http, Typing};
 use crate::model::channel::AttachmentType;
 use crate::model::prelude::*;
 use crate::model::utils::single_recipient;
-use crate::model::Timestamp;
+// use crate::model::Timestamp;
 
 /// A Direct Message text channel with another user.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -22,10 +22,10 @@ pub struct PrivateChannel {
     ///
     /// Can be used to calculate the first message's creation date.
     pub id: ChannelId,
-    /// The Id of the last message sent.
-    pub last_message_id: Option<MessageId>,
-    /// Timestamp of the last time a [`Message`] was pinned.
-    pub last_pin_timestamp: Option<Timestamp>,
+    // /// The Id of the last message sent.
+    // pub last_message_id: Option<MessageId>,
+    // /// Timestamp of the last time a [`Message`] was pinned.
+    // pub last_pin_timestamp: Option<Timestamp>,
     /// Indicator of the type of channel this is.
     ///
     /// This should always be [`ChannelType::Private`].
@@ -163,31 +163,31 @@ impl PrivateChannel {
         self.id.edit_message(http, message_id, builder).await
     }
 
-    /// Determines if the channel is NSFW.
-    ///
-    /// **Note**: This method is for consistency. This will always return
-    /// `false`, due to DMs not being considered NSFW.
-    #[inline]
-    #[must_use]
-    #[allow(clippy::unused_self)]
-    pub fn is_nsfw(&self) -> bool {
-        false
-    }
+    // /// Determines if the channel is NSFW.
+    // ///
+    // /// **Note**: This method is for consistency. This will always return
+    // /// `false`, due to DMs not being considered NSFW.
+    // #[inline]
+    // #[must_use]
+    // #[allow(clippy::unused_self)]
+    // pub fn is_nsfw(&self) -> bool {
+    //     false
+    // }
 
-    /// Gets a message from the channel.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if a message with that Id does not
-    /// exist in this channel.
-    #[inline]
-    pub async fn message(
-        &self,
-        cache_http: impl CacheHttp,
-        message_id: impl Into<MessageId>,
-    ) -> Result<Message> {
-        self.id.message(&cache_http, message_id).await
-    }
+    // /// Gets a message from the channel.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if a message with that Id does not
+    // /// exist in this channel.
+    // #[inline]
+    // pub async fn message(
+    //     &self,
+    //     cache_http: impl CacheHttp,
+    //     message_id: impl Into<MessageId>,
+    // ) -> Result<Message> {
+    //     self.id.message(&cache_http, message_id).await
+    // }
 
     /// Gets messages from the channel.
     ///

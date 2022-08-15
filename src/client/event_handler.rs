@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+// use std::collections::HashMap;
 
 use async_trait::async_trait;
 
@@ -73,10 +73,10 @@ pub trait EventHandler: Send + Sync {
     /// Provides said channel's data.
     async fn channel_delete(&self, _ctx: Context, _channel: &GuildChannel) {}
 
-    /// Dispatched when a pin is added, deleted.
-    ///
-    /// Provides said pin's data.
-    async fn channel_pins_update(&self, _ctx: Context, _pin: ChannelPinsUpdateEvent) {}
+    // /// Dispatched when a pin is added, deleted.
+    // ///
+    // /// Provides said pin's data.
+    // async fn channel_pins_update(&self, _ctx: Context, _pin: ChannelPinsUpdateEvent) {}
 
     /// Dispatched when a channel is updated.
     ///
@@ -145,18 +145,16 @@ pub trait EventHandler: Send + Sync {
     #[cfg(not(feature = "cache"))]
     async fn guild_delete(&self, _ctx: Context, _incomplete: UnavailableGuild) {}
 
-    // the emojis were updated.
-
-    /// Dispatched when the emojis are updated.
-    ///
-    /// Provides the guild's id and the new state of the emojis in the guild.
-    async fn guild_emojis_update(
-        &self,
-        _ctx: Context,
-        _guild_id: GuildId,
-        _current_state: HashMap<EmojiId, Emoji>,
-    ) {
-    }
+    // /// Dispatched when the emojis are updated.
+    // ///
+    // /// Provides the guild's id and the new state of the emojis in the guild.
+    // async fn guild_emojis_update(
+    //     &self,
+    //     _ctx: Context,
+    //     _guild_id: GuildId,
+    //     _current_state: HashMap<EmojiId, Emoji>,
+    // ) {
+    // }
 
     /// Dispatched when a guild's integration is added, updated or removed.
     ///
@@ -268,16 +266,16 @@ pub trait EventHandler: Send + Sync {
     #[cfg(not(feature = "cache"))]
     async fn guild_role_update(&self, _ctx: Context, _new_data: Role) {}
 
-    /// Dispatched when the stickers are updated.
-    ///
-    /// Provides the guild's id and the new state of the stickers in the guild.
-    async fn guild_stickers_update(
-        &self,
-        _ctx: Context,
-        _guild_id: GuildId,
-        _current_state: HashMap<StickerId, Sticker>,
-    ) {
-    }
+    // /// Dispatched when the stickers are updated.
+    // ///
+    // /// Provides the guild's id and the new state of the stickers in the guild.
+    // async fn guild_stickers_update(
+    //     &self,
+    //     _ctx: Context,
+    //     _guild_id: GuildId,
+    //     _current_state: HashMap<StickerId, Sticker>,
+    // ) {
+    // }
 
     /// Dispatched when the guild is updated.
     ///
@@ -336,20 +334,20 @@ pub trait EventHandler: Send + Sync {
     ) {
     }
 
-    /// Dispatched when a message is updated.
-    ///
-    /// Provides the old message if available,
-    /// the new message as an option in case of cache inconsistencies,
-    /// and the raw [`MessageUpdateEvent`] as a fallback.
-    #[cfg(feature = "cache")]
-    async fn message_update(
-        &self,
-        _ctx: Context,
-        _old_if_available: Option<Message>,
-        _new: Option<Message>,
-        _event: MessageUpdateEvent,
-    ) {
-    }
+    // /// Dispatched when a message is updated.
+    // ///
+    // /// Provides the old message if available,
+    // /// the new message as an option in case of cache inconsistencies,
+    // /// and the raw [`MessageUpdateEvent`] as a fallback.
+    // #[cfg(feature = "cache")]
+    // async fn message_update(
+    //     &self,
+    //     _ctx: Context,
+    //     _old_if_available: Option<Message>,
+    //     _new: Option<Message>,
+    //     _event: MessageUpdateEvent,
+    // ) {
+    // }
 
     /// Dispatched when a message is updated.
     ///
@@ -378,16 +376,16 @@ pub trait EventHandler: Send + Sync {
     ) {
     }
 
-    /// This event is legacy, and likely no longer sent by discord.
-    async fn presence_replace(&self, _ctx: Context, _: Vec<Presence>) {}
+    // /// This event is legacy, and likely no longer sent by discord.
+    // async fn presence_replace(&self, _ctx: Context, _: Vec<Presence>) {}
 
-    /// Dispatched when a user's presence is updated (e.g off -> on).
-    ///
-    /// Provides the presence's new data.
-    ///
-    /// Note: This event will not trigger unless the "guild presences" privileged intent
-    /// is enabled on the bot application page.
-    async fn presence_update(&self, _ctx: Context, _new_data: Presence) {}
+    // /// Dispatched when a user's presence is updated (e.g off -> on).
+    // ///
+    // /// Provides the presence's new data.
+    // ///
+    // /// Note: This event will not trigger unless the "guild presences" privileged intent
+    // /// is enabled on the bot application page.
+    // async fn presence_update(&self, _ctx: Context, _new_data: Presence) {}
 
     /// Dispatched upon startup.
     ///

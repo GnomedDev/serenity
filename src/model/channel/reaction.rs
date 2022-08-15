@@ -170,20 +170,20 @@ impl Reaction {
             .await
     }
 
-    /// Retrieves the [`Message`] associated with this reaction.
-    ///
-    /// Requires the [Read Message History] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission to
-    /// read message history, or if the message was deleted.
-    ///
-    /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
-    #[inline]
-    pub async fn message(&self, cache_http: impl CacheHttp) -> Result<Message> {
-        self.channel_id.message(&cache_http, self.message_id).await
-    }
+    // /// Retrieves the [`Message`] associated with this reaction.
+    // ///
+    // /// Requires the [Read Message History] permission.
+    // ///
+    // /// # Errors
+    // ///
+    // /// Returns [`Error::Http`] if the current user lacks permission to
+    // /// read message history, or if the message was deleted.
+    // ///
+    // /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
+    // #[inline]
+    // pub async fn message(&self, cache_http: impl CacheHttp) -> Result<Message> {
+    //     self.channel_id.message(&cache_http, self.message_id).await
+    // }
 
     /// Retrieves the user that made the reaction.
     ///
@@ -475,15 +475,15 @@ impl From<char> for ReactionType {
     }
 }
 
-impl From<Emoji> for ReactionType {
-    fn from(emoji: Emoji) -> ReactionType {
-        ReactionType::Custom {
-            animated: emoji.animated,
-            id: emoji.id,
-            name: Some(emoji.name),
-        }
-    }
-}
+// impl From<Emoji> for ReactionType {
+//     fn from(emoji: Emoji) -> ReactionType {
+//         ReactionType::Custom {
+//             animated: emoji.animated,
+//             id: emoji.id,
+//             name: Some(emoji.name),
+//         }
+//     }
+// }
 
 impl From<EmojiId> for ReactionType {
     fn from(emoji_id: EmojiId) -> ReactionType {

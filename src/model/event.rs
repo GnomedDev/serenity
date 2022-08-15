@@ -10,12 +10,12 @@ use super::prelude::*;
 use super::utils::{
     add_guild_id_to_map,
     deserialize_val,
-    emojis,
+//    emojis,
     ignore_input,
     remove_from_map,
     remove_from_map_opt,
     roles,
-    stickers,
+//    stickers,
 };
 use crate::constants::Opcode;
 use crate::internal::prelude::*;
@@ -79,13 +79,13 @@ pub struct ChannelDeleteEvent {
     pub channel: Channel,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct ChannelPinsUpdateEvent {
-    pub guild_id: Option<GuildId>,
-    pub channel_id: ChannelId,
-    pub last_pin_timestamp: Option<Timestamp>,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct ChannelPinsUpdateEvent {
+//     pub guild_id: Option<GuildId>,
+//     pub channel_id: ChannelId,
+//     pub last_pin_timestamp: Option<Timestamp>,
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
@@ -139,13 +139,13 @@ pub struct GuildDeleteEvent {
     pub guild: UnavailableGuild,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct GuildEmojisUpdateEvent {
-    #[serde(with = "emojis")]
-    pub emojis: HashMap<EmojiId, Emoji>,
-    pub guild_id: GuildId,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct GuildEmojisUpdateEvent {
+//     #[serde(with = "emojis")]
+//     pub emojis: HashMap<EmojiId, Emoji>,
+//     pub guild_id: GuildId,
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
@@ -172,12 +172,12 @@ pub struct GuildMemberRemoveEvent {
 pub struct GuildMemberUpdateEvent {
     pub guild_id: GuildId,
     pub nick: Option<String>,
-    pub joined_at: Timestamp,
+    // pub joined_at: Timestamp,
     pub roles: Vec<RoleId>,
     pub user: User,
-    pub premium_since: Option<Timestamp>,
-    #[serde(default)]
-    pub pending: bool,
+    // pub premium_since: Option<Timestamp>,
+    // #[serde(default)]
+    // pub pending: bool,
     #[serde(default)]
     pub deaf: bool,
     #[serde(default)]
@@ -329,13 +329,13 @@ impl<'de> Deserialize<'de> for GuildRoleUpdateEvent {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct GuildStickersUpdateEvent {
-    #[serde(with = "stickers")]
-    pub stickers: HashMap<StickerId, Sticker>,
-    pub guild_id: GuildId,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct GuildStickersUpdateEvent {
+//     #[serde(with = "stickers")]
+//     pub stickers: HashMap<StickerId, Sticker>,
+//     pub guild_id: GuildId,
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
@@ -388,41 +388,41 @@ pub struct MessageDeleteEvent {
     pub message_id: MessageId,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct MessageUpdateEvent {
-    pub id: MessageId,
-    pub guild_id: Option<GuildId>,
-    pub channel_id: ChannelId,
-    pub kind: Option<MessageType>,
-    pub content: Option<String>,
-    pub nonce: Option<String>,
-    pub tts: Option<bool>,
-    pub pinned: Option<bool>,
-    pub timestamp: Option<Timestamp>,
-    pub edited_timestamp: Option<Timestamp>,
-    pub author: Option<User>,
-    pub mention_everyone: Option<bool>,
-    pub mentions: Option<Vec<User>>,
-    pub mention_roles: Option<Vec<RoleId>>,
-    pub attachments: Option<Vec<Attachment>>,
-    pub embeds: Option<Vec<Embed>>,
-    pub flags: Option<MessageFlags>,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct MessageUpdateEvent {
+//     pub id: MessageId,
+//     pub guild_id: Option<GuildId>,
+//     pub channel_id: ChannelId,
+//     pub kind: Option<MessageType>,
+//     pub content: Option<String>,
+//     pub nonce: Option<String>,
+//     pub tts: Option<bool>,
+//     pub pinned: Option<bool>,
+//     pub timestamp: Option<Timestamp>,
+//     pub edited_timestamp: Option<Timestamp>,
+//     pub author: Option<User>,
+//     pub mention_everyone: Option<bool>,
+//     pub mentions: Option<Vec<User>>,
+//     pub mention_roles: Option<Vec<RoleId>>,
+//     pub attachments: Option<Vec<Attachment>>,
+//     pub embeds: Option<Vec<Embed>>,
+//     pub flags: Option<MessageFlags>,
+// }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(transparent)]
-#[non_exhaustive]
-pub struct PresenceUpdateEvent {
-    pub presence: Presence,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[serde(transparent)]
+// #[non_exhaustive]
+// pub struct PresenceUpdateEvent {
+//     pub presence: Presence,
+// }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(transparent)]
-#[non_exhaustive]
-pub struct PresencesReplaceEvent {
-    pub presences: Vec<Presence>,
-}
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[serde(transparent)]
+// #[non_exhaustive]
+// pub struct PresencesReplaceEvent {
+//     pub presences: Vec<Presence>,
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
@@ -767,12 +767,12 @@ pub enum Event {
     ///
     /// [`EventHandler::channel_delete`]: crate::client::EventHandler::channel_delete
     ChannelDelete(ChannelDeleteEvent),
-    /// The pins for a [`Channel`] have been updated.
-    ///
-    /// Fires the [`EventHandler::channel_pins_update`] event.
-    ///
-    /// [`EventHandler::channel_pins_update`]: crate::client::EventHandler::channel_pins_update
-    ChannelPinsUpdate(ChannelPinsUpdateEvent),
+    // /// The pins for a [`Channel`] have been updated.
+    // ///
+    // /// Fires the [`EventHandler::channel_pins_update`] event.
+    // ///
+    // /// [`EventHandler::channel_pins_update`]: crate::client::EventHandler::channel_pins_update
+    // ChannelPinsUpdate(ChannelPinsUpdateEvent),
     /// A [`Channel`] has been updated.
     ///
     /// Fires the [`EventHandler::channel_update`] event.
@@ -783,7 +783,7 @@ pub enum Event {
     GuildBanRemove(GuildBanRemoveEvent),
     GuildCreate(GuildCreateEvent),
     GuildDelete(GuildDeleteEvent),
-    GuildEmojisUpdate(GuildEmojisUpdateEvent),
+//    GuildEmojisUpdate(GuildEmojisUpdateEvent),
     GuildIntegrationsUpdate(GuildIntegrationsUpdateEvent),
     GuildMemberAdd(GuildMemberAddEvent),
     GuildMemberRemove(GuildMemberRemoveEvent),
@@ -793,8 +793,8 @@ pub enum Event {
     GuildRoleCreate(GuildRoleCreateEvent),
     GuildRoleDelete(GuildRoleDeleteEvent),
     GuildRoleUpdate(GuildRoleUpdateEvent),
-    /// A [`Sticker`] was created, updated, or deleted
-    GuildStickersUpdate(GuildStickersUpdateEvent),
+    // /// A [`Sticker`] was created, updated, or deleted
+    // GuildStickersUpdate(GuildStickersUpdateEvent),
     GuildUpdate(GuildUpdateEvent),
     /// An [`Invite`] was created.
     ///
@@ -811,12 +811,12 @@ pub enum Event {
     MessageCreate(MessageCreateEvent),
     MessageDelete(MessageDeleteEvent),
     MessageDeleteBulk(MessageDeleteBulkEvent),
-    /// A message has been edited, either by the user or the system
-    MessageUpdate(MessageUpdateEvent),
-    /// A member's presence state (or username or avatar) has changed
-    PresenceUpdate(PresenceUpdateEvent),
-    /// The presence list of the user's friends should be replaced entirely
-    PresencesReplace(PresencesReplaceEvent),
+    // /// A message has been edited, either by the user or the system
+    // MessageUpdate(MessageUpdateEvent),
+    // /// A member's presence state (or username or avatar) has changed
+    // PresenceUpdate(PresenceUpdateEvent),
+    // /// The presence list of the user's friends should be replaced entirely
+    // PresencesReplace(PresencesReplaceEvent),
     /// A reaction was added to a message.
     ///
     /// Fires the [`EventHandler::reaction_add`] event handler.
@@ -952,12 +952,12 @@ macro_rules! with_related_ids_for_event_types {
                 channel_id: Some(e.channel.id()),
                 message_id: Never,
             },
-            Self::ChannelPinsUpdate, Self::ChannelPinsUpdate(e) => {
-                user_id: Never,
-                guild_id: e.guild_id.into(),
-                channel_id: Some(e.channel_id),
-                message_id: Never,
-            },
+            // Self::ChannelPinsUpdate, Self::ChannelPinsUpdate(e) => {
+            //     user_id: Never,
+            //     guild_id: e.guild_id.into(),
+            //     channel_id: Some(e.channel_id),
+            //     message_id: Never,
+            // },
             Self::ChannelUpdate, Self::ChannelUpdate(e) => {
                 user_id: Never,
                 guild_id: gid_from_channel(&e.channel),
@@ -988,12 +988,12 @@ macro_rules! with_related_ids_for_event_types {
                 channel_id: Never,
                 message_id: Never,
             },
-            Self::GuildEmojisUpdate, Self::GuildEmojisUpdate(e) => {
-                user_id: Never,
-                guild_id: Some(e.guild_id),
-                channel_id: Never,
-                message_id: Never,
-            },
+            // Self::GuildEmojisUpdate, Self::GuildEmojisUpdate(e) => {
+            //     user_id: Never,
+            //     guild_id: Some(e.guild_id),
+            //     channel_id: Never,
+            //     message_id: Never,
+            // },
             Self::GuildIntegrationsUpdate, Self::GuildIntegrationsUpdate(e) => {
                 user_id: Never,
                 guild_id: Some(e.guild_id),
@@ -1072,12 +1072,12 @@ macro_rules! with_related_ids_for_event_types {
                 channel_id: Never,
                 message_id: Never,
             },
-            Self::GuildStickersUpdate, Self::GuildStickersUpdate(e) => {
-                user_id: Never,
-                guild_id: Some(e.guild_id),
-                channel_id: Never,
-                message_id: Never,
-            },
+            // Self::GuildStickersUpdate, Self::GuildStickersUpdate(e) => {
+            //     user_id: Never,
+            //     guild_id: Some(e.guild_id),
+            //     channel_id: Never,
+            //     message_id: Never,
+            // },
             Self::GuildUpdate, Self::GuildUpdate(e) => {
                 user_id: Never,
                 guild_id: Some(e.guild.id),
@@ -1114,24 +1114,24 @@ macro_rules! with_related_ids_for_event_types {
                 channel_id: Some(e.channel_id),
                 message_id: Multiple(e.ids.clone()),
             },
-            Self::MessageUpdate, Self::MessageUpdate(e) => {
-                user_id: e.author.as_ref().map(|u| u.id).into(),
-                guild_id: e.guild_id.into(),
-                channel_id: Some(e.channel_id),
-                message_id: Some(e.id),
-            },
-            Self::PresenceUpdate, Self::PresenceUpdate(e) => {
-                user_id: Some(e.presence.user.id),
-                guild_id: e.presence.guild_id.into(),
-                channel_id: Never,
-                message_id: Never,
-            },
-            Self::PresencesReplace, Self::PresencesReplace(e) => {
-                user_id: Multiple(e.presences.iter().map(|p| p.user.id).collect()),
-                guild_id: Never,
-                channel_id: Never,
-                message_id: Never,
-            },
+            // Self::MessageUpdate, Self::MessageUpdate(e) => {
+            //     user_id: e.author.as_ref().map(|u| u.id).into(),
+            //     guild_id: e.guild_id.into(),
+            //     channel_id: Some(e.channel_id),
+            //     message_id: Some(e.id),
+            // },
+            // Self::PresenceUpdate, Self::PresenceUpdate(e) => {
+            //     user_id: Some(e.presence.user.id),
+            //     guild_id: e.presence.guild_id.into(),
+            //     channel_id: Never,
+            //     message_id: Never,
+            // },
+            // Self::PresencesReplace, Self::PresencesReplace(e) => {
+            //     user_id: Multiple(e.presences.iter().map(|p| p.user.id).collect()),
+            //     guild_id: Never,
+            //     channel_id: Never,
+            //     message_id: Never,
+            // },
             Self::ReactionAdd, Self::ReactionAdd(e) => {
                 user_id: e.reaction.user_id.into(),
                 guild_id: e.reaction.guild_id.into(),
@@ -1386,13 +1386,13 @@ impl Event {
             Self::AutoModerationActionExecution(_) => EventType::AutoModerationActionExecution,
             Self::ChannelCreate(_) => EventType::ChannelCreate,
             Self::ChannelDelete(_) => EventType::ChannelDelete,
-            Self::ChannelPinsUpdate(_) => EventType::ChannelPinsUpdate,
+            // Self::ChannelPinsUpdate(_) => EventType::ChannelPinsUpdate,
             Self::ChannelUpdate(_) => EventType::ChannelUpdate,
             Self::GuildBanAdd(_) => EventType::GuildBanAdd,
             Self::GuildBanRemove(_) => EventType::GuildBanRemove,
             Self::GuildCreate(_) => EventType::GuildCreate,
             Self::GuildDelete(_) => EventType::GuildDelete,
-            Self::GuildEmojisUpdate(_) => EventType::GuildEmojisUpdate,
+            // Self::GuildEmojisUpdate(_) => EventType::GuildEmojisUpdate,
             Self::GuildIntegrationsUpdate(_) => EventType::GuildIntegrationsUpdate,
             Self::GuildMemberAdd(_) => EventType::GuildMemberAdd,
             Self::GuildMemberRemove(_) => EventType::GuildMemberRemove,
@@ -1401,16 +1401,16 @@ impl Event {
             Self::GuildRoleCreate(_) => EventType::GuildRoleCreate,
             Self::GuildRoleDelete(_) => EventType::GuildRoleDelete,
             Self::GuildRoleUpdate(_) => EventType::GuildRoleUpdate,
-            Self::GuildStickersUpdate(_) => EventType::GuildStickersUpdate,
+            // Self::GuildStickersUpdate(_) => EventType::GuildStickersUpdate,
             Self::GuildUpdate(_) => EventType::GuildUpdate,
             Self::InviteCreate(_) => EventType::InviteCreate,
             Self::InviteDelete(_) => EventType::InviteDelete,
             Self::MessageCreate(_) => EventType::MessageCreate,
             Self::MessageDelete(_) => EventType::MessageDelete,
             Self::MessageDeleteBulk(_) => EventType::MessageDeleteBulk,
-            Self::MessageUpdate(_) => EventType::MessageUpdate,
-            Self::PresenceUpdate(_) => EventType::PresenceUpdate,
-            Self::PresencesReplace(_) => EventType::PresencesReplace,
+            // Self::MessageUpdate(_) => EventType::MessageUpdate,
+            // Self::PresenceUpdate(_) => EventType::PresenceUpdate,
+            // Self::PresencesReplace(_) => EventType::PresencesReplace,
             Self::ReactionAdd(_) => EventType::ReactionAdd,
             Self::ReactionRemove(_) => EventType::ReactionRemove,
             Self::ReactionRemoveAll(_) => EventType::ReactionRemoveAll,
@@ -1532,10 +1532,10 @@ pub enum EventType {
     ///
     /// This maps to [`ChannelDeleteEvent`].
     ChannelDelete,
-    /// Indicator that a channel pins update payload was received.
-    ///
-    /// This maps to [`ChannelPinsUpdateEvent`].
-    ChannelPinsUpdate,
+    // /// Indicator that a channel pins update payload was received.
+    // ///
+    // /// This maps to [`ChannelPinsUpdateEvent`].
+    // ChannelPinsUpdate,
     /// Indicator that a channel update payload was received.
     ///
     /// This maps to [`ChannelUpdateEvent`].
@@ -1556,10 +1556,10 @@ pub enum EventType {
     ///
     /// This maps to [`GuildDeleteEvent`].
     GuildDelete,
-    /// Indicator that a guild emojis update payload was received.
-    ///
-    /// This maps to [`GuildEmojisUpdateEvent`].
-    GuildEmojisUpdate,
+    // /// Indicator that a guild emojis update payload was received.
+    // ///
+    // /// This maps to [`GuildEmojisUpdateEvent`].
+    // GuildEmojisUpdate,
     /// Indicator that a guild integrations update payload was received.
     ///
     /// This maps to [`GuildIntegrationsUpdateEvent`].
@@ -1592,10 +1592,10 @@ pub enum EventType {
     ///
     /// This maps to [`GuildRoleUpdateEvent`].
     GuildRoleUpdate,
-    /// Indicator that a guild sticker update payload was received.
-    ///
-    /// This maps to [`GuildStickersUpdateEvent`].
-    GuildStickersUpdate,
+    // /// Indicator that a guild sticker update payload was received.
+    // ///
+    // /// This maps to [`GuildStickersUpdateEvent`].
+    // GuildStickersUpdate,
     /// Indicator that a guild update payload was received.
     ///
     /// This maps to [`GuildUpdateEvent`].
@@ -1620,18 +1620,18 @@ pub enum EventType {
     ///
     /// This maps to [`MessageDeleteBulkEvent`].
     MessageDeleteBulk,
-    /// Indicator that a message update payload was received.
-    ///
-    /// This maps to [`MessageUpdateEvent`].
-    MessageUpdate,
-    /// Indicator that a presence update payload was received.
-    ///
-    /// This maps to [`PresenceUpdateEvent`].
-    PresenceUpdate,
-    /// Indicator that a presences replace payload was received.
-    ///
-    /// This maps to [`PresencesReplaceEvent`].
-    PresencesReplace,
+    // /// Indicator that a message update payload was received.
+    // ///
+    // /// This maps to [`MessageUpdateEvent`].
+    // MessageUpdate,
+    // /// Indicator that a presence update payload was received.
+    // ///
+    // /// This maps to [`PresenceUpdateEvent`].
+    // PresenceUpdate,
+    // /// Indicator that a presences replace payload was received.
+    // ///
+    // /// This maps to [`PresencesReplaceEvent`].
+    // PresencesReplace,
     /// Indicator that a reaction add payload was received.
     ///
     /// This maps to [`ReactionAddEvent`].
@@ -1815,13 +1815,13 @@ impl EventType {
     const AUTO_MODERATION_ACTION_EXECUTION: &'static str = "AUTO_MODERATION_ACTION_EXECUTION";
     const CHANNEL_CREATE: &'static str = "CHANNEL_CREATE";
     const CHANNEL_DELETE: &'static str = "CHANNEL_DELETE";
-    const CHANNEL_PINS_UPDATE: &'static str = "CHANNEL_PINS_UPDATE";
+    // const CHANNEL_PINS_UPDATE: &'static str = "CHANNEL_PINS_UPDATE";
     const CHANNEL_UPDATE: &'static str = "CHANNEL_UPDATE";
     const GUILD_BAN_ADD: &'static str = "GUILD_BAN_ADD";
     const GUILD_BAN_REMOVE: &'static str = "GUILD_BAN_REMOVE";
     const GUILD_CREATE: &'static str = "GUILD_CREATE";
     const GUILD_DELETE: &'static str = "GUILD_DELETE";
-    const GUILD_EMOJIS_UPDATE: &'static str = "GUILD_EMOJIS_UPDATE";
+    // const GUILD_EMOJIS_UPDATE: &'static str = "GUILD_EMOJIS_UPDATE";
     const GUILD_INTEGRATIONS_UPDATE: &'static str = "GUILD_INTEGRATIONS_UPDATE";
     const GUILD_MEMBER_ADD: &'static str = "GUILD_MEMBER_ADD";
     const GUILD_MEMBER_REMOVE: &'static str = "GUILD_MEMBER_REMOVE";
@@ -1830,7 +1830,7 @@ impl EventType {
     const GUILD_ROLE_CREATE: &'static str = "GUILD_ROLE_CREATE";
     const GUILD_ROLE_DELETE: &'static str = "GUILD_ROLE_DELETE";
     const GUILD_ROLE_UPDATE: &'static str = "GUILD_ROLE_UPDATE";
-    const GUILD_STICKERS_UPDATE: &'static str = "GUILD_STICKERS_UPDATE";
+    // const GUILD_STICKERS_UPDATE: &'static str = "GUILD_STICKERS_UPDATE";
     const INVITE_CREATE: &'static str = "INVITE_CREATE";
     const INVITE_DELETE: &'static str = "INVITE_DELETE";
     const GUILD_UPDATE: &'static str = "GUILD_UPDATE";
@@ -1840,9 +1840,9 @@ impl EventType {
     const MESSAGE_REACTION_ADD: &'static str = "MESSAGE_REACTION_ADD";
     const MESSAGE_REACTION_REMOVE: &'static str = "MESSAGE_REACTION_REMOVE";
     const MESSAGE_REACTION_REMOVE_ALL: &'static str = "MESSAGE_REACTION_REMOVE_ALL";
-    const MESSAGE_UPDATE: &'static str = "MESSAGE_UPDATE";
-    const PRESENCE_UPDATE: &'static str = "PRESENCE_UPDATE";
-    const PRESENCES_REPLACE: &'static str = "PRESENCES_REPLACE";
+    // const MESSAGE_UPDATE: &'static str = "MESSAGE_UPDATE";
+    // const PRESENCE_UPDATE: &'static str = "PRESENCE_UPDATE";
+    // const PRESENCES_REPLACE: &'static str = "PRESENCES_REPLACE";
     const READY: &'static str = "READY";
     const RESUMED: &'static str = "RESUMED";
     const TYPING_START: &'static str = "TYPING_START";
@@ -1884,13 +1884,13 @@ impl EventType {
             Self::AutoModerationActionExecution => Some(Self::AUTO_MODERATION_ACTION_EXECUTION),
             Self::ChannelCreate => Some(Self::CHANNEL_CREATE),
             Self::ChannelDelete => Some(Self::CHANNEL_DELETE),
-            Self::ChannelPinsUpdate => Some(Self::CHANNEL_PINS_UPDATE),
+            // Self::ChannelPinsUpdate => Some(Self::CHANNEL_PINS_UPDATE),
             Self::ChannelUpdate => Some(Self::CHANNEL_UPDATE),
             Self::GuildBanAdd => Some(Self::GUILD_BAN_ADD),
             Self::GuildBanRemove => Some(Self::GUILD_BAN_REMOVE),
             Self::GuildCreate => Some(Self::GUILD_CREATE),
             Self::GuildDelete => Some(Self::GUILD_DELETE),
-            Self::GuildEmojisUpdate => Some(Self::GUILD_EMOJIS_UPDATE),
+            // Self::GuildEmojisUpdate => Some(Self::GUILD_EMOJIS_UPDATE),
             Self::GuildIntegrationsUpdate => Some(Self::GUILD_INTEGRATIONS_UPDATE),
             Self::GuildMemberAdd => Some(Self::GUILD_MEMBER_ADD),
             Self::GuildMemberRemove => Some(Self::GUILD_MEMBER_REMOVE),
@@ -1899,7 +1899,7 @@ impl EventType {
             Self::GuildRoleCreate => Some(Self::GUILD_ROLE_CREATE),
             Self::GuildRoleDelete => Some(Self::GUILD_ROLE_DELETE),
             Self::GuildRoleUpdate => Some(Self::GUILD_ROLE_UPDATE),
-            Self::GuildStickersUpdate => Some(Self::GUILD_STICKERS_UPDATE),
+            // Self::GuildStickersUpdate => Some(Self::GUILD_STICKERS_UPDATE),
             Self::InviteCreate => Some(Self::INVITE_CREATE),
             Self::InviteDelete => Some(Self::INVITE_DELETE),
             Self::GuildUpdate => Some(Self::GUILD_UPDATE),
@@ -1909,9 +1909,9 @@ impl EventType {
             Self::ReactionAdd => Some(Self::MESSAGE_REACTION_ADD),
             Self::ReactionRemove => Some(Self::MESSAGE_REACTION_REMOVE),
             Self::ReactionRemoveAll => Some(Self::MESSAGE_REACTION_REMOVE_ALL),
-            Self::MessageUpdate => Some(Self::MESSAGE_UPDATE),
-            Self::PresenceUpdate => Some(Self::PRESENCE_UPDATE),
-            Self::PresencesReplace => Some(Self::PRESENCES_REPLACE),
+            // Self::MessageUpdate => Some(Self::MESSAGE_UPDATE),
+            // Self::PresenceUpdate => Some(Self::PRESENCE_UPDATE),
+            // Self::PresencesReplace => Some(Self::PRESENCES_REPLACE),
             Self::Ready => Some(Self::READY),
             Self::Resumed => Some(Self::RESUMED),
             Self::TypingStart => Some(Self::TYPING_START),

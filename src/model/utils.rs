@@ -15,9 +15,9 @@ use crate::model::application::interaction::application_command::{
     CommandDataResolved,
 };
 
-pub fn default_true() -> bool {
-    true
-}
+// pub fn default_true() -> bool {
+//     true
+// }
 
 /// Helper function for `#[serde(skip_serializing_if = "is_false")]`
 #[allow(clippy::trivially_copy_pass_by_ref)]
@@ -64,24 +64,24 @@ pub fn add_guild_id_to_map(map: &mut JsonMap, key: &str, id: GuildId) {
     }
 }
 
-/// Used with `#[serde(with = "emojis")]`
-pub mod emojis {
-    use std::collections::HashMap;
+// /// Used with `#[serde(with = "emojis")]`
+// pub mod emojis {
+//     use std::collections::HashMap;
 
-    use serde::Deserializer;
+//     use serde::Deserializer;
 
-    use super::SequenceToMapVisitor;
-    use crate::model::guild::Emoji;
-    use crate::model::id::EmojiId;
+//     use super::SequenceToMapVisitor;
+//     use crate::model::guild::Emoji;
+//     use crate::model::id::EmojiId;
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<HashMap<EmojiId, Emoji>, D::Error> {
-        deserializer.deserialize_seq(SequenceToMapVisitor::new(|emoji: &Emoji| emoji.id))
-    }
+//     pub fn deserialize<'de, D: Deserializer<'de>>(
+//         deserializer: D,
+//     ) -> Result<HashMap<EmojiId, Emoji>, D::Error> {
+//         deserializer.deserialize_seq(SequenceToMapVisitor::new(|emoji: &Emoji| emoji.id))
+//     }
 
-    pub use super::serialize_map_values as serialize;
-}
+//     pub use super::serialize_map_values as serialize;
+// }
 
 pub fn deserialize_guild_channels<'de, D: Deserializer<'de>>(
     deserializer: D,
@@ -196,24 +196,24 @@ fn loop_resolved(options: &mut CommandDataOption, resolved: &CommandDataResolved
     }
 }
 
-/// Used with `#[serde(with = "presences")]`
-pub mod presences {
-    use std::collections::HashMap;
+// /// Used with `#[serde(with = "presences")]`
+// pub mod presences {
+//     use std::collections::HashMap;
 
-    use serde::Deserializer;
+//     use serde::Deserializer;
 
-    use super::SequenceToMapVisitor;
-    use crate::model::gateway::Presence;
-    use crate::model::id::UserId;
+//     use super::SequenceToMapVisitor;
+//     use crate::model::gateway::Presence;
+//     use crate::model::id::UserId;
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<HashMap<UserId, Presence>, D::Error> {
-        deserializer.deserialize_seq(SequenceToMapVisitor::new(|p: &Presence| p.user.id))
-    }
+//     pub fn deserialize<'de, D: Deserializer<'de>>(
+//         deserializer: D,
+//     ) -> Result<HashMap<UserId, Presence>, D::Error> {
+//         deserializer.deserialize_seq(SequenceToMapVisitor::new(|p: &Presence| p.user.id))
+//     }
 
-    pub use super::serialize_map_values as serialize;
-}
+//     pub use super::serialize_map_values as serialize;
+// }
 
 pub fn deserialize_buttons<'de, D: Deserializer<'de>>(
     deserializer: D,
@@ -290,43 +290,43 @@ pub mod roles {
     }
 }
 
-/// Used with `#[serde(with = "stickers")]`
-pub mod stickers {
-    use std::collections::HashMap;
+// /// Used with `#[serde(with = "stickers")]`
+// pub mod stickers {
+//     use std::collections::HashMap;
 
-    use serde::Deserializer;
+//     use serde::Deserializer;
 
-    use super::SequenceToMapVisitor;
-    use crate::model::id::StickerId;
-    use crate::model::sticker::Sticker;
+//     use super::SequenceToMapVisitor;
+//     use crate::model::id::StickerId;
+//     use crate::model::sticker::Sticker;
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<HashMap<StickerId, Sticker>, D::Error> {
-        deserializer.deserialize_seq(SequenceToMapVisitor::new(|sticker: &Sticker| sticker.id))
-    }
+//     pub fn deserialize<'de, D: Deserializer<'de>>(
+//         deserializer: D,
+//     ) -> Result<HashMap<StickerId, Sticker>, D::Error> {
+//         deserializer.deserialize_seq(SequenceToMapVisitor::new(|sticker: &Sticker| sticker.id))
+//     }
 
-    pub use super::serialize_map_values as serialize;
-}
+//     pub use super::serialize_map_values as serialize;
+// }
 
-/// Used with `#[serde(with = "comma_separated_string")]`
-pub mod comma_separated_string {
-    use serde::{Deserialize, Deserializer, Serializer};
+// /// Used with `#[serde(with = "comma_separated_string")]`
+// pub mod comma_separated_string {
+//     use serde::{Deserialize, Deserializer, Serializer};
 
-    pub fn deserialize<'de, D: Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<Vec<String>, D::Error> {
-        let str_sequence = String::deserialize(deserializer)?;
-        let vec = str_sequence.split(", ").map(str::to_owned).collect();
+//     pub fn deserialize<'de, D: Deserializer<'de>>(
+//         deserializer: D,
+//     ) -> Result<Vec<String>, D::Error> {
+//         let str_sequence = String::deserialize(deserializer)?;
+//         let vec = str_sequence.split(", ").map(str::to_owned).collect();
 
-        Ok(vec)
-    }
+//         Ok(vec)
+//     }
 
-    #[allow(clippy::ptr_arg)]
-    pub fn serialize<S: Serializer>(vec: &Vec<String>, serializer: S) -> Result<S::Ok, S::Error> {
-        serializer.serialize_str(&vec.join(", "))
-    }
-}
+//     #[allow(clippy::ptr_arg)]
+//     pub fn serialize<S: Serializer>(vec: &Vec<String>, serializer: S) -> Result<S::Ok, S::Error> {
+//         serializer.serialize_str(&vec.join(", "))
+//     }
+// }
 
 /// Used with `#[serde(with = "single_recipient")]`
 pub mod single_recipient {

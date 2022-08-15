@@ -30,7 +30,7 @@
 //! [`Shard`]: crate::gateway::Shard
 //! [`http`]: crate::http
 
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 use std::hash::{BuildHasher, Hash};
 use std::str::FromStr;
 #[cfg(feature = "temp_cache")]
@@ -48,14 +48,14 @@ use parking_lot::RwLock;
 use tracing::instrument;
 
 pub use self::cache_update::CacheUpdate;
-pub use self::settings::Settings;
+// pub use self::settings::Settings;
 use crate::model::prelude::*;
 
 mod cache_update;
 mod event;
-mod settings;
+// mod settings;
 
-type MessageCache = DashMap<ChannelId, HashMap<MessageId, Message>, FxBuildHasher>;
+// type MessageCache = DashMap<ChannelId, HashMap<MessageId, Message>, FxBuildHasher>;
 
 struct NotSend;
 
@@ -204,11 +204,11 @@ pub struct Cache {
     /// A map of guilds with full data available. This includes data like
     /// [`Role`]s and [`Emoji`]s that are not available through the REST API.
     pub(crate) guilds: DashMap<GuildId, Guild, FxBuildHasher>,
-    pub(crate) messages: MessageCache,
-    /// A map of users' presences. This is updated in real-time. Note that
-    /// status updates are often "eaten" by the gateway, and this should not
-    /// be treated as being entirely 100% accurate.
-    pub(crate) presences: DashMap<UserId, Presence, FxBuildHasher>,
+    // pub(crate) messages: MessageCache,
+    // /// A map of users' presences. This is updated in real-time. Note that
+    // /// status updates are often "eaten" by the gateway, and this should not
+    // /// be treated as being entirely 100% accurate.
+    // pub(crate) presences: DashMap<UserId, Presence, FxBuildHasher>,
     /// A map of direct message channels that the current user has open with
     /// other users.
     pub(crate) private_channels: DashMap<ChannelId, PrivateChannel, FxBuildHasher>,
@@ -243,19 +243,19 @@ pub struct Cache {
     /// events such as [`GuildMemberRemove`][`GuildMemberRemoveEvent`], as other
     /// structs such as members or recipients may still exist.
     pub(crate) users: DashMap<UserId, User, FxBuildHasher>,
-    /// Queue of message IDs for each channel.
-    ///
-    /// This is simply a vecdeque so we can keep track of the order of messages
-    /// inserted into the cache. When a maximum number of messages are in a
-    /// channel's cache, we can pop the front and remove that ID from the cache.
-    pub(crate) message_queue: DashMap<ChannelId, VecDeque<MessageId>, FxBuildHasher>,
+    // /// Queue of message IDs for each channel.
+    // ///
+    // /// This is simply a vecdeque so we can keep track of the order of messages
+    // /// inserted into the cache. When a maximum number of messages are in a
+    // /// channel's cache, we can pop the front and remove that ID from the cache.
+    // pub(crate) message_queue: DashMap<ChannelId, VecDeque<MessageId>, FxBuildHasher>,
     /// Cache of users who have been fetched from `to_user`.
     ///
     /// Each value has a max TTL of 1 hour.
     #[cfg(feature = "temp_cache")]
     pub(crate) temp_users: DashCache<UserId, Arc<User>, FxBuildHasher>,
-    /// The settings for the cache.
-    settings: RwLock<Settings>,
+    // /// The settings for the cache.
+    // settings: RwLock<Settings>,
 }
 
 impl Cache {
@@ -266,25 +266,25 @@ impl Cache {
         Self::default()
     }
 
-    /// Creates a new cache instance with settings applied.
-    ///
-    /// # Examples
-    ///
-    /// ```rust
-    /// use serenity::cache::{Cache, Settings};
-    ///
-    /// let mut settings = Settings::new();
-    /// settings.max_messages(10);
-    ///
-    /// let cache = Cache::new_with_settings(settings);
-    /// ```
-    #[instrument]
-    pub fn new_with_settings(settings: Settings) -> Self {
-        Self {
-            settings: RwLock::new(settings),
-            ..Default::default()
-        }
-    }
+    // /// Creates a new cache instance with settings applied.
+    // ///
+    // /// # Examples
+    // ///
+    // /// ```rust
+    // /// use serenity::cache::{Cache, Settings};
+    // ///
+    // /// let mut settings = Settings::new();
+    // /// settings.max_messages(10);
+    // ///
+    // /// let cache = Cache::new_with_settings(settings);
+    // /// ```
+    // #[instrument]
+    // pub fn new_with_settings(settings: Settings) -> Self {
+    //     Self {
+    //         settings: RwLock::new(settings),
+    //         ..Default::default()
+    //     }
+    // }
 
     /// Fetches the number of [`Member`]s that have not had data received.
     ///
@@ -440,25 +440,25 @@ impl Cache {
         None
     }
 
-    /// Get a reference to the cached messages for a channel based on the given `Id`.
-    ///
-    /// # Examples
-    ///
-    /// Find all messages by user ID 8 in channel ID 7:
-    ///
-    /// ```rust,no_run
-    /// # let cache: serenity::cache::Cache = todo!();
-    /// let messages_in_channel = cache.channel_messages(7);
-    /// let messages_by_user = messages_in_channel
-    ///     .as_ref()
-    ///     .map(|msgs| msgs.values().filter(|m| m.author.id == 8).collect::<Vec<_>>());
-    /// ```
-    pub fn channel_messages(
-        &self,
-        channel_id: impl Into<ChannelId>,
-    ) -> Option<ChannelMessagesRef<'_>> {
-        self.messages.get(&channel_id.into()).map(CacheRef::from_ref)
-    }
+    // /// Get a reference to the cached messages for a channel based on the given `Id`.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Find all messages by user ID 8 in channel ID 7:
+    // ///
+    // /// ```rust,no_run
+    // /// # let cache: serenity::cache::Cache = todo!();
+    // /// let messages_in_channel = cache.channel_messages(7);
+    // /// let messages_by_user = messages_in_channel
+    // ///     .as_ref()
+    // ///     .map(|msgs| msgs.values().filter(|m| m.author.id == 8).collect::<Vec<_>>());
+    // /// ```
+    // pub fn channel_messages(
+    //     &self,
+    //     channel_id: impl Into<ChannelId>,
+    // ) -> Option<ChannelMessagesRef<'_>> {
+    //     self.messages.get(&channel_id.into()).map(CacheRef::from_ref)
+    // }
 
     /// Gets a reference to a guild from the cache based on the given `id`.
     ///
@@ -731,42 +731,42 @@ impl Cache {
         *self.shard_count.read()
     }
 
-    /// Retrieves a [`Channel`]'s message from the cache based on the channel's and
-    /// message's given Ids.
-    ///
-    /// **Note**: This will clone the entire message.
-    ///
-    /// # Examples
-    ///
-    /// Retrieving the message object from a channel, in a
-    /// [`EventHandler::message`] context:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// # use serenity::model::channel::Message;
-    /// #
-    /// # fn run(cache: Cache, message: Message) {
-    /// #
-    /// match cache.message(message.channel_id, message.id) {
-    ///     Some(m) => assert_eq!(message.content, m.content),
-    ///     None => println!("No message found in cache."),
-    /// };
-    /// # }
-    /// ```
-    ///
-    /// [`EventHandler::message`]: crate::client::EventHandler::message
-    #[inline]
-    pub fn message<C, M>(&self, channel_id: C, message_id: M) -> Option<Message>
-    where
-        C: Into<ChannelId>,
-        M: Into<MessageId>,
-    {
-        self._message(channel_id.into(), message_id.into())
-    }
+    // /// Retrieves a [`Channel`]'s message from the cache based on the channel's and
+    // /// message's given Ids.
+    // ///
+    // /// **Note**: This will clone the entire message.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Retrieving the message object from a channel, in a
+    // /// [`EventHandler::message`] context:
+    // ///
+    // /// ```rust,no_run
+    // /// # use serenity::cache::Cache;
+    // /// # use serenity::model::channel::Message;
+    // /// #
+    // /// # fn run(cache: Cache, message: Message) {
+    // /// #
+    // /// match cache.message(message.channel_id, message.id) {
+    // ///     Some(m) => assert_eq!(message.content, m.content),
+    // ///     None => println!("No message found in cache."),
+    // /// };
+    // /// # }
+    // /// ```
+    // ///
+    // /// [`EventHandler::message`]: crate::client::EventHandler::message
+    // #[inline]
+    // pub fn message<C, M>(&self, channel_id: C, message_id: M) -> Option<Message>
+    // where
+    //     C: Into<ChannelId>,
+    //     M: Into<MessageId>,
+    // {
+    //     self._message(channel_id.into(), message_id.into())
+    // }
 
-    fn _message(&self, channel_id: ChannelId, message_id: MessageId) -> Option<Message> {
-        self.messages.get(&channel_id).and_then(|messages| messages.get(&message_id).cloned())
-    }
+    // fn _message(&self, channel_id: ChannelId, message_id: MessageId) -> Option<Message> {
+    //     self.messages.get(&channel_id).and_then(|messages| messages.get(&message_id).cloned())
+    // }
 
     /// Retrieves a [`PrivateChannel`] from the cache's [`Self::private_channels`]
     /// map, if it exists.
@@ -835,30 +835,30 @@ impl Cache {
         self.guilds.get(&guild_id).and_then(|g| g.roles.get(&role_id).cloned())
     }
 
-    /// Returns the settings.
-    ///
-    /// # Examples
-    ///
-    /// Printing the maximum number of messages in a channel to be cached:
-    ///
-    /// ```rust
-    /// use serenity::cache::Cache;
-    ///
-    /// # fn test() {
-    /// let mut cache = Cache::new();
-    /// println!("Max settings: {}", cache.settings().max_messages);
-    /// # }
-    /// ```
-    pub fn settings(&self) -> Settings {
-        self.settings.read().clone()
-    }
+    // /// Returns the settings.
+    // ///
+    // /// # Examples
+    // ///
+    // /// Printing the maximum number of messages in a channel to be cached:
+    // ///
+    // /// ```rust
+    // /// use serenity::cache::Cache;
+    // ///
+    // /// # fn test() {
+    // /// let mut cache = Cache::new();
+    // /// println!("Max settings: {}", cache.settings().max_messages);
+    // /// # }
+    // /// ```
+    // pub fn settings(&self) -> Settings {
+    //     self.settings.read().clone()
+    // }
 
-    /// Sets the maximum amount of messages per channel to cache.
-    ///
-    /// By default, no messages will be cached.
-    pub fn set_max_messages(&self, max: usize) {
-        self.settings.write().max_messages = max;
-    }
+    // /// Sets the maximum amount of messages per channel to cache.
+    // ///
+    // /// By default, no messages will be cached.
+    // pub fn set_max_messages(&self, max: usize) {
+    //     self.settings.write().max_messages = max;
+    // }
 
     /// Retrieves a [`User`] from the cache's [`Self::users`] map, if it exists.
     ///
@@ -997,205 +997,205 @@ impl Default for Cache {
             channels: DashMap::default(),
             categories: DashMap::default(),
             guilds: DashMap::default(),
-            messages: DashMap::default(),
-            presences: DashMap::default(),
+            // messages: DashMap::default(),
+            // presences: DashMap::default(),
             private_channels: DashMap::with_capacity_and_hasher(128, FxBuildHasher::default()),
-            settings: RwLock::new(Settings::default()),
+            // settings: RwLock::new(Settings::default()),
             shard_count: RwLock::new(1),
             unavailable_guilds: DashSet::default(),
             user: RwLock::new(CurrentUser::default()),
             users: DashMap::default(),
-            message_queue: DashMap::default(),
+            // message_queue: DashMap::default(),
         }
     }
 }
 
-#[cfg(test)]
-mod test {
-    use std::collections::HashMap;
+// #[cfg(test)]
+// mod test {
+//     use std::collections::HashMap;
 
-    use crate::cache::{Cache, CacheUpdate, Settings};
-    use crate::model::prelude::*;
+//     use crate::cache::{Cache, CacheUpdate};
+//     use crate::model::prelude::*;
 
-    #[test]
-    fn test_cache_messages() {
-        let mut settings = Settings::new();
-        settings.max_messages(2);
-        let cache = Cache::new_with_settings(settings);
+//     #[test]
+//     fn test_cache_messages() {
+//         let mut settings = Settings::new();
+//         settings.max_messages(2);
+//         let cache = Cache::new(settings);
 
-        // Test inserting one message into a channel's message cache.
-        let datetime = Timestamp::now();
-        let mut event = MessageCreateEvent {
-            message: Message {
-                id: MessageId::new(3),
-                attachments: vec![],
-                author: User {
-                    id: UserId::new(2),
-                    avatar: None,
-                    bot: false,
-                    discriminator: 1,
-                    name: "user 1".to_owned(),
-                    public_flags: None,
-                    banner: None,
-                    accent_colour: None,
-                },
-                channel_id: ChannelId::new(2),
-                guild_id: Some(GuildId::new(1)),
-                content: String::new(),
-                edited_timestamp: None,
-                embeds: vec![],
-                kind: MessageType::Regular,
-                member: None,
-                mention_everyone: false,
-                mention_roles: vec![],
-                mention_channels: vec![],
-                mentions: vec![],
-                nonce: Some(Nonce::Number(1)),
-                pinned: false,
-                reactions: vec![],
-                timestamp: datetime,
-                tts: false,
-                webhook_id: None,
-                activity: None,
-                application: None,
-                message_reference: None,
-                flags: None,
-                sticker_items: vec![],
-                referenced_message: None,
-                interaction: None,
-                components: vec![],
-            },
-        };
+//         // Test inserting one message into a channel's message cache.
+//         let datetime = Timestamp::now();
+//         let mut event = MessageCreateEvent {
+//             message: Message {
+//                 id: MessageId::new(3),
+//                 attachments: vec![],
+//                 author: User {
+//                     id: UserId::new(2),
+//                     avatar: None,
+//                     bot: false,
+//                     discriminator: 1,
+//                     name: "user 1".to_owned(),
+//                     public_flags: None,
+//                     banner: None,
+//                     accent_colour: None,
+//                 },
+//                 channel_id: ChannelId::new(2),
+//                 guild_id: Some(GuildId::new(1)),
+//                 content: String::new(),
+//                 edited_timestamp: None,
+//                 embeds: vec![],
+//                 kind: MessageType::Regular,
+//                 member: None,
+//                 mention_everyone: false,
+//                 mention_roles: vec![],
+//                 mention_channels: vec![],
+//                 mentions: vec![],
+//                 nonce: Some(Nonce::Number(1)),
+//                 pinned: false,
+//                 reactions: vec![],
+//                 timestamp: datetime,
+//                 tts: false,
+//                 webhook_id: None,
+//                 activity: None,
+//                 application: None,
+//                 message_reference: None,
+//                 flags: None,
+//                 // sticker_items: vec![],
+//                 referenced_message: None,
+//                 interaction: None,
+//                 components: vec![],
+//             },
+//         };
 
-        // Check that the channel cache doesn't exist.
-        assert!(!cache.messages.contains_key(&event.message.channel_id));
-        // Add first message, none because message ID 2 doesn't already exist.
-        assert!(event.update(&cache).is_none());
-        // None, it only returns the oldest message if the cache was already full.
-        assert!(event.update(&cache).is_none());
-        // Assert there's only 1 message in the channel's message cache.
-        assert_eq!(cache.messages.get(&event.message.channel_id).unwrap().len(), 1);
+//         // Check that the channel cache doesn't exist.
+//         assert!(!cache.messages.contains_key(&event.message.channel_id));
+//         // Add first message, none because message ID 2 doesn't already exist.
+//         assert!(event.update(&cache).is_none());
+//         // None, it only returns the oldest message if the cache was already full.
+//         assert!(event.update(&cache).is_none());
+//         // Assert there's only 1 message in the channel's message cache.
+//         assert_eq!(cache.messages.get(&event.message.channel_id).unwrap().len(), 1);
 
-        // Add a second message, assert that channel message cache length is 2.
-        event.message.id = MessageId::new(4);
-        assert!(event.update(&cache).is_none());
-        assert_eq!(cache.messages.get(&event.message.channel_id).unwrap().len(), 2);
+//         // Add a second message, assert that channel message cache length is 2.
+//         event.message.id = MessageId::new(4);
+//         assert!(event.update(&cache).is_none());
+//         assert_eq!(cache.messages.get(&event.message.channel_id).unwrap().len(), 2);
 
-        // Add a third message, the first should now be removed.
-        event.message.id = MessageId::new(5);
-        assert!(event.update(&cache).is_some());
+//         // Add a third message, the first should now be removed.
+//         event.message.id = MessageId::new(5);
+//         assert!(event.update(&cache).is_some());
 
-        {
-            let channel = cache.messages.get(&event.message.channel_id).unwrap();
+//         {
+//             let channel = cache.messages.get(&event.message.channel_id).unwrap();
 
-            assert_eq!(channel.len(), 2);
-            // Check that the first message is now removed.
-            assert!(!channel.contains_key(&MessageId::new(3)));
-        }
+//             assert_eq!(channel.len(), 2);
+//             // Check that the first message is now removed.
+//             assert!(!channel.contains_key(&MessageId::new(3)));
+//         }
 
-        let channel = Channel::Guild(GuildChannel {
-            id: event.message.channel_id,
-            bitrate: None,
-            parent_id: None,
-            guild_id: event.message.guild_id.unwrap(),
-            kind: ChannelType::Text,
-            last_message_id: None,
-            last_pin_timestamp: None,
-            name: String::new(),
-            permission_overwrites: vec![],
-            position: 0,
-            topic: None,
-            user_limit: None,
-            nsfw: false,
-            rate_limit_per_user: Some(0),
-            rtc_region: None,
-            video_quality_mode: None,
-            message_count: None,
-            member_count: None,
-            thread_metadata: None,
-            member: None,
-            default_auto_archive_duration: None,
-        });
+//         let channel = Channel::Guild(GuildChannel {
+//             id: event.message.channel_id,
+//             bitrate: None,
+//             parent_id: None,
+//             guild_id: event.message.guild_id.unwrap(),
+//             kind: ChannelType::Text,
+//             last_message_id: None,
+//             last_pin_timestamp: None,
+//             name: String::new(),
+//             permission_overwrites: vec![],
+//             position: 0,
+//             topic: None,
+//             user_limit: None,
+//             nsfw: false,
+//             rate_limit_per_user: Some(0),
+//             rtc_region: None,
+//             video_quality_mode: None,
+//             message_count: None,
+//             member_count: None,
+//             thread_metadata: None,
+//             member: None,
+//             default_auto_archive_duration: None,
+//         });
 
-        // Add a channel delete event to the cache, the cached messages for that
-        // channel should now be gone.
-        let mut delete = ChannelDeleteEvent {
-            channel: channel.clone(),
-        };
-        assert!(cache.update(&mut delete).is_none());
-        assert!(!cache.messages.contains_key(&delete.channel.id()));
+//         // Add a channel delete event to the cache, the cached messages for that
+//         // channel should now be gone.
+//         let mut delete = ChannelDeleteEvent {
+//             channel: channel.clone(),
+//         };
+//         assert!(cache.update(&mut delete).is_none());
+//         assert!(!cache.messages.contains_key(&delete.channel.id()));
 
-        // Test deletion of a guild channel's message cache when a GuildDeleteEvent
-        // is received.
-        let mut guild_create = {
-            let mut channels = HashMap::new();
-            channels.insert(ChannelId::new(2), channel);
+//         // Test deletion of a guild channel's message cache when a GuildDeleteEvent
+//         // is received.
+//         let mut guild_create = {
+//             let mut channels = HashMap::new();
+//             channels.insert(ChannelId::new(2), channel);
 
-            GuildCreateEvent {
-                guild: Guild {
-                    id: GuildId::new(1),
-                    afk_channel_id: None,
-                    afk_timeout: 0,
-                    application_id: None,
-                    default_message_notifications: DefaultMessageNotificationLevel::All,
-                    emojis: HashMap::new(),
-                    explicit_content_filter: ExplicitContentFilter::None,
-                    features: vec![],
-                    icon: None,
-                    joined_at: datetime,
-                    large: false,
-                    member_count: 0,
-                    members: HashMap::new(),
-                    mfa_level: MfaLevel::None,
-                    name: String::new(),
-                    owner_id: UserId::new(3),
-                    presences: HashMap::new(),
-                    roles: HashMap::new(),
-                    splash: None,
-                    discovery_splash: None,
-                    system_channel_id: None,
-                    system_channel_flags: SystemChannelFlags::default(),
-                    rules_channel_id: None,
-                    public_updates_channel_id: None,
-                    verification_level: VerificationLevel::Low,
-                    voice_states: HashMap::new(),
-                    description: None,
-                    premium_tier: PremiumTier::Tier0,
-                    channels,
-                    premium_subscription_count: 0,
-                    banner: None,
-                    vanity_url_code: Some("bruhmoment".to_string()),
-                    preferred_locale: "en-US".to_string(),
-                    welcome_screen: None,
-                    approximate_member_count: None,
-                    approximate_presence_count: None,
-                    nsfw_level: NsfwLevel::Default,
-                    max_video_channel_users: None,
-                    max_presences: None,
-                    max_members: None,
-                    widget_enabled: Some(false),
-                    widget_channel_id: None,
-                    stage_instances: vec![],
-                    threads: vec![],
-                    stickers: HashMap::new(),
-                },
-            }
-        };
-        assert!(cache.update(&mut guild_create).is_none());
-        assert!(cache.update(&mut event).is_none());
+//             GuildCreateEvent {
+//                 guild: Guild {
+//                     id: GuildId::new(1),
+//                     // afk_channel_id: None,
+//                     // afk_timeout: 0,
+//                     // application_id: None,
+//                     // default_message_notifications: DefaultMessageNotificationLevel::All,
+//                     // emojis: HashMap::new(),
+//                     // explicit_content_filter: ExplicitContentFilter::None,
+//                     features: vec![],
+//                     icon: None,
+//                     // joined_at: datetime,
+//                     large: false,
+//                     member_count: 0,
+//                     members: HashMap::new(),
+//                     // mfa_level: MfaLevel::None,
+//                     name: String::new(),
+//                     owner_id: UserId::new(3),
+//                     // presences: HashMap::new(),
+//                     roles: HashMap::new(),
+//                     // splash: None,
+//                     // discovery_splash: None,
+//                     // system_channel_id: None,
+//                     // system_channel_flags: SystemChannelFlags::default(),
+//                     // rules_channel_id: None,
+//                     // public_updates_channel_id: None,
+//                     // verification_level: VerificationLevel::Low,
+//                     voice_states: HashMap::new(),
+//                     // description: None,
+//                     // premium_tier: PremiumTier::Tier0,
+//                     channels,
+//                     // premium_subscription_count: 0,
+//                     // banner: None,
+//                     // vanity_url_code: Some("bruhmoment".to_string()),
+//                     preferred_locale: "en-US".to_string(),
+//                     // welcome_screen: None,
+//                     // approximate_member_count: None,
+//                     // approximate_presence_count: None,
+//                     // nsfw_level: NsfwLevel::Default,
+//                     // max_video_channel_users: None,
+//                     // max_presences: None,
+//                     // max_members: None,
+//                     // widget_enabled: Some(false),
+//                     // widget_channel_id: None,
+//                     stage_instances: vec![],
+//                     threads: vec![],
+//                     // stickers: HashMap::new(),
+//                 },
+//             }
+//         };
+//         assert!(cache.update(&mut guild_create).is_none());
+//         assert!(cache.update(&mut event).is_none());
 
-        let mut guild_delete = GuildDeleteEvent {
-            guild: UnavailableGuild {
-                id: GuildId::new(1),
-                unavailable: false,
-            },
-        };
+//         let mut guild_delete = GuildDeleteEvent {
+//             guild: UnavailableGuild {
+//                 id: GuildId::new(1),
+//                 unavailable: false,
+//             },
+//         };
 
-        // The guild existed in the cache, so the cache's guild is returned by the
-        // update.
-        assert!(cache.update(&mut guild_delete).is_some());
+//         // The guild existed in the cache, so the cache's guild is returned by the
+//         // update.
+//         assert!(cache.update(&mut guild_delete).is_some());
 
-        // Assert that the channel's message cache no longer exists.
-        assert!(!cache.messages.contains_key(&ChannelId::new(2)));
-    }
-}
+//         // Assert that the channel's message cache no longer exists.
+//         assert!(!cache.messages.contains_key(&ChannelId::new(2)));
+//     }
+// }

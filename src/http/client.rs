@@ -447,30 +447,30 @@ impl Http {
         .await
     }
 
-    /// Creates an emoji in the given [`Guild`] with the given data.
-    ///
-    /// View the source code for [`Guild::create_emoji`] method to see what
-    /// fields this requires.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    pub async fn create_emoji(
-        &self,
-        guild_id: u64,
-        map: &Value,
-        audit_log_reason: Option<&str>,
-    ) -> Result<Emoji> {
-        self.fire(Request {
-            body: Some(to_vec(map)?),
-            multipart: None,
-            headers: audit_log_reason.map(reason_into_header),
-            route: RouteInfo::CreateEmoji {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Creates an emoji in the given [`Guild`] with the given data.
+    // ///
+    // /// View the source code for [`Guild::create_emoji`] method to see what
+    // /// fields this requires.
+    // ///
+    // /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // pub async fn create_emoji(
+    //     &self,
+    //     guild_id: u64,
+    //     map: &Value,
+    //     audit_log_reason: Option<&str>,
+    // ) -> Result<Emoji> {
+    //     self.fire(Request {
+    //         body: Some(to_vec(map)?),
+    //         multipart: None,
+    //         headers: audit_log_reason.map(reason_into_header),
+    //         route: RouteInfo::CreateEmoji {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Create a follow-up message for an Interaction.
     ///
@@ -724,34 +724,34 @@ impl Http {
         .await
     }
 
-    /// Creates a [`RichInvite`] for the given [channel][`GuildChannel`].
-    ///
-    /// Refer to Discord's [docs] for field information.
-    ///
-    /// All fields are optional.
-    ///
-    /// **Note**: Requires the [Create Instant Invite] permission.
-    ///
-    /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
-    /// [docs]: https://discord.com/developers/docs/resources/channel#create-channel-invite
-    pub async fn create_invite(
-        &self,
-        channel_id: u64,
-        map: &impl serde::Serialize,
-        audit_log_reason: Option<&str>,
-    ) -> Result<RichInvite> {
-        let body = to_vec(map)?;
+    // /// Creates a [`RichInvite`] for the given [channel][`GuildChannel`].
+    // ///
+    // /// Refer to Discord's [docs] for field information.
+    // ///
+    // /// All fields are optional.
+    // ///
+    // /// **Note**: Requires the [Create Instant Invite] permission.
+    // ///
+    // /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
+    // /// [docs]: https://discord.com/developers/docs/resources/channel#create-channel-invite
+    // pub async fn create_invite(
+    //     &self,
+    //     channel_id: u64,
+    //     map: &impl serde::Serialize,
+    //     audit_log_reason: Option<&str>,
+    // ) -> Result<RichInvite> {
+    //     let body = to_vec(map)?;
 
-        self.fire(Request {
-            body: Some(body),
-            multipart: None,
-            headers: audit_log_reason.map(reason_into_header),
-            route: RouteInfo::CreateInvite {
-                channel_id,
-            },
-        })
-        .await
-    }
+    //     self.fire(Request {
+    //         body: Some(body),
+    //         multipart: None,
+    //         headers: audit_log_reason.map(reason_into_header),
+    //         route: RouteInfo::CreateInvite {
+    //             channel_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Creates a permission override for a member or a role in a channel.
     pub async fn create_permission(
@@ -858,35 +858,35 @@ impl Http {
         .await
     }
 
-    /// Creates a sticker.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    // We take a `Vec<(String, String)>` rather than `Vec<(&'static str, String)>` to avoid a compiler
-    // bug around `async fn` and lifetime unification. TODO: change this back once MSRV is on 1.58.
-    // Relevant issue: https://github.com/rust-lang/rust/issues/63033
-    pub async fn create_sticker<'a>(
-        &self,
-        guild_id: u64,
-        map: Vec<(String, String)>,
-        file: impl Into<AttachmentType<'a>>,
-        audit_log_reason: Option<&str>,
-    ) -> Result<Sticker> {
-        self.fire(Request {
-            body: None,
-            multipart: Some(Multipart {
-                files: vec![file.into()],
-                fields: map.into_iter().map(|(k, v)| (k.into(), v.into())).collect(),
-                payload_json: None,
-            }),
-            headers: audit_log_reason.map(reason_into_header),
-            route: RouteInfo::CreateSticker {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Creates a sticker.
+    // ///
+    // /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // // We take a `Vec<(String, String)>` rather than `Vec<(&'static str, String)>` to avoid a compiler
+    // // bug around `async fn` and lifetime unification. TODO: change this back once MSRV is on 1.58.
+    // // Relevant issue: https://github.com/rust-lang/rust/issues/63033
+    // pub async fn create_sticker<'a>(
+    //     &self,
+    //     guild_id: u64,
+    //     map: Vec<(String, String)>,
+    //     file: impl Into<AttachmentType<'a>>,
+    //     audit_log_reason: Option<&str>,
+    // ) -> Result<Sticker> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: Some(Multipart {
+    //             files: vec![file.into()],
+    //             fields: map.into_iter().map(|(k, v)| (k.into(), v.into())).collect(),
+    //             payload_json: None,
+    //         }),
+    //         headers: audit_log_reason.map(reason_into_header),
+    //         route: RouteInfo::CreateSticker {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Creates a webhook for the given [channel][`GuildChannel`]'s Id, passing in
     /// the given data.
@@ -1055,18 +1055,18 @@ impl Http {
         .await
     }
 
-    /// Deletes an invite by code.
-    pub async fn delete_invite(&self, code: &str) -> Result<Invite> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::DeleteInvite {
-                code,
-            },
-        })
-        .await
-    }
+    // /// Deletes an invite by code.
+    // pub async fn delete_invite(&self, code: &str) -> Result<Invite> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::DeleteInvite {
+    //             code,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Deletes a message if created by us or we have
     /// specific permissions.
@@ -1363,27 +1363,27 @@ impl Http {
         .await
     }
 
-    /// Changes emoji information.
-    pub async fn edit_emoji(
-        &self,
-        guild_id: u64,
-        emoji_id: u64,
-        map: &Value,
-        audit_log_reason: Option<&str>,
-    ) -> Result<Emoji> {
-        let body = to_vec(map)?;
+    // /// Changes emoji information.
+    // pub async fn edit_emoji(
+    //     &self,
+    //     guild_id: u64,
+    //     emoji_id: u64,
+    //     map: &Value,
+    //     audit_log_reason: Option<&str>,
+    // ) -> Result<Emoji> {
+    //     let body = to_vec(map)?;
 
-        self.fire(Request {
-            body: Some(body),
-            multipart: None,
-            headers: audit_log_reason.map(reason_into_header),
-            route: RouteInfo::EditEmoji {
-                guild_id,
-                emoji_id,
-            },
-        })
-        .await
-    }
+    //     self.fire(Request {
+    //         body: Some(body),
+    //         multipart: None,
+    //         headers: audit_log_reason.map(reason_into_header),
+    //         route: RouteInfo::EditEmoji {
+    //             guild_id,
+    //             emoji_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Edits a follow-up message for an interaction.
     ///
@@ -1615,24 +1615,24 @@ impl Http {
         .await
     }
 
-    /// Edits a guild welcome screen.
-    pub async fn edit_guild_welcome_screen(
-        &self,
-        guild_id: u64,
-        map: &impl serde::Serialize,
-    ) -> Result<GuildWelcomeScreen> {
-        let body = to_vec(map)?;
+    // /// Edits a guild welcome screen.
+    // pub async fn edit_guild_welcome_screen(
+    //     &self,
+    //     guild_id: u64,
+    //     map: &impl serde::Serialize,
+    // ) -> Result<GuildWelcomeScreen> {
+    //     let body = to_vec(map)?;
 
-        self.fire(Request {
-            body: Some(body),
-            multipart: None,
-            headers: None,
-            route: RouteInfo::EditGuildWelcomeScreen {
-                guild_id,
-            },
-        })
-        .await
-    }
+    //     self.fire(Request {
+    //         body: Some(body),
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::EditGuildWelcomeScreen {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Does specific actions to a member.
     pub async fn edit_member(
@@ -1920,38 +1920,38 @@ impl Http {
         .await
     }
 
-    /// Changes a sticker in a guild.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    pub async fn edit_sticker(
-        &self,
-        guild_id: u64,
-        sticker_id: u64,
-        map: &impl serde::Serialize,
-        audit_log_reason: Option<&str>,
-    ) -> Result<Sticker> {
-        let body = to_vec(&map)?;
+    // /// Changes a sticker in a guild.
+    // ///
+    // /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    // ///
+    // /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    // pub async fn edit_sticker(
+    //     &self,
+    //     guild_id: u64,
+    //     sticker_id: u64,
+    //     map: &impl serde::Serialize,
+    //     audit_log_reason: Option<&str>,
+    // ) -> Result<Sticker> {
+    //     let body = to_vec(&map)?;
 
-        let mut value: Value = self
-            .fire(Request {
-                body: Some(body),
-                multipart: None,
-                headers: audit_log_reason.map(reason_into_header),
-                route: RouteInfo::EditSticker {
-                    guild_id,
-                    sticker_id,
-                },
-            })
-            .await?;
+    //     let mut value: Value = self
+    //         .fire(Request {
+    //             body: Some(body),
+    //             multipart: None,
+    //             headers: audit_log_reason.map(reason_into_header),
+    //             route: RouteInfo::EditSticker {
+    //                 guild_id,
+    //                 sticker_id,
+    //             },
+    //         })
+    //         .await?;
 
-        if let Some(map) = value.as_object_mut() {
-            map.insert("guild_id".to_string(), guild_id.into());
-        }
+    //     if let Some(map) = value.as_object_mut() {
+    //         map.insert("guild_id".to_string(), guild_id.into());
+    //     }
 
-        from_value(value).map_err(From::from)
-    }
+    //     from_value(value).map_err(From::from)
+    // }
 
     /// Edits a thread channel in the [`GuildChannel`] given its Id.
     pub async fn edit_thread(
@@ -2375,29 +2375,29 @@ impl Http {
         .await
     }
 
-    /// Gets all audit logs in a specific guild.
-    pub async fn get_audit_logs(
-        &self,
-        guild_id: u64,
-        action_type: Option<u8>,
-        user_id: Option<u64>,
-        before: Option<u64>,
-        limit: Option<u8>,
-    ) -> Result<AuditLogs> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetAuditLogs {
-                action_type,
-                before,
-                guild_id,
-                limit,
-                user_id,
-            },
-        })
-        .await
-    }
+    // /// Gets all audit logs in a specific guild.
+    // pub async fn get_audit_logs(
+    //     &self,
+    //     guild_id: u64,
+    //     action_type: Option<u8>,
+    //     user_id: Option<u64>,
+    //     before: Option<u64>,
+    //     limit: Option<u8>,
+    // ) -> Result<AuditLogs> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetAuditLogs {
+    //             action_type,
+    //             before,
+    //             guild_id,
+    //             limit,
+    //             user_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Retrieves all auto moderation rules in a guild.
     ///
@@ -2501,18 +2501,18 @@ impl Http {
         .await
     }
 
-    /// Gets all invites for a channel.
-    pub async fn get_channel_invites(&self, channel_id: u64) -> Result<Vec<RichInvite>> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetChannelInvites {
-                channel_id,
-            },
-        })
-        .await
-    }
+    // /// Gets all invites for a channel.
+    // pub async fn get_channel_invites(&self, channel_id: u64) -> Result<Vec<RichInvite>> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetChannelInvites {
+    //             channel_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets all thread members for a thread.
     pub async fn get_channel_thread_members(&self, channel_id: u64) -> Result<Vec<ThreadMember>> {
@@ -2748,32 +2748,32 @@ impl Http {
         .await
     }
 
-    /// Gets all emojis of a guild.
-    pub async fn get_emojis(&self, guild_id: u64) -> Result<Vec<Emoji>> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetEmojis {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Gets all emojis of a guild.
+    // pub async fn get_emojis(&self, guild_id: u64) -> Result<Vec<Emoji>> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetEmojis {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
-    /// Gets information about an emoji in a guild.
-    pub async fn get_emoji(&self, guild_id: u64, emoji_id: u64) -> Result<Emoji> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetEmoji {
-                guild_id,
-                emoji_id,
-            },
-        })
-        .await
-    }
+    // /// Gets information about an emoji in a guild.
+    // pub async fn get_emoji(&self, guild_id: u64, emoji_id: u64) -> Result<Emoji> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetEmoji {
+    //             guild_id,
+    //             emoji_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets current gateway.
     pub async fn get_gateway(&self) -> Result<Gateway> {
@@ -2921,31 +2921,31 @@ impl Http {
         .await
     }
 
-    /// Gets a guild preview.
-    pub async fn get_guild_preview(&self, guild_id: u64) -> Result<GuildPreview> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetGuildPreview {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Gets a guild preview.
+    // pub async fn get_guild_preview(&self, guild_id: u64) -> Result<GuildPreview> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetGuildPreview {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
-    /// Gets a guild welcome screen information.
-    pub async fn get_guild_welcome_screen(&self, guild_id: u64) -> Result<GuildWelcomeScreen> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetGuildWelcomeScreen {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Gets a guild welcome screen information.
+    // pub async fn get_guild_welcome_screen(&self, guild_id: u64) -> Result<GuildWelcomeScreen> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetGuildWelcomeScreen {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets integrations that a guild has.
     pub async fn get_guild_integrations(&self, guild_id: u64) -> Result<Vec<Integration>> {
@@ -2960,18 +2960,18 @@ impl Http {
         .await
     }
 
-    /// Gets all invites to a guild.
-    pub async fn get_guild_invites(&self, guild_id: u64) -> Result<Vec<RichInvite>> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetGuildInvites {
-                guild_id,
-            },
-        })
-        .await
-    }
+    // /// Gets all invites to a guild.
+    // pub async fn get_guild_invites(&self, guild_id: u64) -> Result<Vec<RichInvite>> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetGuildInvites {
+    //             guild_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets a guild's vanity URL if it has one.
     pub async fn get_guild_vanity_url(&self, guild_id: u64) -> Result<String> {
@@ -3175,50 +3175,50 @@ impl Http {
         .await
     }
 
-    /// Retrieves a list of stickers in a [`Guild`].
-    pub async fn get_guild_stickers(&self, guild_id: u64) -> Result<Vec<Sticker>> {
-        let mut value: Value = self
-            .fire(Request {
-                body: None,
-                multipart: None,
-                headers: None,
-                route: RouteInfo::GetGuildStickers {
-                    guild_id,
-                },
-            })
-            .await?;
+    // /// Retrieves a list of stickers in a [`Guild`].
+    // pub async fn get_guild_stickers(&self, guild_id: u64) -> Result<Vec<Sticker>> {
+    //     let mut value: Value = self
+    //         .fire(Request {
+    //             body: None,
+    //             multipart: None,
+    //             headers: None,
+    //             route: RouteInfo::GetGuildStickers {
+    //                 guild_id,
+    //             },
+    //         })
+    //         .await?;
 
-        if let Some(array) = value.as_array_mut() {
-            for role in array {
-                if let Some(map) = role.as_object_mut() {
-                    map.insert("guild_id".to_string(), guild_id.into());
-                }
-            }
-        }
+    //     if let Some(array) = value.as_array_mut() {
+    //         for role in array {
+    //             if let Some(map) = role.as_object_mut() {
+    //                 map.insert("guild_id".to_string(), guild_id.into());
+    //             }
+    //         }
+    //     }
 
-        from_value(value).map_err(From::from)
-    }
+    //     from_value(value).map_err(From::from)
+    // }
 
-    /// Retrieves a single sticker in a [`Guild`].
-    pub async fn get_guild_sticker(&self, guild_id: u64, sticker_id: u64) -> Result<Sticker> {
-        let mut value: Value = self
-            .fire(Request {
-                body: None,
-                multipart: None,
-                headers: None,
-                route: RouteInfo::GetGuildSticker {
-                    guild_id,
-                    sticker_id,
-                },
-            })
-            .await?;
+    // /// Retrieves a single sticker in a [`Guild`].
+    // pub async fn get_guild_sticker(&self, guild_id: u64, sticker_id: u64) -> Result<Sticker> {
+    //     let mut value: Value = self
+    //         .fire(Request {
+    //             body: None,
+    //             multipart: None,
+    //             headers: None,
+    //             route: RouteInfo::GetGuildSticker {
+    //                 guild_id,
+    //                 sticker_id,
+    //             },
+    //         })
+    //         .await?;
 
-        if let Some(map) = value.as_object_mut() {
-            map.insert("guild_id".to_string(), guild_id.into());
-        }
+    //     if let Some(map) = value.as_object_mut() {
+    //         map.insert("guild_id".to_string(), guild_id.into());
+    //     }
 
-        from_value(value).map_err(From::from)
-    }
+    //     from_value(value).map_err(From::from)
+    // }
 
     /// Retrieves the webhooks for the given [guild][`Guild`]'s Id.
     ///
@@ -3303,43 +3303,43 @@ impl Http {
         .await
     }
 
-    /// Gets information about a specific invite.
-    ///
-    /// # Arguments
-    ///
-    /// * `code` - The invite code.
-    /// * `member_counts` - Whether to include information about the current number
-    /// of members in the server that the invite belongs to.
-    /// * `expiration` - Whether to include information about when the invite expires.
-    /// * `event_id` - An optional server event ID to include with the invite.
-    ///
-    /// More information about these arguments can be found on Discord's
-    /// [API documentation](https://discord.com/developers/docs/resources/invite#get-invite).
-    pub async fn get_invite(
-        &self,
-        mut code: &str,
-        member_counts: bool,
-        expiration: bool,
-        event_id: Option<u64>,
-    ) -> Result<Invite> {
-        #[cfg(feature = "utils")]
-        {
-            code = utils::parse_invite(code);
-        }
+    // /// Gets information about a specific invite.
+    // ///
+    // /// # Arguments
+    // ///
+    // /// * `code` - The invite code.
+    // /// * `member_counts` - Whether to include information about the current number
+    // /// of members in the server that the invite belongs to.
+    // /// * `expiration` - Whether to include information about when the invite expires.
+    // /// * `event_id` - An optional server event ID to include with the invite.
+    // ///
+    // /// More information about these arguments can be found on Discord's
+    // /// [API documentation](https://discord.com/developers/docs/resources/invite#get-invite).
+    // pub async fn get_invite(
+    //     &self,
+    //     mut code: &str,
+    //     member_counts: bool,
+    //     expiration: bool,
+    //     event_id: Option<u64>,
+    // ) -> Result<Invite> {
+    //     #[cfg(feature = "utils")]
+    //     {
+    //         code = utils::parse_invite(code);
+    //     }
 
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetInvite {
-                code,
-                member_counts,
-                expiration,
-                event_id,
-            },
-        })
-        .await
-    }
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetInvite {
+    //             code,
+    //             member_counts,
+    //             expiration,
+    //             event_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets member of a guild.
     pub async fn get_member(&self, guild_id: u64, user_id: u64) -> Result<Member> {
@@ -3390,22 +3390,22 @@ impl Http {
         .await
     }
 
-    /// Retrieves a list of all nitro sticker packs.
-    pub async fn get_nitro_stickers(&self) -> Result<Vec<StickerPack>> {
-        #[derive(Deserialize)]
-        struct StickerPacks {
-            sticker_packs: Vec<StickerPack>,
-        }
+    // /// Retrieves a list of all nitro sticker packs.
+    // pub async fn get_nitro_stickers(&self) -> Result<Vec<StickerPack>> {
+    //     #[derive(Deserialize)]
+    //     struct StickerPacks {
+    //         sticker_packs: Vec<StickerPack>,
+    //     }
 
-        self.fire::<StickerPacks>(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetStickerPacks,
-        })
-        .await
-        .map(|s| s.sticker_packs)
-    }
+    //     self.fire::<StickerPacks>(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetStickerPacks,
+    //     })
+    //     .await
+    //     .map(|s| s.sticker_packs)
+    // }
 
     /// Gets all pins of a channel.
     pub async fn get_pins(&self, channel_id: u64) -> Result<Vec<Message>> {
@@ -3446,18 +3446,18 @@ impl Http {
         .await
     }
 
-    /// Gets a sticker.
-    pub async fn get_sticker(&self, sticker_id: u64) -> Result<Sticker> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            route: RouteInfo::GetSticker {
-                sticker_id,
-            },
-        })
-        .await
-    }
+    // /// Gets a sticker.
+    // pub async fn get_sticker(&self, sticker_id: u64) -> Result<Sticker> {
+    //     self.fire(Request {
+    //         body: None,
+    //         multipart: None,
+    //         headers: None,
+    //         route: RouteInfo::GetSticker {
+    //             sticker_id,
+    //         },
+    //     })
+    //     .await
+    // }
 
     /// Gets the current unresolved incidents from Discord's Status API.
     ///

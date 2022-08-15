@@ -194,100 +194,100 @@ pub struct Gateway {
     pub url: String,
 }
 
-/// Information detailing the current active status of a [`User`].
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ClientStatus {
-    pub desktop: Option<OnlineStatus>,
-    pub mobile: Option<OnlineStatus>,
-    pub web: Option<OnlineStatus>,
-}
+// /// Information detailing the current active status of a [`User`].
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// pub struct ClientStatus {
+//     pub desktop: Option<OnlineStatus>,
+//     pub mobile: Option<OnlineStatus>,
+//     pub web: Option<OnlineStatus>,
+// }
 
-/// Information about the user of a [`Presence`] event.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct PresenceUser {
-    pub id: UserId,
-    pub avatar: Option<String>,
-    pub bot: Option<bool>,
-    #[serde(default, skip_serializing_if = "Option::is_none", with = "discriminator::option")]
-    pub discriminator: Option<u16>,
-    pub email: Option<String>,
-    pub mfa_enabled: Option<bool>,
-    #[serde(rename = "username")]
-    pub name: Option<String>,
-    pub verified: Option<bool>,
-    pub public_flags: Option<UserPublicFlags>,
-}
+// /// Information about the user of a [`Presence`] event.
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct PresenceUser {
+//     pub id: UserId,
+//     pub avatar: Option<String>,
+//     pub bot: Option<bool>,
+//     #[serde(default, skip_serializing_if = "Option::is_none", with = "discriminator::option")]
+//     pub discriminator: Option<u16>,
+//     pub email: Option<String>,
+//     pub mfa_enabled: Option<bool>,
+//     #[serde(rename = "username")]
+//     pub name: Option<String>,
+//     pub verified: Option<bool>,
+//     pub public_flags: Option<UserPublicFlags>,
+// }
 
-impl PresenceUser {
-    /// Attempts to convert this [`PresenceUser`] instance into a [`User`].
-    ///
-    /// If one of [`User`]'s required fields is None in `self`, None is returned.
-    #[must_use]
-    pub fn into_user(self) -> Option<User> {
-        Some(User {
-            avatar: self.avatar,
-            bot: self.bot?,
-            discriminator: self.discriminator?,
-            id: self.id,
-            name: self.name?,
-            public_flags: self.public_flags,
-            banner: None,
-            accent_colour: None,
-        })
-    }
+// impl PresenceUser {
+//     /// Attempts to convert this [`PresenceUser`] instance into a [`User`].
+//     ///
+//     /// If one of [`User`]'s required fields is None in `self`, None is returned.
+//     #[must_use]
+//     pub fn into_user(self) -> Option<User> {
+//         Some(User {
+//             avatar: self.avatar,
+//             bot: self.bot?,
+//             discriminator: self.discriminator?,
+//             id: self.id,
+//             name: self.name?,
+//             public_flags: self.public_flags,
+//             banner: None,
+//             accent_colour: None,
+//         })
+//     }
 
-    /// Attempts to convert this [`PresenceUser`] instance into a [`User`].
-    ///
-    /// Will clone individual fields if needed.
-    ///
-    /// If one of [`User`]'s required fields is None in `self`, None is returned.
-    #[must_use]
-    pub fn to_user(&self) -> Option<User> {
-        Some(User {
-            avatar: self.avatar.clone(),
-            bot: self.bot?,
-            discriminator: self.discriminator?,
-            id: self.id,
-            name: self.name.clone()?,
-            public_flags: self.public_flags,
-            banner: None,
-            accent_colour: None,
-        })
-    }
+//     /// Attempts to convert this [`PresenceUser`] instance into a [`User`].
+//     ///
+//     /// Will clone individual fields if needed.
+//     ///
+//     /// If one of [`User`]'s required fields is None in `self`, None is returned.
+//     #[must_use]
+//     pub fn to_user(&self) -> Option<User> {
+//         Some(User {
+//             avatar: self.avatar.clone(),
+//             bot: self.bot?,
+//             discriminator: self.discriminator?,
+//             id: self.id,
+//             name: self.name.clone()?,
+//             public_flags: self.public_flags,
+//             banner: None,
+//             accent_colour: None,
+//         })
+//     }
 
-    #[cfg(feature = "cache")] // method is only used with the cache feature enabled
-    pub(crate) fn update_with_user(&mut self, user: &User) {
-        self.id = user.id;
-        if let Some(avatar) = &user.avatar {
-            self.avatar = Some(avatar.clone());
-        }
-        self.bot = Some(user.bot);
-        self.discriminator = Some(user.discriminator);
-        self.name = Some(user.name.clone());
-        if let Some(public_flags) = user.public_flags {
-            self.public_flags = Some(public_flags);
-        }
-    }
-}
+//     // #[cfg(feature = "cache")] // method is only used with the cache feature enabled
+//     pub(crate) fn update_with_user(&mut self, user: &User) {
+//         self.id = user.id;
+//         if let Some(avatar) = &user.avatar {
+//             self.avatar = Some(avatar.clone());
+//         }
+//         self.bot = Some(user.bot);
+//         self.discriminator = Some(user.discriminator);
+//         self.name = Some(user.name.clone());
+//         if let Some(public_flags) = user.public_flags {
+//             self.public_flags = Some(public_flags);
+//         }
+//     }
+// }
 
-/// Information detailing the current online status of a [`User`].
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-pub struct Presence {
-    /// [`User`]'s current activities.
-    #[serde(default)]
-    pub activities: Vec<Activity>,
-    /// The devices a user are currently active on, if available.
-    #[serde(default)]
-    pub client_status: Option<ClientStatus>,
-    /// The `GuildId` the presence update is coming from.
-    pub guild_id: Option<GuildId>,
-    /// The user's online status.
-    pub status: OnlineStatus,
-    /// Data about the associated user.
-    pub user: PresenceUser,
-}
+// /// Information detailing the current online status of a [`User`].
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// #[non_exhaustive]
+// pub struct Presence {
+//     /// [`User`]'s current activities.
+//     #[serde(default)]
+//     pub activities: Vec<Activity>,
+//     /// The devices a user are currently active on, if available.
+//     #[serde(default)]
+//     pub client_status: Option<ClientStatus>,
+//     /// The `GuildId` the presence update is coming from.
+//     pub guild_id: Option<GuildId>,
+//     /// The user's online status.
+//     pub status: OnlineStatus,
+//     /// Data about the associated user.
+//     pub user: PresenceUser,
+// }
 
 /// An initial set of information given after IDENTIFYing to the gateway.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -295,8 +295,6 @@ pub struct Presence {
 pub struct Ready {
     pub application: PartialCurrentApplicationInfo,
     pub guilds: Vec<UnavailableGuild>,
-    #[serde(default, with = "presences")]
-    pub presences: HashMap<UserId, Presence>,
     #[serde(default, with = "private_channels")]
     pub private_channels: HashMap<ChannelId, Channel>,
     pub session_id: String,

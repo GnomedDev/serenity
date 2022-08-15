@@ -1,7 +1,7 @@
 #[cfg(feature = "model")]
 use std::borrow::Cow;
-#[cfg(feature = "cache")]
-use std::cmp::Reverse;
+// #[cfg(feature = "cache")]
+// use std::cmp::Reverse;
 use std::fmt;
 
 #[cfg(feature = "model")]
@@ -24,8 +24,8 @@ pub struct Member {
     pub deaf: bool,
     /// The unique Id of the guild that the member is a part of.
     pub guild_id: GuildId,
-    /// Timestamp representing the date when the member joined.
-    pub joined_at: Option<Timestamp>,
+    // /// Timestamp representing the date when the member joined.
+    // pub joined_at: Option<Timestamp>,
     /// Indicator of whether the member can speak in voice channels.
     pub mute: bool,
     /// The member's nickname, if present.
@@ -36,11 +36,11 @@ pub struct Member {
     pub roles: Vec<RoleId>,
     /// Attached User struct.
     pub user: User,
-    /// Indicator that the member hasn't accepted the rules of the guild yet.
-    #[serde(default)]
-    pub pending: bool,
-    /// Timestamp representing the date since the member is boosting the guild.
-    pub premium_since: Option<Timestamp>,
+    // /// Indicator that the member hasn't accepted the rules of the guild yet.
+    // #[serde(default)]
+    // pub pending: bool,
+    // /// Timestamp representing the date since the member is boosting the guild.
+    // pub premium_since: Option<Timestamp>,
     /// The total permissions of the member in a channel, including overrides.
     ///
     /// This is only [`Some`] when returned in an [`Interaction`] object.
@@ -62,14 +62,14 @@ pub struct Member {
 pub(crate) struct InterimMember {
     pub deaf: bool,
     pub guild_id: Option<GuildId>,
-    pub joined_at: Option<Timestamp>,
+    // pub joined_at: Option<Timestamp>,
     pub mute: bool,
     pub nick: Option<String>,
     pub roles: Vec<RoleId>,
     pub user: User,
-    #[serde(default)]
-    pub pending: bool,
-    pub premium_since: Option<Timestamp>,
+    // #[serde(default)]
+    // pub pending: bool,
+    // pub premium_since: Option<Timestamp>,
     pub permissions: Option<Permissions>,
     pub avatar: Option<String>,
     pub communication_disabled_until: Option<Timestamp>,
@@ -80,13 +80,13 @@ impl From<InterimMember> for Member {
         Self {
             deaf: m.deaf,
             guild_id: m.guild_id.expect("GuildID was not set on InterimMember"),
-            joined_at: m.joined_at,
+            // joined_at: m.joined_at,
             mute: m.mute,
             nick: m.nick,
             roles: m.roles,
             user: m.user,
-            pending: m.pending,
-            premium_since: m.premium_since,
+            // pending: m.pending,
+            // premium_since: m.premium_since,
             permissions: m.permissions,
             avatar: m.avatar,
             communication_disabled_until: m.communication_disabled_until,
@@ -168,23 +168,23 @@ impl Member {
         self.guild_id.ban_with_reason(http, self.user.id, dmd, reason).await
     }
 
-    /// Determines the member's colour.
-    #[cfg(feature = "cache")]
-    pub fn colour(&self, cache: impl AsRef<Cache>) -> Option<Colour> {
-        let guild = cache.as_ref().guild(self.guild_id)?;
+    // /// Determines the member's colour.
+    // #[cfg(feature = "cache")]
+    // pub fn colour(&self, cache: impl AsRef<Cache>) -> Option<Colour> {
+    //     let guild = cache.as_ref().guild(self.guild_id)?;
 
-        let mut roles = self
-            .roles
-            .iter()
-            .filter_map(|role_id| guild.roles.get(role_id))
-            .collect::<Vec<&Role>>();
+    //     let mut roles = self
+    //         .roles
+    //         .iter()
+    //         .filter_map(|role_id| guild.roles.get(role_id))
+    //         .collect::<Vec<&Role>>();
 
-        roles.sort_by_key(|&b| Reverse(b));
+    //     roles.sort_by_key(|&b| Reverse(b));
 
-        let default = Colour::default();
+    //     let default = Colour::default();
 
-        roles.iter().find(|r| r.colour.0 != default.0).map(|r| r.colour)
-    }
+    //     roles.iter().find(|r| r.colour.0 != default.0).map(|r| r.colour)
+    // }
 
     /// Returns the "default channel" of the guild for the member.
     /// (This returns the first channel that can be read by the member, if there isn't

@@ -16,8 +16,8 @@ pub use guild::*;
 mod role;
 pub use role::*;
 
-mod emoji;
-pub use emoji::*;
+// mod emoji;
+// pub use emoji::*;
 
 use crate::model::prelude::*;
 use crate::prelude::*;
