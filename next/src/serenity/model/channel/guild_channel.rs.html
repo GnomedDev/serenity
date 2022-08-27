@@ -1357,7 +1357,7 @@
     <span class="doccomment">/// [Send Messages]: Permissions::SEND_MESSAGES</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">broadcast_typing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">broadcast_typing</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">broadcast_typing</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Creates an invite for the given channel.</span>
@@ -1486,7 +1486,7 @@
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">target</span>: <span class="ident">PermissionOverwrite</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">create_permission</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">target</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">create_permission</span>(<span class="ident">http</span>, <span class="ident">target</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Deletes this channel, returning the channel on a successful deletion.</span>
@@ -1514,7 +1514,7 @@
             }
         }
 
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="ident">cache_http</span>.<span class="ident">http</span>()).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete</span>(<span class="ident">cache_http</span>.<span class="ident">http</span>()).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Deletes all messages by Ids from the given vector in the channel.</span>
@@ -1542,7 +1542,7 @@
         <span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span>,
         <span class="ident">It</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_messages</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message_ids</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_messages</span>(<span class="ident">http</span>, <span class="ident">message_ids</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Deletes all permission overrides in the channel from a member</span>
@@ -1561,7 +1561,7 @@
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">permission_type</span>: <span class="ident">PermissionOverwriteType</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_permission</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">permission_type</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_permission</span>(<span class="ident">http</span>, <span class="ident">permission_type</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Deletes the given [`Reaction`] from the channel.</span>
@@ -1581,7 +1581,7 @@
         <span class="ident">user_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span>,
         <span class="ident">reaction_type</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ReactionType</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_reaction</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message_id</span>, <span class="ident">user_id</span>, <span class="ident">reaction_type</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">delete_reaction</span>(<span class="ident">http</span>, <span class="ident">message_id</span>, <span class="ident">user_id</span>, <span class="ident">reaction_type</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Edits the channel&#39;s settings.</span>
@@ -1602,7 +1602,7 @@
     <span class="doccomment">/// # async fn run() {</span>
     <span class="doccomment">/// #     let http = Http::new(&quot;token&quot;);</span>
     <span class="doccomment">/// #     let channel = ChannelId::new(1234);</span>
-    <span class="doccomment">/// let builder = EditChannel::default().name(&quot;test&quot;).bitrate(86400);</span>
+    <span class="doccomment">/// let builder = EditChannel::new().name(&quot;test&quot;).bitrate(86400);</span>
     <span class="doccomment">/// channel.edit(&amp;http, builder).await;</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
@@ -1686,7 +1686,7 @@
     <span class="doccomment">/// // assuming the cache has been unlocked</span>
     <span class="doccomment">/// let channel = cache.guild_channel(channel_id).ok_or(ModelError::ItemMissing)?;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let builder = EditVoiceState::default().suppress(false);</span>
+    <span class="doccomment">/// let builder = EditVoiceState::new().suppress(false);</span>
     <span class="doccomment">/// channel.edit_voice_state(&amp;http, user_id, builder).await?;</span>
     <span class="doccomment">/// #   Ok(())</span>
     <span class="doccomment">/// # }</span>
@@ -1736,7 +1736,7 @@
     <span class="doccomment">/// let channel = cache.guild_channel(channel_id).ok_or(ModelError::ItemMissing)?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Send a request to speak</span>
-    <span class="doccomment">/// let builder = EditVoiceState::default().request_to_speak(true);</span>
+    <span class="doccomment">/// let builder = EditVoiceState::new().request_to_speak(true);</span>
     <span class="doccomment">/// channel.edit_own_voice_state(&amp;http, builder.clone()).await?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Clear own request to speak</span>
@@ -1775,7 +1775,7 @@
     <span class="doccomment">/// [Manage Messages]: Permissions::MANAGE_MESSAGES</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">follow</span>(
-        <span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">target_channel_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ChannelId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FollowedChannel</span><span class="op">&gt;</span> {
@@ -1800,7 +1800,7 @@
     <span class="doccomment">/// [Manage Channels]: Permissions::MANAGE_CHANNELS</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">invites</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RichInvite</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">invites</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">invites</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Determines if the channel is NSFW.</span>
@@ -1829,7 +1829,7 @@
         <span class="ident">cache_http</span>: <span class="kw">impl</span> <span class="ident">CacheHttp</span>,
         <span class="ident">message_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="ident">cache_http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">message</span>(<span class="ident">cache_http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Gets messages from the channel.</span>
@@ -1931,7 +1931,7 @@
     <span class="doccomment">///                 },</span>
     <span class="doccomment">///             };</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///             let builder = CreateMessage::default().content(&quot;here&#39;s a cat&quot;);</span>
+    <span class="doccomment">///             let builder = CreateMessage::new().content(&quot;here&#39;s a cat&quot;);</span>
     <span class="doccomment">///             let _ = msg</span>
     <span class="doccomment">///                 .channel_id</span>
     <span class="doccomment">///                 .send_files(&amp;context.http, vec![(&amp;file, &quot;cat.png&quot;)], builder)</span>
@@ -2010,7 +2010,7 @@
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">message_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">pin</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">pin</span>(<span class="ident">http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Gets all channel&#39;s pins.</span>
@@ -2025,7 +2025,7 @@
     <span class="doccomment">/// [Read Message History]: Permissions::READ_MESSAGE_HISTORY</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pins</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">pins</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">pins</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Gets the list of [`User`]s who have reacted to a [`Message`] with a</span>
@@ -2053,7 +2053,7 @@
         <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="ident">after</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">UserId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">reaction_users</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message_id</span>, <span class="ident">reaction_type</span>, <span class="ident">limit</span>, <span class="ident">after</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">reaction_users</span>(<span class="ident">http</span>, <span class="ident">message_id</span>, <span class="ident">reaction_type</span>, <span class="ident">limit</span>, <span class="ident">after</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Sends a message with just the given message content in the channel.</span>
@@ -2173,7 +2173,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::missing_errors_doc</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_typing</span>(<span class="self">self</span>, <span class="ident">http</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Typing</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_typing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Typing</span><span class="op">&gt;</span> {
         <span class="ident">http</span>.<span class="ident">start_typing</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get</span>())
     }
 
@@ -2192,7 +2192,7 @@
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
         <span class="ident">message_id</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">MessageId</span><span class="op">&gt;</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">unpin</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">unpin</span>(<span class="ident">http</span>, <span class="ident">message_id</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Retrieves the channel&#39;s webhooks.</span>
@@ -2206,7 +2206,7 @@
     <span class="doccomment">/// [Manage Webhooks]: Permissions::MANAGE_WEBHOOKS</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">webhooks</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Webhook</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">webhooks</span>(<span class="kw-2">&amp;</span><span class="ident">http</span>).<span class="kw">await</span>
+        <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">webhooks</span>(<span class="ident">http</span>).<span class="kw">await</span>
     }
 
     <span class="doccomment">/// Retrieves [`Member`]s from the current channel.</span>
@@ -2260,7 +2260,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns a builder which can be awaited to obtain a mesage or stream of messages sent in this guild channel.</span>
+    <span class="doccomment">/// Returns a builder which can be awaited to obtain a message or stream of messages sent in this guild channel.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collector&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reply_collector</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
