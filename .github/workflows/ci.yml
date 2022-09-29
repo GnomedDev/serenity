@@ -147,6 +147,9 @@ jobs:
 
   MSRV:
     runs-on: ubuntu-latest
+    # We only run this job on the current branch as
+    # keeping MSRV the same is not important on next. 
+    if: github.ref_name == "current"
 
     steps:
       - name: Checkout sources
