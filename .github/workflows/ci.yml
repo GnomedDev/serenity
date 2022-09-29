@@ -62,6 +62,9 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Print out base_ref
+        run: echo '${{ toJSON(github) }}'
+
       - name: Install toolchain
         run: |
           rustup install --profile minimal ${{ matrix.toolchain || 'stable' }}
