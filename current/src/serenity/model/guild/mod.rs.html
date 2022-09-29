@@ -3334,6 +3334,33 @@
 <span id="3328">3328</span>
 <span id="3329">3329</span>
 <span id="3330">3330</span>
+<span id="3331">3331</span>
+<span id="3332">3332</span>
+<span id="3333">3333</span>
+<span id="3334">3334</span>
+<span id="3335">3335</span>
+<span id="3336">3336</span>
+<span id="3337">3337</span>
+<span id="3338">3338</span>
+<span id="3339">3339</span>
+<span id="3340">3340</span>
+<span id="3341">3341</span>
+<span id="3342">3342</span>
+<span id="3343">3343</span>
+<span id="3344">3344</span>
+<span id="3345">3345</span>
+<span id="3346">3346</span>
+<span id="3347">3347</span>
+<span id="3348">3348</span>
+<span id="3349">3349</span>
+<span id="3350">3350</span>
+<span id="3351">3351</span>
+<span id="3352">3352</span>
+<span id="3353">3353</span>
+<span id="3354">3354</span>
+<span id="3355">3355</span>
+<span id="3356">3356</span>
+<span id="3357">3357</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Models relating to guilds and types that it owns.</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">audit_log</span>;
@@ -3379,7 +3406,6 @@
     <span class="ident">CreateApplicationCommand</span>,
     <span class="ident">CreateApplicationCommandPermissionsData</span>,
     <span class="ident">CreateApplicationCommands</span>,
-    <span class="ident">CreateApplicationCommandsPermissions</span>,
     <span class="ident">CreateChannel</span>,
     <span class="ident">CreateScheduledEvent</span>,
     <span class="ident">CreateSticker</span>,
@@ -3418,6 +3444,8 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::model::Timestamp</span>;
 
 <span class="doccomment">/// A representation of a banning of a user.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#ban-object).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Hash</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ban</span> {
     <span class="doccomment">/// The reason given for this ban.</span>
@@ -3427,6 +3455,9 @@
 }
 
 <span class="doccomment">/// Information about a Discord guild, such as channels, emojis, etc.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object) plus</span>
+<span class="doccomment">/// [extension](https://discord.com/developers/docs/topics/gateway#guild-create).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Guild</span> {
@@ -3491,8 +3522,7 @@
     <span class="kw">pub</span> <span class="ident">icon</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The unique Id identifying the guild.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the Id of the default role (`@everyone`) and also</span>
-    <span class="doccomment">/// that of the default channel (typically `#general`).</span>
+    <span class="doccomment">/// This is equivalent to the Id of the default role (`@everyone`).</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">GuildId</span>,
     <span class="doccomment">/// The date that the current user joined the guild.</span>
     <span class="kw">pub</span> <span class="ident">joined_at</span>: <span class="ident">Timestamp</span>,
@@ -3725,6 +3755,7 @@
     <span class="doccomment">/// Returns the &quot;default&quot; channel of the guild for the passed user id.</span>
     <span class="doccomment">/// (This returns the first channel that can be read by the user, if there isn&#39;t one,</span>
     <span class="doccomment">/// returns [`None`])</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::unused_async</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">default_channel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">uid</span>: <span class="ident">UserId</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">GuildChannel</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">member</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">members</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">uid</span>)<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">channel</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">channels</span>.<span class="ident">values</span>() {
@@ -3748,10 +3779,13 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_channel_guaranteed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">GuildChannel</span><span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">channel</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">channels</span>.<span class="ident">values</span>() {
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Channel::Guild</span>(<span class="ident">channel</span>) <span class="op">=</span> <span class="ident">channel</span> {
-                <span class="kw">for</span> <span class="ident">member</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">members</span>.<span class="ident">values</span>() {
-                    <span class="kw">if</span> <span class="self">self</span>.<span class="ident">user_permissions_in</span>(<span class="ident">channel</span>, <span class="ident">member</span>).<span class="ident">ok</span>()<span class="question-mark">?</span>.<span class="ident">view_channel</span>() {
-                        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">channel</span>);
-                    }
+                <span class="kw">if</span> <span class="self">self</span>
+                    .<span class="ident">members</span>
+                    .<span class="ident">values</span>()
+                    .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">member</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">user_permissions_in</span>(<span class="ident">channel</span>, <span class="ident">member</span>).<span class="ident">ok</span>())
+                    .<span class="ident">all</span>(<span class="ident">Permissions::view_channel</span>)
+                {
+                    <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">channel</span>);
                 }
             }
         }
@@ -4158,6 +4192,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].</span>
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `create_appliction_command_permission`.&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_application_commands_permissions</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">http</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Http</span><span class="op">&gt;</span>,
@@ -4165,8 +4200,8 @@
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CommandPermission</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommandsPermissions</span>,
-        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">CreateApplicationCommandsPermissions</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident"><span class="kw">crate</span>::builder::CreateApplicationCommandsPermissions</span>,
+        ) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="kw">crate</span>::builder::CreateApplicationCommandsPermissions</span>,
     {
         <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">set_application_commands_permissions</span>(<span class="ident">http</span>, <span class="ident">f</span>).<span class="kw">await</span>
     }
@@ -6352,6 +6387,8 @@
 }
 
 <span class="doccomment">/// A [`Guild`] widget.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-widget-settings-object).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildWidget</span> {
@@ -6363,6 +6400,8 @@
 
 <span class="doccomment">/// Representation of the number of members that would be pruned by a guild</span>
 <span class="doccomment">/// prune operation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#get-guild-prune-count).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildPrune</span> {
     <span class="doccomment">/// The number of members that would be pruned by the operation.</span>
@@ -6370,6 +6409,9 @@
 }
 
 <span class="doccomment">/// Basic information about a guild.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object), subset undocumented (closest thing is</span>
+<span class="doccomment">/// [this](https://discord.com/developers/docs/topics/rpc#getguilds-get-guilds-response-structure)).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GuildInfo</span> {
     <span class="doccomment">/// The unique Id of the guild.</span>
@@ -6431,6 +6473,8 @@
 }
 
 <span class="doccomment">/// Data for an unavailable guild.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#unavailable-guild-object).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnavailableGuild</span> {
     <span class="doccomment">/// The Id of the [`Guild`] that may be unavailable.</span>
@@ -6441,6 +6485,8 @@
 }
 
 <span class="doccomment">/// Default message notification level for a guild.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DefaultMessageNotificationLevel</span> {
@@ -6458,6 +6504,8 @@
 });
 
 <span class="doccomment">/// Setting used to filter explicit messages from members.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExplicitContentFilter</span> {
@@ -6478,6 +6526,8 @@
 });
 
 <span class="doccomment">/// Multi-Factor Authentication level for guild moderators.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-mfa-level).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MfaLevel</span> {
@@ -6496,6 +6546,8 @@
 
 <span class="doccomment">/// The level to set as criteria prior to a user being able to send</span>
 <span class="doccomment">/// messages in a [`Guild`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-verification-level).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VerificationLevel</span> {
@@ -6522,6 +6574,8 @@
 });
 
 <span class="doccomment">/// The [`Guild`] nsfw level.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-guild-nsfw-level).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">NsfwLevel</span> {
