@@ -205,7 +205,7 @@ impl ShardRunner {
         match &event {
             Event::MessageCreate(msg_event) => {
                 let mut msg = LazyArc::new(&msg_event.message);
-                retain_mut(&mut self.message_filters, |f| f.process_item(&mut msg));
+                self.message_filters.retain_mut( |f| f.process_item(&mut msg));
             },
             Event::ReactionAdd(reaction_event) => {
                 let mut reaction = LazyReactionAction::new(&reaction_event.reaction, true);
