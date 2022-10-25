@@ -7,44 +7,66 @@
 #![allow(clippy::let_underscore_must_use)]
 
 use std::fmt;
-use std::num::NonZeroU32;
 use std::pin::Pin;
 use std::sync::Arc;
-use std::time::Duration;
+use std::task::{Context as FutContext, Poll};
 
 use derivative::Derivative;
-use futures::StreamExt;
+use futures::Future;
+use tokio::sync::mpsc::UnboundedReceiver as Receiver;
 use tokio::time::Sleep;
 
-use crate::client::bridge::gateway::ShardMessenger;
+use crate::model::channel::Reaction;
 use crate::model::event::Event;
 
 mod error;
-mod macros;
 pub use error::Error as CollectorError;
 
-mod base_collector;
-mod base_filter;
+mod aliases;
+mod collectable;
+mod collector_builder;
+mod filter;
+mod filter_options;
+mod lazy_item;
 
-use base_collector::Collector;
-pub use base_filter::Filter;
-use base_filter::FilterTrait;
-
-pub mod component_interaction_collector;
-pub mod event_collector;
-pub mod message_collector;
-pub mod modal_interaction_collector;
-pub mod reaction_collector;
-
-pub use component_interaction_collector::*;
-pub use event_collector::*;
-pub use message_collector::*;
-pub use modal_interaction_collector::*;
-pub use reaction_collector::*;
+pub use aliases::*;
+use collectable::Collectable;
+pub use collector_builder::CollectorBuilder;
+pub use filter::Filter;
 
 type FilterFnInner<Arg> = dyn Fn(&Arg) -> bool + 'static + Send + Sync;
 
 pub struct CollectorCallback(pub Box<dyn FnMut(&mut Event) -> bool + Send + Sync>);
+
+pub struct Collector<Item> {
+    pub(super) receiver: Pin<Box<Receiver<Arc<Item>>>>,
+    pub(super) timeout: Option<Pin<Box<Sleep>>>,
+}
+
+impl<Item> Collector<Item> {
+    /// Stops collecting, this will implicitly be done once the
+    /// collector drops.
+    /// In case the drop does not appear until later, it is preferred to
+    /// stop the collector early.
+    pub fn stop(self) {}
+}
+
+impl<Item> futures::stream::Stream for Collector<Item> {
+    type Item = Arc<Item>;
+
+    fn poll_next(mut self: Pin<&mut Self>, ctx: &mut FutContext<'_>) -> Poll<Option<Self::Item>> {
+        if let Some(timeout) = &mut self.timeout {
+            match timeout.as_mut().poll(ctx) {
+                Poll::Ready(_) => {
+                    return Poll::Ready(None);
+                },
+                Poll::Pending => (),
+            }
+        }
+
+        self.receiver.as_mut().poll_recv(ctx)
+    }
+}
 
 impl std::fmt::Debug for CollectorCallback {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -64,38 +86,6 @@ impl<Arg> fmt::Debug for FilterFn<Arg> {
     }
 }
 
-/// Wraps a `&T` and clones the value into an [`Arc<T>`] lazily. Used with collectors to allow inspecting
-/// the value in filters while only cloning values that actually match.
-#[derive(Debug)]
-pub struct LazyArc<'a, T> {
-    value: &'a T,
-    arc: Option<Arc<T>>,
-}
-
-impl<'a, T: Clone> LazyArc<'a, T> {
-    pub fn new(value: &'a T) -> Self {
-        LazyArc {
-            value,
-            arc: None,
-        }
-    }
-}
-
-impl<Item: Clone> LazyItem<Item> for LazyArc<'_, Item> {
-    fn as_arc(&mut self) -> &mut Arc<Item> {
-        let value = self.value;
-        self.arc.get_or_insert_with(|| Arc::new(value.clone()))
-    }
-}
-
-impl<'a, T> std::ops::Deref for LazyArc<'a, T> {
-    type Target = T;
-
-    fn deref(&self) -> &Self::Target {
-        self.value
-    }
-}
-
 mod sealed {
     use crate::model::prelude::*;
 
@@ -108,107 +98,28 @@ mod sealed {
     impl Sealed for interaction::message_component::ComponentInteraction {}
 }
 
-pub trait LazyItem<Item: ?Sized> {
-    fn as_arc(&mut self) -> &mut Arc<Item>;
+/// Marks whether the reaction has been added or removed.
+#[derive(Debug, Clone)]
+pub enum ReactionAction {
+    Added(Arc<Reaction>),
+    Removed(Arc<Reaction>),
 }
 
-pub trait Collectable: sealed::Sealed + Sized {
-    type Lazy<'a>: LazyItem<Self>;
-    type FilterOptions: Default;
-    type FilterItem;
-
-    fn extract(event: &mut Event) -> Option<Self::Lazy<'_>>;
-}
-
-#[derive(Derivative)]
-#[derivative(Clone(bound = ""), Debug(bound = ""), Default(bound = ""))]
-pub struct CommonFilterOptions<FilterItem> {
-    filter_limit: Option<NonZeroU32>,
-    collect_limit: Option<NonZeroU32>,
-    filter: Option<FilterFn<FilterItem>>,
-}
-
-#[must_use = "Builders must be built"]
-pub struct CollectorBuilder<'a, Item: Collectable> {
-    common_options: CommonFilterOptions<Item::FilterItem>,
-    filter_options: Item::FilterOptions,
-    shard_messenger: &'a ShardMessenger,
-    timeout: Option<Pin<Box<Sleep>>>,
-}
-
-impl<'a, Item: Collectable + 'static> CollectorBuilder<'a, Item> {
-    pub fn new(shard_messenger: &'a ShardMessenger) -> Self {
-        Self {
-            shard_messenger,
-
-            timeout: None,
-            common_options: CommonFilterOptions::default(),
-            filter_options: Item::FilterOptions::default(),
+impl ReactionAction {
+    #[must_use]
+    pub fn as_inner_ref(&self) -> &Arc<Reaction> {
+        match self {
+            Self::Added(inner) | Self::Removed(inner) => inner,
         }
     }
 
-    pub fn build(self) -> Collector<Item>
-    where
-        Filter<Item>: FilterTrait<Item> + Send + Sync,
-    {
-        let (mut filter, recv) = Filter::<Item>::new(self.filter_options, self.common_options);
-        self.shard_messenger.add_collector(CollectorCallback(Box::new(move |event| {
-            if let Some(item) = Item::extract(event) {
-                filter.process_item(item)
-            } else {
-                false
-            }
-        })));
-
-        Collector {
-            timeout: self.timeout,
-            receiver: Box::pin(recv),
-        }
+    #[must_use]
+    pub fn is_added(&self) -> bool {
+        matches!(self, Self::Added(_))
     }
 
-    /// Sets a filter function where items passed to the `function` must return `true`,
-    /// otherwise the item won't be collected and failed the filter process.
-    ///
-    /// This is the last instance to pass for an item to count as *collected*.
-    pub fn filter(
-        mut self,
-        function: impl Fn(&Item::FilterItem) -> bool + 'static + Send + Sync,
-    ) -> Self {
-        self.common_options.filter = Some(FilterFn(Arc::new(function)));
-
-        self
-    }
-
-    /// Limits how many items can be collected.
-    ///
-    /// An item is considered *collected*, if the message passes all the requirements.
-    pub fn collect_limit(mut self, limit: u32) -> Self {
-        self.common_options.collect_limit = NonZeroU32::new(limit);
-
-        self
-    }
-
-    /// Limits how many events will attempt to be filtered.
-    pub fn filter_limit(mut self, limit: u32) -> Self {
-        self.common_options.filter_limit = NonZeroU32::new(limit);
-
-        self
-    }
-
-    /// Sets a [`Duration`] for how long the collector shall receive events.
-    pub fn timeout(mut self, duration: Duration) -> Self {
-        self.timeout = Some(Box::pin(tokio::time::sleep(duration)));
-
-        self
-    }
-}
-
-impl<Item: Collectable + Send + Sync + 'static> CollectorBuilder<'_, Item>
-where
-    Filter<Item>: FilterTrait<Item> + Send + Sync,
-{
-    pub async fn collect_single(self) -> Option<Arc<Item>> {
-        let mut collector = self.build();
-        collector.next().await
+    #[must_use]
+    pub fn is_removed(&self) -> bool {
+        matches!(self, Self::Removed(_))
     }
 }
