@@ -1,14 +1,11 @@
-use crate::client::bridge::gateway::ShardMessenger;
 use crate::collector::macros::*;
 use crate::collector::{Filter, LazyArc};
 use crate::model::application::interaction::modal::ModalSubmitInteraction;
+use crate::model::event::Event;
 use crate::model::id::{ChannelId, GuildId, MessageId, UserId};
+use crate::model::prelude::Interaction;
 
 impl super::FilterTrait<ModalSubmitInteraction> for Filter<ModalSubmitInteraction> {
-    fn register(self, messenger: &ShardMessenger) {
-        messenger.set_modal_interaction_filter(self);
-    }
-
     fn is_passing_constraints(
         &self,
         interaction: &mut LazyArc<'_, ModalSubmitInteraction>,
@@ -46,11 +43,20 @@ impl super::CollectorBuilder<'_, ModalSubmitInteraction> {
     impl_author_id!("Sets the required author ID of an interaction. If an interaction is not triggered by a user with this ID, it won't be received.");
 }
 
-#[nougat::gat]
 impl super::Collectable for ModalSubmitInteraction {
     type FilterOptions = FilterOptions;
     type FilterItem = ModalSubmitInteraction;
-    type LazyItem<'a> = LazyArc<'a, ModalSubmitInteraction>;
+    type Lazy<'a> = LazyArc<'a, ModalSubmitInteraction>;
+
+    fn extract(event: &mut Event) -> Option<Self::Lazy<'_>> {
+        if let Event::InteractionCreate(interaction) = event {
+            if let Interaction::ModalSubmit(interaction) = &mut interaction.interaction {
+                return Some(LazyArc::new(interaction));
+            }
+        };
+
+        None
+    }
 }
 
 /// A modal interaction collector receives interactions matching a the given filter for a set duration.

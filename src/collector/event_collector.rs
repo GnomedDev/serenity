@@ -1,21 +1,9 @@
-use crate::client::bridge::gateway::ShardMessenger;
 use crate::collector::{CollectorError, Filter, FilterTrait, LazyArc};
 use crate::model::event::{Event, EventType, RelatedIdsForEventType};
 use crate::model::id::{ChannelId, GuildId, MessageId, UserId};
 use crate::{Error, Result};
 
-impl Filter<Event> {
-    /// Checks if the `event` is one of the types we're looking for.
-    pub(crate) fn is_matching_event_type(&self, event: &Event) -> bool {
-        self.options.event_types.contains(&event.event_type())
-    }
-}
-
 impl FilterTrait<Event> for Filter<Event> {
-    fn register(self, messenger: &ShardMessenger) {
-        messenger.set_event_filter(self);
-    }
-
     /// Checks if the `event` passes set constraints.
     /// Constraints are optional, as it is possible to limit events to
     /// be sent by a specific user or in a specific guild.
@@ -27,7 +15,8 @@ impl FilterTrait<Event> for Filter<Event> {
             slice.is_empty() || slice.iter().any(f)
         }
 
-        empty_or_any(&self.options.guild_id, |id| event.guild_id().contains(id))
+        self.options.event_types.contains(&event.event_type())
+            && empty_or_any(&self.options.guild_id, |id| event.guild_id().contains(id))
             && empty_or_any(&self.options.user_id, |id| event.user_id().contains(id))
             && empty_or_any(&self.options.channel_id, |id| event.channel_id().contains(id))
             && empty_or_any(&self.options.message_id, |id| event.message_id().contains(id))
@@ -123,11 +112,14 @@ pub type EventFilter = super::Filter<Event>;
 
 // No deprecated CollectSingle alias as EventCollector never had a CollectSingle version.
 
-#[nougat::gat]
 impl super::Collectable for Event {
     type FilterItem = Event;
     type FilterOptions = FilterOptions;
-    type LazyItem<'a> = LazyArc<'a, Event>;
+    type Lazy<'a> = LazyArc<'a, Event>;
+
+    fn extract(item: &mut Event) -> Option<Self::Lazy<'_>> {
+        Some(LazyArc::new(item))
+    }
 }
 
 #[cfg(test)]

@@ -63,7 +63,7 @@ pub use self::shard_runner_message::{ChunkGuildFilter, ShardRunnerMessage};
 use crate::gateway::ConnectionStage;
 
 /// A message either for a [`ShardManager`] or a [`ShardRunner`].
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub enum ShardClientMessage {
     /// A message intended to be worked with by a [`ShardManager`].
     Manager(ShardManagerMessage),

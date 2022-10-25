@@ -17,6 +17,7 @@ use futures::StreamExt;
 use tokio::time::Sleep;
 
 use crate::client::bridge::gateway::ShardMessenger;
+use crate::model::event::Event;
 
 mod error;
 mod macros;
@@ -41,11 +42,19 @@ pub use message_collector::*;
 pub use modal_interaction_collector::*;
 pub use reaction_collector::*;
 
-type FilterFnInner<Arg> = Arc<dyn Fn(&Arg) -> bool + 'static + Send + Sync>;
+type FilterFnInner<Arg> = dyn Fn(&Arg) -> bool + 'static + Send + Sync;
+
+pub struct CollectorCallback(pub Box<dyn FnMut(&mut Event) -> bool + Send + Sync>);
+
+impl std::fmt::Debug for CollectorCallback {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("CollectorCallback").finish()
+    }
+}
 
 #[derive(Derivative)]
 #[derivative(Clone(bound = ""))]
-pub struct FilterFn<Arg: ?Sized>(FilterFnInner<Arg>);
+pub struct FilterFn<Arg: ?Sized>(Arc<FilterFnInner<Arg>>);
 
 impl<Arg> fmt::Debug for FilterFn<Arg> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -103,14 +112,13 @@ pub trait LazyItem<Item: ?Sized> {
     fn as_arc(&mut self) -> &mut Arc<Item>;
 }
 
-#[nougat::gat]
 pub trait Collectable: sealed::Sealed + Sized {
-    type LazyItem<'a>: LazyItem<Self>;
+    type Lazy<'a>: LazyItem<Self>;
     type FilterOptions: Default;
     type FilterItem;
-}
 
-type LazyItemGat<'a, Item> = nougat::Gat!(<Item as Collectable>::LazyItem<'a>);
+    fn extract(event: &mut Event) -> Option<Self::Lazy<'_>>;
+}
 
 #[derive(Derivative)]
 #[derivative(Clone(bound = ""), Debug(bound = ""), Default(bound = ""))]
@@ -128,7 +136,7 @@ pub struct CollectorBuilder<'a, Item: Collectable> {
     timeout: Option<Pin<Box<Sleep>>>,
 }
 
-impl<'a, Item: Collectable> CollectorBuilder<'a, Item> {
+impl<'a, Item: Collectable + 'static> CollectorBuilder<'a, Item> {
     pub fn new(shard_messenger: &'a ShardMessenger) -> Self {
         Self {
             shard_messenger,
@@ -141,10 +149,16 @@ impl<'a, Item: Collectable> CollectorBuilder<'a, Item> {
 
     pub fn build(self) -> Collector<Item>
     where
-        Filter<Item>: FilterTrait<Item>,
+        Filter<Item>: FilterTrait<Item> + Send + Sync,
     {
-        let (filter, recv) = Filter::new(self.filter_options, self.common_options);
-        filter.register(self.shard_messenger);
+        let (mut filter, recv) = Filter::<Item>::new(self.filter_options, self.common_options);
+        self.shard_messenger.add_collector(CollectorCallback(Box::new(move |event| {
+            if let Some(item) = Item::extract(event) {
+                filter.process_item(item)
+            } else {
+                false
+            }
+        })));
 
         Collector {
             timeout: self.timeout,
@@ -156,8 +170,11 @@ impl<'a, Item: Collectable> CollectorBuilder<'a, Item> {
     /// otherwise the item won't be collected and failed the filter process.
     ///
     /// This is the last instance to pass for an item to count as *collected*.
-    pub fn filter(mut self, function: FilterFnInner<Item::FilterItem>) -> Self {
-        self.common_options.filter = Some(FilterFn(function));
+    pub fn filter(
+        mut self,
+        function: impl Fn(&Item::FilterItem) -> bool + 'static + Send + Sync,
+    ) -> Self {
+        self.common_options.filter = Some(FilterFn(Arc::new(function)));
 
         self
     }
@@ -188,7 +205,7 @@ impl<'a, Item: Collectable> CollectorBuilder<'a, Item> {
 
 impl<Item: Collectable + Send + Sync + 'static> CollectorBuilder<'_, Item>
 where
-    Filter<Item>: FilterTrait<Item>,
+    Filter<Item>: FilterTrait<Item> + Send + Sync,
 {
     pub async fn collect_single(self) -> Option<Arc<Item>> {
         let mut collector = self.build();

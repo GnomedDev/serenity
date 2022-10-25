@@ -1,15 +1,11 @@
 use super::Filter;
-use crate::client::bridge::gateway::ShardMessenger;
 use crate::collector::macros::*;
 use crate::collector::LazyArc;
 use crate::model::channel::Message;
+use crate::model::event::Event;
 use crate::model::id::{ChannelId, GuildId, UserId};
 
 impl super::FilterTrait<Message> for Filter<Message> {
-    fn register(self, messenger: &ShardMessenger) {
-        messenger.set_message_filter(self);
-    }
-
     /// Checks if the `message` passes set constraints.
     /// Constraints are optional, as it is possible to limit messages to
     /// be sent by a specific author or in a specific guild.
@@ -34,11 +30,18 @@ impl super::CollectorBuilder<'_, Message> {
     impl_guild_id!("Sets the required guild ID of a message. If a message does not meet this ID, it won't be received.");
 }
 
-#[nougat::gat]
 impl super::Collectable for Message {
     type FilterItem = Message;
     type FilterOptions = FilterOptions;
-    type LazyItem<'a> = LazyArc<'a, Message>;
+    type Lazy<'a> = LazyArc<'a, Message>;
+
+    fn extract(event: &mut Event) -> Option<Self::Lazy<'_>> {
+        if let Event::MessageCreate(message) = event {
+            Some(LazyArc::new(&message.message))
+        } else {
+            None
+        }
+    }
 }
 
 /// A message collector receives messages matching the given filter for a set duration.

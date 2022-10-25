@@ -6,12 +6,10 @@ use tokio::sync::mpsc::{
     UnboundedSender as Sender,
 };
 
-use super::{Collectable, CommonFilterOptions, LazyItem, LazyItemGat};
-use crate::client::bridge::gateway::ShardMessenger;
+use super::{Collectable, CommonFilterOptions, LazyItem};
 
 pub trait FilterTrait<Item: Collectable> {
-    fn register(self, messenger: &ShardMessenger);
-    fn is_passing_constraints(&self, item: &mut LazyItemGat<'_, Item>) -> bool;
+    fn is_passing_constraints(&self, item: &mut Item::Lazy<'_>) -> bool;
 }
 
 #[derive(Clone, Debug)]
@@ -54,8 +52,8 @@ where
 {
     /// Sends an item to the consuming collector if the item conforms
     /// to the constraints and the limits are not reached yet.
-    pub(crate) fn process_item(&mut self, item: &mut LazyItemGat<'_, Item>) -> bool {
-        if self.is_passing_constraints(item) {
+    pub(crate) fn process_item(&mut self, mut item: Item::Lazy<'_>) -> bool {
+        if self.is_passing_constraints(&mut item) {
             self.collected += 1;
 
             if self.sender.send(item.as_arc().clone()).is_err() {

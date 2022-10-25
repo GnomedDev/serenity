@@ -3,13 +3,7 @@ use tokio_tungstenite::tungstenite::Message;
 
 use super::{ChunkGuildFilter, ShardClientMessage, ShardRunnerMessage};
 #[cfg(feature = "collector")]
-use crate::collector::{
-    ComponentInteractionFilter,
-    EventFilter,
-    MessageFilter,
-    ModalInteractionFilter,
-    ReactionFilter,
-};
+use crate::collector::CollectorCallback;
 use crate::gateway::{ActivityData, InterMessage};
 use crate::model::prelude::*;
 
@@ -274,33 +268,8 @@ impl ShardMessenger {
     /// Sets a new filter for an event collector.
     #[inline]
     #[cfg(feature = "collector")]
-    pub fn set_event_filter(&self, collector: EventFilter) {
-        drop(self.send_to_shard(ShardRunnerMessage::SetEventFilter(collector)));
-    }
-
-    /// Sets a new filter for a message collector.
-    #[inline]
-    #[cfg(feature = "collector")]
-    pub fn set_message_filter(&self, collector: MessageFilter) {
-        drop(self.send_to_shard(ShardRunnerMessage::SetMessageFilter(collector)));
-    }
-
-    /// Sets a new filter for a reaction collector.
-    #[cfg(feature = "collector")]
-    pub fn set_reaction_filter(&self, collector: ReactionFilter) {
-        drop(self.send_to_shard(ShardRunnerMessage::SetReactionFilter(collector)));
-    }
-
-    /// Sets a new filter for a component interaction collector.
-    #[cfg(feature = "collector")]
-    pub fn set_component_interaction_filter(&self, collector: ComponentInteractionFilter) {
-        drop(self.send_to_shard(ShardRunnerMessage::SetComponentInteractionFilter(collector)));
-    }
-
-    /// Sets a new filter for a modal interaction collector.
-    #[cfg(feature = "collector")]
-    pub fn set_modal_interaction_filter(&self, collector: ModalInteractionFilter) {
-        drop(self.send_to_shard(ShardRunnerMessage::SetModalInteractionFilter(collector)));
+    pub fn add_collector(&self, collector: CollectorCallback) {
+        drop(self.send_to_shard(ShardRunnerMessage::AddCollector(collector)));
     }
 }
 

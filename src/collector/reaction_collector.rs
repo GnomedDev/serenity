@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use crate::client::bridge::gateway::ShardMessenger;
 use crate::collector::macros::*;
 use crate::collector::{Filter, LazyArc};
 use crate::model::channel::Reaction;
+use crate::model::event::Event;
 use crate::model::id::{ChannelId, GuildId, MessageId, UserId};
 
 /// Marks whether the reaction has been added or removed.
@@ -65,10 +65,6 @@ impl super::LazyItem<ReactionAction> for LazyReactionAction<'_> {
 }
 
 impl super::FilterTrait<ReactionAction> for Filter<ReactionAction> {
-    fn register(self, messenger: &ShardMessenger) {
-        messenger.set_reaction_filter(self);
-    }
-
     /// Checks if the `reaction` passes set constraints.
     /// Constraints are optional, as it is possible to limit reactions to
     /// be sent by a specific author or in a specific guild.
@@ -146,11 +142,20 @@ impl super::CollectorBuilder<'_, ReactionAction> {
     impl_author_id!("Sets the required author ID of a reaction. If a reaction is not issued by a user with this ID, it won't be received.");
 }
 
-#[nougat::gat]
 impl super::Collectable for ReactionAction {
     type FilterItem = Reaction;
     type FilterOptions = FilterOptions;
-    type LazyItem<'a> = LazyReactionAction<'a>;
+    type Lazy<'a> = LazyReactionAction<'a>;
+
+    fn extract(event: &mut Event) -> Option<Self::Lazy<'_>> {
+        match event {
+            Event::ReactionAdd(reaction) => Some(LazyReactionAction::new(&reaction.reaction, true)),
+            Event::ReactionRemove(reaction) => {
+                Some(LazyReactionAction::new(&reaction.reaction, false))
+            },
+            _ => None,
+        }
+    }
 }
 
 /// A reaction collector receives reactions matching a the given filter for a set duration.

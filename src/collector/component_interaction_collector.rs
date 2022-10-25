@@ -1,14 +1,11 @@
-use crate::client::bridge::gateway::ShardMessenger;
 use crate::collector::macros::*;
 use crate::collector::{Filter, FilterTrait, LazyArc};
 use crate::model::application::interaction::message_component::ComponentInteraction;
+use crate::model::event::Event;
 use crate::model::id::{ChannelId, GuildId, MessageId, UserId};
+use crate::model::prelude::Interaction;
 
 impl FilterTrait<ComponentInteraction> for Filter<ComponentInteraction> {
-    fn register(self, messenger: &ShardMessenger) {
-        messenger.set_component_interaction_filter(self);
-    }
-
     /// Checks if the `interaction` passes set constraints.
     /// Constraints are optional, as it is possible to limit interactions to
     /// be sent by a specific author or in a specific guild.
@@ -43,11 +40,20 @@ impl super::CollectorBuilder<'_, ComponentInteraction> {
     impl_author_id!("Sets the required author ID of an interaction. If an interaction is not triggered by a user with this ID, it won't be received.");
 }
 
-#[nougat::gat]
 impl super::Collectable for ComponentInteraction {
     type FilterOptions = FilterOptions;
     type FilterItem = ComponentInteraction;
-    type LazyItem<'a> = LazyArc<'a, ComponentInteraction>;
+    type Lazy<'a> = LazyArc<'a, ComponentInteraction>;
+
+    fn extract(item: &mut Event) -> Option<Self::Lazy<'_>> {
+        if let Event::InteractionCreate(interaction) = item {
+            if let Interaction::Component(interaction) = &mut interaction.interaction {
+                return Some(LazyArc::new(interaction));
+            }
+        };
+
+        None
+    }
 }
 
 /// A component interaction collector receives interactions matching a the given filter for a set duration.

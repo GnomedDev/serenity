@@ -1,20 +1,14 @@
 use tokio_tungstenite::tungstenite::Message;
 
 #[cfg(feature = "collector")]
-use crate::collector::{
-    ComponentInteractionFilter,
-    EventFilter,
-    MessageFilter,
-    ModalInteractionFilter,
-    ReactionFilter,
-};
+use crate::collector::CollectorCallback;
 use crate::gateway::ActivityData;
 pub use crate::gateway::ChunkGuildFilter;
 use crate::model::id::GuildId;
 use crate::model::user::OnlineStatus;
 
 /// A message to send from a shard over a WebSocket.
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub enum ShardRunnerMessage {
     /// Indicates that the client is to send a member chunk message.
     ChunkGuild {
@@ -54,17 +48,5 @@ pub enum ShardRunnerMessage {
     SetStatus(OnlineStatus),
     /// Sends a new filter for events to the shard.
     #[cfg(feature = "collector")]
-    SetEventFilter(EventFilter),
-    /// Sends a new filter for messages to the shard.
-    #[cfg(feature = "collector")]
-    SetMessageFilter(MessageFilter),
-    /// Sends a new filter for reactions to the shard.
-    #[cfg(feature = "collector")]
-    SetReactionFilter(ReactionFilter),
-    /// Sends a new filter for component interactions to the shard.
-    #[cfg(feature = "collector")]
-    SetComponentInteractionFilter(ComponentInteractionFilter),
-    /// Sends a new filter for modal interactions to the shard.
-    #[cfg(feature = "collector")]
-    SetModalInteractionFilter(ModalInteractionFilter),
+    AddCollector(CollectorCallback),
 }

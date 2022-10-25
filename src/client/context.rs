@@ -10,7 +10,7 @@ pub use crate::cache::Cache;
 #[cfg(feature = "gateway")]
 use crate::client::bridge::gateway::ShardMessenger;
 #[cfg(feature = "collector")]
-use crate::collector::{ComponentInteractionFilter, MessageFilter, ReactionFilter};
+use crate::collector::CollectorCallback;
 use crate::gateway::ActivityData;
 #[cfg(feature = "gateway")]
 use crate::gateway::InterMessage;
@@ -401,28 +401,12 @@ impl Context {
         self.shard.set_presence(activity, status);
     }
 
-    /// Sets a new `filter` for the shard to check if a message event shall be
-    /// sent back to `filter`'s paired receiver.
+    /// Sets a new `collector` for the shard to check if an event shall be
+    /// sent back to `collector`'s paired receiver.
     #[cfg(feature = "collector")]
     #[inline]
-    pub fn set_message_filter(&self, filter: MessageFilter) {
-        self.shard.set_message_filter(filter);
-    }
-
-    /// Sets a new `filter` for the shard to check if a reaction event shall be
-    /// sent back to `filter`'s paired receiver.
-    #[cfg(feature = "collector")]
-    #[inline]
-    pub fn set_reaction_filter(&self, filter: ReactionFilter) {
-        self.shard.set_reaction_filter(filter);
-    }
-
-    /// Sets a new `filter` for the shard to check if an interaction event shall be
-    /// sent back to `filter`'s paired receiver.
-    #[cfg(feature = "collector")]
-    #[inline]
-    pub fn set_component_interaction_filter(&self, filter: ComponentInteractionFilter) {
-        self.shard.set_component_interaction_filter(filter);
+    pub fn add_collector(&self, collector: CollectorCallback) {
+        self.shard.add_collector(collector);
     }
 }
 
