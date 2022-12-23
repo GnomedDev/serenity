@@ -7,8 +7,8 @@ use crate::client::Context;
 use crate::model::channel::Message;
 use crate::model::id::{ChannelId, GuildId, UserId};
 
-type DynamicPrefixHook =
-    for<'fut> fn(&'fut Context, &'fut Message) -> BoxFuture<'fut, Option<String>>;
+type DynamicPrefixHook<D> =
+    for<'fut> fn(&'fut Context<D>, &'fut Message) -> BoxFuture<'fut, Option<String>>;
 
 /// A configuration struct for deciding whether the framework
 /// should allow optional whitespace between prefixes, group prefixes and command names.
@@ -102,8 +102,9 @@ impl From<(bool, bool, bool)> for WithWhiteSpace {
 /// [`Client`]: crate::Client
 /// [`StandardFramework`]: super::StandardFramework
 /// [default implementation]: Self::default
-#[derive(Clone)]
-pub struct Configuration {
+#[derive(derivative::Derivative)]
+#[derivative(Clone(bound = ""))]
+pub struct Configuration<D: Send + Sync + 'static> {
     #[doc(hidden)]
     pub allow_dm: bool,
     #[doc(hidden)]
@@ -119,7 +120,7 @@ pub struct Configuration {
     #[doc(hidden)]
     pub disabled_commands: HashSet<String>,
     #[doc(hidden)]
-    pub dynamic_prefixes: Vec<DynamicPrefixHook>,
+    pub dynamic_prefixes: Vec<DynamicPrefixHook<D>>,
     #[doc(hidden)]
     pub ignore_bots: bool,
     #[doc(hidden)]
@@ -138,7 +139,7 @@ pub struct Configuration {
     pub case_insensitive: bool,
 }
 
-impl Configuration {
+impl<D: Send + Sync + 'static> Configuration<D> {
     /// If set to false, bot will ignore any private messages.
     ///
     /// **Note**: Defaults to `true`.
@@ -354,7 +355,7 @@ impl Configuration {
     ///
     /// [`Context::data`]: crate::client::Context::data
     #[inline]
-    pub fn dynamic_prefix(&mut self, dynamic_prefix: DynamicPrefixHook) -> &mut Self {
+    pub fn dynamic_prefix(&mut self, dynamic_prefix: DynamicPrefixHook<D>) -> &mut Self {
         self.dynamic_prefixes.push(dynamic_prefix);
 
         self
@@ -580,7 +581,7 @@ impl Configuration {
     }
 }
 
-impl Default for Configuration {
+impl<D: Send + Sync + 'static> Default for Configuration<D> {
     /// Builds a default framework configuration, setting the following:
     ///
     /// - **allow_dm** to `true`
@@ -599,7 +600,7 @@ impl Default for Configuration {
     /// - **on_mention** to `false`
     /// - **owners** to an empty HashSet
     /// - **prefix** to "~"
-    fn default() -> Configuration {
+    fn default() -> Configuration<D> {
         Configuration {
             allow_dm: true,
             with_whitespace: WithWhiteSpace::default(),

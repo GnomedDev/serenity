@@ -28,16 +28,13 @@ use crate::commands::math::*;
 use crate::commands::meta::*;
 use crate::commands::owner::*;
 
-pub struct ShardManagerContainer;
-
-impl TypeMapKey for ShardManagerContainer {
-    type Value = Arc<Mutex<ShardManager>>;
-}
+type Data = ();
+type Context = serenity::client::Context<Data>;
 
 struct Handler;
 
 #[async_trait]
-impl EventHandler for Handler {
+impl EventHandler<Data> for Handler {
     async fn ready(&self, _: Context, ready: Ready) {
         info!("Connected as {}", ready.user.name);
     }

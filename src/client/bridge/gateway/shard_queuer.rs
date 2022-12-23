@@ -8,7 +8,6 @@ use once_cell::sync::OnceCell;
 use tokio::sync::{Mutex, RwLock};
 use tokio::time::{sleep, timeout, Duration, Instant};
 use tracing::{debug, info, instrument, warn};
-use typemap_rev::TypeMap;
 
 use super::{
     ShardClientMessage,
@@ -24,7 +23,7 @@ use super::{
 use crate::cache::Cache;
 #[cfg(feature = "voice")]
 use crate::client::bridge::voice::VoiceGatewayManager;
-use crate::client::{EventHandler, RawEventHandler};
+use crate::client::{DataSetup, EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
 use crate::gateway::{ConnectionStage, InterMessage, PresenceData, Shard};
@@ -41,25 +40,26 @@ const WAIT_BETWEEN_BOOTS_IN_SECONDS: u64 = 5;
 /// A shard queuer instance _should_ be run in its own thread, due to the
 /// blocking nature of the loop itself as well as a 5 second thread sleep
 /// between shard starts.
-pub struct ShardQueuer {
+pub struct ShardQueuer<D: 'static + Send + Sync> {
     /// A copy of [`Client::data`] to be given to runners for contextual
     /// dispatching.
     ///
     /// [`Client::data`]: crate::Client::data
-    pub data: Arc<RwLock<TypeMap>>,
+    pub(crate) data: Arc<OnceCell<D>>,
+    pub(crate) data_setup: Arc<RwLock<Option<DataSetup<D>>>>,
     /// A reference to an [`EventHandler`], such as the one given to the
     /// [`Client`].
     ///
     /// [`Client`]: crate::Client
-    pub event_handlers: Vec<Arc<dyn EventHandler>>,
+    pub event_handlers: Vec<Arc<dyn EventHandler<D>>>,
     /// A reference to an [`RawEventHandler`], such as the one given to the
     /// [`Client`].
     ///
     /// [`Client`]: crate::Client
-    pub raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
+    pub raw_event_handlers: Vec<Arc<dyn RawEventHandler<D>>>,
     /// A copy of the framework
     #[cfg(feature = "framework")]
-    pub framework: Arc<OnceCell<Arc<dyn Framework>>>,
+    pub framework: Arc<OnceCell<Arc<dyn Framework<D>>>>,
     /// The instant that a shard was last started.
     ///
     /// This is used to determine how long to wait between shard IDENTIFYs.
@@ -89,7 +89,7 @@ pub struct ShardQueuer {
     pub presence: Option<PresenceData>,
 }
 
-impl ShardQueuer {
+impl<D: Send + Sync + 'static> ShardQueuer<D> {
     /// Begins the shard queuer loop.
     ///
     /// This will loop over the internal [`Self::rx`] for [`ShardQueuerMessage`]s,
@@ -194,6 +194,7 @@ impl ShardQueuer {
 
         let mut runner = ShardRunner::new(ShardRunnerOptions {
             data: Arc::clone(&self.data),
+            data_setup: Arc::clone(&self.data_setup),
             event_handlers: self.event_handlers.clone(),
             raw_event_handlers: self.raw_event_handlers.clone(),
             #[cfg(feature = "framework")]

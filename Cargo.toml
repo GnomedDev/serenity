@@ -38,7 +38,6 @@ flate2 = { version = "1.0.13", optional = true }
 reqwest = { version = "0.11.7", default-features = false, features = ["multipart", "stream"], optional = true }
 static_assertions = { version = "1.1", optional = true }
 tokio-tungstenite = { version = "0.17", optional = true }
-typemap_rev = { version = "0.1.3", optional = true }
 bytes = { version = "1.0", optional = true }
 percent-encoding = { version = "2.1", optional = true }
 mini-moka = { version = "0.10", optional = true }
@@ -50,6 +49,7 @@ once_cell = { version = "1.16.0", optional = true }
 # Serenity workspace crates
 command_attr = { version = "0.4.1", path = "./command_attr", optional = true }
 serenity-voice-model = { version = "0.1.1", path = "./voice-model", optional = true }
+derivative = "2.2.0"
 
 [dev-dependencies.http_crate]
 version = "0.2"
@@ -61,18 +61,7 @@ default = ["default_no_backend", "rustls_backend"]
 default_native_tls = ["default_no_backend", "native_tls_backend"]
 
 # Serenity requires a backend, this picks all default features without a backend.
-default_no_backend = [
-    "builder",
-    "cache",
-    "chrono",
-    "client",
-    "framework",
-    "gateway",
-    "model",
-    "http",
-    "standard_framework",
-    "utils",
-]
+default_no_backend = ["builder", "cache", "chrono", "client", "framework", "gateway", "model", "http", "standard_framework", "utils"]
 
 # Enables builder structs to configure Discord HTTP requests. Without this feature, you have to
 # construct JSON manually at some places.
@@ -85,7 +74,7 @@ cache = ["fxhash", "dashmap", "parking_lot"]
 collector = ["gateway", "model"]
 # Wraps the gateway and http functionality into a single interface
 # TODO: should this require "gateway"?
-client = ["http", "typemap_rev"]
+client = ["http"]
 # Enables the Framework trait which is an abstraction for old-style text commands.
 framework = ["client", "model", "utils", "once_cell"]
 # Enables gateway support, which allows bots to listen for Discord events.
@@ -126,18 +115,10 @@ absolute_ratelimits = []
 
 # Backends to pick from:
 # - Rustls Backends
-rustls_backend = [
-    "reqwest/rustls-tls",
-    "tokio-tungstenite/rustls-tls-webpki-roots",
-    "bytes",
-]
+rustls_backend = ["reqwest/rustls-tls", "tokio-tungstenite/rustls-tls-webpki-roots", "bytes"]
 
 # - Native TLS Backends
-native_tls_backend = [
-    "reqwest/native-tls",
-    "tokio-tungstenite/native-tls",
-    "bytes",
-]
+native_tls_backend = ["reqwest/native-tls", "tokio-tungstenite/native-tls", "bytes"]
 
 
 [package.metadata.docs.rs]

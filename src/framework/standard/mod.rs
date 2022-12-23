@@ -74,37 +74,39 @@ pub enum DispatchError {
     TooManyArguments { max: u16, given: usize },
 }
 
-type DispatchHook =
-    for<'fut> fn(&'fut Context, &'fut Message, DispatchError, &'fut str) -> BoxFuture<'fut, ()>;
-type BeforeHook = for<'fut> fn(&'fut Context, &'fut Message, &'fut str) -> BoxFuture<'fut, bool>;
-type AfterHook = for<'fut> fn(
-    &'fut Context,
+type DispatchHook<D> =
+    for<'fut> fn(&'fut Context<D>, &'fut Message, DispatchError, &'fut str) -> BoxFuture<'fut, ()>;
+type BeforeHook<D> =
+    for<'fut> fn(&'fut Context<D>, &'fut Message, &'fut str) -> BoxFuture<'fut, bool>;
+type AfterHook<D> = for<'fut> fn(
+    &'fut Context<D>,
     &'fut Message,
     &'fut str,
     Result<(), CommandError>,
 ) -> BoxFuture<'fut, ()>;
-type UnrecognisedHook =
-    for<'fut> fn(&'fut Context, &'fut Message, &'fut str) -> BoxFuture<'fut, ()>;
-type NormalMessageHook = for<'fut> fn(&'fut Context, &'fut Message) -> BoxFuture<'fut, ()>;
-type PrefixOnlyHook = for<'fut> fn(&'fut Context, &'fut Message) -> BoxFuture<'fut, ()>;
+type UnrecognisedHook<D> =
+    for<'fut> fn(&'fut Context<D>, &'fut Message, &'fut str) -> BoxFuture<'fut, ()>;
+type NormalMessageHook<D> = for<'fut> fn(&'fut Context<D>, &'fut Message) -> BoxFuture<'fut, ()>;
+type PrefixOnlyHook<D> = for<'fut> fn(&'fut Context<D>, &'fut Message) -> BoxFuture<'fut, ()>;
 
 /// A utility for easily managing dispatches to commands.
 ///
 /// Refer to the [module-level documentation] for more information.
 ///
 /// [module-level documentation]: self
-#[derive(Default)]
-pub struct StandardFramework {
-    groups: Vec<(&'static CommandGroup, Map)>,
-    buckets: Mutex<HashMap<String, Bucket>>,
-    before: Option<BeforeHook>,
-    after: Option<AfterHook>,
-    dispatch: Option<DispatchHook>,
-    unrecognised_command: Option<UnrecognisedHook>,
-    normal_message: Option<NormalMessageHook>,
-    prefix_only: Option<PrefixOnlyHook>,
-    config: parking_lot::RwLock<Configuration>,
-    help: Option<&'static HelpCommand>,
+#[derive(derivative::Derivative)]
+#[derivative(Default(bound = "", new = "true"))]
+pub struct StandardFramework<D: 'static + Send + Sync> {
+    groups: Vec<(&'static CommandGroup<D>, Map<D>)>,
+    buckets: Mutex<HashMap<String, Bucket<D>>>,
+    before: Option<BeforeHook<D>>,
+    after: Option<AfterHook<D>>,
+    dispatch: Option<DispatchHook<D>>,
+    unrecognised_command: Option<UnrecognisedHook<D>>,
+    normal_message: Option<NormalMessageHook<D>>,
+    prefix_only: Option<PrefixOnlyHook<D>>,
+    config: parking_lot::RwLock<Configuration<D>>,
+    help: Option<&'static HelpCommand<D>>,
     /// Whether the framework has been "initialized".
     ///
     /// The framework is initialized once one of the following occurs:
@@ -123,13 +125,7 @@ pub struct StandardFramework {
     pub initialized: bool,
 }
 
-impl StandardFramework {
-    #[inline]
-    #[must_use]
-    pub fn new() -> Self {
-        StandardFramework::default()
-    }
-
+impl<D: Send + Sync + 'static> StandardFramework<D> {
     /// Configures the framework, setting non-default values.
     ///
     /// This passes a mutable reference to the current configuration,
@@ -162,7 +158,7 @@ impl StandardFramework {
     /// [`Client`]: crate::Client
     /// [`prefix`]: Configuration::prefix
     /// [allowing whitespace between prefixes]: Configuration::with_whitespace
-    pub fn configure(&self, f: impl FnOnce(&mut Configuration) -> &mut Configuration) {
+    pub fn configure(&self, f: impl FnOnce(&mut Configuration<D>) -> &mut Configuration<D>) {
         f(&mut self.config.write());
     }
 
@@ -193,7 +189,7 @@ impl StandardFramework {
     #[inline]
     pub async fn bucket<F>(self, name: &str, f: F) -> Self
     where
-        F: FnOnce(&mut BucketBuilder) -> &mut BucketBuilder,
+        F: FnOnce(&mut BucketBuilder<D>) -> &mut BucketBuilder<D>,
     {
         let mut builder = BucketBuilder::default();
 
@@ -214,11 +210,11 @@ impl StandardFramework {
 
     async fn should_fail<'a>(
         &'a self,
-        ctx: &'a Context,
+        ctx: &'a Context<D>,
         msg: &'a Message,
         args: &'a mut Args,
-        command: &'static CommandOptions,
-        group: &'static GroupOptions,
+        command: &'static CommandOptions<D>,
+        group: &'static GroupOptions<D>,
     ) -> Option<DispatchError> {
         if let Some(min) = command.min_args {
             if args.len() < min as usize {
@@ -362,7 +358,7 @@ impl StandardFramework {
     ///
     /// [`serenity::framework::standard::help_commands`]: crate::framework::standard::help_commands
     #[must_use]
-    pub fn group(mut self, group: &'static CommandGroup) -> Self {
+    pub fn group(mut self, group: &'static CommandGroup<D>) -> Self {
         self.group_add(group);
         self.initialized = true;
 
@@ -375,7 +371,7 @@ impl StandardFramework {
     ///
     /// Note: does _not_ return [`Self`] like many other commands. This is because
     /// it's not intended to be chained as the other commands are.
-    pub fn group_add(&mut self, group: &'static CommandGroup) {
+    pub fn group_add(&mut self, group: &'static CommandGroup<D>) {
         let config = self.config.read();
         let map = if group.options.prefixes.is_empty() {
             Map::Prefixless(
@@ -394,7 +390,7 @@ impl StandardFramework {
     ///
     /// Note: does _not_ return [`Self`] like many other commands. This is because
     /// it's not intended to be chained as the other commands are.
-    pub fn group_remove(&mut self, group: &'static CommandGroup) {
+    pub fn group_remove(&mut self, group: &'static CommandGroup<D>) {
         // Iterates through the vector and if a given group _doesn't_ match, we retain it
         self.groups.retain(|&(g, _)| g != group);
     }
@@ -446,7 +442,7 @@ impl StandardFramework {
     /// let framework = StandardFramework::new().on_dispatch_error(dispatch_error_hook);
     /// ```
     #[must_use]
-    pub fn on_dispatch_error(mut self, f: DispatchHook) -> Self {
+    pub fn on_dispatch_error(mut self, f: DispatchHook<D>) -> Self {
         self.dispatch = Some(f);
 
         self
@@ -454,7 +450,7 @@ impl StandardFramework {
 
     /// Specify the function to be called on messages comprised of only the prefix.
     #[must_use]
-    pub fn prefix_only(mut self, f: PrefixOnlyHook) -> Self {
+    pub fn prefix_only(mut self, f: PrefixOnlyHook<D>) -> Self {
         self.prefix_only = Some(f);
 
         self
@@ -506,7 +502,7 @@ impl StandardFramework {
     /// let framework = StandardFramework::new().before(before_hook);
     /// ```
     #[must_use]
-    pub fn before(mut self, f: BeforeHook) -> Self {
+    pub fn before(mut self, f: BeforeHook<D>) -> Self {
         self.before = Some(f);
 
         self
@@ -537,7 +533,7 @@ impl StandardFramework {
     /// let framework = StandardFramework::new().after(after_hook);
     /// ```
     #[must_use]
-    pub fn after(mut self, f: AfterHook) -> Self {
+    pub fn after(mut self, f: AfterHook<D>) -> Self {
         self.after = Some(f);
 
         self
@@ -570,7 +566,7 @@ impl StandardFramework {
     /// let framework = StandardFramework::new().unrecognised_command(unrecognised_command_hook);
     /// ```
     #[must_use]
-    pub fn unrecognised_command(mut self, f: UnrecognisedHook) -> Self {
+    pub fn unrecognised_command(mut self, f: UnrecognisedHook<D>) -> Self {
         self.unrecognised_command = Some(f);
 
         self
@@ -596,7 +592,7 @@ impl StandardFramework {
     /// let framework = StandardFramework::new().normal_message(normal_message_hook);
     /// ```
     #[must_use]
-    pub fn normal_message(mut self, f: NormalMessageHook) -> Self {
+    pub fn normal_message(mut self, f: NormalMessageHook<D>) -> Self {
         self.normal_message = Some(f);
 
         self
@@ -606,7 +602,7 @@ impl StandardFramework {
     ///
     /// If a command named `help` in a group was set, then this takes precedence first.
     #[must_use]
-    pub fn help(mut self, h: &'static HelpCommand) -> Self {
+    pub fn help(mut self, h: &'static HelpCommand<D>) -> Self {
         self.help = Some(h);
 
         self
@@ -614,9 +610,9 @@ impl StandardFramework {
 }
 
 #[async_trait]
-impl Framework for StandardFramework {
+impl<D: Send + Sync + 'static> Framework<D> for StandardFramework<D> {
     #[instrument(skip(self, event))]
-    async fn dispatch(&self, ctx: Context, event: FullEvent) {
+    async fn dispatch(&self, ctx: Context<D>, event: FullEvent) {
         let FullEvent::Message { new_message: msg } = event else { return };
 
         if self.should_ignore(&msg) {
@@ -779,17 +775,17 @@ impl Framework for StandardFramework {
     }
 }
 
-pub trait CommonOptions {
+pub trait CommonOptions<D: Send + Sync + 'static> {
     fn required_permissions(&self) -> &Permissions;
     fn allowed_roles(&self) -> &'static [&'static str];
-    fn checks(&self) -> &'static [&'static Check];
+    fn checks(&self) -> &'static [&'static Check<D>];
     fn only_in(&self) -> OnlyIn;
     fn help_available(&self) -> bool;
     fn owners_only(&self) -> bool;
     fn owner_privilege(&self) -> bool;
 }
 
-impl CommonOptions for &GroupOptions {
+impl<D: Send + Sync + 'static> CommonOptions<D> for &GroupOptions<D> {
     fn required_permissions(&self) -> &Permissions {
         &self.required_permissions
     }
@@ -798,7 +794,7 @@ impl CommonOptions for &GroupOptions {
         self.allowed_roles
     }
 
-    fn checks(&self) -> &'static [&'static Check] {
+    fn checks(&self) -> &'static [&'static Check<D>] {
         self.checks
     }
 
@@ -819,7 +815,7 @@ impl CommonOptions for &GroupOptions {
     }
 }
 
-impl CommonOptions for &CommandOptions {
+impl<D: Send + Sync + 'static> CommonOptions<D> for &CommandOptions<D> {
     fn required_permissions(&self) -> &Permissions {
         &self.required_permissions
     }
@@ -828,7 +824,7 @@ impl CommonOptions for &CommandOptions {
         self.allowed_roles
     }
 
-    fn checks(&self) -> &'static [&'static Check] {
+    fn checks(&self) -> &'static [&'static Check<D>] {
         self.checks
     }
 
@@ -850,9 +846,9 @@ impl CommonOptions for &CommandOptions {
 }
 
 #[cfg(feature = "cache")]
-pub(crate) fn has_correct_permissions(
+pub(crate) fn has_correct_permissions<D: Send + Sync + 'static>(
     cache: impl AsRef<Cache>,
-    options: &impl CommonOptions,
+    options: &impl CommonOptions<D>,
     message: &Message,
 ) -> bool {
     if options.required_permissions().is_empty() {
@@ -887,8 +883,8 @@ pub(crate) fn has_correct_permissions(
 }
 
 #[cfg(all(feature = "cache", feature = "http"))]
-pub(crate) fn has_correct_roles(
-    options: &impl CommonOptions,
+pub(crate) fn has_correct_roles<D: Send + Sync + 'static>(
+    options: &impl CommonOptions<D>,
     roles: &HashMap<RoleId, Role>,
     member: &Member,
 ) -> bool {

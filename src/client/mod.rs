@@ -34,7 +34,6 @@ use futures::future::BoxFuture;
 use once_cell::sync::OnceCell;
 use tokio::sync::{Mutex, RwLock};
 use tracing::{debug, error, info, instrument};
-use typemap_rev::{TypeMap, TypeMapKey};
 
 #[cfg(feature = "gateway")]
 use self::bridge::gateway::{
@@ -62,32 +61,47 @@ use crate::http::Http;
 use crate::internal::prelude::*;
 #[cfg(feature = "gateway")]
 use crate::model::gateway::GatewayIntents;
+use crate::model::gateway::Ready;
 use crate::model::id::ApplicationId;
 use crate::model::user::OnlineStatus;
+
+type DataSetup<U> =
+    Box<dyn for<'a> FnOnce(&'a Context<U>, &'a Ready) -> BoxFuture<'a, U> + Send + Sync>;
+
+/// Busy loops over the given [`once_cell::sync::OnceCell`] until it has been set with a 100ms delay
+/// between each loop.
+async fn block_until_set<D: Send + Sync + 'static>(cell: &once_cell::sync::OnceCell<D>) -> &D {
+    loop {
+        match cell.get() {
+            Some(x) => break x,
+            None => tokio::time::sleep(std::time::Duration::from_millis(100)).await,
+        }
+    }
+}
 
 /// A builder implementing [`IntoFuture`] building a [`Client`] to interact with Discord.
 #[cfg(feature = "gateway")]
 #[must_use = "Builders do nothing unless they are awaited"]
-pub struct ClientBuilder {
-    data: TypeMap,
+pub struct ClientBuilder<D: Send + Sync + 'static> {
+    data_setup: Arc<RwLock<Option<DataSetup<D>>>>,
     http: Http,
     intents: GatewayIntents,
     #[cfg(feature = "cache")]
     cache_settings: CacheSettings,
     #[cfg(feature = "framework")]
-    framework: Option<Box<dyn Framework>>,
+    framework: Option<Box<dyn Framework<D>>>,
     #[cfg(feature = "voice")]
     voice_manager: Option<Arc<dyn VoiceGatewayManager>>,
-    event_handlers: Vec<Arc<dyn EventHandler>>,
-    raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
+    event_handlers: Vec<Arc<dyn EventHandler<D>>>,
+    raw_event_handlers: Vec<Arc<dyn RawEventHandler<D>>>,
     presence: PresenceData,
 }
 
 #[cfg(feature = "gateway")]
-impl ClientBuilder {
+impl<D: Send + Sync + 'static> ClientBuilder<D> {
     fn _new(http: Http, intents: GatewayIntents) -> Self {
         Self {
-            data: TypeMap::new(),
+            data_setup: Arc::new(RwLock::new(None)),
             http,
             intents,
             #[cfg(feature = "cache")]
@@ -149,26 +163,14 @@ impl ClientBuilder {
         self.http.application_id()
     }
 
-    /// Sets the entire [`TypeMap`] that will be available in [`Context`]s.
-    /// A [`TypeMap`] must not be constructed manually: [`Self::type_map_insert`]
-    /// can be used to insert one type at a time.
-    pub fn type_map(mut self, type_map: TypeMap) -> Self {
-        self.data = type_map;
-
-        self
-    }
-
-    /// Gets the type map. See [`Self::type_map`] for more info.
-    pub fn get_type_map(&self) -> &TypeMap {
-        &self.data
-    }
-
-    /// Insert a single `value` into the internal [`TypeMap`] that will
-    /// be available in [`Context::data`].
-    /// This method can be called multiple times in order to populate the
-    /// [`TypeMap`] with `value`s.
-    pub fn type_map_insert<T: TypeMapKey>(mut self, value: T::Value) -> Self {
-        self.data.insert::<T>(value);
+    /// Sets the callback to be called which will fill in [`Client::data`].
+    /// This can be used to initialize global data for your bot on startup.
+    pub fn data_setup(mut self, callback: impl Into<DataSetup<D>>) -> Self {
+        // We acquire a mutable reference to the Arc, and then use that to avoid locking the RwLock
+        // as we are currently the only reference to it, and we can mutate it without locking.
+        *Arc::get_mut(&mut self.data_setup)
+            .expect("No other references to data_setup inside ClientBuilder")
+            .get_mut() = Some(callback.into());
 
         self
     }
@@ -203,7 +205,7 @@ impl ClientBuilder {
     #[cfg(feature = "framework")]
     pub fn framework<F>(mut self, framework: F) -> Self
     where
-        F: Framework + 'static,
+        F: Framework<D> + 'static,
     {
         self.framework = Some(Box::new(framework));
 
@@ -212,7 +214,7 @@ impl ClientBuilder {
 
     /// Gets the framework, if already initialized. See [`Self::framework`] for more info.
     #[cfg(feature = "framework")]
-    pub fn get_framework(&self) -> Option<&dyn Framework> {
+    pub fn get_framework(&self) -> Option<&dyn Framework<D>> {
         self.framework.as_deref()
     }
 
@@ -290,14 +292,14 @@ impl ClientBuilder {
     }
 
     /// Adds an event handler with multiple methods for each possible event.
-    pub fn event_handler<H: EventHandler + 'static>(mut self, event_handler: H) -> Self {
+    pub fn event_handler<H: EventHandler<D> + 'static>(mut self, event_handler: H) -> Self {
         self.event_handlers.push(Arc::new(event_handler));
 
         self
     }
 
     /// Adds an event handler with multiple methods for each possible event. Passed by Arc.
-    pub fn event_handler_arc<H: EventHandler + 'static>(
+    pub fn event_handler_arc<H: EventHandler<D> + 'static>(
         mut self,
         event_handler_arc: Arc<H>,
     ) -> Self {
@@ -307,13 +309,16 @@ impl ClientBuilder {
     }
 
     /// Gets the added event handlers. See [`Self::event_handler`] for more info.
-    pub fn get_event_handlers(&self) -> &[Arc<dyn EventHandler>] {
+    pub fn get_event_handlers(&self) -> &[Arc<dyn EventHandler<D>>] {
         &self.event_handlers
     }
 
     /// Adds an event handler with a single method where all received gateway
     /// events will be dispatched.
-    pub fn raw_event_handler<H: RawEventHandler + 'static>(mut self, raw_event_handler: H) -> Self {
+    pub fn raw_event_handler<H: RawEventHandler<D> + 'static>(
+        mut self,
+        raw_event_handler: H,
+    ) -> Self {
         self.raw_event_handlers.push(Arc::new(raw_event_handler));
 
         self
@@ -321,7 +326,7 @@ impl ClientBuilder {
 
     /// Gets the added raw event handlers. See [`Self::raw_event_handler`] for more
     /// info.
-    pub fn get_raw_event_handlers(&self) -> &[Arc<dyn RawEventHandler>] {
+    pub fn get_raw_event_handlers(&self) -> &[Arc<dyn RawEventHandler<D>>] {
         &self.raw_event_handlers
     }
 
@@ -346,20 +351,21 @@ impl ClientBuilder {
 }
 
 #[cfg(feature = "gateway")]
-impl IntoFuture for ClientBuilder {
-    type Output = Result<Client>;
+impl<D: Send + Sync + 'static> IntoFuture for ClientBuilder<D> {
+    type Output = Result<Client<D>>;
 
-    type IntoFuture = BoxFuture<'static, Result<Client>>;
+    type IntoFuture = BoxFuture<'static, Result<Client<D>>>;
 
     #[instrument(skip(self))]
     fn into_future(self) -> Self::IntoFuture {
-        let data = Arc::new(RwLock::new(self.data));
+        let data = Arc::new(OnceCell::new());
         #[cfg(feature = "framework")]
         let framework = self.framework;
         let event_handlers = self.event_handlers;
         let raw_event_handlers = self.raw_event_handlers;
         let intents = self.intents;
         let presence = self.presence;
+        let data_setup = self.data_setup;
 
         let http = Arc::new(self.http);
 
@@ -382,6 +388,7 @@ impl IntoFuture for ClientBuilder {
             let framework_cell = Arc::new(OnceCell::new());
             let (shard_manager, shard_manager_worker) = ShardManager::new(ShardManagerOptions {
                 data: Arc::clone(&data),
+                data_setup,
                 event_handlers,
                 raw_event_handlers,
                 #[cfg(feature = "framework")]
@@ -470,100 +477,8 @@ impl IntoFuture for ClientBuilder {
 /// [`Event::MessageCreate`]: crate::model::event::Event::MessageCreate
 /// [sharding docs]: crate::gateway#sharding
 #[cfg(feature = "gateway")]
-pub struct Client {
-    /// A TypeMap which requires types to be Send + Sync. This is a map that
-    /// can be safely shared across contexts.
-    ///
-    /// The purpose of the data field is to be accessible and persistent across
-    /// contexts; that is, data can be modified by one context, and will persist
-    /// through the future and be accessible through other contexts. This is
-    /// useful for anything that should "live" through the program: counters,
-    /// database connections, custom user caches, etc.
-    ///
-    /// In the meaning of a context, this data can be accessed through
-    /// [`Context::data`].
-    ///
-    /// # Examples
-    ///
-    /// Create a `MessageEventCounter` to track the following events:
-    ///
-    /// - [`Event::MessageCreate`]
-    /// - [`Event::MessageDelete`]
-    /// - [`Event::MessageDeleteBulk`]
-    /// - [`Event::MessageUpdate`]
-    ///
-    /// ```rust,ignore
-    /// use std::collections::HashMap;
-    /// use std::env;
-    ///
-    /// use serenity::model::prelude::*;
-    /// use serenity::prelude::*;
-    ///
-    /// struct MessageEventCounter;
-    ///
-    /// impl TypeMapKey for MessageEventCounter {
-    ///     type Value = HashMap<String, u64>;
-    /// }
-    ///
-    /// async fn reg<S: Into<String>>(ctx: Context, name: S) {
-    ///     let mut data = ctx.data.write().await;
-    ///     let counter = data.get_mut::<MessageEventCounter>().unwrap();
-    ///     let entry = counter.entry(name.into()).or_insert(0);
-    ///     *entry += 1;
-    /// }
-    ///
-    /// struct Handler;
-    ///
-    /// #[serenity::async_trait]
-    /// impl EventHandler for Handler {
-    ///     async fn message(&self, ctx: Context, _: Message) {
-    ///         reg(ctx, "MessageCreate").await
-    ///     }
-    ///     async fn message_delete(&self, ctx: Context, _: ChannelId, _: MessageId) {
-    ///         reg(ctx, "MessageDelete").await
-    ///     }
-    ///     async fn message_delete_bulk(&self, ctx: Context, _: ChannelId, _: Vec<MessageId>) {
-    ///         reg(ctx, "MessageDeleteBulk").await
-    ///     }
-    ///
-    ///     #[cfg(feature = "cache")]
-    ///     async fn message_update(
-    ///         &self,
-    ///         ctx: Context,
-    ///         _old: Option<Message>,
-    ///         _new: Option<Message>,
-    ///         _: MessageUpdateEvent,
-    ///     ) {
-    ///         reg(ctx, "MessageUpdate").await
-    ///     }
-    ///
-    ///     #[cfg(not(feature = "cache"))]
-    ///     async fn message_update(&self, ctx: Context, _new_data: MessageUpdateEvent) {
-    ///         reg(ctx, "MessageUpdate").await
-    ///     }
-    /// }
-    ///
-    /// # async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    /// let token = std::env::var("DISCORD_TOKEN")?;
-    /// let mut client = Client::builder(&token, GatewayIntents::default()).event_handler(Handler).await?;
-    /// {
-    ///     let mut data = client.data.write().await;
-    ///     data.insert::<MessageEventCounter>(HashMap::default());
-    /// }
-    ///
-    /// client.start().await?;
-    /// #     Ok(())
-    /// # }
-    /// ```
-    ///
-    /// Refer to [example 05] for an example on using the [`Self::data`] field.
-    ///
-    /// [`Event::MessageCreate`]: crate::model::event::Event::MessageCreate
-    /// [`Event::MessageDelete`]: crate::model::event::Event::MessageDelete
-    /// [`Event::MessageDeleteBulk`]: crate::model::event::Event::MessageDeleteBulk
-    /// [`Event::MessageUpdate`]: crate::model::event::Event::MessageUpdate
-    /// [example 05]: https://github.com/serenity-rs/serenity/tree/current/examples/e05_command_framework
-    pub data: Arc<RwLock<TypeMap>>,
+pub struct Client<D: Send + Sync + 'static> {
+    data: Arc<OnceCell<D>>,
     /// A HashMap of all shards instantiated by the Client.
     ///
     /// The key is the shard ID and the value is the shard itself.
@@ -665,9 +580,97 @@ pub struct Client {
     pub http: Arc<Http>,
 }
 
-impl Client {
-    pub fn builder(token: impl AsRef<str>, intents: GatewayIntents) -> ClientBuilder {
+impl<D: Send + Sync + 'static> Client<D> {
+    pub fn builder(token: impl AsRef<str>, intents: GatewayIntents) -> ClientBuilder<D> {
         ClientBuilder::new(token, intents)
+    }
+
+    /// A generic data type to be accessible and usable anywhere.
+    ///
+    /// The purpose of the data field is to be accessible and persistent across
+    /// contexts; that is, data can be modified by one context, and will persist
+    /// through the future and be accessible through other contexts. This is
+    /// useful for anything that should "live" through the program: counters,
+    /// database connections, custom user caches, etc.
+    ///
+    /// In the meaning of a context, this data can be accessed through
+    /// [`Context::data`].
+    ///
+    /// # Examples
+    ///
+    /// Create a `MessageEventCounter` to track the following events:
+    ///
+    /// - [`Event::MessageCreate`]
+    /// - [`Event::MessageDelete`]
+    /// - [`Event::MessageDeleteBulk`]
+    /// - [`Event::MessageUpdate`]
+    ///
+    /// ```rust,ignore
+    /// use dashmap::DashMap;
+    /// use std::env;
+    ///
+    /// use serenity::model::prelude::*;
+    /// use serenity::prelude::*;
+    ///
+    /// type MessageEventCounter = DashMap<String, u64>;
+    ///
+    /// async fn reg<S: Into<String>>(ctx: Context, name: S) {
+    ///     let mut entry = ctx.data().entry(name.into()).or_insert(0);
+    ///     *entry += 1;
+    /// }
+    ///
+    /// struct Handler;
+    ///
+    /// #[serenity::async_trait]
+    /// impl EventHandler for Handler {
+    ///     async fn message(&self, ctx: Context, _: Message) {
+    ///         reg(ctx, "MessageCreate").await
+    ///     }
+    ///     async fn message_delete(&self, ctx: Context, _: ChannelId, _: MessageId) {
+    ///         reg(ctx, "MessageDelete").await
+    ///     }
+    ///     async fn message_delete_bulk(&self, ctx: Context, _: ChannelId, _: Vec<MessageId>) {
+    ///         reg(ctx, "MessageDeleteBulk").await
+    ///     }
+    ///
+    ///     #[cfg(feature = "cache")]
+    ///     async fn message_update(
+    ///         &self,
+    ///         ctx: Context,
+    ///         _old: Option<Message>,
+    ///         _new: Option<Message>,
+    ///         _: MessageUpdateEvent,
+    ///     ) {
+    ///         reg(ctx, "MessageUpdate").await
+    ///     }
+    ///
+    ///     #[cfg(not(feature = "cache"))]
+    ///     async fn message_update(&self, ctx: Context, _new_data: MessageUpdateEvent) {
+    ///         reg(ctx, "MessageUpdate").await
+    ///     }
+    /// }
+    ///
+    /// # async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    /// let token = std::env::var("DISCORD_TOKEN")?;
+    /// let mut client = Client::builder(&token, GatewayIntents::default())
+    ///     .event_handler(Handler)
+    ///     .data_setup(|_, _| Box::new(async {DashMap::new()}))
+    ///     .await?;
+    ///
+    /// client.start().await?;
+    /// #     Ok(())
+    /// # }
+    /// ```
+    ///
+    /// Refer to [example 05] for an example on using the [`Self::data`] field.
+    ///
+    /// [`Event::MessageCreate`]: crate::model::event::Event::MessageCreate
+    /// [`Event::MessageDelete`]: crate::model::event::Event::MessageDelete
+    /// [`Event::MessageDeleteBulk`]: crate::model::event::Event::MessageDeleteBulk
+    /// [`Event::MessageUpdate`]: crate::model::event::Event::MessageUpdate
+    /// [example 05]: https://github.com/serenity-rs/serenity/tree/current/examples/e05_command_framework
+    pub async fn data(&self) -> &D {
+        block_until_set(&self.data).await
     }
 
     /// Establish the connection and start listening for events.

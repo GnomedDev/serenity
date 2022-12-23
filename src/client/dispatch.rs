@@ -17,7 +17,10 @@ use crate::model::event::Event;
 use crate::model::guild::Member;
 
 #[cfg(feature = "cache")]
-fn update_cache<E: CacheUpdate>(context: &Context, event: &mut E) -> Option<E::Output> {
+fn update_cache<D: Send + Sync + 'static, E: CacheUpdate>(
+    context: &Context<D>,
+    event: &mut E,
+) -> Option<E::Output> {
     context.cache.update(event)
 }
 
@@ -26,12 +29,12 @@ fn update_cache<E>(_: &Context, _: &mut E) -> Option<()> {
     None
 }
 
-pub(crate) async fn dispatch_model<'rec>(
+pub(crate) async fn dispatch_model<'rec, D: 'static + Send + Sync>(
     event: Event,
-    context: Context,
-    #[cfg(feature = "framework")] framework: Option<Arc<dyn Framework>>,
-    event_handlers: Vec<Arc<dyn EventHandler>>,
-    raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
+    context: Context<D>,
+    #[cfg(feature = "framework")] framework: Option<Arc<dyn Framework<D>>>,
+    event_handlers: Vec<Arc<dyn EventHandler<D>>>,
+    raw_event_handlers: Vec<Arc<dyn RawEventHandler<D>>>,
 ) {
     for raw_handler in raw_event_handlers {
         let (context, event) = (context.clone(), event.clone());
@@ -60,10 +63,10 @@ pub(crate) async fn dispatch_model<'rec>(
     }
 }
 
-pub(crate) async fn dispatch_client<'rec>(
+pub(crate) async fn dispatch_client<'rec, D: 'static + Send + Sync>(
     event: ClientEvent,
-    context: Context,
-    event_handlers: Vec<Arc<dyn EventHandler>>,
+    context: Context<D>,
+    event_handlers: Vec<Arc<dyn EventHandler<D>>>,
 ) {
     match event {
         ClientEvent::ShardStageUpdate(event) => {
@@ -80,7 +83,10 @@ pub(crate) async fn dispatch_client<'rec>(
 /// Updates the cache with the incoming event data and builds the full event data out of it.
 ///
 /// Can return `None` if an event is unknown.
-fn update_cache_with_event(ctx: &Context, event: Event) -> Option<FullEvent> {
+fn update_cache_with_event<D: Send + Sync + 'static>(
+    ctx: &Context<D>,
+    event: Event,
+) -> Option<FullEvent> {
     let event = match event {
         Event::CommandPermissionsUpdate(event) => FullEvent::CommandPermissionsUpdate {
             permission: event.permission,

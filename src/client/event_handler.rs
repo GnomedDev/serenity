@@ -18,9 +18,9 @@ macro_rules! event_handler {
     )* ) => {
         /// The core trait for handling events by serenity.
         #[async_trait]
-        pub trait EventHandler: Send + Sync { $(
+        pub trait EventHandler<D: Send + Sync + 'static>: Send + Sync { $(
             $( #[doc = $doc] )* $( #[cfg(feature = $feature)] )?
-            async fn $method_name(&self, ctx: Context, $( $arg_name: $arg_type ),* ) {
+            async fn $method_name(&self, ctx: Context<D>, $( $arg_name: $arg_type ),* ) {
                 // Suppress unused argument warnings
                 drop(( ctx, $( $arg_name ),* ));
             }
@@ -57,7 +57,7 @@ macro_rules! event_handler {
             }
 
             /// Runs the given [`EventHandler`]'s code for this event.
-            pub async fn dispatch(self, ctx: Context, handler: &dyn EventHandler) {
+            pub async fn dispatch<D: Send + Sync + 'static>(self, ctx: Context<D>, handler: &dyn EventHandler<D>) {
                 match self { $(
                     $( #[cfg(feature = $feature)] )?
                     Self::$variant_name { $( $arg_name ),* } => {
@@ -422,7 +422,7 @@ event_handler! {
 
 /// This core trait for handling raw events
 #[async_trait]
-pub trait RawEventHandler: Send + Sync {
+pub trait RawEventHandler<D: Send + Sync + 'static>: Send + Sync {
     /// Dispatched when any event occurs
-    async fn raw_event(&self, _ctx: Context, _ev: Event) {}
+    async fn raw_event(&self, _ctx: Context<D>, _ev: Event) {}
 }

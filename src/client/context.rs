@@ -2,8 +2,7 @@ use std::fmt;
 use std::sync::Arc;
 
 use futures::channel::mpsc::UnboundedSender as Sender;
-use tokio::sync::RwLock;
-use typemap_rev::TypeMap;
+use once_cell::sync::OnceCell;
 
 #[cfg(feature = "cache")]
 pub use crate::cache::Cache;
@@ -29,13 +28,14 @@ use crate::model::prelude::*;
 ///
 /// [`Shard`]: crate::gateway::Shard
 /// [`http`]: crate::http
-#[derive(Clone)]
-pub struct Context {
-    /// A clone of [`Client::data`]. Refer to its documentation for more
-    /// information.
+#[derive(derivative::Derivative)]
+#[derivative(Clone(bound = ""))]
+pub struct Context<D: Send + Sync + 'static> {
+    /// A reference to [`Client::data`].
+    /// Refer to its documentation for more information.
     ///
     /// [`Client::data`]: super::Client::data
-    pub data: Arc<RwLock<TypeMap>>,
+    data: Arc<OnceCell<D>>,
     /// The messenger to communicate with the shard runner.
     pub shard: ShardMessenger,
     /// The ID of the shard this context is related to.
@@ -46,7 +46,7 @@ pub struct Context {
 }
 
 // Used by the #[instrument] macro on client::dispatch::handle_event
-impl fmt::Debug for Context {
+impl<D: Send + Sync + 'static> fmt::Debug for Context<D> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Context")
             .field("shard", &self.shard)
@@ -55,16 +55,16 @@ impl fmt::Debug for Context {
     }
 }
 
-impl Context {
+impl<D: Send + Sync + 'static> Context<D> {
     /// Create a new Context to be passed to an event handler.
     #[cfg(all(feature = "cache", feature = "gateway"))]
     pub(crate) fn new(
-        data: Arc<RwLock<TypeMap>>,
+        data: Arc<OnceCell<D>>,
         runner_tx: Sender<InterMessage>,
         shard_id: u32,
         http: Arc<Http>,
         cache: Arc<Cache>,
-    ) -> Context {
+    ) -> Self {
         Context {
             shard: ShardMessenger::new(runner_tx),
             shard_id,
@@ -400,40 +400,40 @@ impl Context {
     }
 }
 
-impl AsRef<Http> for Context {
+impl<D: Send + Sync + 'static> AsRef<Http> for Context<D> {
     fn as_ref(&self) -> &Http {
         &self.http
     }
 }
 
-impl AsRef<Http> for Arc<Context> {
+impl<D: Send + Sync + 'static> AsRef<Http> for Arc<Context<D>> {
     fn as_ref(&self) -> &Http {
         &self.http
     }
 }
 
-impl AsRef<Arc<Http>> for Context {
+impl<D: Send + Sync + 'static> AsRef<Arc<Http>> for Context<D> {
     fn as_ref(&self) -> &Arc<Http> {
         &self.http
     }
 }
 
 #[cfg(feature = "cache")]
-impl AsRef<Cache> for Context {
+impl<D: Send + Sync + 'static> AsRef<Cache> for Context<D> {
     fn as_ref(&self) -> &Cache {
         &self.cache
     }
 }
 
 #[cfg(feature = "cache")]
-impl AsRef<Cache> for Arc<Context> {
+impl<D: Send + Sync + 'static> AsRef<Cache> for Arc<Context<D>> {
     fn as_ref(&self) -> &Cache {
         &self.cache
     }
 }
 
 #[cfg(feature = "cache")]
-impl AsRef<Arc<Cache>> for Context {
+impl<D: Send + Sync + 'static> AsRef<Arc<Cache>> for Context<D> {
     fn as_ref(&self) -> &Arc<Cache> {
         &self.cache
     }
@@ -447,7 +447,7 @@ impl AsRef<Cache> for Cache {
 }
 
 #[cfg(feature = "gateway")]
-impl AsRef<ShardMessenger> for Context {
+impl<D: Send + Sync + 'static> AsRef<ShardMessenger> for Context<D> {
     fn as_ref(&self) -> &ShardMessenger {
         &self.shard
     }

@@ -8,7 +8,6 @@ use once_cell::sync::OnceCell;
 use tokio::sync::{Mutex, RwLock};
 use tokio::time::timeout;
 use tracing::{info, instrument, warn};
-use typemap_rev::TypeMap;
 
 use super::{
     ShardId,
@@ -22,7 +21,7 @@ use super::{
 use crate::cache::Cache;
 #[cfg(feature = "voice")]
 use crate::client::bridge::voice::VoiceGatewayManager;
-use crate::client::{EventHandler, RawEventHandler};
+use crate::client::{DataSetup, EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
 use crate::gateway::PresenceData;
@@ -125,7 +124,9 @@ impl ShardManager {
     /// Creates a new shard manager, returning both the manager and a monitor
     /// for usage in a separate thread.
     #[must_use]
-    pub fn new(opt: ShardManagerOptions) -> (Arc<Mutex<Self>>, ShardManagerMonitor) {
+    pub fn new<D: Send + Sync + 'static>(
+        opt: ShardManagerOptions<D>,
+    ) -> (Arc<Mutex<Self>>, ShardManagerMonitor) {
         let (thread_tx, thread_rx) = mpsc::unbounded();
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
@@ -134,6 +135,7 @@ impl ShardManager {
 
         let mut shard_queuer = ShardQueuer {
             data: opt.data,
+            data_setup: opt.data_setup,
             event_handlers: opt.event_handlers,
             raw_event_handlers: opt.raw_event_handlers,
             #[cfg(feature = "framework")]
@@ -362,12 +364,13 @@ impl Drop for ShardManager {
     }
 }
 
-pub struct ShardManagerOptions {
-    pub data: Arc<RwLock<TypeMap>>,
-    pub event_handlers: Vec<Arc<dyn EventHandler>>,
-    pub raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
+pub struct ShardManagerOptions<D: Send + Sync + 'static> {
+    pub data: Arc<OnceCell<D>>,
+    pub data_setup: Arc<RwLock<Option<DataSetup<D>>>>,
+    pub event_handlers: Vec<Arc<dyn EventHandler<D>>>,
+    pub raw_event_handlers: Vec<Arc<dyn RawEventHandler<D>>>,
     #[cfg(feature = "framework")]
-    pub framework: Arc<OnceCell<Arc<dyn Framework>>>,
+    pub framework: Arc<OnceCell<Arc<dyn Framework<D>>>>,
     pub shard_index: u32,
     pub shard_init: u32,
     pub shard_total: u32,

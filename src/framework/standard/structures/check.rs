@@ -29,22 +29,22 @@ pub enum Reason {
 
 impl Error for Reason {}
 
-pub type CheckFunction = for<'fut> fn(
-    &'fut Context,
+pub type CheckFunction<D> = for<'fut> fn(
+    &'fut Context<D>,
     &'fut Message,
     &'fut mut Args,
-    &'fut CommandOptions,
+    &'fut CommandOptions<D>,
 ) -> BoxFuture<'fut, Result<(), Reason>>;
 
 /// A check can be part of a command or group and will be executed to
 /// determine whether a user is permitted to use related item.
 ///
 /// Additionally, a check may hold additional settings.
-pub struct Check {
+pub struct Check<D: 'static + Send + Sync> {
     /// Name listed in help-system.
     pub name: &'static str,
     /// Function that will be executed.
-    pub function: CheckFunction,
+    pub function: CheckFunction<D>,
     /// Whether a check should be evaluated in the help-system.
     /// `false` will ignore check and won't fail execution.
     pub check_in_help: bool,
@@ -54,7 +54,7 @@ pub struct Check {
     pub display_in_help: bool,
 }
 
-impl fmt::Debug for Check {
+impl<D: Send + Sync + 'static> fmt::Debug for Check<D> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("Check")
             .field("name", &self.name)
@@ -81,7 +81,7 @@ impl fmt::Display for Reason {
     }
 }
 
-impl PartialEq for Check {
+impl<D: Send + Sync + 'static> PartialEq for Check<D> {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
     }

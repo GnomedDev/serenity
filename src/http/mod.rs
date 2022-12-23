@@ -100,7 +100,7 @@ where
 }
 
 #[cfg(feature = "client")]
-impl CacheHttp for Context {
+impl<D: Send + Sync + 'static> CacheHttp for Context<D> {
     fn http(&self) -> &Http {
         &self.http
     }
