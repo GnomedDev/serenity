@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/framework/standard/parse/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-3cc3084b477498a6.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../static.files/main-4a084badb5778746.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../serenity/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/framework/standard/parse/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../serenity/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -520,35 +520,6 @@
 <a href="#520" id="520">520</a>
 <a href="#521" id="521">521</a>
 <a href="#522" id="522">522</a>
-<a href="#523" id="523">523</a>
-<a href="#524" id="524">524</a>
-<a href="#525" id="525">525</a>
-<a href="#526" id="526">526</a>
-<a href="#527" id="527">527</a>
-<a href="#528" id="528">528</a>
-<a href="#529" id="529">529</a>
-<a href="#530" id="530">530</a>
-<a href="#531" id="531">531</a>
-<a href="#532" id="532">532</a>
-<a href="#533" id="533">533</a>
-<a href="#534" id="534">534</a>
-<a href="#535" id="535">535</a>
-<a href="#536" id="536">536</a>
-<a href="#537" id="537">537</a>
-<a href="#538" id="538">538</a>
-<a href="#539" id="539">539</a>
-<a href="#540" id="540">540</a>
-<a href="#541" id="541">541</a>
-<a href="#542" id="542">542</a>
-<a href="#543" id="543">543</a>
-<a href="#544" id="544">544</a>
-<a href="#545" id="545">545</a>
-<a href="#546" id="546">546</a>
-<a href="#547" id="547">547</a>
-<a href="#548" id="548">548</a>
-<a href="#549" id="549">549</a>
-<a href="#550" id="550">550</a>
-<a href="#551" id="551">551</a>
 </pre><pre class="rust"><code><span class="kw">use super</span>::{Command, <span class="kw-2">*</span>};
 <span class="kw">use </span><span class="kw">crate</span>::client::Context;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
@@ -565,17 +536,17 @@
 
 <span class="comment">// FIXME: Add the `http` parameter to `Guild::user_permissions_in`.
 //
-// Trying to shove the parameter to the original method results in several errors
-// and interface changes to methods using `Guild::user_permissions_in` that are not
-// worthwhile to resolve. As a compromise, the method has been copied with the parameter
-// added in to the place where the *problem* occurs.
+// Trying to shove the parameter to the original method results in several errors and interface
+// changes to methods using `Guild::user_permissions_in` that are not worthwhile to resolve. As a
+// compromise, the method has been copied with the parameter added in to the place where the
+// *problem* occurs.
 //
-// When a bot&#39;s command is invoked in a large guild (e.g., 250k+ members), the method
-// fails to retrieve the member data of the author that invoked the command, and instead
-// defaults to `@everyone`&#39;s permissions. This is because Discord does not send data of
-// all members past 250, resulting in the problem to meet permissions of a command even if
-// the author does possess them. To avoid defaulting to permissions of everyone, we fetch
-// the member from HTTP if it is missing in the guild&#39;s members list.
+// When a bot&#39;s command is invoked in a large guild (e.g., 250k+ members), the method fails to
+// retrieve the member data of the author that invoked the command, and instead defaults to
+// `@everyone`&#39;s permissions. This is because Discord does not send data of all members past 250,
+// resulting in the problem to meet permissions of a command even if the author does possess them.
+// To avoid defaulting to permissions of everyone, we fetch the member from HTTP if it is missing
+// in the guild&#39;s members list.
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
 </span><span class="kw">fn </span>permissions_in(
     ctx: <span class="kw-2">&amp;</span>Context,
@@ -610,16 +581,6 @@
     }
 
     <span class="kw">if let </span><span class="prelude-val">Some</span>(channel) = guild.and_then(|guild| guild.channels.get(<span class="kw-2">&amp;</span>channel_id).cloned()) {
-        <span class="kw">if </span>channel.kind == ChannelType::Text {
-            permissions &amp;= !(Permissions::CONNECT
-                | Permissions::SPEAK
-                | Permissions::MUTE_MEMBERS
-                | Permissions::DEAFEN_MEMBERS
-                | Permissions::MOVE_MEMBERS
-                | Permissions::USE_VAD
-                | Permissions::STREAM);
-        }
-
         <span class="kw">let </span><span class="kw-2">mut </span>data = Vec::with_capacity(member.roles.len());
 
         <span class="kw">for </span>overwrite <span class="kw">in </span><span class="kw-2">&amp;</span>channel.permission_overwrites {
@@ -655,27 +616,6 @@
         permissions |= Permissions::VIEW_CHANNEL;
     }
 
-    <span class="comment">// No SEND_MESSAGES =&gt; no message-sending-related actions
-    // If the member does not have the `SEND_MESSAGES` permission, then
-    // throw out message-able permissions.
-    </span><span class="kw">if </span>!permissions.contains(Permissions::SEND_MESSAGES) {
-        permissions &amp;= !(Permissions::SEND_TTS_MESSAGES
-            | Permissions::MENTION_EVERYONE
-            | Permissions::EMBED_LINKS
-            | Permissions::ATTACH_FILES);
-    }
-
-    <span class="comment">// If the permission does not have the `VIEW_CHANNEL` permission, then
-    // throw out actionable permissions.
-    </span><span class="kw">if </span>!permissions.contains(Permissions::VIEW_CHANNEL) {
-        permissions &amp;= !(Permissions::KICK_MEMBERS
-            | Permissions::BAN_MEMBERS
-            | Permissions::ADMINISTRATOR
-            | Permissions::MANAGE_GUILD
-            | Permissions::CHANGE_NICKNAME
-            | Permissions::MANAGE_NICKNAMES);
-    }
-
     permissions
 }
 
@@ -688,9 +628,9 @@
     }
 }
 
-<span class="doccomment">/// Parse a mention in the message that is of either the direct (`&lt;@id&gt;`) or nickname (`&lt;@!id&gt;`) syntax,
-/// and compare the encoded `id` with the id from [`Configuration::on_mention`] for a match.
-/// Returns `Some(&lt;id&gt;)` on success, [`None`] otherwise.
+<span class="doccomment">/// Parse a mention in the message that is of either the direct (`&lt;@id&gt;`) or nickname (`&lt;@!id&gt;`)
+/// syntax, and compare the encoded `id` with the id from [`Configuration::on_mention`] for a
+/// match. Returns `Some(&lt;id&gt;)` on success, [`None`] otherwise.
 </span><span class="kw">pub fn </span>mention&lt;<span class="lifetime">&#39;a</span>&gt;(stream: <span class="kw-2">&amp;mut </span>Stream&lt;<span class="lifetime">&#39;a</span>&gt;, config: <span class="kw-2">&amp;</span>Configuration) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; {
     <span class="kw">let </span>on_mention = config.on_mention.as_deref()<span class="question-mark">?</span>;
 
@@ -1002,11 +942,13 @@
 ///
 /// The &quot;command&quot; may be:
 /// 1. A *help command* that provides a friendly browsing interface of all groups and commands,
-/// explaining what each of them are, how they are laid out and how to invoke them.
-/// There can only one help command registered, but might have many names defined for invocation of itself.
+///    explaining what each of them are, how they are laid out and how to invoke them. There can
+///    only one help command registered, but might have many names defined for invocation of
+///    itself.
 ///
-/// 2. A command defined under another command or a group, which may also belong to another group and so on.
-/// To invoke this command, all names and prefixes of its parent commands and groups must be specified before it.
+/// 2. A command defined under another command or a group, which may also belong to another group
+///    and so on. To invoke this command, all names and prefixes of its parent commands and groups
+///    must be specified before it.
 </span><span class="kw">pub async fn </span>command(
     ctx: <span class="kw-2">&amp;</span>Context,
     msg: <span class="kw-2">&amp;</span>Message,
@@ -1053,7 +995,7 @@
                         <span class="prelude-val">Ok</span>(Invoke::Command {
                             command, ..
                         }) =&gt; <span class="prelude-val">Some</span>(command.options.names[<span class="number">0</span>]),
-                        <span class="prelude-val">Ok</span>(Invoke::Help(name)) =&gt; <span class="prelude-val">Some</span>(name), <span class="comment">/* unreachable, but fallback just in case */
+                        <span class="prelude-val">Ok</span>(Invoke::Help(name)) =&gt; <span class="prelude-val">Some</span>(name), <span class="comment">// unreachable; fallback just in case
                         </span><span class="prelude-val">Err</span>(ParseError::UnrecognisedCommand(<span class="kw">_</span>)) =&gt; <span class="prelude-val">None</span>,
                         <span class="prelude-val">Err</span>(ParseError::Dispatch {
                             command_name, ..
@@ -1101,4 +1043,4 @@
     Help(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (574b64a97 2022-12-31)" data-search-js="search-181581080540673f.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-58836c674e2f7bd2.css" ></div></body></html>
+</section></main></body></html>
