@@ -567,7 +567,7 @@ fn option_from_raw<E: DeError>(raw: RawCommandDataOption) -> StdResult<CommandDa
         CommandOptionType::Mentionable => CommandDataOptionValue::Mentionable(value!()),
         CommandOptionType::Role => CommandDataOptionValue::Role(value!()),
         CommandOptionType::User => CommandDataOptionValue::User(value!()),
-        CommandOptionType::Unknown(unknown) => CommandDataOptionValue::Unknown(unknown),
+        CommandOptionType(unknown) => CommandDataOptionValue::Unknown(unknown),
     };
 
     Ok(CommandDataOption {
@@ -664,7 +664,7 @@ impl CommandDataOptionValue {
             Self::Mentionable(_) => CommandOptionType::Mentionable,
             Self::Role(_) => CommandOptionType::Role,
             Self::User(_) => CommandOptionType::User,
-            Self::Unknown(unknown) => CommandOptionType::Unknown(*unknown),
+            Self::Unknown(unknown) => CommandOptionType(*unknown),
         }
     }
 

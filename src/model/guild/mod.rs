@@ -2629,12 +2629,11 @@ enum_number! {
     /// Default message notification level for a guild.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum DefaultMessageNotificationLevel {
         /// Receive notifications for everything.
-        #[default]
         All = 0,
         /// Receive only mentions.
         Mentions = 1,
@@ -2642,16 +2641,17 @@ enum_number! {
     }
 }
 
+enum_default!(DefaultMessageNotificationLevel::All);
+
 enum_number! {
     /// Setting used to filter explicit messages from members.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum ExplicitContentFilter {
         /// Don't scan any messages.
-        #[default]
         None = 0,
         /// Scan messages from members without a role.
         WithoutRole = 1,
@@ -2660,17 +2660,17 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+enum_default!(ExplicitContentFilter::None);
 
 enum_number! {
     /// Multi-Factor Authentication level for guild moderators.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-mfa-level).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum MfaLevel {
         /// MFA is disabled.
-        #[default]
         None = 0,
         /// MFA is enabled.
         Elevated = 1,
@@ -2678,17 +2678,18 @@ enum_number! {
     }
 }
 
+enum_default!(MfaLevel::None);
+
 enum_number! {
     /// The level to set as criteria prior to a user being able to send
     /// messages in a [`Guild`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-verification-level).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum VerificationLevel {
         /// Does not require any verification.
-        #[default]
         None = 0,
         /// Must have a verified email on the user's Discord account.
         Low = 1,
@@ -2702,16 +2703,17 @@ enum_number! {
     }
 }
 
+enum_default!(VerificationLevel::None);
+
 enum_number! {
     /// The [`Guild`] nsfw level.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/guild#guild-object-guild-nsfw-level).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum NsfwLevel {
         /// The nsfw level is not specified.
-        #[default]
         Default = 0,
         /// The guild is considered as explicit.
         Explicit = 1,
@@ -2722,6 +2724,8 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+
+enum_default!(NsfwLevel::Default);
 
 #[cfg(test)]
 mod test {

@@ -67,7 +67,7 @@ impl<'de> Deserialize<'de> for ActionRowComponent {
             ComponentType::ActionRow => {
                 return Err(DeError::custom("Invalid component type ActionRow"))
             },
-            ComponentType::Unknown(i) => {
+            ComponentType(i) => {
                 return Err(DeError::custom(format_args!("Unknown component type {i}")))
             },
         }

@@ -176,12 +176,11 @@ enum_number! {
     /// See [`GuildChannel::default_forum_layout`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/channel#channel-object-forum-layout-types).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum ForumLayoutType {
         /// No default has been set for forum channel.
-        #[default]
         NotSet = 0,
         /// Display posts as a list.
         ListView = 1,
@@ -190,6 +189,8 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+
+enum_default!(ForumLayoutType::NotSet);
 
 #[cfg(feature = "model")]
 impl GuildChannel {

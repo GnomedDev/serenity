@@ -44,32 +44,16 @@ pub struct Rule {
     pub exempt_channels: Vec<ChannelId>,
 }
 
-/// Indicates in what event context a rule should be checked.
-///
-/// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-event-types).
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(from = "u8", into = "u8")]
-#[non_exhaustive]
-pub enum EventType {
-    MessageSend,
-    Unknown(u8),
-}
-
-impl From<u8> for EventType {
-    fn from(value: u8) -> Self {
-        match value {
-            1 => Self::MessageSend,
-            _ => Self::Unknown(value),
-        }
-    }
-}
-
-impl From<EventType> for u8 {
-    fn from(value: EventType) -> Self {
-        match value {
-            EventType::MessageSend => 1,
-            EventType::Unknown(unknown) => unknown,
-        }
+enum_number! {
+    /// Indicates in what event context a rule should be checked.
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-event-types).
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[serde(from = "u8", into = "u8")]
+    #[non_exhaustive]
+    pub enum EventType {
+        MessageSend = 1,
+        _ => Unknown(u8),
     }
 }
 
@@ -150,7 +134,7 @@ impl<'de> Deserialize<'de> for Trigger {
                     .mention_total_limit
                     .ok_or_else(|| Error::missing_field("mention_total_limit"))?,
             },
-            TriggerType::Unknown(unknown) => Self::Unknown(unknown),
+            TriggerType(unknown) => Self::Unknown(unknown),
         };
         Ok(trigger)
     }
@@ -208,46 +192,24 @@ impl Trigger {
             Self::MentionSpam {
                 ..
             } => TriggerType::MentionSpam,
-            Self::Unknown(unknown) => TriggerType::Unknown(*unknown),
+            Self::Unknown(unknown) => TriggerType(*unknown),
         }
     }
 }
 
-/// Type of [`Trigger`].
-///
-/// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-types).
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(from = "u8", into = "u8")]
-#[non_exhaustive]
-pub enum TriggerType {
-    Keyword,
-    Spam,
-    KeywordPreset,
-    MentionSpam,
-    Unknown(u8),
-}
-
-impl From<u8> for TriggerType {
-    fn from(value: u8) -> Self {
-        match value {
-            1 => Self::Keyword,
-            3 => Self::Spam,
-            4 => Self::KeywordPreset,
-            5 => Self::MentionSpam,
-            _ => Self::Unknown(value),
-        }
-    }
-}
-
-impl From<TriggerType> for u8 {
-    fn from(value: TriggerType) -> Self {
-        match value {
-            TriggerType::Keyword => 1,
-            TriggerType::Spam => 3,
-            TriggerType::KeywordPreset => 4,
-            TriggerType::MentionSpam => 5,
-            TriggerType::Unknown(unknown) => unknown,
-        }
+enum_number! {
+    /// Type of [`Trigger`].
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-types).
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[serde(from = "u8", into = "u8")]
+    #[non_exhaustive]
+    pub enum TriggerType {
+        Keyword = 1,
+        Spam = 3,
+        KeywordPreset = 4,
+        MentionSpam = 5,
+        _ => Unknown(u8),
     }
 }
 
@@ -274,41 +236,21 @@ pub struct TriggerMetadata {
     pub mention_total_limit: Option<u64>,
 }
 
-/// Internally pre-defined wordsets which will be searched for in content.
-///
-/// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-keyword-preset-types).
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-#[serde(from = "u8", into = "u8")]
-#[non_exhaustive]
-pub enum KeywordPresetType {
-    /// Words that may be considered forms of swearing or cursing
-    Profanity,
-    /// Words that refer to sexually explicit behavior or activity
-    SexualContent,
-    /// Personal insults or words that may be considered hate speech
-    Slurs,
-    Unknown(u8),
-}
-
-impl From<u8> for KeywordPresetType {
-    fn from(value: u8) -> Self {
-        match value {
-            1 => Self::Profanity,
-            2 => Self::SexualContent,
-            3 => Self::Slurs,
-            _ => Self::Unknown(value),
-        }
-    }
-}
-
-impl From<KeywordPresetType> for u8 {
-    fn from(value: KeywordPresetType) -> Self {
-        match value {
-            KeywordPresetType::Profanity => 1,
-            KeywordPresetType::SexualContent => 2,
-            KeywordPresetType::Slurs => 3,
-            KeywordPresetType::Unknown(unknown) => unknown,
-        }
+enum_number! {
+    /// Internally pre-defined wordsets which will be searched for in content.
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-keyword-preset-types).
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[serde(from = "u8", into = "u8")]
+    #[non_exhaustive]
+    pub enum KeywordPresetType {
+        /// Words that may be considered forms of swearing or cursing
+        Profanity = 1,
+        /// Words that refer to sexually explicit behavior or activity
+        SexualContent = 2,
+        /// Personal insults or words that may be considered hate speech
+        Slurs = 3,
+        _ => Unknown(u8),
     }
 }
 
@@ -429,7 +371,7 @@ impl<'de> Deserialize<'de> for Action {
                     .duration_seconds
                     .ok_or_else(|| Error::missing_field("duration_seconds"))?,
             )),
-            ActionType::Unknown(unknown) => Action::Unknown(unknown),
+            ActionType(unknown) => Action::Unknown(unknown),
         })
     }
 }
@@ -461,7 +403,7 @@ impl Serialize for Action {
                 }),
             },
             Action::Unknown(n) => RawAction {
-                kind: ActionType::Unknown(n),
+                kind: ActionType(n),
                 metadata: None,
             },
         };
@@ -478,7 +420,7 @@ impl Action {
             } => ActionType::BlockMessage,
             Self::Alert(_) => ActionType::Alert,
             Self::Timeout(_) => ActionType::Timeout,
-            Self::Unknown(unknown) => ActionType::Unknown(*unknown),
+            Self::Unknown(unknown) => ActionType(*unknown),
         }
     }
 }

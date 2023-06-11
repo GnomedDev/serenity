@@ -39,11 +39,11 @@ impl WebhookType {
     #[inline]
     #[must_use]
     pub fn name(&self) -> &str {
-        match self {
+        match *self {
             Self::Incoming => "incoming",
             Self::ChannelFollower => "channel follower",
             Self::Application => "application",
-            Self::Unknown(_) => "unknown",
+            Self(_) => "unknown",
         }
     }
 }

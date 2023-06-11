@@ -857,12 +857,11 @@ enum_number! {
     /// Differentiates between regular and different types of system messages.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/channel#message-object-message-types).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum MessageType {
         /// A regular message.
-        #[default]
         Regular = 0,
         /// An indicator that a recipient was added by the author.
         GroupRecipientAddition = 1,
@@ -920,6 +919,8 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+
+enum_default!(MessageType::Regular);
 
 enum_number! {
     /// [Discord docs](https://discord.com/developers/docs/resources/channel#message-object-message-activity-types).

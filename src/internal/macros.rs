@@ -67,32 +67,21 @@ macro_rules! if_cache {
 /// /// The `Foo` enum
 /// #[derive(Clone, Copy, Deserialize, Serialize)]
 /// #[serde(from = "u8", into = "u8")]
-/// pub enum Foo {
-///     /// First
-///     Aah,
-///     /// Second,
-///     Bar,
-///     /// Variant value is unknown.
-///     Unknown(u8),
+/// pub struct Foo(pub u8);
+/// impl Foo {
+///     pub const Aah: u8 = 1;
+///     pub const Bar: u8 = 2;
 /// }
 ///
 /// impl From<u8> for Foo {
 ///     fn from(value: u8) -> Self {
-///         match value {
-///             1 => Self::Aah,
-///             2 => Self::Bar,
-///             unknown => Self::Unknown(unknown),
-///         }
+///         Self(value)
 ///     }
 /// }
 ///
 /// impl From<Foo> for u8 {
 ///     fn from(value: Foo) -> Self {
-///         match value {
-///             Foo::Aah => 1,
-///             Foo::Bar => 2,
-///             Foo::Unknown(unknown) => unknown,
-///         }
+///         value.0
 ///     }
 /// }
 /// ```
@@ -103,39 +92,43 @@ macro_rules! enum_number {
             $(
                 $(#[doc = $doc:literal])*
                 $(#[cfg $($cfg:tt)*])?
-                $(#[default $($dummy:tt)?])?
                 $Variant:ident = $value:literal,
             )*
             _ => Unknown($T:ty),
         }
     ) => {
         $(#[$outer])*
-        $vis enum $Enum {
+        #[repr(transparent)]
+        $vis struct $Enum (pub $T);
+
+        #[allow(non_upper_case_globals)]
+        impl $Enum {
             $(
                 $(#[doc = $doc])*
                 $(#[cfg $($cfg)*])?
-                $(#[default $($dummy:tt)?])?
-                $Variant,
+                pub const $Variant: Self = Self ($value);
             )*
-            /// Variant value is unknown.
-            Unknown($T),
         }
 
         impl From<$T> for $Enum {
             fn from(value: $T) -> Self {
-                match value {
-                    $($(#[cfg $($cfg)*])? $value => Self::$Variant,)*
-                    unknown => Self::Unknown(unknown),
-                }
+                Self (value)
             }
         }
 
         impl From<$Enum> for $T {
             fn from(value: $Enum) -> Self {
-                match value {
-                    $($(#[cfg $($cfg)*])? $Enum::$Variant => $value,)*
-                    $Enum::Unknown(unknown) => unknown,
-                }
+                value.0
+            }
+        }
+    };
+}
+
+macro_rules! enum_default {
+    ($Enum:ident::$variant:ident) => {
+        impl Default for $Enum {
+            fn default() -> Self {
+                Self::$variant
             }
         }
     };
@@ -214,6 +207,6 @@ mod tests {
         assert_json(&T::A, json!(1));
         assert_json(&T::B, json!(2));
         assert_json(&T::C, json!(3));
-        assert_json(&T::Unknown(123), json!(123));
+        assert_json(&T(123), json!(123));
     }
 }

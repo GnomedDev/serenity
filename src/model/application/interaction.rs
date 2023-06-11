@@ -224,7 +224,7 @@ impl<'de> Deserialize<'de> for Interaction {
             InteractionType::Autocomplete => from_value(value).map(Interaction::Autocomplete),
             InteractionType::Modal => from_value(value).map(Interaction::Modal),
             InteractionType::Ping => from_value(value).map(Interaction::Ping),
-            InteractionType::Unknown(_) => return Err(DeError::custom("Unknown interaction type")),
+            InteractionType(_) => return Err(DeError::custom("Unknown interaction type")),
         }
         .map_err(DeError::custom)
     }

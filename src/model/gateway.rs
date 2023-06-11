@@ -177,12 +177,11 @@ pub struct ActivityEmoji {
 
 enum_number! {
     /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum ActivityType {
         /// An indicator that the user is playing a game.
-        #[default]
         Playing = 0,
         /// An indicator that the user is streaming to a service.
         Streaming = 1,
@@ -197,6 +196,8 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+
+enum_default!(ActivityType::Playing);
 
 /// A representation of the data retrieved from the gateway endpoint.
 ///

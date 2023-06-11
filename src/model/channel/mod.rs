@@ -216,12 +216,11 @@ enum_number! {
     /// A representation of a type of channel.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum ChannelType {
         /// An indicator that the channel is a text [`GuildChannel`].
-        #[default]
         Text = 0,
         /// An indicator that the channel is a [`PrivateChannel`].
         Private = 1,
@@ -253,6 +252,8 @@ enum_number! {
     }
 }
 
+enum_default!(ChannelType::Text);
+
 impl ChannelType {
     #[inline]
     #[must_use]
@@ -270,7 +271,7 @@ impl ChannelType {
             Self::Stage => "stage",
             Self::Directory => "directory",
             Self::Forum => "forum",
-            Self::Unknown(_) => "unknown",
+            Self(_) => "unknown",
         }
     }
 }
@@ -373,18 +374,19 @@ enum_number! {
     /// See [`StageInstance::privacy_level`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-privacy-level).
-    #[derive(Clone, Copy, Default, Debug, Eq, Hash, PartialEq, PartialOrd, Ord, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum StageInstancePrivacyLevel {
         /// The Stage instance is visible publicly. (deprecated)
         Public = 1,
         /// The Stage instance is visible to only guild members.
-        #[default]
         GuildOnly = 2,
         _ => Unknown(u8),
     }
 }
+
+enum_default!(StageInstancePrivacyLevel::GuildOnly);
 
 /// [Discord docs](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object).
 #[derive(Clone, Debug, Deserialize, Serialize)]

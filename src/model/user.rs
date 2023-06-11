@@ -327,11 +327,10 @@ enum_number! {
     /// page to learn more about the premium plans Discord currently offers.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-premium-types).
-    #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum PremiumType {
-        #[default]
         None = 0,
         NitroClassic = 1,
         Nitro = 2,
@@ -339,6 +338,8 @@ enum_number! {
         _ => Unknown(u8),
     }
 }
+
+enum_default!(PremiumType::None);
 
 bitflags! {
     /// User's public flags

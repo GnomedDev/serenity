@@ -286,12 +286,12 @@ impl<'de> Deserialize<'de> for ComponentInteractionDataKind {
             ComponentType::ChannelSelect => Self::ChannelSelect {
                 values: parse_values!(),
             },
-            ComponentType::Unknown(x) => Self::Unknown(x),
             x @ (ComponentType::ActionRow | ComponentType::InputText) => {
                 return Err(D::Error::custom(format_args!(
                     "invalid message component type in this context: {x:?}",
                 )));
             },
+            ComponentType(x) => Self::Unknown(x),
         })
     }
 }
@@ -314,7 +314,7 @@ impl Serialize for ComponentInteractionDataKind {
                 Self::RoleSelect { values } => serde_json::to_value(values).map_err(S::Error::custom)?,
                 Self::MentionableSelect { values } => serde_json::to_value(values).map_err(S::Error::custom)?,
                 Self::ChannelSelect { values } => serde_json::to_value(values).map_err(S::Error::custom)?,
-                Self::Button | Self::Unknown(_) => serde_json::Value::Null,
+                _ => serde_json::Value::Null,
             },
         })
         .serialize(serializer)

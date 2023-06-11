@@ -284,7 +284,7 @@ fn sticker_url(sticker_id: StickerId, sticker_format_type: StickerFormatType) ->
         StickerFormatType::Png | StickerFormatType::Apng => "png",
         StickerFormatType::Lottie => "json",
         StickerFormatType::Gif => "gif",
-        StickerFormatType::Unknown(_) => return None,
+        StickerFormatType(_) => return None,
     };
 
     Some(cdn!("/stickers/{}.{}", sticker_id, ext))
