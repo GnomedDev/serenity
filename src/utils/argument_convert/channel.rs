@@ -1,4 +1,5 @@
 use std::fmt;
+use std::num::NonZeroU64;
 
 use super::ArgumentConvert;
 use crate::model::prelude::*;
@@ -45,8 +46,9 @@ async fn lookup_channel_global(
     guild_id: Option<GuildId>,
     s: &str,
 ) -> Result<Channel, ChannelParseError> {
+    let channel_id = s.parse().ok().map(NonZeroU64::get);
     if let Some(channel_id) =
-        s.parse().ok().map(ChannelId).or_else(|| crate::utils::parse_channel(s))
+        channel_id.map(ChannelId::new).or_else(|| crate::utils::parse_channel(s))
     {
         return channel_id.to_channel(&ctx).await.map_err(ChannelParseError::Http);
     }

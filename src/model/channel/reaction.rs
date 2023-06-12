@@ -4,6 +4,7 @@ use std::convert::TryFrom;
 #[cfg(doc)]
 use std::fmt::Display as _;
 use std::fmt::{self, Write as _};
+use std::num::NonZeroU64;
 use std::str::FromStr;
 
 #[cfg(feature = "model")]
@@ -532,7 +533,8 @@ impl<'a> TryFrom<&'a str> for ReactionType {
         let id = split_iter
             .next()
             .and_then(|s| s.parse().ok())
-            .map(EmojiId)
+            .map(NonZeroU64::get)
+            .map(EmojiId::new)
             .ok_or(ReactionConversionError)?;
 
         Ok(ReactionType::Custom {

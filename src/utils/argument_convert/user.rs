@@ -25,9 +25,12 @@ impl fmt::Display for UserParseError {
 
 #[cfg(feature = "cache")]
 fn lookup_by_global_cache(ctx: impl CacheHttp, s: &str) -> Option<User> {
+    use std::num::NonZeroU64;
+
     let users = &ctx.cache()?.users;
 
-    let lookup_by_id = || users.get(&UserId(s.parse().ok()?)).map(|u| u.clone());
+    let lookup_by_id =
+        || users.get(&UserId::new(s.parse().ok().map(NonZeroU64::get)?)).map(|u| u.clone());
 
     let lookup_by_mention = || users.get(&crate::utils::parse_username(s)?).map(|u| u.clone());
 

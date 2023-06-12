@@ -648,7 +648,7 @@ fn avatar_url(guild_id: GuildId, user_id: UserId, hash: Option<&String>) -> Opti
     hash.map(|hash| {
         let ext = if hash.starts_with("a_") { "gif" } else { "webp" };
 
-        cdn!("/guilds/{}/users/{}/avatars/{}.{}?size=1024", guild_id.0, user_id.0, hash, ext)
+        cdn!("/guilds/{}/users/{}/avatars/{}.{}?size=1024", guild_id, user_id, hash, ext)
     })
 }
 

@@ -757,13 +757,13 @@ impl TargetId {
     /// Converts this [`TargetId`] to [`UserId`].
     #[must_use]
     pub fn to_user_id(self) -> UserId {
-        self.0.into()
+        self.get().into()
     }
 
     /// Converts this [`TargetId`] to [`MessageId`].
     #[must_use]
     pub fn to_message_id(self) -> MessageId {
-        self.0.into()
+        self.get().into()
     }
 }
 

@@ -824,7 +824,7 @@ fn avatar_url(user_id: UserId, hash: Option<&String>) -> Option<String> {
     hash.map(|hash| {
         let ext = if hash.starts_with("a_") { "gif" } else { "webp" };
 
-        cdn!("/avatars/{}/{}.{}?size=1024", user_id.0, hash, ext)
+        cdn!("/avatars/{}/{}.{}?size=1024", user_id, hash, ext)
     })
 }
 
@@ -849,7 +849,7 @@ fn banner_url(user_id: UserId, hash: Option<&String>) -> Option<String> {
     hash.map(|hash| {
         let ext = if hash.starts_with("a_") { "gif" } else { "webp" };
 
-        cdn!("/banners/{}/{}.{}?size=1024", user_id.0, hash, ext)
+        cdn!("/banners/{}/{}.{}?size=1024", user_id, hash, ext)
     })
 }
 

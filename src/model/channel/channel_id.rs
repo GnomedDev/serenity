@@ -189,7 +189,7 @@ impl ChannelId {
         message_ids: impl IntoIterator<Item = T>,
     ) -> Result<()> {
         let ids =
-            message_ids.into_iter().map(|message_id| message_id.as_ref().0).collect::<Vec<_>>();
+            message_ids.into_iter().map(|message_id| *message_id.as_ref()).collect::<Vec<_>>();
 
         let len = ids.len();
 

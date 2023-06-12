@@ -379,13 +379,13 @@ impl CommandPermissionId {
     /// Converts this [`CommandPermissionId`] to [`UserId`].
     #[must_use]
     pub fn to_user_id(self) -> UserId {
-        self.0.into()
+        self.into()
     }
 
     /// Converts this [`CommandPermissionId`] to [`RoleId`].
     #[must_use]
     pub fn to_role_id(self) -> RoleId {
-        self.0.into()
+        self.into()
     }
 }
 

@@ -1,4 +1,5 @@
 use std::fmt;
+use std::num::NonZeroU64;
 
 use super::ArgumentConvert;
 use crate::model::prelude::*;
@@ -54,7 +55,7 @@ impl ArgumentConvert for Emoji {
             .await
             .map_err(|_| EmojiParseError::FailedToRetrieveGuild)?;
 
-        let direct_id = s.parse().ok().map(EmojiId);
+        let direct_id = s.parse().ok().map(NonZeroU64::get).map(EmojiId::new);
         let id_from_mention = crate::utils::parse_emoji(s).map(|e| e.id);
 
         if let Some(emoji_id) = direct_id.or(id_from_mention) {

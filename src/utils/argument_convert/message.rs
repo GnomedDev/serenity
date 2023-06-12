@@ -1,4 +1,5 @@
 use std::fmt;
+use std::num::NonZeroU64;
 
 use super::ArgumentConvert;
 use crate::model::prelude::*;
@@ -56,7 +57,8 @@ impl ArgumentConvert for Message {
         channel_id: Option<ChannelId>,
         s: &str,
     ) -> Result<Self, Self::Err> {
-        let extract_from_message_id = || Some((channel_id?, MessageId(s.parse().ok()?)));
+        let extract_from_message_id =
+            || Some((channel_id?, MessageId::new(s.parse().ok().map(NonZeroU64::get)?)));
 
         let extract_from_message_url = || {
             let (_guild_id, channel_id, message_id) = crate::utils::parse_message_url(s)?;

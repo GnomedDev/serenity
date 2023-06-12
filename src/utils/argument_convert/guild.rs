@@ -1,4 +1,5 @@
 use std::fmt;
+use std::num::NonZeroU64;
 
 use super::ArgumentConvert;
 use crate::model::prelude::*;
@@ -41,7 +42,8 @@ impl ArgumentConvert for Guild {
     ) -> Result<Self, Self::Err> {
         let guilds = &ctx.cache().ok_or(GuildParseError::NoCache)?.guilds;
 
-        let lookup_by_id = || guilds.get(&GuildId(s.parse().ok()?)).map(|g| g.clone());
+        let lookup_by_id =
+            || guilds.get(&GuildId::new(s.parse().ok().map(NonZeroU64::get)?)).map(|g| g.clone());
 
         let lookup_by_name = || {
             guilds.iter().find_map(|m| {

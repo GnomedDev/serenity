@@ -3,7 +3,6 @@
 use std::borrow::Cow;
 use std::convert::TryFrom;
 use std::fmt;
-use std::num::NonZeroU64;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
 
@@ -208,7 +207,11 @@ impl Http {
 
     pub fn application_id(&self) -> Option<ApplicationId> {
         let application_id = self.application_id.load(Ordering::Relaxed);
-        NonZeroU64::new(application_id).map(ApplicationId)
+        if application_id == 0 {
+            None
+        } else {
+            Some(ApplicationId::new(application_id))
+        }
     }
 
     fn try_application_id(&self) -> Result<ApplicationId> {

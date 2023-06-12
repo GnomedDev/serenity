@@ -1,4 +1,5 @@
 use std::fmt;
+use std::num::NonZeroU64;
 
 use super::ArgumentConvert;
 use crate::model::prelude::*;
@@ -65,7 +66,13 @@ impl ArgumentConvert for Role {
         #[cfg(not(feature = "cache"))]
         let roles = ctx.http().get_guild_roles(guild_id).await.map_err(RoleParseError::Http)?;
 
-        if let Some(role_id) = s.parse().ok().map(RoleId).or_else(|| crate::utils::parse_role(s)) {
+        if let Some(role_id) = s
+            .parse()
+            .ok()
+            .map(NonZeroU64::get)
+            .map(RoleId::new)
+            .or_else(|| crate::utils::parse_role(s))
+        {
             #[cfg(feature = "cache")]
             if let Some(role) = roles.get(&role_id) {
                 return Ok(role.clone());
