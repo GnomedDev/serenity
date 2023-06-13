@@ -515,14 +515,14 @@ impl Shard {
         // If a duration of time less than the heartbeat_interval has passed, then don't perform a
         // keepalive or attempt to reconnect.
         if let Some(last_sent) = self.last_heartbeat_sent {
-            if last_sent.elapsed() <= heartbeat_interval {
+            if last_sent.elapsed().as_secs() <= heartbeat_interval.as_secs() {
                 return true;
             }
         }
 
         // If the last heartbeat didn't receive an acknowledgement, then auto-reconnect.
         if !self.last_heartbeat_acknowledged {
-            debug!("[{:?}] Last heartbeat not acknowledged", self.shard_info,);
+            warn!("[{:?}] Last heartbeat not acknowledged", self.shard_info,);
 
             return false;
         }
