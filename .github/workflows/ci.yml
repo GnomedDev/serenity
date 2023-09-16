@@ -173,10 +173,10 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
-      - name: Install toolchain (${{ env.rust_nightly }})
+      - name: Install toolchain (${{ env.rust_min }})
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{ env.rust_nightly }}
+          toolchain: ${{ env.rust_min }}
 
       - name: Add problem matchers
         run: echo "::add-matcher::.github/matchers/rust.json"
