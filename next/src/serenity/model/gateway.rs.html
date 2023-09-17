@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/gateway.rs`."><title>gateway.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/gateway.rs`."><title>gateway.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -716,9 +716,33 @@
 <a href="#716" id="716">716</a>
 <a href="#717" id="717">717</a>
 <a href="#718" id="718">718</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Models pertaining to the gateway.
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Models pertaining to the gateway.
 
-</span><span class="kw">use </span>serde::ser::SerializeSeq;
+</span><span class="kw">use </span>std::num::NonZeroU16;
+
+<span class="kw">use </span>serde::ser::SerializeSeq;
 <span class="kw">use </span>url::Url;
 
 <span class="kw">use </span><span class="kw">super</span>::prelude::<span class="kw-2">*</span>;
@@ -735,13 +759,13 @@
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>BotGateway {
+    <span class="doccomment">/// The gateway to connect to.
+    </span><span class="kw">pub </span>url: String,
+    <span class="doccomment">/// The number of shards that is recommended to be used by the current bot user.
+    </span><span class="kw">pub </span>shards: u32,
     <span class="doccomment">/// Information describing how many gateway sessions you can initiate within a ratelimit
     /// period.
     </span><span class="kw">pub </span>session_start_limit: SessionStartLimit,
-    <span class="doccomment">/// The number of shards that is recommended to be used by the current bot user.
-    </span><span class="kw">pub </span>shards: u32,
-    <span class="doccomment">/// The gateway to connect to.
-    </span><span class="kw">pub </span>url: String,
 }
 
 <span class="doccomment">/// Representation of an activity that a [`User`] is performing.
@@ -761,7 +785,7 @@
     <span class="doccomment">/// Whether or not the activity is an instanced game session.
     </span><span class="kw">pub </span>instance: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// The type of activity being performed
-    </span><span class="attr">#[serde(default, rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
     </span><span class="kw">pub </span>kind: ActivityType,
     <span class="doccomment">/// The name of the activity.
     </span><span class="kw">pub </span>name: String,
@@ -790,6 +814,8 @@
     /// **Note**: There can only be up to 2 buttons.
     </span><span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_buttons&quot;</span>)]
     </span><span class="kw">pub </span>buttons: Vec&lt;ActivityButton&gt;,
+    <span class="doccomment">/// Unix timestamp (in milliseconds) of when the activity was added to the user&#39;s session
+    </span><span class="kw">pub </span>created_at: u64,
 }
 
 <span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/topics/gateway#activity-object-activity-buttons).
@@ -850,14 +876,14 @@
 
 <span class="doccomment">/// Information about an activity&#39;s party.
 ///
-/// [Discord docs](https://discord.com/developers/docs/topics/gateway#activity-object-activity-party).
+/// [Discord docs](https://discord.com/developers/docs/game-sdk/activities#data-models-activityparty-struct).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ActivityParty {
     <span class="doccomment">/// The ID of the party.
     </span><span class="kw">pub </span>id: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Used to show the party&#39;s current and maximum size.
-    </span><span class="kw">pub </span>size: <span class="prelude-ty">Option</span>&lt;[u64; <span class="number">2</span>]&gt;,
+    </span><span class="kw">pub </span>size: <span class="prelude-ty">Option</span>&lt;[u32; <span class="number">2</span>]&gt;,
 }
 
 <span class="doccomment">/// Secrets for an activity.
@@ -877,8 +903,9 @@
 
 <span class="doccomment">/// Representation of an emoji used in a custom status
 ///
-/// [Discord docs](https://discord.com/developers/docs/topics/gateway#activity-object-activity-emoji).
+/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-emoji).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+#[non_exhaustive]
 </span><span class="kw">pub struct </span>ActivityEmoji {
     <span class="doccomment">/// The name of the emoji.
     </span><span class="kw">pub </span>name: String,
@@ -889,7 +916,7 @@
 }
 
 <span class="macro">enum_number! </span>{
-    <span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/topics/gateway#activity-object-activity-types).
+    <span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
     #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
     #[non_exhaustive]
@@ -927,6 +954,7 @@
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway#client-status-object).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+#[non_exhaustive]
 </span><span class="kw">pub struct </span>ClientStatus {
     <span class="kw">pub </span>desktop: <span class="prelude-ty">Option</span>&lt;OnlineStatus&gt;,
     <span class="kw">pub </span>mobile: <span class="prelude-ty">Option</span>&lt;OnlineStatus&gt;,
@@ -935,15 +963,19 @@
 
 <span class="doccomment">/// Information about the user of a [`Presence`] event.
 ///
-/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#presence-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+/// Fields should be identical to those of [`User`], except that every field but `id` is
+/// optional. This is currently not implemented fully.
+///
+/// [Discord docs](https://discord.com/developers/docs/resources/user#user-object),
+/// [modification description](https://discord.com/developers/docs/topics/gateway-events#presence-update).
+</span><span class="attr">#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>PresenceUser {
     <span class="kw">pub </span>id: UserId,
-    <span class="kw">pub </span>avatar: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>avatar: <span class="prelude-ty">Option</span>&lt;ImageHash&gt;,
     <span class="kw">pub </span>bot: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, with = <span class="string">&quot;discriminator::option&quot;</span>)]
-    </span><span class="kw">pub </span>discriminator: <span class="prelude-ty">Option</span>&lt;u16&gt;,
+    <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, with = <span class="string">&quot;discriminator&quot;</span>)]
+    </span><span class="kw">pub </span>discriminator: <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;,
     <span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="kw">pub </span>mfa_enabled: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="attr">#[serde(rename = <span class="string">&quot;username&quot;</span>)]
@@ -961,13 +993,21 @@
         <span class="prelude-val">Some</span>(User {
             avatar: <span class="self">self</span>.avatar,
             bot: <span class="self">self</span>.bot<span class="question-mark">?</span>,
-            discriminator: <span class="self">self</span>.discriminator<span class="question-mark">?</span>,
+            discriminator: <span class="self">self</span>.discriminator,
+            global_name: <span class="prelude-val">None</span>,
             id: <span class="self">self</span>.id,
             name: <span class="self">self</span>.name<span class="question-mark">?</span>,
             public_flags: <span class="self">self</span>.public_flags,
             banner: <span class="prelude-val">None</span>,
             accent_colour: <span class="prelude-val">None</span>,
             member: <span class="prelude-val">None</span>,
+            system: <span class="bool-val">false</span>,
+            mfa_enabled: <span class="self">self</span>.mfa_enabled.unwrap_or_default(),
+            locale: <span class="prelude-val">None</span>,
+            verified: <span class="self">self</span>.verified,
+            email: <span class="self">self</span>.email,
+            flags: <span class="self">self</span>.public_flags.unwrap_or_default(),
+            premium_type: PremiumType::None,
         })
     }
 
@@ -978,27 +1018,17 @@
     /// If one of [`User`]&#39;s required fields is None in `self`, None is returned.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>to_user(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;User&gt; {
-        <span class="prelude-val">Some</span>(User {
-            avatar: <span class="self">self</span>.avatar.clone(),
-            bot: <span class="self">self</span>.bot<span class="question-mark">?</span>,
-            discriminator: <span class="self">self</span>.discriminator<span class="question-mark">?</span>,
-            id: <span class="self">self</span>.id,
-            name: <span class="self">self</span>.name.clone()<span class="question-mark">?</span>,
-            public_flags: <span class="self">self</span>.public_flags,
-            banner: <span class="prelude-val">None</span>,
-            accent_colour: <span class="prelude-val">None</span>,
-            member: <span class="prelude-val">None</span>,
-        })
+        <span class="self">self</span>.clone().into_user()
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)] </span><span class="comment">// method is only used with the cache feature enabled
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>update_with_user(<span class="kw-2">&amp;mut </span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>User) {
         <span class="self">self</span>.id = user.id;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(avatar) = <span class="kw-2">&amp;</span>user.avatar {
-            <span class="self">self</span>.avatar = <span class="prelude-val">Some</span>(avatar.clone());
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(avatar) = user.avatar {
+            <span class="self">self</span>.avatar = <span class="prelude-val">Some</span>(avatar);
         }
         <span class="self">self</span>.bot = <span class="prelude-val">Some</span>(user.bot);
-        <span class="self">self</span>.discriminator = <span class="prelude-val">Some</span>(user.discriminator);
+        <span class="self">self</span>.discriminator = user.discriminator;
         <span class="self">self</span>.name = <span class="prelude-val">Some</span>(user.name.clone());
         <span class="kw">if let </span><span class="prelude-val">Some</span>(public_flags) = user.public_flags {
             <span class="self">self</span>.public_flags = <span class="prelude-val">Some</span>(public_flags);
@@ -1012,18 +1042,17 @@
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Presence {
-    <span class="doccomment">/// [`User`]&#39;s current activities.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>activities: Vec&lt;Activity&gt;,
-    <span class="doccomment">/// The devices a user are currently active on, if available.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>client_status: <span class="prelude-ty">Option</span>&lt;ClientStatus&gt;,
+    <span class="doccomment">/// Data about the associated user.
+    </span><span class="kw">pub </span>user: PresenceUser,
     <span class="doccomment">/// The `GuildId` the presence update is coming from.
     </span><span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="doccomment">/// The user&#39;s online status.
     </span><span class="kw">pub </span>status: OnlineStatus,
-    <span class="doccomment">/// Data about the associated user.
-    </span><span class="kw">pub </span>user: PresenceUser,
+    <span class="doccomment">/// [`User`]&#39;s current activities.
+    </span><span class="attr">#[serde(default)]
+    </span><span class="kw">pub </span>activities: Vec&lt;Activity&gt;,
+    <span class="doccomment">/// The devices a user are currently active on, if available.
+    </span><span class="kw">pub </span>client_status: <span class="prelude-ty">Option</span>&lt;ClientStatus&gt;,
 }
 
 <span class="doccomment">/// An initial set of information given after IDENTIFYing to the gateway.
@@ -1032,19 +1061,21 @@
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Ready {
-    <span class="kw">pub </span>application: PartialCurrentApplicationInfo,
-    <span class="kw">pub </span>guilds: Vec&lt;UnavailableGuild&gt;,
-    <span class="attr">#[serde(default, with = <span class="string">&quot;presences&quot;</span>)]
-    </span><span class="kw">pub </span>presences: HashMap&lt;UserId, Presence&gt;,
-    <span class="attr">#[serde(default, with = <span class="string">&quot;private_channels&quot;</span>)]
-    </span><span class="kw">pub </span>private_channels: HashMap&lt;ChannelId, Channel&gt;,
-    <span class="kw">pub </span>session_id: String,
-    <span class="kw">pub </span>shard: <span class="prelude-ty">Option</span>&lt;ShardInfo&gt;,
-    <span class="attr">#[serde(default, rename = <span class="string">&quot;_trace&quot;</span>)]
-    </span><span class="kw">pub </span>trace: Vec&lt;String&gt;,
-    <span class="kw">pub </span>user: CurrentUser,
-    <span class="attr">#[serde(rename = <span class="string">&quot;v&quot;</span>)]
-    </span><span class="kw">pub </span>version: u64,
+    <span class="doccomment">/// API version
+    </span><span class="attr">#[serde(rename = <span class="string">&quot;v&quot;</span>)]
+    </span><span class="kw">pub </span>version: u8,
+    <span class="doccomment">/// Information about the user including email
+    </span><span class="kw">pub </span>user: CurrentUser,
+    <span class="doccomment">/// Guilds the user is in
+    </span><span class="kw">pub </span>guilds: Vec&lt;UnavailableGuild&gt;,
+    <span class="doccomment">/// Used for resuming connections
+    </span><span class="kw">pub </span>session_id: String,
+    <span class="doccomment">/// Gateway URL for resuming connections
+    </span><span class="kw">pub </span>resume_gateway_url: String,
+    <span class="doccomment">/// Shard information associated with this session, if sent when identifying
+    </span><span class="kw">pub </span>shard: <span class="prelude-ty">Option</span>&lt;ShardInfo&gt;,
+    <span class="doccomment">/// Contains id and flags
+    </span><span class="kw">pub </span>application: PartialCurrentApplicationInfo,
 }
 
 <span class="doccomment">/// Information describing how many gateway sessions you can initiate within a ratelimit period.
@@ -1065,14 +1096,14 @@
 
 <span class="attr">#[derive(Clone, Copy, Debug)]
 </span><span class="kw">pub struct </span>ShardInfo {
-    <span class="kw">pub </span>id: u32,
+    <span class="kw">pub </span>id: ShardId,
     <span class="kw">pub </span>total: u32,
 }
 
 <span class="kw">impl </span>ShardInfo {
     <span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(id: u32, total: u32) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(id: ShardId, total: u32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             id,
             total,
@@ -1083,7 +1114,7 @@
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ShardInfo {
     <span class="kw">fn </span>deserialize&lt;D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         &lt;(u32, u32)&gt;::deserialize(deserializer).map(|(id, total)| ShardInfo {
-            id,
+            id: ShardId(id),
             total,
         })
     }
@@ -1092,7 +1123,7 @@
 <span class="kw">impl </span>serde::Serialize <span class="kw">for </span>ShardInfo {
     <span class="kw">fn </span>serialize&lt;S: serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; StdResult&lt;S::Ok, S::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>seq = serializer.serialize_seq(<span class="prelude-val">Some</span>(<span class="number">2</span>))<span class="question-mark">?</span>;
-        seq.serialize_element(<span class="kw-2">&amp;</span><span class="self">self</span>.id)<span class="question-mark">?</span>;
+        seq.serialize_element(<span class="kw-2">&amp;</span><span class="self">self</span>.id.<span class="number">0</span>)<span class="question-mark">?</span>;
         seq.serialize_element(<span class="kw-2">&amp;</span><span class="self">self</span>.total)<span class="question-mark">?</span>;
         seq.end()
     }
@@ -1166,8 +1197,11 @@
         /// This intent is also necessary to even receive the events in contains.
         </span><span class="kw">const </span>GUILD_MEMBERS = <span class="number">1 </span>&lt;&lt; <span class="number">1</span>;
         <span class="doccomment">/// Enables following gateway events:
+        /// - GUILD_AUDIT_LOG_ENTRY_CREATE
         /// - GUILD_BAN_ADD
         /// - GUILD_BAN_REMOVE
+        </span><span class="kw">const </span>GUILD_MODERATION = <span class="number">1 </span>&lt;&lt; <span class="number">2</span>;
+        <span class="doccomment">/// Backwards compatibility with old gateway event name. Same as GUILD_MODERATION
         </span><span class="kw">const </span>GUILD_BANS = <span class="number">1 </span>&lt;&lt; <span class="number">2</span>;
         <span class="doccomment">/// Enables following gateway event:
         /// - GUILD_EMOJIS_UPDATE
@@ -1297,9 +1331,19 @@
     <span class="doccomment">/// Shorthand for checking that the set of intents contains the [GUILD_BANS] intent.
     ///
     /// [GUILD_BANS]: Self::GUILD_BANS
+    ///
+    /// This is the same as calling guild_moderation since Discord changed the name
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub const fn </span>guild_bans(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.contains(<span class="self">Self</span>::GUILD_BANS)
+    }
+
+    <span class="doccomment">/// Shorthand for checking that the set of intents contains the [GUILD_MODERATION] intent.
+    ///
+    /// [GUILD_MODERATION]: Self::GUILD_MODERATION
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub const fn </span>guild_moderation(<span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.contains(<span class="self">Self</span>::GUILD_MODERATION)
     }
 
     <span class="doccomment">/// Shorthand for checking that the set of intents contains the [GUILD_EMOJIS_AND_STICKERS]
@@ -1415,7 +1459,7 @@
     ///
     /// [AUTO_MODERATION_CONFIGURATION]: Self::AUTO_MODERATION_CONFIGURATION
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>auto_moderation_configuration(<span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub const fn </span>auto_moderation_configuration(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.contains(<span class="self">Self</span>::AUTO_MODERATION_CONFIGURATION)
     }
 
@@ -1424,7 +1468,7 @@
     ///
     /// [AUTO_MODERATION_EXECUTION]: Self::AUTO_MODERATION_EXECUTION
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>auto_moderation_execution(<span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub const fn </span>auto_moderation_execution(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.contains(<span class="self">Self</span>::AUTO_MODERATION_EXECUTION)
     }
 }
@@ -1434,5 +1478,4 @@
         <span class="self">Self</span>::non_privileged()
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

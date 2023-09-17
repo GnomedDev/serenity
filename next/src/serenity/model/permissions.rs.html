@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/permissions.rs`."><title>permissions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/permissions.rs`."><title>permissions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -802,7 +802,15 @@
 <a href="#802" id="802">802</a>
 <a href="#803" id="803">803</a>
 <a href="#804" id="804">804</a>
-</pre><pre class="rust"><code><span class="doccomment">//! A set of permissions for a role or user. These can be assigned directly to a role or as a
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! A set of permissions for a role or user. These can be assigned directly to a role or as a
 //! channel&#39;s permission overrides.
 //!
 //! For convenience, methods for each permission are available, which can be used to test if the
@@ -941,22 +949,22 @@
 /// [Speak]: Permissions::SPEAK
 /// [Use External Emojis]: Permissions::USE_EXTERNAL_EMOJIS
 /// [Use VAD]: Permissions::USE_VAD
-</span><span class="kw">pub const </span>PRESET_GENERAL: Permissions = Permissions {
-    bits: Permissions::ADD_REACTIONS.bits
-        | Permissions::ATTACH_FILES.bits
-        | Permissions::CHANGE_NICKNAME.bits
-        | Permissions::CONNECT.bits
-        | Permissions::CREATE_INSTANT_INVITE.bits
-        | Permissions::EMBED_LINKS.bits
-        | Permissions::MENTION_EVERYONE.bits
-        | Permissions::READ_MESSAGE_HISTORY.bits
-        | Permissions::VIEW_CHANNEL.bits
-        | Permissions::SEND_MESSAGES.bits
-        | Permissions::SEND_TTS_MESSAGES.bits
-        | Permissions::SPEAK.bits
-        | Permissions::USE_EXTERNAL_EMOJIS.bits
-        | Permissions::USE_VAD.bits,
-};
+</span><span class="kw">pub const </span>PRESET_GENERAL: Permissions = Permissions::from_bits_truncate(
+    Permissions::ADD_REACTIONS.bits()
+        | Permissions::ATTACH_FILES.bits()
+        | Permissions::CHANGE_NICKNAME.bits()
+        | Permissions::CONNECT.bits()
+        | Permissions::CREATE_INSTANT_INVITE.bits()
+        | Permissions::EMBED_LINKS.bits()
+        | Permissions::MENTION_EVERYONE.bits()
+        | Permissions::READ_MESSAGE_HISTORY.bits()
+        | Permissions::VIEW_CHANNEL.bits()
+        | Permissions::SEND_MESSAGES.bits()
+        | Permissions::SEND_TTS_MESSAGES.bits()
+        | Permissions::SPEAK.bits()
+        | Permissions::USE_EXTERNAL_EMOJIS.bits()
+        | Permissions::USE_VAD.bits(),
+);
 
 <span class="doccomment">/// Returns a set of text-only permissions with the original `@everyone` permissions set to true.
 ///
@@ -984,19 +992,19 @@
 /// [Send Messages]: Permissions::SEND_MESSAGES
 /// [Send TTS Messages]: Permissions::SEND_TTS_MESSAGES
 /// [Use External Emojis]: Permissions::USE_EXTERNAL_EMOJIS
-</span><span class="kw">pub const </span>PRESET_TEXT: Permissions = Permissions {
-    bits: Permissions::ADD_REACTIONS.bits
-        | Permissions::ATTACH_FILES.bits
-        | Permissions::CHANGE_NICKNAME.bits
-        | Permissions::CREATE_INSTANT_INVITE.bits
-        | Permissions::EMBED_LINKS.bits
-        | Permissions::MENTION_EVERYONE.bits
-        | Permissions::READ_MESSAGE_HISTORY.bits
-        | Permissions::VIEW_CHANNEL.bits
-        | Permissions::SEND_MESSAGES.bits
-        | Permissions::SEND_TTS_MESSAGES.bits
-        | Permissions::USE_EXTERNAL_EMOJIS.bits,
-};
+</span><span class="kw">pub const </span>PRESET_TEXT: Permissions = Permissions::from_bits_truncate(
+    Permissions::ADD_REACTIONS.bits()
+        | Permissions::ATTACH_FILES.bits()
+        | Permissions::CHANGE_NICKNAME.bits()
+        | Permissions::CREATE_INSTANT_INVITE.bits()
+        | Permissions::EMBED_LINKS.bits()
+        | Permissions::MENTION_EVERYONE.bits()
+        | Permissions::READ_MESSAGE_HISTORY.bits()
+        | Permissions::VIEW_CHANNEL.bits()
+        | Permissions::SEND_MESSAGES.bits()
+        | Permissions::SEND_TTS_MESSAGES.bits()
+        | Permissions::USE_EXTERNAL_EMOJIS.bits(),
+);
 
 <span class="doccomment">/// Returns a set of voice-only permissions with the original `@everyone` permissions set to true.
 ///
@@ -1008,9 +1016,9 @@
 /// [Connect]: Permissions::CONNECT
 /// [Speak]: Permissions::SPEAK
 /// [Use VAD]: Permissions::USE_VAD
-</span><span class="kw">pub const </span>PRESET_VOICE: Permissions = Permissions {
-    bits: Permissions::CONNECT.bits | Permissions::SPEAK.bits | Permissions::USE_VAD.bits,
-};
+</span><span class="kw">pub const </span>PRESET_VOICE: Permissions = Permissions::from_bits_truncate(
+    Permissions::CONNECT.bits() | Permissions::SPEAK.bits() | Permissions::USE_VAD.bits(),
+);
 
 <span class="macro">bitflags::bitflags! </span>{
     <span class="doccomment">/// A set of permissions that can be assigned to [`User`]s and [`Role`]s via
@@ -1023,7 +1031,7 @@
     /// [`PermissionOverwrite`]: super::channel::PermissionOverwrite
     /// [`Role`]: super::guild::Role
     /// [`User`]: super::user::User
-    </span><span class="attr">#[derive(Default)]
+    </span><span class="attr">#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
     </span><span class="kw">pub struct </span>Permissions: u64 {
         <span class="doccomment">/// Allows for the creation of [`RichInvite`]s.
         ///
@@ -1143,6 +1151,14 @@
         <span class="doccomment">/// Allows for timing out users to prevent them from sending or reacting to messages in
         /// chat and threads, and from speaking in voice and stage channels.
         </span><span class="kw">const </span>MODERATE_MEMBERS = <span class="number">1 </span>&lt;&lt; <span class="number">40</span>;
+        <span class="doccomment">/// Allows for viewing role subscription insights.
+        </span><span class="kw">const </span>VIEW_CREATOR_MONETIZATION_ANALYTICS = <span class="number">1 </span>&lt;&lt; <span class="number">41</span>;
+        <span class="doccomment">/// Allows for using soundboard in a voice channel.
+        </span><span class="kw">const </span>USE_SOUNDBOARD = <span class="number">1 </span>&lt;&lt; <span class="number">42</span>;
+        <span class="doccomment">/// Allows the usage of custom soundboard sounds from other servers.
+        </span><span class="kw">const </span>USE_EXTERNAL_SOUNDS = <span class="number">1 </span>&lt;&lt; <span class="number">45</span>;
+        <span class="doccomment">/// Allows sending voice messages.
+        </span><span class="kw">const </span>SEND_VOICE_MESSAGES = <span class="number">1 </span>&lt;&lt; <span class="number">46</span>;
     }
 }
 
@@ -1182,7 +1198,7 @@
     send_tts_messages: <span class="string">&quot;Send TTS Messages&quot;</span>,
     speak: <span class="string">&quot;Speak&quot;</span>,
     stream: <span class="string">&quot;Stream&quot;</span>,
-    use_application_commands: <span class="string">&quot;Use Application Commands&quot;</span>,
+    use_commands: <span class="string">&quot;Use Application Commands&quot;</span>,
     use_embedded_activities: <span class="string">&quot;Use Embedded Activities&quot;</span>,
     use_external_emojis: <span class="string">&quot;Use External Emojis&quot;</span>,
     use_external_stickers: <span class="string">&quot;Use External Stickers&quot;</span>,
@@ -1544,7 +1560,7 @@
     ///
     /// [Use Application Commands]: Self::USE_APPLICATION_COMMANDS
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub const fn </span>use_application_commands(<span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub const fn </span>use_commands(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.contains(<span class="self">Self</span>::USE_APPLICATION_COMMANDS)
     }
 
@@ -1606,5 +1622,4 @@
         assert_json(<span class="kw-2">&amp;</span>value, <span class="macro">json!</span>(<span class="string">&quot;268435488&quot;</span>));
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

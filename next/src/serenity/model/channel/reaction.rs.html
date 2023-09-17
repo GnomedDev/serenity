@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/reaction.rs`."><title>reaction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/reaction.rs`."><title>reaction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -580,17 +580,14 @@
 <a href="#580" id="580">580</a>
 <a href="#581" id="581">581</a>
 <a href="#582" id="582">582</a>
-<a href="#583" id="583">583</a>
-<a href="#584" id="584">584</a>
-</pre><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span>std::cmp::Ordering;
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::convert::TryFrom;
 <span class="attr">#[cfg(doc)]
 </span><span class="kw">use </span>std::fmt::Display <span class="kw">as _</span>;
 <span class="kw">use </span>std::fmt::{<span class="self">self</span>, Write <span class="kw">as _</span>};
 <span class="kw">use </span>std::str::FromStr;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
 </span><span class="kw">use </span>percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 <span class="kw">use </span>serde::de::{Deserialize, Error <span class="kw">as </span>DeError};
 <span class="kw">use </span>serde::ser::{Serialize, SerializeMap, Serializer};
@@ -609,20 +606,21 @@
 #[serde(remote = <span class="string">&quot;Self&quot;</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Reaction {
-    <span class="doccomment">/// The [`Channel`] of the associated [`Message`].
-    </span><span class="kw">pub </span>channel_id: ChannelId,
-    <span class="doccomment">/// The reactive emoji used.
-    </span><span class="kw">pub </span>emoji: ReactionType,
-    <span class="doccomment">/// The Id of the [`Message`] that was reacted to.
-    </span><span class="kw">pub </span>message_id: MessageId,
     <span class="doccomment">/// The Id of the [`User`] that sent the reaction.
     ///
+    /// Always present when received from gateway.
     /// Set to [`None`] by [`Message::react`] when cache is not available.
     </span><span class="kw">pub </span>user_id: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
+    <span class="doccomment">/// The [`Channel`] of the associated [`Message`].
+    </span><span class="kw">pub </span>channel_id: ChannelId,
+    <span class="doccomment">/// The Id of the [`Message`] that was reacted to.
+    </span><span class="kw">pub </span>message_id: MessageId,
     <span class="doccomment">/// The optional Id of the [`Guild`] where the reaction was sent.
     </span><span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="doccomment">/// The optional object of the member which added the reaction.
-    </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;PartialMember&gt;,
+    </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;Member&gt;,
+    <span class="doccomment">/// The reactive emoji used.
+    </span><span class="kw">pub </span>emoji: ReactionType,
 }
 
 <span class="comment">// Manual impl needed to insert guild_id into PartialMember
@@ -630,7 +628,7 @@
     <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>reaction = <span class="self">Self</span>::deserialize(deserializer)<span class="question-mark">?</span>; <span class="comment">// calls #[serde(remote)]-generated inherent method
         </span><span class="kw">if let </span>(<span class="prelude-val">Some</span>(guild_id), <span class="prelude-val">Some</span>(member)) = (reaction.guild_id, reaction.member.as_mut()) {
-            member.guild_id = <span class="prelude-val">Some</span>(guild_id);
+            member.guild_id = guild_id;
         }
         <span class="prelude-val">Ok</span>(reaction)
     }
@@ -676,7 +674,7 @@
     /// Otherwise returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    /// [permissions]: super::permissions
+    /// [permissions]: crate::model::permissions
     </span><span class="kw">pub async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="attr">#[cfg_attr(not(feature = <span class="string">&quot;cache&quot;</span>), allow(unused_mut))]
         </span><span class="kw">let </span><span class="kw-2">mut </span>user_id = <span class="self">self</span>.user_id;
@@ -716,7 +714,7 @@
     /// Otherwise returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    /// [permissions]: super::permissions
+    /// [permissions]: crate::model::permissions
     </span><span class="kw">pub async fn </span>delete_all(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
         </span>{
@@ -769,7 +767,7 @@
             </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
             </span>{
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(User::from(<span class="kw-2">&amp;*</span>cache.current_user()));
+                    <span class="kw">return </span><span class="prelude-val">Ok</span>(cache.current_user().clone().into());
                 }
             }
 
@@ -796,7 +794,7 @@
     /// [permissions].
     ///
     /// [Read Message History]: Permissions::READ_MESSAGE_HISTORY
-    /// [permissions]: super::permissions
+    /// [permissions]: crate::model::permissions
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>users&lt;R, U&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -917,7 +915,7 @@
     /// it.
     </span><span class="attr">#[inline]
     #[must_use]
-    #[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+    #[cfg(feature = <span class="string">&quot;http&quot;</span>)]
     </span><span class="kw">pub fn </span>as_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
         <span class="kw">match </span><span class="self">self </span>{
             ReactionType::Custom {
@@ -936,7 +934,6 @@
     <span class="doccomment">/// Helper function to allow testing equality of unicode emojis without having to perform any
     /// allocation. Will always return false if the reaction was not a unicode reaction.
     </span><span class="attr">#[must_use]
-    #[cfg(feature = <span class="string">&quot;model&quot;</span>)]
     </span><span class="kw">pub fn </span>unicode_eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; bool {
         <span class="kw">if let </span>ReactionType::Unicode(unicode) = <span class="kw-2">&amp;</span><span class="self">self </span>{
             unicode == other
@@ -949,7 +946,6 @@
     <span class="doccomment">/// Helper function to allow comparing unicode emojis without having to perform any allocation.
     /// Will return None if the reaction was not a unicode reaction.
     </span><span class="attr">#[must_use]
-    #[cfg(feature = <span class="string">&quot;model&quot;</span>)]
     </span><span class="kw">pub fn </span>unicode_partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
         <span class="kw">if let </span>ReactionType::Unicode(unicode) = <span class="kw-2">&amp;</span><span class="self">self </span>{
             <span class="prelude-val">Some</span>(unicode.as_str().cmp(other))
@@ -1166,5 +1162,4 @@
         }
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

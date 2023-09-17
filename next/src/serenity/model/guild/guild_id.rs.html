@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/guild/guild_id.rs`."><title>guild_id.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/guild/guild_id.rs`."><title>guild_id.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1744,7 +1744,55 @@
 <a href="#1744" id="1744">1744</a>
 <a href="#1745" id="1745">1745</a>
 <a href="#1746" id="1746">1746</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::fmt;
+<a href="#1747" id="1747">1747</a>
+<a href="#1748" id="1748">1748</a>
+<a href="#1749" id="1749">1749</a>
+<a href="#1750" id="1750">1750</a>
+<a href="#1751" id="1751">1751</a>
+<a href="#1752" id="1752">1752</a>
+<a href="#1753" id="1753">1753</a>
+<a href="#1754" id="1754">1754</a>
+<a href="#1755" id="1755">1755</a>
+<a href="#1756" id="1756">1756</a>
+<a href="#1757" id="1757">1757</a>
+<a href="#1758" id="1758">1758</a>
+<a href="#1759" id="1759">1759</a>
+<a href="#1760" id="1760">1760</a>
+<a href="#1761" id="1761">1761</a>
+<a href="#1762" id="1762">1762</a>
+<a href="#1763" id="1763">1763</a>
+<a href="#1764" id="1764">1764</a>
+<a href="#1765" id="1765">1765</a>
+<a href="#1766" id="1766">1766</a>
+<a href="#1767" id="1767">1767</a>
+<a href="#1768" id="1768">1768</a>
+<a href="#1769" id="1769">1769</a>
+<a href="#1770" id="1770">1770</a>
+<a href="#1771" id="1771">1771</a>
+<a href="#1772" id="1772">1772</a>
+<a href="#1773" id="1773">1773</a>
+<a href="#1774" id="1774">1774</a>
+<a href="#1775" id="1775">1775</a>
+<a href="#1776" id="1776">1776</a>
+<a href="#1777" id="1777">1777</a>
+<a href="#1778" id="1778">1778</a>
+<a href="#1779" id="1779">1779</a>
+<a href="#1780" id="1780">1780</a>
+<a href="#1781" id="1781">1781</a>
+<a href="#1782" id="1782">1782</a>
+<a href="#1783" id="1783">1783</a>
+<a href="#1784" id="1784">1784</a>
+<a href="#1785" id="1785">1785</a>
+<a href="#1786" id="1786">1786</a>
+<a href="#1787" id="1787">1787</a>
+<a href="#1788" id="1788">1788</a>
+<a href="#1789" id="1789">1789</a>
+<a href="#1790" id="1790">1790</a>
+<a href="#1791" id="1791">1791</a>
+<a href="#1792" id="1792">1792</a>
+<a href="#1793" id="1793">1793</a>
+<a href="#1794" id="1794">1794</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span>futures::stream::Stream;
@@ -1752,12 +1800,13 @@
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::builder::{
     AddMember,
+    Builder,
     CreateChannel,
     CreateCommand,
-    CreateCommandPermissionsData,
     CreateScheduledEvent,
     CreateSticker,
     EditAutoModRule,
+    EditCommandPermissions,
     EditGuild,
     EditGuildWelcomeScreen,
     EditGuildWidget,
@@ -1769,9 +1818,9 @@
 <span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::cache::{Cache, GuildRef};
 <span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::client::bridge::gateway::ShardMessenger;
-<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::collector::{MessageCollector, ReactionCollector};
+<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::gateway::ShardMessenger;
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http, UserPagination};
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
@@ -1779,7 +1828,7 @@
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::json::json;
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::model::application::{Command, CommandPermission};
+</span><span class="kw">use </span><span class="kw">crate</span>::model::application::{Command, CommandPermissions};
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::model::guild::automod::Rule;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
@@ -1841,8 +1890,14 @@
     ///     .trigger(Trigger::Keyword {
     ///         strings: vec![&quot;foo*&quot;.to_string(), &quot;*bar&quot;.to_string()],
     ///         regex_patterns: vec![],
+    ///         allow_list: vec![],
     ///     })
-    ///     .actions(vec![Action::BlockMessage, Action::Timeout(Duration::from_secs(60))]);
+    ///     .actions(vec![
+    ///         Action::BlockMessage {
+    ///             custom_message: None,
+    ///         },
+    ///         Action::Timeout(Duration::from_secs(60)),
+    ///     ]);
     /// let _rule = GuildId::new(7).create_automod_rule(&amp;http, builder).await;
     /// # }
     /// ```
@@ -1855,10 +1910,10 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>create_automod_rule(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         builder: EditAutoModRule&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Rule&gt; {
-        builder.execute(http, <span class="self">self</span>, <span class="prelude-val">None</span>).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, <span class="prelude-val">None</span>)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edit an auto moderation [`Rule`], given its Id.
@@ -1873,11 +1928,11 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>edit_automod_rule(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         rule_id: <span class="kw">impl </span>Into&lt;RuleId&gt;,
         builder: EditAutoModRule&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Rule&gt; {
-        builder.execute(http, <span class="self">self</span>, <span class="prelude-val">Some</span>(rule_id.into())).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, <span class="prelude-val">Some</span>(rule_id.into()))).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes an auto moderation [`Rule`] from the guild.
@@ -1910,11 +1965,11 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>add_member(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         user_id: <span class="kw">impl </span>Into&lt;UserId&gt;,
         builder: AddMember,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Member&gt;&gt; {
-        builder.execute(http, <span class="self">self</span>, user_id.into()).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, user_id.into())).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Ban a [`User`] from the guild, deleting a number of days&#39; worth of messages (`dmd`) between
@@ -2160,7 +2215,7 @@
         cache_http: <span class="kw">impl </span>CacheHttp,
         builder: EditRole&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Role&gt; {
-        builder.execute(cache_http, <span class="self">self</span>, <span class="prelude-val">None</span>).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, <span class="prelude-val">None</span>)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Creates a new scheduled event in the guild with the data set, if any.
@@ -2386,11 +2441,30 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>edit_member(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         user_id: <span class="kw">impl </span>Into&lt;UserId&gt;,
         builder: EditMember&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
-        builder.execute(http, <span class="self">self</span>, user_id.into()).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, user_id.into())).<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Edits the guild&#39;s MFA level. Returns the new level on success.
+    ///
+    /// Requires guild ownership.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error::Http`] if the current user lacks permission.
+    </span><span class="kw">pub async fn </span>edit_mfa_level(
+        <span class="self">self</span>,
+        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        mfa_level: MfaLevel,
+        audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;MfaLevel&gt; {
+        <span class="kw">let </span>value = <span class="macro">json!</span>({
+            <span class="string">&quot;level&quot;</span>: mfa_level,
+        });
+        http.as_ref().edit_guild_mfa_level(<span class="self">self</span>, <span class="kw-2">&amp;</span>value, audit_log_reason).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edits the current user&#39;s nickname for the guild.
@@ -2452,7 +2526,7 @@
         role_id: <span class="kw">impl </span>Into&lt;RoleId&gt;,
         builder: EditRole&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Role&gt; {
-        builder.execute(cache_http, <span class="self">self</span>, <span class="prelude-val">Some</span>(role_id.into())).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, <span class="prelude-val">Some</span>(role_id.into()))).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Modifies a scheduled event in the guild with the data set, if any.
@@ -2471,7 +2545,7 @@
         event_id: <span class="kw">impl </span>Into&lt;ScheduledEventId&gt;,
         builder: EditScheduledEvent&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ScheduledEvent&gt; {
-        builder.execute(cache_http, <span class="self">self</span>, event_id.into()).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, event_id.into())).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edits a sticker.
@@ -2503,11 +2577,11 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>edit_sticker(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         sticker_id: <span class="kw">impl </span>Into&lt;StickerId&gt;,
         builder: EditSticker&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
-        builder.execute(http, <span class="self">self</span>, sticker_id.into()).<span class="kw">await
+        builder.execute(cache_http, (<span class="self">self</span>, sticker_id.into())).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edit the position of a [`Role`] relative to all others in the [`Guild`].
@@ -2531,7 +2605,7 @@
         <span class="self">self</span>,
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         role_id: <span class="kw">impl </span>Into&lt;RoleId&gt;,
-        position: u32,
+        position: u16,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Role&gt;&gt; {
         http.as_ref().edit_role_position(<span class="self">self</span>, role_id.into(), position, <span class="prelude-val">None</span>).<span class="kw">await
     </span>}
@@ -2547,10 +2621,10 @@
     /// [Manage Guild]: Permissions::MANAGE_GUILD
     </span><span class="kw">pub async fn </span>edit_welcome_screen(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         builder: EditGuildWelcomeScreen&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GuildWelcomeScreen&gt; {
-        builder.execute(http, <span class="self">self</span>).<span class="kw">await
+        builder.execute(cache_http, <span class="self">self</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edits the guild&#39;s widget.
@@ -2564,10 +2638,10 @@
     /// [Manage Guild]: Permissions::MANAGE_GUILD
     </span><span class="kw">pub async fn </span>edit_widget(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         builder: EditGuildWidget&lt;<span class="lifetime">&#39;_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GuildWidget&gt; {
-        builder.execute(http, <span class="self">self</span>).<span class="kw">await
+        builder.execute(cache_http, <span class="self">self</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets all of the guild&#39;s roles over the REST API.
@@ -2725,6 +2799,19 @@
         http.as_ref().kick_member(<span class="self">self</span>, user_id.into(), <span class="prelude-val">Some</span>(reason)).<span class="kw">await
     </span>}
 
+    <span class="doccomment">/// Returns a guild [`Member`] object for the current user.
+    ///
+    /// See [`Http::get_current_user_guild_member`] for more.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`Error::Http`] if the current user is not in the guild or the access token
+    /// lacks the necessary scope.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub async fn </span>current_user_member(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
+        http.as_ref().get_current_user_guild_member(<span class="self">self</span>).<span class="kw">await
+    </span>}
+
     <span class="doccomment">/// Leaves the guild.
     ///
     /// # Errors
@@ -2830,12 +2917,12 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>move_member(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         user_id: <span class="kw">impl </span>Into&lt;UserId&gt;,
         channel_id: <span class="kw">impl </span>Into&lt;ChannelId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
         <span class="kw">let </span>builder = EditMember::new().voice_channel(channel_id.into());
-        <span class="self">self</span>.edit_member(http, user_id, builder).<span class="kw">await
+        <span class="self">self</span>.edit_member(cache_http, user_id, builder).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Returns the name of whatever guild this id holds.
@@ -2858,10 +2945,10 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>disconnect_member(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         user_id: <span class="kw">impl </span>Into&lt;UserId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
-        <span class="self">self</span>.edit_member(http, user_id, EditMember::new().disconnect_member()).<span class="kw">await
+        <span class="self">self</span>.edit_member(cache_http, user_id, EditMember::new().disconnect_member()).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets the number of [`Member`]s that would be pruned with the given number of days.
@@ -2893,10 +2980,11 @@
     ///
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub async fn </span>reorder_channels&lt;It&gt;(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;, channels: It) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;
-    <span class="kw">where
-        </span>It: IntoIterator&lt;Item = (ChannelId, u64)&gt;,
-    {
+    </span><span class="kw">pub async fn </span>reorder_channels(
+        <span class="self">self</span>,
+        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        channels: <span class="kw">impl </span>IntoIterator&lt;Item = (ChannelId, u64)&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span>items = channels
             .into_iter()
             .map(|(id, pos)| {
@@ -3168,41 +3256,41 @@
     /// # Errors
     ///
     /// See [`CreateCommand::execute`] for a list of possible errors.
-    </span><span class="kw">pub async fn </span>create_application_command(
+    </span><span class="kw">pub async fn </span>create_command(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         builder: CreateCommand,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(http, <span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="prelude-val">None</span>).<span class="kw">await
+        builder.execute(cache_http, (<span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="prelude-val">None</span>)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Override all guild application commands.
     ///
     /// # Errors
     ///
-    /// Returns the same errors as [`Self::create_application_command`].
-    </span><span class="kw">pub async fn </span>set_application_commands(
+    /// Returns the same errors as [`Self::create_command`].
+    </span><span class="kw">pub async fn </span>set_commands(
         <span class="self">self</span>,
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         commands: Vec&lt;CreateCommand&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().create_guild_application_commands(<span class="self">self</span>, <span class="kw-2">&amp;</span>commands).<span class="kw">await
+        http.as_ref().create_guild_commands(<span class="self">self</span>, <span class="kw-2">&amp;</span>commands).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Create a guild specific [`CommandPermission`].
+    <span class="doccomment">/// Overwrites permissions for a specific command.
     ///
     /// **Note**: It will update instantly.
     ///
     /// # Errors
     ///
-    /// See [`CreateCommandPermissionsData::execute`] for a list of possible errors.
-    </span><span class="kw">pub async fn </span>create_application_command_permission(
+    /// See [`EditCommandPermissions::execute`] for a list of possible errors.
+    </span><span class="kw">pub async fn </span>edit_command_permissions(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         command_id: CommandId,
-        builder: CreateCommandPermissionsData,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermission&gt; {
-        builder.execute(http, <span class="self">self</span>, command_id).<span class="kw">await
+        builder: EditCommandPermissions,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermissions&gt; {
+        builder.execute(cache_http, (<span class="self">self</span>, command_id)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get all guild application commands.
@@ -3210,8 +3298,20 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_application_commands(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().get_guild_application_commands(<span class="self">self</span>).<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_commands(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.as_ref().get_guild_commands(<span class="self">self</span>).<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Get all guild application commands with localizations.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
+    </span><span class="kw">pub async fn </span>get_commands_with_localizations(
+        <span class="self">self</span>,
+        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.as_ref().get_guild_commands_with_localizations(<span class="self">self</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get a specific guild application command by its Id.
@@ -3219,12 +3319,12 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_application_command(
+    </span><span class="kw">pub async fn </span>get_command(
         <span class="self">self</span>,
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         command_id: CommandId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        http.as_ref().get_guild_application_command(<span class="self">self</span>, command_id).<span class="kw">await
+        http.as_ref().get_guild_command(<span class="self">self</span>, command_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edit a guild application command, given its Id.
@@ -3232,13 +3332,13 @@
     /// # Errors
     ///
     /// See [`CreateCommand::execute`] for a list of possible errors.
-    </span><span class="kw">pub async fn </span>edit_application_command(
+    </span><span class="kw">pub async fn </span>edit_command(
         <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+        cache_http: <span class="kw">impl </span>CacheHttp,
         command_id: CommandId,
         builder: CreateCommand,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(http, <span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="prelude-val">Some</span>(command_id)).<span class="kw">await
+        builder.execute(cache_http, (<span class="prelude-val">Some</span>(<span class="self">self</span>), <span class="prelude-val">Some</span>(command_id))).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Delete guild application command by its Id.
@@ -3246,12 +3346,8 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>delete_application_command(
-        <span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-        command_id: CommandId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        http.as_ref().delete_guild_application_command(<span class="self">self</span>, command_id).<span class="kw">await
+    </span><span class="kw">pub async fn </span>delete_command(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        http.as_ref().delete_guild_command(<span class="self">self</span>, command_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get all guild application commands permissions only.
@@ -3259,11 +3355,11 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_application_commands_permissions(
+    </span><span class="kw">pub async fn </span>get_commands_permissions(
         <span class="self">self</span>,
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;CommandPermission&gt;&gt; {
-        http.as_ref().get_guild_application_commands_permissions(<span class="self">self</span>).<span class="kw">await
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;CommandPermissions&gt;&gt; {
+        http.as_ref().get_guild_commands_permissions(<span class="self">self</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get permissions for specific guild application command by its Id.
@@ -3271,12 +3367,12 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_application_command_permissions(
+    </span><span class="kw">pub async fn </span>get_command_permissions(
         <span class="self">self</span>,
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         command_id: CommandId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermission&gt; {
-        http.as_ref().get_guild_application_command_permissions(<span class="self">self</span>, command_id).<span class="kw">await
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermissions&gt; {
+        http.as_ref().get_guild_command_permissions(<span class="self">self</span>, command_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Get the guild welcome screen.
@@ -3490,5 +3586,4 @@
         }
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

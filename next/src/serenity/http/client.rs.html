@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -4446,18 +4446,108 @@
 <a href="#4446" id="4446">4446</a>
 <a href="#4447" id="4447">4447</a>
 <a href="#4448" id="4448">4448</a>
-</pre><pre class="rust"><code><span class="attr">#![allow(clippy::missing_errors_doc)]
+<a href="#4449" id="4449">4449</a>
+<a href="#4450" id="4450">4450</a>
+<a href="#4451" id="4451">4451</a>
+<a href="#4452" id="4452">4452</a>
+<a href="#4453" id="4453">4453</a>
+<a href="#4454" id="4454">4454</a>
+<a href="#4455" id="4455">4455</a>
+<a href="#4456" id="4456">4456</a>
+<a href="#4457" id="4457">4457</a>
+<a href="#4458" id="4458">4458</a>
+<a href="#4459" id="4459">4459</a>
+<a href="#4460" id="4460">4460</a>
+<a href="#4461" id="4461">4461</a>
+<a href="#4462" id="4462">4462</a>
+<a href="#4463" id="4463">4463</a>
+<a href="#4464" id="4464">4464</a>
+<a href="#4465" id="4465">4465</a>
+<a href="#4466" id="4466">4466</a>
+<a href="#4467" id="4467">4467</a>
+<a href="#4468" id="4468">4468</a>
+<a href="#4469" id="4469">4469</a>
+<a href="#4470" id="4470">4470</a>
+<a href="#4471" id="4471">4471</a>
+<a href="#4472" id="4472">4472</a>
+<a href="#4473" id="4473">4473</a>
+<a href="#4474" id="4474">4474</a>
+<a href="#4475" id="4475">4475</a>
+<a href="#4476" id="4476">4476</a>
+<a href="#4477" id="4477">4477</a>
+<a href="#4478" id="4478">4478</a>
+<a href="#4479" id="4479">4479</a>
+<a href="#4480" id="4480">4480</a>
+<a href="#4481" id="4481">4481</a>
+<a href="#4482" id="4482">4482</a>
+<a href="#4483" id="4483">4483</a>
+<a href="#4484" id="4484">4484</a>
+<a href="#4485" id="4485">4485</a>
+<a href="#4486" id="4486">4486</a>
+<a href="#4487" id="4487">4487</a>
+<a href="#4488" id="4488">4488</a>
+<a href="#4489" id="4489">4489</a>
+<a href="#4490" id="4490">4490</a>
+<a href="#4491" id="4491">4491</a>
+<a href="#4492" id="4492">4492</a>
+<a href="#4493" id="4493">4493</a>
+<a href="#4494" id="4494">4494</a>
+<a href="#4495" id="4495">4495</a>
+<a href="#4496" id="4496">4496</a>
+<a href="#4497" id="4497">4497</a>
+<a href="#4498" id="4498">4498</a>
+<a href="#4499" id="4499">4499</a>
+<a href="#4500" id="4500">4500</a>
+<a href="#4501" id="4501">4501</a>
+<a href="#4502" id="4502">4502</a>
+<a href="#4503" id="4503">4503</a>
+<a href="#4504" id="4504">4504</a>
+<a href="#4505" id="4505">4505</a>
+<a href="#4506" id="4506">4506</a>
+<a href="#4507" id="4507">4507</a>
+<a href="#4508" id="4508">4508</a>
+<a href="#4509" id="4509">4509</a>
+<a href="#4510" id="4510">4510</a>
+<a href="#4511" id="4511">4511</a>
+<a href="#4512" id="4512">4512</a>
+<a href="#4513" id="4513">4513</a>
+<a href="#4514" id="4514">4514</a>
+<a href="#4515" id="4515">4515</a>
+<a href="#4516" id="4516">4516</a>
+<a href="#4517" id="4517">4517</a>
+<a href="#4518" id="4518">4518</a>
+<a href="#4519" id="4519">4519</a>
+<a href="#4520" id="4520">4520</a>
+<a href="#4521" id="4521">4521</a>
+<a href="#4522" id="4522">4522</a>
+<a href="#4523" id="4523">4523</a>
+<a href="#4524" id="4524">4524</a>
+<a href="#4525" id="4525">4525</a>
+<a href="#4526" id="4526">4526</a>
+<a href="#4527" id="4527">4527</a>
+<a href="#4528" id="4528">4528</a>
+<a href="#4529" id="4529">4529</a>
+<a href="#4530" id="4530">4530</a>
+<a href="#4531" id="4531">4531</a>
+<a href="#4532" id="4532">4532</a>
+<a href="#4533" id="4533">4533</a>
+<a href="#4534" id="4534">4534</a>
+<a href="#4535" id="4535">4535</a>
+<a href="#4536" id="4536">4536</a>
+</pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::missing_errors_doc)]
 
 </span><span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>std::convert::TryFrom;
-<span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::num::NonZeroU64;
 <span class="kw">use </span>std::sync::atomic::{AtomicU64, Ordering};
 <span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 <span class="kw">use </span>reqwest::header::{HeaderMap <span class="kw">as </span>Headers, HeaderValue};
-<span class="kw">use </span>reqwest::{Client, ClientBuilder, Response <span class="kw">as </span>ReqwestResponse, StatusCode, Url};
+<span class="attr">#[cfg(feature = <span class="string">&quot;utils&quot;</span>)]
+</span><span class="kw">use </span>reqwest::Url;
+<span class="kw">use </span>reqwest::{Client, ClientBuilder, Response <span class="kw">as </span>ReqwestResponse, StatusCode};
+<span class="kw">use </span>secrecy::{ExposeSecret, SecretString};
 <span class="kw">use </span>serde::de::DeserializeOwned;
 <span class="kw">use </span>tracing::{debug, instrument, trace};
 
@@ -4478,7 +4568,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::constants;
 <span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::json::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::model::application::{Command, CommandPermission};
+<span class="kw">use </span><span class="kw">crate</span>::model::application::{Command, CommandPermissions};
 <span class="kw">use </span><span class="kw">crate</span>::model::guild::automod::Rule;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
@@ -4515,7 +4605,7 @@
             client: <span class="prelude-val">None</span>,
             ratelimiter: <span class="prelude-val">None</span>,
             ratelimiter_disabled: <span class="bool-val">false</span>,
-            token: SecretString(parse_token(token)),
+            token: SecretString::new(parse_token(token)),
             proxy: <span class="prelude-val">None</span>,
             application_id: <span class="prelude-val">None</span>,
         }
@@ -4530,7 +4620,7 @@
     <span class="doccomment">/// Sets a token for the bot. If the token is not prefixed &quot;Bot &quot;, this method will
     /// automatically do so.
     </span><span class="kw">pub fn </span>token(<span class="kw-2">mut </span><span class="self">self</span>, token: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.token = SecretString(parse_token(token));
+        <span class="self">self</span>.token = SecretString::new(parse_token(token));
         <span class="self">self
     </span>}
 
@@ -4579,8 +4669,6 @@
     <span class="doccomment">/// Use the given configuration to build the `Http` client.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; Http {
-        <span class="kw">let </span>token = <span class="self">self</span>.token;
-
         <span class="kw">let </span>application_id = AtomicU64::new(<span class="self">self</span>.application_id.map_or(<span class="number">0</span>, ApplicationId::get));
 
         <span class="kw">let </span>client = <span class="self">self</span>.client.unwrap_or_else(|| {
@@ -4588,17 +4676,16 @@
             builder.build().expect(<span class="string">&quot;Cannot build reqwest::Client&quot;</span>)
         });
 
-        <span class="kw">let </span>ratelimiter = <span class="kw">if </span><span class="self">self</span>.ratelimiter_disabled {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.ratelimiter.unwrap_or_else(|| Ratelimiter::new(client.clone(), <span class="kw-2">&amp;</span>token.<span class="number">0</span>)))
-        };
+        <span class="kw">let </span>ratelimiter = (!<span class="self">self</span>.ratelimiter_disabled).then(|| {
+            <span class="self">self</span>.ratelimiter
+                .unwrap_or_else(|| Ratelimiter::new(client.clone(), <span class="self">self</span>.token.expose_secret()))
+        });
 
         Http {
             client,
             ratelimiter,
             proxy: <span class="self">self</span>.proxy,
-            token,
+            token: <span class="self">self</span>.token,
             application_id,
         }
     }
@@ -4627,14 +4714,6 @@
 
     headers.insert(<span class="string">&quot;X-Audit-Log-Reason&quot;</span>, header_value);
     headers
-}
-
-<span class="comment">// Newtype with a Debug impl that prevents accidentally leaking the contained String.
-</span><span class="kw">struct </span>SecretString(String);
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>SecretString {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;&lt;hidden&gt;&quot;</span>)
-    }
 }
 
 <span class="doccomment">/// **Note**: For all member functions that return a [`Result`], the Error kind will be either
@@ -4668,8 +4747,8 @@
     }
 
     <span class="kw">pub fn </span>token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.token.<span class="number">0
-    </span>}
+        <span class="self">self</span>.token.expose_secret()
+    }
 
     <span class="doccomment">/// Adds a [`User`] to a [`Guild`] with a valid OAuth2 access token.
     ///
@@ -4827,9 +4906,8 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Creates a public thread channel in the [`GuildChannel`] given its Id, with a base message
-    /// Id.
-    </span><span class="kw">pub async fn </span>create_public_thread(
+    <span class="doccomment">/// Creates a thread channel in the [`GuildChannel`] given its Id, with a base message Id.
+    </span><span class="kw">pub async fn </span>create_thread_from_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
         message_id: MessageId,
@@ -4843,7 +4921,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: audit_log_reason.map(reason_into_header),
             method: LightMethod::Post,
-            route: Route::ChannelPublicThreads {
+            route: Route::ChannelMessageThreads {
                 channel_id,
                 message_id,
             },
@@ -4852,8 +4930,8 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Creates a private thread channel in the [`GuildChannel`] given its Id.
-    </span><span class="kw">pub async fn </span>create_private_thread(
+    <span class="doccomment">/// Creates a thread channel not attached to a message in the [`GuildChannel`] given its Id.
+    </span><span class="kw">pub async fn </span>create_thread(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
@@ -4866,7 +4944,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: audit_log_reason.map(reason_into_header),
             method: LightMethod::Post,
-            route: Route::ChannelPrivateThreads {
+            route: Route::ChannelThreads {
                 channel_id,
             },
             params: <span class="prelude-val">None</span>,
@@ -4966,16 +5044,13 @@
     /// will overwrite the old command.
     ///
     /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
-    </span><span class="kw">pub async fn </span>create_global_application_command(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
+    </span><span class="kw">pub async fn </span>create_global_command(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Post,
-            route: Route::ApplicationCommands {
+            route: Route::Commands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
             },
             params: <span class="prelude-val">None</span>,
@@ -4984,7 +5059,7 @@
     </span>}
 
     <span class="doccomment">/// Creates new global application commands.
-    </span><span class="kw">pub async fn </span>create_global_application_commands(
+    </span><span class="kw">pub async fn </span>create_global_commands(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
@@ -4993,7 +5068,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Put,
-            route: Route::ApplicationCommands {
+            route: Route::Commands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
             },
             params: <span class="prelude-val">None</span>,
@@ -5002,7 +5077,7 @@
     </span>}
 
     <span class="doccomment">/// Creates new guild application commands.
-    </span><span class="kw">pub async fn </span>create_guild_application_commands(
+    </span><span class="kw">pub async fn </span>create_guild_commands(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
@@ -5012,7 +5087,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Put,
-            route: Route::ApplicationGuildCommands {
+            route: Route::GuildCommands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
             },
@@ -5073,7 +5148,7 @@
     /// Refer to Discord&#39;s [docs] for field information.
     ///
     /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
-    </span><span class="kw">pub async fn </span>create_guild_application_command(
+    </span><span class="kw">pub async fn </span>create_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
@@ -5083,7 +5158,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Post,
-            route: Route::ApplicationGuildCommands {
+            route: Route::GuildCommands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
             },
@@ -5462,13 +5537,13 @@
     </span>}
 
     <span class="doccomment">/// Deletes a global command.
-    </span><span class="kw">pub async fn </span>delete_global_application_command(<span class="kw-2">&amp;</span><span class="self">self</span>, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    </span><span class="kw">pub async fn </span>delete_global_command(<span class="kw-2">&amp;</span><span class="self">self</span>, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Delete,
-            route: Route::ApplicationCommand {
+            route: Route::Command {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 command_id,
             },
@@ -5493,7 +5568,7 @@
     </span>}
 
     <span class="doccomment">/// Deletes a guild command.
-    </span><span class="kw">pub async fn </span>delete_guild_application_command(
+    </span><span class="kw">pub async fn </span>delete_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         command_id: CommandId,
@@ -5503,7 +5578,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Delete,
-            route: Route::ApplicationGuildCommand {
+            route: Route::GuildCommand {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
                 command_id,
@@ -6024,7 +6099,7 @@
     /// Refer to Discord&#39;s [docs] for field information.
     ///
     /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
-    </span><span class="kw">pub async fn </span>edit_global_application_command(
+    </span><span class="kw">pub async fn </span>edit_global_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         command_id: CommandId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
@@ -6034,7 +6109,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Patch,
-            route: Route::ApplicationCommand {
+            route: Route::Command {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 command_id,
             },
@@ -6072,7 +6147,7 @@
     /// Refer to Discord&#39;s [docs] for field information.
     ///
     /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
-    </span><span class="kw">pub async fn </span>edit_guild_application_command(
+    </span><span class="kw">pub async fn </span>edit_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         command_id: CommandId,
@@ -6083,7 +6158,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Patch,
-            route: Route::ApplicationGuildCommand {
+            route: Route::GuildCommand {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
                 command_id,
@@ -6099,48 +6174,22 @@
     ///
     /// Refer to Discord&#39;s [documentation] for field information.
     ///
-    /// [documentation]: https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
-    </span><span class="kw">pub async fn </span>edit_guild_application_command_permissions(
+    /// [documentation]: https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions
+    </span><span class="kw">pub async fn </span>edit_guild_command_permissions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         command_id: CommandId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermission&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermissions&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Put,
-            route: Route::ApplicationGuildCommandPermissions {
+            route: Route::GuildCommandPermissions {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
                 command_id,
-            },
-            params: <span class="prelude-val">None</span>,
-        })
-        .<span class="kw">await
-    </span>}
-
-    <span class="doccomment">/// Edits a guild commands permissions.
-    ///
-    /// Updates for guild commands will be available immediately.
-    ///
-    /// Refer to Discord&#39;s [documentation] for field information.
-    ///
-    /// [documentation]: https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
-    </span><span class="kw">pub async fn </span>edit_guild_application_commands_permissions(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        guild_id: GuildId,
-        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;CommandPermission&gt;&gt; {
-        <span class="self">self</span>.fire(Request {
-            body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
-            multipart: <span class="prelude-val">None</span>,
-            headers: <span class="prelude-val">None</span>,
-            method: LightMethod::Put,
-            route: Route::ApplicationGuildCommandsPermissions {
-                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
-                guild_id,
             },
             params: <span class="prelude-val">None</span>,
         })
@@ -6167,6 +6216,34 @@
         })
         .<span class="kw">await
     </span>}
+
+    <span class="doccomment">/// Edits the MFA level of a guild. Requires guild ownership.
+    </span><span class="kw">pub async fn </span>edit_guild_mfa_level(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+        value: <span class="kw-2">&amp;</span>Value,
+        audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;MfaLevel&gt; {
+        <span class="attr">#[derive(Deserialize)]
+        </span><span class="kw">struct </span>GuildMfaLevel {
+            level: MfaLevel,
+        }
+
+        <span class="kw">let </span>body = to_vec(value)<span class="question-mark">?</span>;
+
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">Some</span>(body),
+            multipart: <span class="prelude-val">None</span>,
+            headers: audit_log_reason.map(reason_into_header),
+            method: LightMethod::Post,
+            route: Route::GuildMfa {
+                guild_id,
+            },
+            params: <span class="prelude-val">None</span>,
+        })
+        .<span class="kw">await
+        </span>.map(|mfa: GuildMfaLevel| mfa.level)
+    }
 
     <span class="doccomment">/// Edits a [`Guild`]&#39;s widget.
     </span><span class="kw">pub async fn </span>edit_guild_widget(
@@ -6473,7 +6550,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         role_id: RoleId,
-        position: u32,
+        position: u16,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Role&gt;&gt; {
         <span class="kw">let </span>map = <span class="macro">json!</span>([{
@@ -6796,8 +6873,9 @@
     /// If `thread_id` is not `None`, then the message will be sent to the thread in the webhook&#39;s
     /// associated [`Channel`] with the corresponding Id, which will be automatically unarchived.
     ///
-    /// Pass `true` to `wait` to wait for server confirmation of the message sending before
-    /// receiving a response. From the [Discord docs]:
+    /// If `wait` is `false`, this function will return `Ok(None)` on success. Otherwise, it will
+    /// wait for server confirmation of the message having been sent, and return `Ok(Some(msg))`.
+    /// From the [Discord docs]:
     ///
     /// &gt; waits for server confirmation of message send before response, and returns the created
     /// &gt; message body (defaults to false; when false a message that is not saved does not return
@@ -6888,6 +6966,7 @@
     </span><span class="kw">pub async fn </span>get_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
+        thread_id: <span class="prelude-ty">Option</span>&lt;ChannelId&gt;,
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
@@ -6901,7 +6980,7 @@
                 token,
                 message_id,
             },
-            params: <span class="prelude-val">None</span>,
+            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
         })
         .<span class="kw">await
     </span>}
@@ -6910,14 +6989,14 @@
     </span><span class="kw">pub async fn </span>edit_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
+        thread_id: <span class="prelude-ty">Option</span>&lt;ChannelId&gt;,
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
+        new_attachments: Vec&lt;CreateAttachment&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        <span class="kw">let </span>body = to_vec(map)<span class="question-mark">?</span>;
-
-        <span class="self">self</span>.fire(Request {
-            body: <span class="prelude-val">Some</span>(body),
+        <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
+            body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Patch,
@@ -6926,15 +7005,27 @@
                 token,
                 message_id,
             },
-            params: <span class="prelude-val">None</span>,
-        })
-        .<span class="kw">await
+            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
+        };
+
+        <span class="kw">if </span>new_attachments.is_empty() {
+            request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
+        } <span class="kw">else </span>{
+            request.multipart = <span class="prelude-val">Some</span>(Multipart {
+                files: new_attachments,
+                payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
+                fields: <span class="macro">vec!</span>[],
+            });
+        }
+
+        <span class="self">self</span>.fire(request).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes a webhook&#39;s message by Id.
     </span><span class="kw">pub async fn </span>delete_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
+        thread_id: <span class="prelude-ty">Option</span>&lt;ChannelId&gt;,
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
@@ -6948,7 +7039,7 @@
                 token,
                 message_id,
             },
-            params: <span class="prelude-val">None</span>,
+            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
         })
         .<span class="kw">await
     </span>}
@@ -7503,13 +7594,13 @@
     </span>}
 
     <span class="doccomment">/// Fetches all of the global commands for your application.
-    </span><span class="kw">pub async fn </span>get_global_application_commands(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+    </span><span class="kw">pub async fn </span>get_global_commands(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationCommands {
+            route: Route::Commands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
             },
             params: <span class="prelude-val">None</span>,
@@ -7517,14 +7608,29 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Fetches a global commands for your application by its Id.
-    </span><span class="kw">pub async fn </span>get_global_application_command(<span class="kw-2">&amp;</span><span class="self">self</span>, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
+    <span class="doccomment">/// Fetches all of the global commands for your application with localizations.
+    </span><span class="kw">pub async fn </span>get_global_commands_with_localizations(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationCommand {
+            route: Route::Commands {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+            },
+            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_localizations&quot;</span>, <span class="bool-val">true</span>.to_string())]),
+        })
+        .<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Fetches a global commands for your application by its Id.
+    </span><span class="kw">pub async fn </span>get_global_command(<span class="kw-2">&amp;</span><span class="self">self</span>, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Get,
+            route: Route::Command {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 command_id,
             },
@@ -7564,13 +7670,13 @@
     </span>}
 
     <span class="doccomment">/// Fetches all of the guild commands for your application for a specific guild.
-    </span><span class="kw">pub async fn </span>get_guild_application_commands(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+    </span><span class="kw">pub async fn </span>get_guild_commands(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationGuildCommands {
+            route: Route::GuildCommands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
             },
@@ -7579,8 +7685,28 @@
         .<span class="kw">await
     </span>}
 
+    <span class="doccomment">/// Fetches all of the guild commands with localizations for your application for a specific
+    /// guild.
+    </span><span class="kw">pub async fn </span>get_guild_commands_with_localizations(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Get,
+            route: Route::GuildCommands {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+                guild_id,
+            },
+            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_localizations&quot;</span>, <span class="bool-val">true</span>.to_string())]),
+        })
+        .<span class="kw">await
+    </span>}
+
     <span class="doccomment">/// Fetches a guild command by its Id.
-    </span><span class="kw">pub async fn </span>get_guild_application_command(
+    </span><span class="kw">pub async fn </span>get_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         command_id: CommandId,
@@ -7590,7 +7716,7 @@
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationGuildCommand {
+            route: Route::GuildCommand {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
                 command_id,
@@ -7601,16 +7727,16 @@
     </span>}
 
     <span class="doccomment">/// Fetches all of the guild commands permissions for your application for a specific guild.
-    </span><span class="kw">pub async fn </span>get_guild_application_commands_permissions(
+    </span><span class="kw">pub async fn </span>get_guild_commands_permissions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;CommandPermission&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;CommandPermissions&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationGuildCommandsPermissions {
+            route: Route::GuildCommandsPermissions {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
             },
@@ -7620,17 +7746,17 @@
     </span>}
 
     <span class="doccomment">/// Gives the guild command permission for your application for a specific guild.
-    </span><span class="kw">pub async fn </span>get_guild_application_command_permissions(
+    </span><span class="kw">pub async fn </span>get_guild_command_permissions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         command_id: CommandId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermission&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;CommandPermissions&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
-            route: Route::ApplicationGuildCommandPermissions {
+            route: Route::GuildCommandPermissions {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
                 command_id,
@@ -8077,6 +8203,56 @@
         })
         .<span class="kw">await
     </span>}
+
+    <span class="doccomment">/// Returns a guild [`Member`] object for the current user.
+    ///
+    /// # Authorization
+    ///
+    /// This method only works for user tokens with the [`GuildsMembersRead`] OAuth2 scope.
+    ///
+    /// [`GuildsMembersRead`]: crate::model::application::Scope::GuildsMembersRead
+    ///
+    /// # Examples
+    ///
+    /// Get the member object for the current user within the specified guild.
+    ///
+    /// ```rust,no_run
+    /// # use serenity::http::Http;
+    /// #
+    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    /// # let http: Http = unimplemented!();
+    /// use serenity::model::id::GuildId;
+    ///
+    /// let guild_id = GuildId::new(81384788765712384);
+    ///
+    /// let member = http.get_current_user_guild_member(guild_id).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// See the [Discord Developer Portal documentation][docs] for more.
+    ///
+    /// [docs]: https://discord.com/developers/docs/resources/user#get-current-user-guild-member
+    </span><span class="kw">pub async fn </span>get_current_user_guild_member(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
+            </span>.fire(Request {
+                body: <span class="prelude-val">None</span>,
+                multipart: <span class="prelude-val">None</span>,
+                headers: <span class="prelude-val">None</span>,
+                method: LightMethod::Get,
+                route: Route::UserMeGuildMember {
+                    guild_id,
+                },
+                params: <span class="prelude-val">None</span>,
+            })
+            .<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
+            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+        }
+
+        from_value(value).map_err(From::from)
+    }
 
     <span class="doccomment">/// Gets information about a specific invite.
     ///
@@ -8741,7 +8917,7 @@
     /// # }
     /// ```
     </span><span class="kw">pub fn </span>start_typing(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;, channel_id: ChannelId) -&gt; Typing {
-        Typing::start(<span class="self">self</span>.clone(), channel_id)
+        Typing::start(Arc::clone(<span class="self">self</span>), channel_id)
     }
 
     <span class="doccomment">/// Unpins a message from a channel.
@@ -8894,5 +9070,4 @@
         <span class="self">self
     </span>}
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

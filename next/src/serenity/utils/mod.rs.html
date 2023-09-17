@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/utils/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/utils/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -554,9 +554,7 @@
 <a href="#554" id="554">554</a>
 <a href="#555" id="555">555</a>
 <a href="#556" id="556">556</a>
-<a href="#557" id="557">557</a>
-<a href="#558" id="558">558</a>
-</pre><pre class="rust"><code><span class="doccomment">//! A set of utilities to help with common use cases that are not required to fully use the
+</pre></div><pre class="rust"><code><span class="doccomment">//! A set of utilities to help with common use cases that are not required to fully use the
 //! library.
 
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
@@ -565,15 +563,19 @@
 </span><span class="kw">mod </span>content_safe;
 <span class="kw">mod </span>custom_message;
 <span class="kw">mod </span>message_builder;
+<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
+</span><span class="kw">mod </span>quick_modal;
 
 <span class="kw">pub mod </span>token;
 
-<span class="kw">use </span>std::num::NonZeroU64;
+<span class="kw">use </span>std::num::{NonZeroU16, NonZeroU64};
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;client&quot;</span>)]
 </span><span class="kw">pub use </span>argument_convert::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
 </span><span class="kw">pub use </span>content_safe::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
+</span><span class="kw">pub use </span>quick_modal::<span class="kw-2">*</span>;
 <span class="kw">use </span>url::Url;
 
 <span class="kw">pub use </span><span class="self">self</span>::custom_message::CustomMessage;
@@ -584,17 +586,7 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::cache::Cache;
 <span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::CacheHttp;
-<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
-
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;builder&quot;</span>, feature = <span class="string">&quot;http&quot;</span>))]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>check_overflow(len: usize, max: usize) -&gt; StdResult&lt;(), usize&gt; {
-    <span class="kw">if </span>len &gt; max {
-        <span class="prelude-val">Err</span>(len - max)
-    } <span class="kw">else </span>{
-        <span class="prelude-val">Ok</span>(())
-    }
-}
 
 <span class="doccomment">/// Retrieves the &quot;code&quot; part of an invite out of a URL.
 ///
@@ -638,24 +630,31 @@
 }
 
 <span class="doccomment">/// Retrieves the username and discriminator out of a user tag (`name#discrim`).
+/// In order to accomodate next gen Discord usernames, this will also accept `name` style tags.
 ///
 /// If the user tag is invalid, None is returned.
 ///
 /// # Examples
 /// ```rust
+/// use std::num::NonZeroU16;
+///
 /// use serenity::utils::parse_user_tag;
 ///
-/// assert_eq!(parse_user_tag(&quot;kangalioo#9108&quot;), Some((&quot;kangalioo&quot;, 9108)));
+/// assert_eq!(parse_user_tag(&quot;kangalioo#9108&quot;), Some((&quot;kangalioo&quot;, NonZeroU16::new(9108))));
 /// assert_eq!(parse_user_tag(&quot;kangalioo#10108&quot;), None);
+/// assert_eq!(parse_user_tag(&quot;kangalioo&quot;), Some((&quot;kangalioo&quot;, None)));
 /// ```
 </span><span class="attr">#[must_use]
-</span><span class="kw">pub fn </span>parse_user_tag(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>str, u16)&gt; {
-    <span class="kw">let </span>(name, discrim) = s.split_once(<span class="string">&#39;#&#39;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let </span>discrim = discrim.parse().ok()<span class="question-mark">?</span>;
-    <span class="kw">if </span>discrim &gt; <span class="number">9999 </span>{
-        <span class="kw">return </span><span class="prelude-val">None</span>;
+</span><span class="kw">pub fn </span>parse_user_tag(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>str, <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;)&gt; {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>((name, discrim)) = s.split_once(<span class="string">&#39;#&#39;</span>) {
+        <span class="kw">let </span>discrim: u16 = discrim.parse().ok()<span class="question-mark">?</span>;
+        <span class="kw">if </span>discrim &gt; <span class="number">9999 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        }
+        <span class="prelude-val">Some</span>((name, NonZeroU16::new(discrim)))
+    } <span class="kw">else </span>{
+        <span class="prelude-val">Some</span>((s, <span class="prelude-val">None</span>))
     }
-    <span class="prelude-val">Some</span>((name, discrim))
 }
 
 <span class="doccomment">/// Retrieves an Id from a user mention.
@@ -798,13 +797,10 @@
 /// use serenity::model::misc::EmojiIdentifier;
 /// use serenity::utils::parse_emoji;
 ///
-/// let expected = EmojiIdentifier {
-///     animated: false,
-///     id: EmojiId::new(302516740095606785),
-///     name: &quot;smugAnimeFace&quot;.to_string(),
-/// };
-///
-/// assert_eq!(parse_emoji(&quot;&lt;:smugAnimeFace:302516740095606785&gt;&quot;).unwrap(), expected);
+/// let emoji = parse_emoji(&quot;&lt;:smugAnimeFace:302516740095606785&gt;&quot;).unwrap();
+/// assert_eq!(emoji.animated, false);
+/// assert_eq!(emoji.id, EmojiId::new(302516740095606785));
+/// assert_eq!(emoji.name, &quot;smugAnimeFace&quot;.to_string());
 /// ```
 ///
 /// Asserting that an invalid emoji usage returns [`None`]:
@@ -961,6 +957,7 @@
 }
 
 <span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
+#[allow(clippy::unused_async)] </span><span class="comment">// don&#39;t wanna change the bazillion internal invocations
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>user_has_guild_perms(
     cache_http: <span class="kw">impl </span>CacheHttp,
     guild_id: GuildId,
@@ -971,9 +968,7 @@
         // `Guild::has_perms` is an async fn, but we want the returned Future to be `Send`.
         </span><span class="kw">let </span>lookup = cache.guild(guild_id).as_deref().cloned();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(guild) = lookup {
-            <span class="kw">if </span>!guild.has_perms(cache_http, permissions).<span class="kw">await </span>{
-                <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::InvalidPermissions(permissions)));
-            }
+            guild.require_perms(cache, permissions)<span class="question-mark">?</span>;
         }
     }
     <span class="prelude-val">Ok</span>(())
@@ -987,29 +982,34 @@
     cache: <span class="kw">impl </span>AsRef&lt;Cache&gt;,
     channel_id: ChannelId,
     guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
-    permissions: Permissions,
+    required_permissions: Permissions,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-    <span class="kw">if match </span>user_has_perms(cache, channel_id, guild_id, permissions) {
-        <span class="prelude-val">Err</span>(Error::Model(err)) =&gt; err.is_cache_err(),
-        result =&gt; result<span class="question-mark">?</span>,
-    } {
-        <span class="prelude-val">Ok</span>(())
-    } <span class="kw">else </span>{
-        <span class="prelude-val">Err</span>(Error::Model(ModelError::InvalidPermissions(permissions)))
+    <span class="kw">match </span>user_perms(cache, channel_id, guild_id) {
+        <span class="prelude-val">Ok</span>(perms) =&gt; {
+            <span class="kw">if </span>perms.contains(required_permissions) {
+                <span class="prelude-val">Ok</span>(())
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(Error::Model(ModelError::InvalidPermissions {
+                    required: required_permissions,
+                    present: perms,
+                }))
+            }
+        },
+        <span class="prelude-val">Err</span>(Error::Model(err)) <span class="kw">if </span>err.is_cache_err() =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="prelude-val">Err</span>(other) =&gt; <span class="prelude-val">Err</span>(other),
     }
 }
 
 <span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>user_has_perms(
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>user_perms(
     cache: <span class="kw">impl </span>AsRef&lt;Cache&gt;,
     channel_id: ChannelId,
     guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
-    <span class="kw-2">mut </span>permissions: Permissions,
-) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;Permissions&gt; {
     <span class="kw">let </span>cache = cache.as_ref();
 
     <span class="kw">let </span><span class="prelude-val">Some</span>(channel) = cache.channel(channel_id) <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::ChannelNotFound))
+        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::ChannelNotFound));
     };
 
     <span class="comment">// Both users in DMs, all users in groups, and maybe all channels in categories will have the
@@ -1024,23 +1024,19 @@
         Channel::Guild(channel) =&gt; (channel.guild_id, channel),
         Channel::Private(<span class="kw">_</span>) =&gt; <span class="kw">match </span>guild_id {
             <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::InvalidChannelType)),
-            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
+            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(Permissions::all()),
         },
     };
 
     <span class="kw">let </span><span class="prelude-val">Some</span>(guild) = cache.guild(guild_id) <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::GuildNotFound))
+        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::GuildNotFound));
     };
 
     <span class="kw">let </span><span class="prelude-val">Some</span>(member) = guild.members.get(<span class="kw-2">&amp;</span>cache.current_user().id) <span class="kw">else </span>{
-        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::MemberNotFound))
+        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::MemberNotFound));
     };
 
-    <span class="kw">let </span>perms = guild.user_permissions_in(<span class="kw-2">&amp;</span>guild_channel, member)<span class="question-mark">?</span>;
-
-    permissions.remove(perms);
-
-    <span class="prelude-val">Ok</span>(permissions.is_empty())
+    <span class="prelude-val">Ok</span>(guild.user_permissions_in(<span class="kw-2">&amp;</span>guild_channel, member))
 }
 
 <span class="doccomment">/// Calculates the Id of the shard responsible for a guild, given its Id and total number of shards
@@ -1114,5 +1110,4 @@
         <span class="macro">assert_eq!</span>(token, <span class="string">&quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;</span>);
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

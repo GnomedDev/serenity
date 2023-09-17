@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -567,7 +567,45 @@
 <a href="#567" id="567">567</a>
 <a href="#568" id="568">568</a>
 <a href="#569" id="569">569</a>
-</pre><pre class="rust"><code><span class="doccomment">//! Models relating to channels and types within channels.
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Models relating to channels and types within channels.
 
 </span><span class="kw">mod </span>attachment;
 <span class="kw">mod </span>channel_id;
@@ -578,8 +616,6 @@
 <span class="kw">mod </span>private_channel;
 <span class="kw">mod </span>reaction;
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">use </span>std::error::Error <span class="kw">as </span>StdError;
 <span class="kw">use </span>std::fmt;
 
 <span class="kw">use </span>serde::de::{Error <span class="kw">as </span>DeError, Unexpected};
@@ -592,18 +628,12 @@
 <span class="kw">pub use </span><span class="self">self</span>::partial_channel::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::private_channel::<span class="kw-2">*</span>;
 <span class="kw">pub use </span><span class="self">self</span>::reaction::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::cache::Cache;
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::cache::FromStrAndCache;
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::CacheHttp;
 <span class="kw">use </span><span class="kw">crate</span>::json::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::utils::is_false;
 <span class="kw">use </span><span class="kw">crate</span>::model::Timestamp;
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::utils::parse_channel;
 
 <span class="attr">#[deprecated = <span class="string">&quot;use CreateAttachment instead&quot;</span>]
 #[cfg(feature = <span class="string">&quot;model&quot;</span>)]
@@ -685,6 +715,15 @@
         }
     }
 
+    <span class="doccomment">/// If this is a category channel, returns it.
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>category(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;GuildChannel&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Guild(c) <span class="kw">if </span>c.kind == ChannelType::Category =&gt; <span class="prelude-val">Some</span>(c),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+        }
+    }
+
     <span class="doccomment">/// Deletes the inner channel.
     ///
     /// # Errors
@@ -732,7 +771,7 @@
     /// In DMs (private channel) it will return None.
     </span><span class="attr">#[inline]
     #[must_use]
-    </span><span class="kw">pub const fn </span>position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u32&gt; {
+    </span><span class="kw">pub const fn </span>position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u16&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             <span class="self">Self</span>::Guild(channel) =&gt; <span class="prelude-val">Some</span>(channel.position),
             <span class="self">Self</span>::Private(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
@@ -795,6 +834,8 @@
         </span>Private = <span class="number">1</span>,
         <span class="doccomment">/// An indicator that the channel is a voice [`GuildChannel`].
         </span>Voice = <span class="number">2</span>,
+        <span class="doccomment">/// An indicator that the channel is a group DM.
+        </span>GroupDm = <span class="number">3</span>,
         <span class="doccomment">/// An indicator that the channel is a channel category.
         </span>Category = <span class="number">4</span>,
         <span class="doccomment">/// An indicator that the channel is a `NewsChannel`.
@@ -827,6 +868,7 @@
             <span class="self">Self</span>::Private =&gt; <span class="string">&quot;private&quot;</span>,
             <span class="self">Self</span>::Text =&gt; <span class="string">&quot;text&quot;</span>,
             <span class="self">Self</span>::Voice =&gt; <span class="string">&quot;voice&quot;</span>,
+            <span class="self">Self</span>::GroupDm =&gt; <span class="string">&quot;group_dm&quot;</span>,
             <span class="self">Self</span>::Category =&gt; <span class="string">&quot;category&quot;</span>,
             <span class="self">Self</span>::News =&gt; <span class="string">&quot;news&quot;</span>,
             <span class="self">Self</span>::NewsThread =&gt; <span class="string">&quot;news_thread&quot;</span>,
@@ -934,6 +976,40 @@
     }
 }
 
+<span class="macro">enum_number! </span>{
+    <span class="doccomment">/// See [`StageInstance::privacy_level`].
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-privacy-level).
+    </span><span class="attr">#[derive(Clone, Copy, Default, Debug, Eq, Hash, PartialEq, PartialOrd, Ord, Deserialize, Serialize)]
+    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[non_exhaustive]
+    </span><span class="kw">pub enum </span>StageInstancePrivacyLevel {
+        <span class="doccomment">/// The Stage instance is visible publicly. (deprecated)
+        </span>Public = <span class="number">1</span>,
+        <span class="doccomment">/// The Stage instance is visible to only guild members.
+        </span><span class="attr">#[default]
+        </span>GuildOnly = <span class="number">2</span>,
+        <span class="kw">_ </span>=&gt; Unknown(u8),
+    }
+}
+
+<span class="macro">enum_number! </span>{
+    <span class="doccomment">/// See [`ThreadMetadata::auto_archive_duration`].
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/channel#thread-metadata-object)
+    </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord, Deserialize, Serialize)]
+    #[serde(from = <span class="string">&quot;u16&quot;</span>, into = <span class="string">&quot;u16&quot;</span>)]
+    #[non_exhaustive]
+    </span><span class="kw">pub enum </span>AutoArchiveDuration {
+        <span class="prelude-val">None </span>= <span class="number">0</span>,
+        OneHour = <span class="number">60</span>,
+        OneDay = <span class="number">1440</span>,
+        ThreeDays = <span class="number">4320</span>,
+        OneWeek = <span class="number">10080</span>,
+        <span class="kw">_ </span>=&gt; Unknown(u16),
+    }
+}
+
 <span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
@@ -946,6 +1022,12 @@
     </span><span class="kw">pub </span>channel_id: ChannelId,
     <span class="doccomment">/// The topic of the stage instance.
     </span><span class="kw">pub </span>topic: String,
+    <span class="doccomment">/// The privacy level of the Stage instance.
+    </span><span class="kw">pub </span>privacy_level: StageInstancePrivacyLevel,
+    <span class="doccomment">/// Whether or not Stage Discovery is disabled (deprecated).
+    </span><span class="kw">pub </span>discoverable_disabled: bool,
+    <span class="doccomment">/// The id of the scheduled event for this Stage instance.
+    </span><span class="kw">pub </span>guild_scheduled_event_id: <span class="prelude-ty">Option</span>&lt;ScheduledEventId&gt;,
 }
 
 <span class="doccomment">/// A thread data.
@@ -957,9 +1039,7 @@
     <span class="doccomment">/// Whether the thread is archived.
     </span><span class="kw">pub </span>archived: bool,
     <span class="doccomment">/// Duration in minutes to automatically archive the thread after recent activity.
-    ///
-    /// **Note**: It can currently only be set to 60, 1440, 4320, 10080.
-    </span><span class="kw">pub </span>auto_archive_duration: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+    </span><span class="kw">pub </span>auto_archive_duration: AutoArchiveDuration,
     <span class="doccomment">/// The last time the thread&#39;s archive status was last changed; used for calculating recent
     /// activity.
     </span><span class="kw">pub </span>archive_timestamp: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
@@ -979,7 +1059,11 @@
 
 <span class="doccomment">/// A response to getting several threads channels.
 ///
-/// Discord docs: scattered, but e.g. [here](https://discord.com/developers/docs/resources/channel#list-public-archived-threads-response-body).
+/// Discord docs: defined [multiple times](https://discord.com/developers/docs/topics/threads#enumerating-threads):
+/// [1](https://discord.com/developers/docs/resources/guild#list-active-guild-threads-response-body),
+/// [2](https://discord.com/developers/docs/resources/channel#list-private-archived-threads-response-body),
+/// [3](https://discord.com/developers/docs/resources/channel#list-public-archived-threads-response-body),
+/// [4](https://discord.com/developers/docs/resources/channel#list-private-archived-threads-response-body)
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadsData {
@@ -1030,40 +1114,53 @@
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-#[derive(Debug)]
-</span><span class="kw">pub enum </span>ChannelParseError {
-    NotPresentInCache,
-    InvalidChannel,
+<span class="doccomment">/// An object that specifies the emoji to use for Forum related emoji parameters.
+///
+/// See [Discord](https://discord.com/developers/docs/resources/channel#default-reaction-object)
+/// [docs]()
+</span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
+</span><span class="kw">pub enum </span>ForumEmoji {
+    <span class="doccomment">/// The id of a guild&#39;s custom emoji.
+    </span>Id(EmojiId),
+    <span class="doccomment">/// The unicode character of the emoji.
+    </span>Name(String),
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>ChannelParseError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+<span class="attr">#[derive(Serialize, Deserialize)]
+</span><span class="kw">struct </span>RawForumEmoji {
+    emoji_id: <span class="prelude-ty">Option</span>&lt;EmojiId&gt;,
+    emoji_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+}
+
+<span class="kw">impl </span>serde::Serialize <span class="kw">for </span>ForumEmoji {
+    <span class="kw">fn </span>serialize&lt;S: serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::NotPresentInCache =&gt; f.write_str(<span class="string">&quot;not present in cache&quot;</span>),
-            <span class="self">Self</span>::InvalidChannel =&gt; f.write_str(<span class="string">&quot;invalid channel&quot;</span>),
+            <span class="self">Self</span>::Id(id) =&gt; RawForumEmoji {
+                emoji_id: <span class="prelude-val">Some</span>(<span class="kw-2">*</span>id),
+                emoji_name: <span class="prelude-val">None</span>,
+            },
+            <span class="self">Self</span>::Name(name) =&gt; RawForumEmoji {
+                emoji_id: <span class="prelude-val">None</span>,
+                emoji_name: <span class="prelude-val">Some</span>(name.clone()),
+            },
         }
+        .serialize(serializer)
     }
 }
 
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">impl </span>StdError <span class="kw">for </span>ChannelParseError {}
-
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>, feature = <span class="string">&quot;utils&quot;</span>))]
-</span><span class="kw">impl </span>FromStrAndCache <span class="kw">for </span>Channel {
-    <span class="kw">type </span><span class="prelude-val">Err </span>= ChannelParseError;
-
-    <span class="kw">fn </span>from_str&lt;C&gt;(cache: C, s: <span class="kw-2">&amp;</span>str) -&gt; StdResult&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt;
-    <span class="kw">where
-        </span>C: AsRef&lt;Cache&gt; + Send + Sync,
-    {
-        <span class="kw">match </span>parse_channel(s) {
-            <span class="prelude-val">Some</span>(x) =&gt; <span class="kw">match </span>x.to_channel_cached(<span class="kw-2">&amp;</span>cache) {
-                <span class="prelude-val">Some</span>(channel) =&gt; <span class="prelude-val">Ok</span>(channel),
-                <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ChannelParseError::NotPresentInCache),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ForumEmoji {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt; {
+        <span class="kw">let </span>helper = RawForumEmoji::deserialize(deserializer)<span class="question-mark">?</span>;
+        <span class="kw">match </span>(helper.emoji_id, helper.emoji_name) {
+            (<span class="prelude-val">Some</span>(id), <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Ok</span>(ForumEmoji::Id(id)),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(name)) =&gt; <span class="prelude-val">Ok</span>(ForumEmoji::Name(name)),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; {
+                <span class="prelude-val">Err</span>(serde::de::Error::custom(<span class="string">&quot;expected emoji_name or emoji_id, found neither&quot;</span>))
             },
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ChannelParseError::InvalidChannel),
+            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
+                <span class="prelude-val">Err</span>(serde::de::Error::custom(<span class="string">&quot;expected emoji_name or emoji_id, found both&quot;</span>))
+            },
         }
     }
 }
@@ -1081,30 +1178,9 @@
     <span class="doccomment">/// Whether this tag can only be added to or removed from threads by a member with the
     /// MANAGE_THREADS permission.
     </span><span class="kw">pub </span>moderated: bool,
-    <span class="doccomment">/// The id of a guild&#39;s custom emoji.
-    ///
-    /// **Note**: At most one of `emoji_id` and `emoji_name` may be set.
-    </span><span class="kw">pub </span>emoji_id: <span class="prelude-ty">Option</span>&lt;EmojiId&gt;,
-    <span class="doccomment">/// The unicode character of the emoji.
-    ///
-    /// **Note**: At most one of `emoji_id` and `emoji_name` may be set.
-    </span><span class="kw">pub </span>emoji_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
-}
-
-<span class="doccomment">/// An object that specifies the emoji to use as the default way to react to a forum post.
-///
-/// See [Discord docs](https://discord.com/developers/docs/resources/channel#forum-tag-object)
-</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize)]
-#[non_exhaustive]
-</span><span class="kw">pub struct </span>DefaultReaction {
-    <span class="doccomment">/// The id of a guild&#39;s custom emoji.
-    ///
-    /// **Note**: At most one of `emoji_id` and `emoji_name` may be set.
-    </span><span class="kw">pub </span>emoji_id: <span class="prelude-ty">Option</span>&lt;EmojiId&gt;,
-    <span class="doccomment">/// The unicode character of the emoji.
-    ///
-    /// **Note**: At most one of `emoji_id` and `emoji_name` may be set.
-    </span><span class="kw">pub </span>emoji_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// The emoji to display next to the tag.
+    </span><span class="attr">#[serde(flatten)]
+    </span><span class="kw">pub </span>emoji: <span class="prelude-ty">Option</span>&lt;ForumEmoji&gt;,
 }
 
 <span class="macro">enum_number! </span>{
@@ -1118,7 +1194,7 @@
         <span class="doccomment">/// Sort forum posts by activity.
         </span>LatestActivity = <span class="number">0</span>,
         <span class="doccomment">/// Sort forum posts by creation time (from most recent to oldest).
-        </span>CreationDate = <span class="number">2</span>,
+        </span>CreationDate = <span class="number">1</span>,
         <span class="kw">_ </span>=&gt; Unknown(u8),
     }
 }
@@ -1136,5 +1212,4 @@
         </span><span class="kw">const </span>REQUIRE_TAG = <span class="number">1 </span>&lt;&lt; <span class="number">4</span>;
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/builder/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/builder/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -120,7 +120,35 @@
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
 <a href="#122" id="122">122</a>
-</pre><pre class="rust"><code><span class="doccomment">//! A set of builders used to make using methods on certain structs simpler to use.
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! A set of builders used to make using methods on certain structs simpler to use.
 //!
 //! These are used when not all parameters are required, all parameters are optional, and/or sane
 //! default values for required parameters can be applied by a builder.
@@ -129,16 +157,46 @@
 // #[serde(skip_serializing_if = &quot;Option::is_none&quot;)]
 </span><span class="attr">#![allow(clippy::option_option)]
 
-</span><span class="kw">mod </span>add_member;
+#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::http::CacheHttp;
+<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
+
+<span class="doccomment">/// Common trait for all HTTP request builders in this module.
+</span><span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+#[async_trait::async_trait]
+</span><span class="kw">pub trait </span>Builder {
+    <span class="doccomment">/// Additional data that&#39;s only required when sending a request off to the API.
+    </span><span class="kw">type </span>Context&lt;<span class="lifetime">&#39;ctx</span>&gt;;
+    <span class="kw">type </span>Built;
+    <span class="doccomment">/// Serializes a builder&#39;s fields and sends the request off the API, returning the response.
+    </span><span class="kw">async fn </span>execute(
+        <span class="self">self</span>,
+        cache_http: <span class="kw">impl </span>CacheHttp,
+        ctx: <span class="self">Self</span>::Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Built&gt;;
+}
+
+<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>check_overflow(len: usize, max: usize) -&gt; StdResult&lt;(), usize&gt; {
+    <span class="kw">if </span>len &gt; max {
+        <span class="prelude-val">Err</span>(len - max)
+    } <span class="kw">else </span>{
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">mod </span>add_member;
 <span class="kw">mod </span>bot_auth_parameters;
 <span class="kw">mod </span>create_allowed_mentions;
-<span class="kw">mod </span>create_application_command;
-<span class="kw">mod </span>create_application_command_permission;
 <span class="kw">mod </span>create_attachment;
 <span class="kw">mod </span>create_channel;
+<span class="kw">mod </span>create_command;
+<span class="kw">mod </span>create_command_permission;
 <span class="kw">mod </span>create_components;
 <span class="kw">mod </span>create_embed;
 <span class="kw">mod </span>create_forum_post;
+<span class="kw">mod </span>create_forum_tag;
 <span class="kw">mod </span>create_interaction_response;
 <span class="kw">mod </span>create_interaction_response_followup;
 <span class="kw">mod </span>create_invite;
@@ -167,19 +225,18 @@
 <span class="kw">mod </span>edit_webhook_message;
 <span class="kw">mod </span>execute_webhook;
 <span class="kw">mod </span>get_messages;
-<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-</span><span class="kw">mod </span>quick_modal;
 
 <span class="kw">pub use </span>add_member::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>bot_auth_parameters::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_allowed_mentions::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>create_application_command::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>create_application_command_permission::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_attachment::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_channel::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>create_command::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>create_command_permission::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_components::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_embed::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_forum_post::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>create_forum_tag::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_interaction_response::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_interaction_response_followup::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>create_invite::<span class="kw-2">*</span>;
@@ -208,17 +265,15 @@
 <span class="kw">pub use </span>edit_webhook_message::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>execute_webhook::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>get_messages::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-</span><span class="kw">pub use </span>quick_modal::<span class="kw-2">*</span>;
 
 <span class="macro">macro_rules! </span>button_and_select_menu_convenience_methods {
-    () =&gt; {
+    (<span class="macro-nonterminal">$self</span>:ident $(. <span class="macro-nonterminal">$components_path</span>:tt)+) =&gt; {
         <span class="doccomment">/// Adds a clickable button to this message.
         ///
         /// Convenience method that wraps [`Self::components`]. Arranges buttons in action rows
         /// automatically.
-        </span><span class="kw">pub fn </span>button(<span class="kw-2">mut </span><span class="self">self</span>, button: <span class="kw">super</span>::CreateButton) -&gt; <span class="self">Self </span>{
-            <span class="kw">let </span>rows = <span class="self">self</span>.components.get_or_insert_with(Vec::new);
+        </span><span class="kw">pub fn </span>button(<span class="kw-2">mut </span><span class="macro-nonterminal">$self</span>, button: <span class="kw">super</span>::CreateButton) -&gt; <span class="self">Self </span>{
+            <span class="kw">let </span>rows = <span class="macro-nonterminal">$self</span>$(.<span class="macro-nonterminal">$components_path</span>)+.get_or_insert_with(Vec::new);
             <span class="kw">let </span>row_with_space_left = rows.last_mut().and_then(|row| <span class="kw">match </span>row {
                 <span class="kw">super</span>::CreateActionRow::Buttons(buttons) <span class="kw">if </span>buttons.len() &lt; <span class="number">5 </span>=&gt; <span class="prelude-val">Some</span>(buttons),
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
@@ -227,20 +282,20 @@
                 <span class="prelude-val">Some</span>(row) =&gt; row.push(button),
                 <span class="prelude-val">None </span>=&gt; rows.push(<span class="kw">super</span>::CreateActionRow::Buttons(<span class="macro">vec!</span>[button])),
             }
-            <span class="self">self
+            <span class="macro-nonterminal">$self
         </span>}
 
         <span class="doccomment">/// Adds an interactive select menu to this message.
         ///
         /// Convenience method that wraps [`Self::components`].
-        </span><span class="kw">pub fn </span>select_menu(<span class="kw-2">mut </span><span class="self">self</span>, select_menu: <span class="kw">super</span>::CreateSelectMenu) -&gt; <span class="self">Self </span>{
-            <span class="self">self</span>.components
+        </span><span class="kw">pub fn </span>select_menu(<span class="kw-2">mut </span><span class="macro-nonterminal">$self</span>, select_menu: <span class="kw">super</span>::CreateSelectMenu) -&gt; <span class="self">Self </span>{
+            <span class="macro-nonterminal">$self</span>$(.<span class="macro-nonterminal">$components_path</span>)+
                 .get_or_insert_with(Vec::new)
                 .push(<span class="kw">super</span>::CreateActionRow::SelectMenu(select_menu));
-            <span class="self">self
+            <span class="macro-nonterminal">$self
         </span>}
     };
 }
+
 <span class="kw">use </span>button_and_select_menu_convenience_methods;
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>

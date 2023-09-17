@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/command.rs`."><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-c4dbdcde0fbd8430.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (171693274 2023-03-14)" data-search-js="search-d1bc581867fd0849.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../../static.files/storage-9184409068f70b79.js"></script><script defer src="../../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-f5a2577c5297a973.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/command.rs`."><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -409,14 +409,29 @@
 <a href="#409" id="409">409</a>
 <a href="#410" id="410">410</a>
 <a href="#411" id="411">411</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::builder::CreateCommand;
+</span><span class="kw">use </span><span class="kw">crate</span>::builder::{Builder, CreateCommand};
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::http::Http;
+</span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
 <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::json::Value;
@@ -486,6 +501,10 @@
     /// commands. By default, commands are visible.
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>dm_permission: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+    <span class="doccomment">/// Indicates whether the command is [age-restricted](https://discord.com/developers/docs/interactions/application-commands#agerestricted-commands),
+    /// defaults to false.
+    </span><span class="attr">#[serde(default)]
+    </span><span class="kw">pub </span>nsfw: bool,
     <span class="doccomment">/// An autoincremented version identifier updated during substantial record changes.
     </span><span class="kw">pub </span>version: CommandVersionId,
 }
@@ -517,7 +536,7 @@
     /// use serenity::model::id::ApplicationId;
     ///
     /// let builder = CreateCommand::new(&quot;ping&quot;).description(&quot;A simple ping command&quot;);
-    /// let _ = Command::create_global_application_command(&amp;http, builder).await;
+    /// let _ = Command::create_global_command(&amp;http, builder).await;
     /// # }
     /// ```
     ///
@@ -538,7 +557,7 @@
     ///         CreateOption::new(CommandOptionType::String, &quot;message&quot;, &quot;The message to send&quot;)
     ///             .required(true),
     ///     );
-    /// let _ = Command::create_global_application_command(&amp;http, builder).await;
+    /// let _ = Command::create_global_command(&amp;http, builder).await;
     /// # }
     /// ```
     ///
@@ -547,23 +566,23 @@
     /// See [`CreateCommand::execute`] for a list of possible errors.
     ///
     /// [`InteractionCreate`]: crate::client::EventHandler::interaction_create
-    </span><span class="kw">pub async fn </span>create_global_application_command(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+    </span><span class="kw">pub async fn </span>create_global_command(
+        cache_http: <span class="kw">impl </span>CacheHttp,
         builder: CreateCommand,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(http, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="kw">await
+        builder.execute(cache_http, (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Override all global application commands.
     ///
     /// # Errors
     ///
-    /// Returns the same errors as [`Self::create_global_application_command`].
-    </span><span class="kw">pub async fn </span>set_global_application_commands(
+    /// Returns the same errors as [`Self::create_global_command`].
+    </span><span class="kw">pub async fn </span>set_global_commands(
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         commands: Vec&lt;CreateCommand&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().create_global_application_commands(<span class="kw-2">&amp;</span>commands).<span class="kw">await
+        http.as_ref().create_global_commands(<span class="kw-2">&amp;</span>commands).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edit a global command, given its Id.
@@ -571,12 +590,12 @@
     /// # Errors
     ///
     /// See [`CreateCommand::execute`] for a list of possible errors.
-    </span><span class="kw">pub async fn </span>edit_global_application_command(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+    </span><span class="kw">pub async fn </span>edit_global_command(
+        cache_http: <span class="kw">impl </span>CacheHttp,
         command_id: CommandId,
         builder: CreateCommand,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(http, <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(command_id)).<span class="kw">await
+        builder.execute(cache_http, (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(command_id))).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets all global commands.
@@ -584,8 +603,19 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_global_application_commands(http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().get_global_application_commands().<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_global_commands(http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.as_ref().get_global_commands().<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Gets all global commands with localizations.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
+    </span><span class="kw">pub async fn </span>get_global_commands_with_localizations(
+        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.as_ref().get_global_commands_with_localizations().<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets a global command by its Id.
@@ -593,11 +623,11 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_global_application_command(
+    </span><span class="kw">pub async fn </span>get_global_command(
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         command_id: CommandId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        http.as_ref().get_global_application_command(command_id).<span class="kw">await
+        http.as_ref().get_global_command(command_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes a global command by its Id.
@@ -605,11 +635,11 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>delete_global_application_command(
+    </span><span class="kw">pub async fn </span>delete_global_command(
         http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
         command_id: CommandId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        http.as_ref().delete_global_application_command(command_id).<span class="kw">await
+        http.as_ref().delete_global_command(command_id).<span class="kw">await
     </span>}
 }
 
@@ -730,7 +760,7 @@
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CommandPermission {
+</span><span class="kw">pub struct </span>CommandPermissions {
     <span class="doccomment">/// The id of the command.
     </span><span class="kw">pub </span>id: CommandId,
     <span class="doccomment">/// The id of the application the command belongs to.
@@ -738,7 +768,7 @@
     <span class="doccomment">/// The id of the guild.
     </span><span class="kw">pub </span>guild_id: GuildId,
     <span class="doccomment">/// The permissions for the command in the guild.
-    </span><span class="kw">pub </span>permissions: Vec&lt;CommandPermissionData&gt;,
+    </span><span class="kw">pub </span>permissions: Vec&lt;CommandPermission&gt;,
 }
 
 <span class="doccomment">/// The [`CommandPermission`] data.
@@ -746,7 +776,7 @@
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure).
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
-</span><span class="kw">pub struct </span>CommandPermissionData {
+</span><span class="kw">pub struct </span>CommandPermission {
     <span class="doccomment">/// The [`RoleId`] or [`UserId`], depends on `kind` value.
     </span><span class="kw">pub </span>id: CommandPermissionId,
     <span class="doccomment">/// The type of data this permissions applies to.
@@ -757,7 +787,7 @@
 }
 
 <span class="macro">enum_number! </span>{
-    <span class="doccomment">/// The type of an [`CommandPermissionData`].
+    <span class="doccomment">/// The type of a [`CommandPermission`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
@@ -820,5 +850,4 @@
         <span class="self">Self</span>(id.<span class="number">0</span>)
     }
 }
-</code></pre></div>
-</section></main></body></html>
+</code></pre></div></section></main></body></html>
