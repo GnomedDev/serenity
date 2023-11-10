@@ -31,8 +31,8 @@ enum ImageHashInner {
 /// assert_eq!(image_hash.to_string(), String::from("f1eff024d9c85339c877985229ed8fec"));
 /// ```
 
-#[derive(Clone, Copy, PartialEq, Eq)]
-pub struct ImageHash(ImageHashInner);
+#[derive(Clone, PartialEq, Eq)]
+pub struct ImageHash(String);
 
 impl ImageHash {
     /// Returns if the linked image is animated, which means the hash starts with `a_`.
@@ -46,12 +46,7 @@ impl ImageHash {
     /// ```
     #[must_use]
     pub fn is_animated(&self) -> bool {
-        match &self.0 {
-            ImageHashInner::Normal {
-                is_animated, ..
-            } => *is_animated,
-            ImageHashInner::Clyde => true,
-        }
+        self.0.starts_with("a_")
     }
 }
 
@@ -78,23 +73,7 @@ impl<'de> serde::Deserialize<'de> for ImageHash {
 
 impl std::fmt::Display for ImageHash {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let ImageHashInner::Normal {
-            hash,
-            is_animated,
-        } = &self.0
-        else {
-            return f.write_str("clyde");
-        };
-
-        if *is_animated {
-            f.write_str("a_")?;
-        }
-
-        for byte in hash {
-            write!(f, "{byte:02x}")?;
-        }
-
-        Ok(())
+        f.write_str(&self.0)
     }
 }
 
@@ -129,29 +108,10 @@ impl std::fmt::Display for ImageHashParseError {
 }
 
 impl std::str::FromStr for ImageHash {
-    type Err = ImageHashParseError;
+    type Err = std::convert::Infallible;
 
     fn from_str(s: &str) -> StdResult<Self, Self::Err> {
-        let (hex, is_animated) = if s.len() == 34 && s.starts_with("a_") {
-            (&s[2..], true)
-        } else if s.len() == 32 {
-            (s, false)
-        } else if s == "clyde" {
-            return Ok(Self(ImageHashInner::Clyde));
-        } else {
-            return Err(Self::Err::InvalidLength(s.len()));
-        };
-
-        let mut hash = [0u8; 16];
-        for i in (0..hex.len()).step_by(2) {
-            let hex_byte = &hex[i..i + 2];
-            hash[i / 2] = u8::from_str_radix(hex_byte, 16).map_err(Self::Err::UnparsableBytes)?;
-        }
-
-        Ok(Self(ImageHashInner::Normal {
-            is_animated,
-            hash,
-        }))
+        Ok(Self(String::from_str(s)?))
     }
 }
 
