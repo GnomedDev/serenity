@@ -29,6 +29,7 @@ enum_number! {
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types).
     #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[cfg_attr(feature = "typesize", derive(typesize::derive::TypeSize))]
     #[serde(from = "u8", into = "u8")]
     #[non_exhaustive]
     pub enum WebhookType {
@@ -60,6 +61,7 @@ impl WebhookType {
 /// not necessarily require a bot user or authentication to use.
 ///
 /// [Discord docs](https://discord.com/developers/docs/resources/webhook#webhook-object).
+#[cfg_attr(feature = "typesize", derive(typesize::derive::TypeSize))]
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct Webhook {
@@ -103,6 +105,7 @@ pub struct Webhook {
 }
 
 /// The guild object returned by a [`Webhook`], of type [`WebhookType::ChannelFollower`].
+#[cfg_attr(feature = "typesize", derive(typesize::derive::TypeSize))]
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct WebhookGuild {
@@ -164,6 +167,7 @@ impl WebhookGuild {
     }
 }
 
+#[cfg_attr(feature = "typesize", derive(typesize::derive::TypeSize))]
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[non_exhaustive]
 pub struct WebhookChannel {

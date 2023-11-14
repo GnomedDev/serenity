@@ -51,6 +51,17 @@ use wrappers::{BuildHasher, MaybeMap, ReadOnlyMapRef};
 
 type MessageCache = DashMap<ChannelId, HashMap<MessageId, Message>, BuildHasher>;
 
+#[non_exhaustive]
+#[derive(Clone, Copy, Debug)]
+pub struct CacheInfo {
+    /// The name of the cache
+    pub name: &'static str,
+    /// The amount of cached values in the given Cache.
+    pub count: usize,
+    /// An estimate of the total memory usage of this Cache.
+    pub size: usize,
+}
+
 struct NotSend;
 
 enum CacheRefInner<'a, K, V, T> {
@@ -741,6 +752,40 @@ impl Cache {
     #[instrument(skip(self, e))]
     pub fn update<E: CacheUpdate>(&self, e: &mut E) -> Option<E::Output> {
         e.update(self)
+    }
+
+    #[cfg(feature = "typesize")]
+    pub fn get_statistics(&self) -> Vec<CacheInfo> {
+        use typesize::TypeSize;
+
+        fn get_stat<K: Eq + Hash + TypeSize, V: TypeSize>(
+            name: &'static str,
+            map: &MaybeMap<K, V>,
+        ) -> CacheInfo {
+            CacheInfo {
+                name,
+                count: map.len(),
+                size: map.get_size(),
+            }
+        }
+
+        vec![
+            get_stat("Channels", &self.channels),
+            get_stat("Guilds", &self.guilds),
+            get_stat("Unavailable Guilds", &self.unavailable_guilds),
+            get_stat("Users", &self.users),
+            get_stat("Presences", &self.presences),
+            CacheInfo {
+                name: "Messages",
+                count: self.messages.len(),
+                size: self.messages.get_size(),
+            },
+            CacheInfo {
+                name: "Messages Queue",
+                count: self.message_queue.len(),
+                size: self.message_queue.get_size(),
+            },
+        ]
     }
 
     pub(crate) fn update_user_entry(&self, user: &User) {

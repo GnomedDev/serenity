@@ -5,6 +5,8 @@ use std::hash::Hash;
 use dashmap::mapref::multiple::RefMulti;
 use dashmap::mapref::one::{Ref, RefMut};
 use dashmap::DashMap;
+#[cfg(feature = "typesize")]
+use typesize::TypeSize;
 
 #[derive(Debug)]
 /// A wrapper around Option<DashMap<K, V>> to ease disabling specific cache fields.
@@ -46,6 +48,13 @@ impl<K: Eq + Hash, V> MaybeMap<K, V> {
 
     pub(crate) fn as_read_only(&self) -> ReadOnlyMapRef<'_, K, V> {
         ReadOnlyMapRef(self.0.as_ref())
+    }
+}
+
+#[cfg(feature = "typesize")]
+impl<K: Eq + Hash + TypeSize, V: TypeSize> TypeSize for MaybeMap<K, V> {
+    fn extra_size(&self) -> usize {
+        self.0.as_ref().map(DashMap::extra_size).unwrap_or_default()
     }
 }
 
