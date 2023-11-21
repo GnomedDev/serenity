@@ -1,8 +1,5 @@
 //! Webhook model and implementations.
 
-#[cfg(all(feature = "model", feature = "temp_cache"))]
-use std::sync::Arc;
-
 #[cfg(feature = "model")]
 use secrecy::ExposeSecret;
 use secrecy::SecretString;
@@ -214,7 +211,10 @@ impl WebhookChannel {
         #[cfg(all(feature = "cache", feature = "temp_cache"))]
         {
             if let Some(cache) = cache_http.cache() {
-                cache.temp_channels.insert(guild_channel.id, Arc::new(guild_channel.clone()));
+                use crate::cache::MaybeOwnedArc;
+
+                let cached_channel = MaybeOwnedArc::new(guild_channel.clone());
+                cache.temp_channels.insert(cached_channel.id, cached_channel);
             }
         }
 

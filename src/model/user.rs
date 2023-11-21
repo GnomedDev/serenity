@@ -5,8 +5,6 @@ use std::fmt;
 use std::fmt::Write;
 use std::num::NonZeroU16;
 use std::ops::{Deref, DerefMut};
-#[cfg(feature = "temp_cache")]
-use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 
@@ -754,7 +752,10 @@ impl UserId {
         #[cfg(all(feature = "cache", feature = "temp_cache"))]
         {
             if let Some(cache) = cache_http.cache() {
-                cache.temp_users.insert(user.id, Arc::new(user.clone()));
+                use crate::cache::MaybeOwnedArc;
+
+                let cached_user = MaybeOwnedArc::new(user.clone());
+                cache.temp_users.insert(cached_user.id, cached_user);
             }
         }
 

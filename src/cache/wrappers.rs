@@ -75,7 +75,6 @@ impl<'a, K: Eq + Hash, V> ReadOnlyMapRef<'a, K, V> {
         self.0.map_or(0, DashMap::len)
     }
 }
-
 pub struct Hasher(fxhash::FxHasher);
 impl std::hash::Hasher for Hasher {
     fn finish(&self) -> u64 {
@@ -93,5 +92,49 @@ impl std::hash::BuildHasher for BuildHasher {
 
     fn build_hasher(&self) -> Self::Hasher {
         Hasher(self.0.build_hasher())
+    }
+}
+
+/// Wrapper around `SizableArc<T, Owned>`` with support for disabling typesize.
+///
+/// This denotes an Arc where T's size should be considered when calling `TypeSize::get_size`
+pub(crate) struct MaybeOwnedArc<T>(
+    #[cfg(feature = "typesize")] typesize::ptr::SizableArc<T, typesize::ptr::Owned>,
+    #[cfg(not(feature = "typesize"))] std::sync::Arc<T>,
+);
+
+impl<T> MaybeOwnedArc<T> {
+    pub(crate) fn new(inner: T) -> Self {
+        Self(inner.into())
+    }
+
+    pub(crate) fn get_inner(self) -> std::sync::Arc<T> {
+        #[cfg(feature = "typesize")]
+        let inner = self.0 .0;
+        #[cfg(not(feature = "typesize"))]
+        let inner = self.0;
+
+        inner
+    }
+}
+
+#[cfg(feature = "typesize")]
+impl<T: typesize::TypeSize> typesize::TypeSize for MaybeOwnedArc<T> {
+    fn extra_size(&self) -> usize {
+        self.0.extra_size()
+    }
+}
+
+impl<T> std::ops::Deref for MaybeOwnedArc<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> Clone for MaybeOwnedArc<T> {
+    fn clone(&self) -> Self {
+        Self(self.0.clone().into())
     }
 }
