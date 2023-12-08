@@ -111,8 +111,6 @@ pub struct GuildChannel {
     pub video_quality_mode: Option<VideoQualityMode>,
     /// An approximate count of messages in the thread.
     ///
-    /// This is currently saturated at 255 to prevent breaking.
-    ///
     /// **Note**: This is only available on thread channels.
     pub message_count: Option<u32>,
     /// An approximate count of users in a thread, stops counting at 50.
