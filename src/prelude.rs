@@ -31,3 +31,22 @@ pub use crate::http::HttpError;
 pub use crate::model::mention::Mentionable;
 #[cfg(feature = "model")]
 pub use crate::model::{gateway::GatewayIntents, ModelError};
+
+pub struct True;
+pub struct False;
+
+pub trait Boolean {}
+impl Boolean for True {}
+impl Boolean for False {}
+
+pub(crate) trait ConstOption<T, IsSome: Boolean> {
+    type Value;
+}
+
+impl<T> ConstOption<T, True> for T {
+    type Value = T;
+}
+
+impl<T> ConstOption<T, False> for T {
+    type Value = ();
+}

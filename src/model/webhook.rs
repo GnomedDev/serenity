@@ -19,6 +19,7 @@ use crate::internal::prelude::*;
 use crate::model::prelude::*;
 #[cfg(feature = "model")]
 use crate::model::ModelError;
+use crate::prelude::ConstOption;
 
 enum_number! {
     /// A representation of a type of webhook.
@@ -441,14 +442,13 @@ impl Webhook {
     ///
     /// Or may return an [`Error::Json`] if there is an error deserialising Discord's response.
     #[inline]
-    pub async fn execute(
+    pub async fn execute<const WAIT: bool>(
         &self,
         cache_http: impl CacheHttp,
-        wait: bool,
-        builder: ExecuteWebhook,
-    ) -> Result<Option<Message>> {
+        builder: ExecuteWebhook<WAIT>,
+    ) -> Result<<Message as ConstOption<WAIT>>::Value> {
         let token = self.token.as_ref().ok_or(ModelError::NoTokenSet)?.expose_secret();
-        builder.execute(cache_http, (self.id, token, wait)).await
+        builder.execute(cache_http, (self.id, token)).await
     }
 
     /// Gets a previously sent message from the webhook.

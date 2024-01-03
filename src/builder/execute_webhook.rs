@@ -14,6 +14,7 @@ use crate::http::CacheHttp;
 #[cfg(feature = "http")]
 use crate::internal::prelude::*;
 use crate::model::prelude::*;
+use crate::prelude::ConstOption;
 
 /// A builder to create the content for a [`Webhook`]'s execution.
 ///
@@ -58,7 +59,7 @@ use crate::model::prelude::*;
 /// [Discord docs](https://discord.com/developers/docs/resources/webhook#execute-webhook)
 #[derive(Clone, Debug, Default, Serialize)]
 #[must_use]
-pub struct ExecuteWebhook {
+pub struct ExecuteWebhook<const WAIT: bool> {
     #[serde(skip_serializing_if = "Option::is_none")]
     content: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -81,7 +82,7 @@ pub struct ExecuteWebhook {
     thread_id: Option<ChannelId>,
 }
 
-impl ExecuteWebhook {
+impl<const WAIT: bool> ExecuteWebhook<WAIT> {
     /// Equivalent to [`Self::default`].
     pub fn new() -> Self {
         Self::default()
@@ -341,9 +342,9 @@ impl ExecuteWebhook {
 
 #[cfg(feature = "http")]
 #[async_trait::async_trait]
-impl Builder for ExecuteWebhook {
-    type Context<'ctx> = (WebhookId, &'ctx str, bool);
-    type Built = Option<Message>;
+impl<const Is: bool> Builder for ExecuteWebhook<WAIT> {
+    type Context<'ctx> = (WebhookId, &'ctx str);
+    type Built = <Message as ConstOption<WAIT>>::Value;
 
     /// Executes the webhook with the given content.
     ///
@@ -362,6 +363,6 @@ impl Builder for ExecuteWebhook {
 
         let files = self.attachments.take_files();
 
-        cache_http.http().execute_webhook(ctx.0, self.thread_id, ctx.1, ctx.2, files, &self).await
+        cache_http.http().execute_webhook::<WAIT>(ctx.0, self.thread_id, ctx.1, files, &self).await
     }
 }

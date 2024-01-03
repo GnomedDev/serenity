@@ -11,7 +11,7 @@ use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use reqwest::header::{HeaderMap as Headers, HeaderValue};
 #[cfg(feature = "utils")]
 use reqwest::Url;
-use reqwest::{Client, ClientBuilder, Response as ReqwestResponse, StatusCode};
+use reqwest::{Client, ClientBuilder, Response as ReqwestResponse};
 use secrecy::{ExposeSecret, SecretString};
 use serde::de::DeserializeOwned;
 use tracing::{debug, instrument, trace};
@@ -36,6 +36,7 @@ use crate::json::*;
 use crate::model::application::{Command, CommandPermissions};
 use crate::model::guild::automod::Rule;
 use crate::model::prelude::*;
+use crate::prelude::ConstOption;
 
 /// A builder for the underlying [`Http`] client that performs requests to Discord's HTTP API. If
 /// you do not need to use a proxy or do not need to disable the rate limiter, you can use
@@ -2427,18 +2428,17 @@ impl Http {
     /// ```
     ///
     /// [Discord docs]: https://discord.com/developers/docs/resources/webhook#execute-webhook-query-string-params
-    pub async fn execute_webhook(
+    pub async fn execute_webhook<const WAIT: bool>(
         &self,
         webhook_id: WebhookId,
         thread_id: Option<ChannelId>,
         token: &str,
-        wait: bool,
         files: Vec<CreateAttachment>,
         map: &impl serde::Serialize,
-    ) -> Result<Option<Message>> {
+    ) -> Result<<Message as ConstOption<WAIT>>::Value> {
         let mut params = ArrayVec::<_, 2>::new();
 
-        params.push(("wait", wait.to_string()));
+        params.push(("wait", WAIT.to_string()));
         if let Some(thread_id) = thread_id {
             params.push(("thread_id", thread_id.to_string()));
         }
@@ -2465,13 +2465,11 @@ impl Http {
             });
         }
 
-        let response = self.request(request).await?;
-
-        Ok(if response.status() == StatusCode::NO_CONTENT {
-            None
+        if WAIT {
+            self.wind(204, request).await
         } else {
-            decode_resp(response).await?
-        })
+            self.fire(request).await
+        }
     }
 
     // Gets a webhook's message by Id
