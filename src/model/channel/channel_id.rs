@@ -186,14 +186,13 @@ impl ChannelId {
         http: impl AsRef<Http>,
         message_ids: impl IntoIterator<Item = T>,
     ) -> Result<()> {
+        use crate::model::error::{Maximum, Minimum};
+
         let ids =
             message_ids.into_iter().map(|message_id| *message_id.as_ref()).collect::<Vec<_>>();
 
-        let len = ids.len();
-
-        if len == 0 || len > 100 {
-            return Err(Error::Model(ModelError::BulkDeleteAmount));
-        }
+        Minimum::BulkDeleteAmount.check_underflow(ids.len())?;
+        Maximum::BulkDeleteAmount.check_overflow(ids.len())?;
 
         if ids.len() == 1 {
             self.delete_message(http, ids[0]).await

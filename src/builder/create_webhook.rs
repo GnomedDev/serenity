@@ -92,11 +92,8 @@ impl<'a> Builder for CreateWebhook<'a> {
             }
         }
 
-        if self.name.len() < 2 {
-            return Err(Error::Model(ModelError::NameTooShort));
-        } else if self.name.len() > 100 {
-            return Err(Error::Model(ModelError::NameTooLong));
-        }
+        crate::model::error::Minimum::WebhookName.check_underflow(self.name.chars().count())?;
+        crate::model::error::Maximum::WebhookName.check_overflow(self.name.chars().count())?;
 
         cache_http.http().create_webhook(ctx, &self, self.audit_log_reason).await
     }

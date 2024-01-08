@@ -240,14 +240,11 @@ impl GuildId {
         dmd: u8,
         reason: Option<&str>,
     ) -> Result<()> {
-        if dmd > 7 {
-            return Err(Error::Model(ModelError::DeleteMessageDaysAmount(dmd)));
-        }
+        use crate::model::error::Maximum;
 
+        Maximum::DeleteMessageDays.check_overflow(dmd.into())?;
         if let Some(reason) = reason {
-            if reason.chars().count() > 512 {
-                return Err(Error::ExceededLimit(reason.to_string(), 512));
-            }
+            Maximum::AuditLogReason.check_overflow(reason.len())?;
         }
 
         http.as_ref().ban_user(self, user, dmd, reason).await

@@ -494,7 +494,12 @@ impl Message {
     /// inner value of how many unicode code points the message is over.
     #[must_use]
     pub fn overflow_length(content: &str) -> Option<usize> {
-        crate::builder::check_overflow(content.chars().count(), constants::MESSAGE_CODE_LIMIT).err()
+        let char_count = content.chars().count();
+        if char_count > constants::MESSAGE_CODE_LIMIT {
+            Some(constants::MESSAGE_CODE_LIMIT - char_count)
+        } else {
+            None
+        }
     }
 
     /// Pins this message to its channel.

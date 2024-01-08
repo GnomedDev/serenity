@@ -3482,12 +3482,6 @@ impl Http {
         limit: Option<u64>,
         after: Option<u64>,
     ) -> Result<Vec<Member>> {
-        if let Some(l) = limit {
-            if !(1..=constants::MEMBER_FETCH_LIMIT).contains(&l) {
-                return Err(Error::NotInRange("limit", l, 1, constants::MEMBER_FETCH_LIMIT));
-            }
-        }
-
         let mut params = ArrayVec::<_, 2>::new();
         params.push(("limit", limit.unwrap_or(constants::MEMBER_FETCH_LIMIT).to_string()));
         if let Some(after) = after {
