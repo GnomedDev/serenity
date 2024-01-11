@@ -2,7 +2,6 @@ use futures::future::pending;
 use futures::{Stream, StreamExt as _};
 
 use crate::gateway::{CollectorCallback, ShardMessenger};
-use crate::internal::prelude::*;
 use crate::model::prelude::*;
 
 /// Fundamental collector function. All collector types in this module are just wrappers around
@@ -159,7 +158,7 @@ make_specific_collector!(
     channel_id: ChannelId => interaction.channel_id == *channel_id,
     guild_id: GuildId => interaction.guild_id.map_or(true, |x| x == *guild_id),
     message_id: MessageId => interaction.message.id == *message_id,
-    custom_ids: FixedArray<FixedString> => custom_ids.contains(&interaction.data.custom_id),
+    custom_ids: Vec<String> => custom_ids.iter().any(|c| c == interaction.data.custom_id.as_str()),
 );
 make_specific_collector!(
     ModalInteractionCollector, ModalInteraction,
@@ -170,7 +169,7 @@ make_specific_collector!(
     channel_id: ChannelId => interaction.channel_id == *channel_id,
     guild_id: GuildId => interaction.guild_id.map_or(true, |g| g == *guild_id),
     message_id: MessageId => interaction.message.as_ref().map_or(true, |m| m.id == *message_id),
-    custom_ids: Vec<FixedString> => custom_ids.contains(&interaction.data.custom_id),
+    custom_ids: Vec<String> => custom_ids.iter().any(|c| c == interaction.data.custom_id.as_str()),
 );
 make_specific_collector!(
     ReactionCollector, Reaction,

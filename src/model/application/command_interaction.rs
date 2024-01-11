@@ -338,11 +338,13 @@ impl CommandData {
             let mut options = Vec::new();
             for opt in opts {
                 let value = match &opt.value {
-                    CommandDataOptionValue::SubCommand(opts) => {
-                        ResolvedValue::SubCommand(resolve_options(opts, resolved).into())
-                    },
+                    CommandDataOptionValue::SubCommand(opts) => ResolvedValue::SubCommand(
+                        FixedArray::from_vec_truncating(resolve_options(opts, resolved)),
+                    ),
                     CommandDataOptionValue::SubCommandGroup(opts) => {
-                        ResolvedValue::SubCommandGroup(resolve_options(opts, resolved).into())
+                        ResolvedValue::SubCommandGroup(FixedArray::from_vec_truncating(
+                            resolve_options(opts, resolved),
+                        ))
                     },
                     CommandDataOptionValue::Autocomplete {
                         kind,
@@ -566,13 +568,13 @@ fn option_from_raw(raw: RawCommandDataOption) -> Result<CommandDataOption> {
             let options =
                 raw.options.ok_or_else::<JsonError, _>(|| DeError::missing_field("options"))?;
             let options = options.into_iter().map(option_from_raw).collect::<Result<_>>()?;
-            CommandDataOptionValue::SubCommand(options)
+            CommandDataOptionValue::SubCommand(FixedArray::from_vec_truncating(options))
         },
         CommandOptionType::SubCommandGroup => {
             let options =
                 raw.options.ok_or_else::<JsonError, _>(|| DeError::missing_field("options"))?;
             let options = options.into_iter().map(option_from_raw).collect::<Result<_>>()?;
-            CommandDataOptionValue::SubCommandGroup(options)
+            CommandDataOptionValue::SubCommandGroup(FixedArray::from_vec_truncating(options))
         },
         CommandOptionType::Attachment => CommandDataOptionValue::Attachment(value!()),
         CommandOptionType::Channel => CommandDataOptionValue::Channel(value!()),
@@ -811,20 +813,18 @@ mod tests {
     #[test]
     fn nested_options() {
         let value = CommandDataOption {
-            name: "subcommand_group".to_string().into(),
-            value: CommandDataOptionValue::SubCommandGroup(
-                vec![CommandDataOption {
-                    name: "subcommand".to_string().into(),
+            name: FixedString::from_str_truncating("subcommand_group".to_string()),
+            value: CommandDataOptionValue::SubCommandGroup(FixedArray::from_vec_truncating(vec![
+                CommandDataOption {
+                    name: FixedString::from_str_truncating("subcommand".to_string()),
                     value: CommandDataOptionValue::SubCommand(
-                        vec![CommandDataOption {
-                            name: "channel".to_string().into(),
+                        FixedArray::from_vec_truncating([CommandDataOption {
+                            name: FixedString::from_str_truncating("channel".to_string()),
                             value: CommandDataOptionValue::Channel(ChannelId::new(3)),
-                        }]
-                        .into(),
+                        }]),
                     ),
-                }]
-                .into(),
-            ),
+                },
+            ])),
         };
 
         assert_json(

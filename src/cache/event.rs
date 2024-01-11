@@ -472,8 +472,8 @@ impl CacheUpdate for ThreadCreateEvent {
                 // This is a rare enough occurence to realloc.
                 let mut threads = std::mem::take(&mut g.threads).into_vec();
                 threads.push(self.thread.clone());
-                g.threads = threads.into();
 
+                g.threads = FixedArray::from_vec_truncating(threads);
                 None
             }
         })
@@ -493,8 +493,8 @@ impl CacheUpdate for ThreadUpdateEvent {
                 // This is a rare enough occurence to realloc.
                 let mut threads = std::mem::take(&mut g.threads).into_vec();
                 threads.push(self.thread.clone());
-                g.threads = threads.into();
 
+                g.threads = FixedArray::from_vec_truncating(threads);
                 None
             }
         })
