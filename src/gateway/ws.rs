@@ -23,7 +23,7 @@ use tracing::warn;
 use tracing::{debug, trace};
 use url::Url;
 
-use super::{ActivityData, ChunkGuildFilter, PresenceData};
+use super::{ActivityBuilder, ChunkGuildFilter, PresenceBuilder};
 use crate::constants::{self, Opcode};
 #[cfg(feature = "client")]
 use crate::gateway::GatewayError;
@@ -62,7 +62,7 @@ struct PresenceUpdateMessage<'a> {
     afk: bool,
     status: &'a str,
     since: SystemTime,
-    activities: &'a [ActivityData],
+    activities: &'a [ActivityBuilder],
 }
 
 #[derive(Serialize)]
@@ -235,7 +235,7 @@ impl WsClient {
         shard: &ShardInfo,
         token: &str,
         intents: GatewayIntents,
-        presence: &PresenceData,
+        presence: &PresenceBuilder,
     ) -> Result<()> {
         let now = SystemTime::now();
         let activities = presence.activity.as_ref().map(std::slice::from_ref).unwrap_or_default();
@@ -274,7 +274,7 @@ impl WsClient {
     pub async fn send_presence_update(
         &mut self,
         shard_info: &ShardInfo,
-        presence: &PresenceData,
+        presence: &PresenceBuilder,
     ) -> Result<()> {
         let now = SystemTime::now();
         let activities = presence.activity.as_ref().map(std::slice::from_ref).unwrap_or_default();

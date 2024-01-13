@@ -15,12 +15,13 @@ use typemap_rev::TypeMap;
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
 use super::{ShardId, ShardQueuer, ShardQueuerMessage, ShardRunnerInfo};
+use crate::builder::PresenceBuilder;
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::{EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
-use crate::gateway::{ConnectionStage, GatewayError, PresenceData};
+use crate::gateway::{ConnectionStage, GatewayError};
 use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::internal::tokio::spawn_named;
@@ -370,5 +371,5 @@ pub struct ShardManagerOptions {
     pub cache: Arc<Cache>,
     pub http: Arc<Http>,
     pub intents: GatewayIntents,
-    pub presence: Option<PresenceData>,
+    pub presence: Option<PresenceBuilder>,
 }

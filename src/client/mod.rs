@@ -41,6 +41,7 @@ pub use self::error::Error as ClientError;
 pub use self::event_handler::{EventHandler, FullEvent, RawEventHandler};
 #[cfg(feature = "gateway")]
 use super::gateway::GatewayError;
+use crate::builder::{ActivityBuilder, PresenceBuilder};
 #[cfg(feature = "cache")]
 pub use crate::cache::Cache;
 #[cfg(feature = "cache")]
@@ -49,7 +50,6 @@ use crate::cache::Settings as CacheSettings;
 use crate::framework::Framework;
 #[cfg(feature = "voice")]
 use crate::gateway::VoiceGatewayManager;
-use crate::gateway::{ActivityData, PresenceData};
 #[cfg(feature = "gateway")]
 use crate::gateway::{ShardManager, ShardManagerOptions};
 use crate::http::Http;
@@ -77,7 +77,7 @@ pub struct ClientBuilder {
     voice_manager: Option<Arc<dyn VoiceGatewayManager>>,
     event_handlers: Vec<Arc<dyn EventHandler>>,
     raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
-    presence: PresenceData,
+    presence: PresenceBuilder,
 }
 
 #[cfg(feature = "gateway")]
@@ -111,7 +111,7 @@ impl ClientBuilder {
             voice_manager: None,
             event_handlers: vec![],
             raw_event_handlers: vec![],
-            presence: PresenceData::default(),
+            presence: PresenceBuilder::default(),
         }
     }
 
@@ -276,7 +276,7 @@ impl ClientBuilder {
     }
 
     /// Sets the initial activity.
-    pub fn activity(mut self, activity: ActivityData) -> Self {
+    pub fn activity(mut self, activity: ActivityBuilder) -> Self {
         self.presence.activity = Some(activity);
 
         self
@@ -290,7 +290,7 @@ impl ClientBuilder {
     }
 
     /// Gets the initial presence. See [`Self::activity`] and [`Self::status`] for more info.
-    pub fn get_presence(&self) -> &PresenceData {
+    pub fn get_presence(&self) -> &PresenceBuilder {
         &self.presence
     }
 }

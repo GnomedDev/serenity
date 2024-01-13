@@ -7,15 +7,14 @@ use tracing::{debug, error, info, trace, warn};
 use url::Url;
 
 use super::{
-    ActivityData,
     ChunkGuildFilter,
     ConnectionStage,
     GatewayError,
-    PresenceData,
     ReconnectType,
     ShardAction,
     WsClient,
 };
+use crate::builder::{ActivityBuilder, PresenceBuilder};
 use crate::constants::{self, close_codes};
 use crate::internal::prelude::*;
 use crate::model::event::{Event, GatewayEvent};
@@ -54,7 +53,7 @@ use crate::model::user::OnlineStatus;
 /// [module docs]: crate::gateway#sharding
 pub struct Shard {
     pub client: WsClient,
-    presence: PresenceData,
+    presence: PresenceBuilder,
     last_heartbeat_sent: Option<Instant>,
     last_heartbeat_ack: Option<Instant>,
     heartbeat_interval: Option<std::time::Duration>,
@@ -123,7 +122,7 @@ impl Shard {
         token: &str,
         shard_info: ShardInfo,
         intents: GatewayIntents,
-        presence: Option<PresenceData>,
+        presence: Option<PresenceBuilder>,
     ) -> Result<Shard> {
         let client = connect(&ws_url).await?;
 
@@ -166,7 +165,7 @@ impl Shard {
     }
 
     /// Retrieves the current presence of the shard.
-    pub fn presence(&self) -> &PresenceData {
+    pub fn presence(&self) -> &PresenceBuilder {
         &self.presence
     }
 
@@ -231,12 +230,12 @@ impl Shard {
     }
 
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub fn set_activity(&mut self, activity: Option<ActivityData>) {
+    pub fn set_activity(&mut self, activity: Option<ActivityBuilder>) {
         self.presence.activity = activity;
     }
 
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub fn set_presence(&mut self, activity: Option<ActivityData>, status: OnlineStatus) {
+    pub fn set_presence(&mut self, activity: Option<ActivityBuilder>, status: OnlineStatus) {
         self.set_activity(activity);
         self.set_status(status);
     }

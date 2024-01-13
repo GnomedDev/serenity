@@ -6,7 +6,7 @@ use std::time::Duration;
 use chrono::offset::Utc;
 use serenity::async_trait;
 use serenity::builder::{CreateEmbed, CreateMessage};
-use serenity::gateway::ActivityData;
+use serenity::gateway::ActivityBuilder;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::model::id::{ChannelId, GuildId};
@@ -101,7 +101,7 @@ fn set_activity_to_current_time(ctx: &Context) {
     let current_time = Utc::now();
     let formatted_time = current_time.to_rfc2822();
 
-    ctx.set_activity(Some(ActivityData::playing(formatted_time)));
+    ctx.set_activity(Some(ActivityBuilder::playing(formatted_time)));
 }
 
 #[tokio::main]

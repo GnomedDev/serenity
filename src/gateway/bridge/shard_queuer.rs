@@ -22,12 +22,13 @@ use super::{
     ShardRunnerInfo,
     ShardRunnerOptions,
 };
+use crate::builder::PresenceBuilder;
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::{EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
-use crate::gateway::{ConnectionStage, PresenceData, Shard, ShardRunnerMessage};
+use crate::gateway::{ConnectionStage, Shard, ShardRunnerMessage};
 use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::internal::tokio::spawn_named;
@@ -80,7 +81,7 @@ pub struct ShardQueuer {
     pub cache: Arc<Cache>,
     pub http: Arc<Http>,
     pub intents: GatewayIntents,
-    pub presence: Option<PresenceData>,
+    pub presence: Option<PresenceBuilder>,
 }
 
 impl ShardQueuer {

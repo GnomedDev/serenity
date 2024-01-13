@@ -1,7 +1,8 @@
 use tokio_tungstenite::tungstenite::Message;
 
 use super::ShardId;
-use crate::gateway::{ActivityData, ChunkGuildFilter};
+use crate::builder::ActivityBuilder;
+use crate::gateway::ChunkGuildFilter;
 use crate::model::id::GuildId;
 use crate::model::user::OnlineStatus;
 
@@ -45,9 +46,9 @@ pub enum ShardRunnerMessage {
     /// Indicates that the client is to send a custom WebSocket message.
     Message(Message),
     /// Indicates that the client is to update the shard's presence's activity.
-    SetActivity(Option<ActivityData>),
+    SetActivity(Option<ActivityBuilder>),
     /// Indicates that the client is to update the shard's presence in its entirety.
-    SetPresence(Option<ActivityData>, OnlineStatus),
+    SetPresence(Option<ActivityBuilder>, OnlineStatus),
     /// Indicates that the client is to update the shard's presence's status.
     SetStatus(OnlineStatus),
 }

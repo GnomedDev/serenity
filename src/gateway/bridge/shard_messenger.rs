@@ -7,7 +7,7 @@ use tokio_tungstenite::tungstenite::Message;
 #[cfg(feature = "collector")]
 use super::CollectorCallback;
 use super::{ChunkGuildFilter, ShardRunner, ShardRunnerMessage};
-use crate::gateway::ActivityData;
+use crate::builder::ActivityBuilder;
 use crate::model::prelude::*;
 
 /// A handle to a [`ShardRunner`].
@@ -118,13 +118,13 @@ impl ShardMessenger {
     /// ```rust,no_run
     /// # use serenity::gateway::Shard;
     /// # async fn run(mut shard: Shard) -> Result<(), Box<dyn std::error::Error>> {
-    /// use serenity::gateway::ActivityData;
+    /// use serenity::gateway::ActivityBuilder;
     ///
-    /// shard.set_activity(Some(ActivityData::playing("Heroes of the Storm")));
+    /// shard.set_activity(Some(ActivityBuilder::playing("Heroes of the Storm")));
     /// # Ok(())
     /// # }
     /// ```
-    pub fn set_activity(&self, activity: Option<ActivityData>) {
+    pub fn set_activity(&self, activity: Option<ActivityBuilder>) {
         self.send_to_shard(ShardRunnerMessage::SetActivity(activity));
     }
 
@@ -139,15 +139,15 @@ impl ShardMessenger {
     /// ```rust,ignore
     /// # use serenity::gateway::Shard;
     /// # async fn run(shard: Shard) -> Result<(), Box<dyn std::error::Error>> {
-    /// use serenity::gateway::ActivityData;
+    /// use serenity::gateway::ActivityBuilder;
     /// use serenity::model::user::OnlineStatus;
     ///
-    /// let activity = ActivityData::playing("Heroes of the Storm");
+    /// let activity = ActivityBuilder::playing("Heroes of the Storm");
     /// shard.set_presence(Some(activity), OnlineStatus::Online);
     /// # Ok(())
     /// # }
     /// ```
-    pub fn set_presence(&self, activity: Option<ActivityData>, mut status: OnlineStatus) {
+    pub fn set_presence(&self, activity: Option<ActivityBuilder>, mut status: OnlineStatus) {
         if status == OnlineStatus::Offline {
             status = OnlineStatus::Invisible;
         }

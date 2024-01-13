@@ -4,9 +4,9 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use typemap_rev::TypeMap;
 
+use crate::builder::ActivityBuilder;
 #[cfg(feature = "cache")]
 pub use crate::cache::Cache;
-use crate::gateway::ActivityData;
 #[cfg(feature = "gateway")]
 use crate::gateway::{ShardMessenger, ShardRunner};
 use crate::http::Http;
@@ -236,7 +236,7 @@ impl Context {
     /// # use serenity::model::channel::Message;
     /// # struct Handler;
     ///
-    /// use serenity::gateway::ActivityData;
+    /// use serenity::gateway::ActivityBuilder;
     ///
     /// #[serenity::async_trait]
     /// impl EventHandler for Handler {
@@ -244,13 +244,13 @@ impl Context {
     ///         let mut args = msg.content.splitn(2, ' ');
     ///
     ///         if let (Some("~setgame"), Some(game)) = (args.next(), args.next()) {
-    ///             ctx.set_activity(Some(ActivityData::playing(game)));
+    ///             ctx.set_activity(Some(ActivityBuilder::playing(game)));
     ///         }
     ///     }
     /// }
     /// ```
     #[cfg(feature = "gateway")]
-    pub fn set_activity(&self, activity: Option<ActivityData>) {
+    pub fn set_activity(&self, activity: Option<ActivityBuilder>) {
         self.shard.set_activity(activity);
     }
 
@@ -285,10 +285,10 @@ impl Context {
     /// #[serenity::async_trait]
     /// impl EventHandler for Handler {
     ///     async fn ready(&self, context: Context, _: Ready) {
-    ///         use serenity::gateway::ActivityData;
+    ///         use serenity::gateway::ActivityBuilder;
     ///         use serenity::model::user::OnlineStatus;
     ///
-    ///         let activity = ActivityData::playing("Heroes of the Storm");
+    ///         let activity = ActivityBuilder::playing("Heroes of the Storm");
     ///         let status = OnlineStatus::DoNotDisturb;
     ///
     ///         context.set_presence(Some(activity), status);
@@ -299,7 +299,7 @@ impl Context {
     /// [`DoNotDisturb`]: OnlineStatus::DoNotDisturb
     /// [`Idle`]: OnlineStatus::Idle
     #[cfg(feature = "gateway")]
-    pub fn set_presence(&self, activity: Option<ActivityData>, status: OnlineStatus) {
+    pub fn set_presence(&self, activity: Option<ActivityBuilder>, status: OnlineStatus) {
         self.shard.set_presence(activity, status);
     }
 }
