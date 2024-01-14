@@ -115,14 +115,6 @@ pub mod utils;
 
 mod error;
 
-// For the procedural macros in `command_attr`.
-pub use async_trait::async_trait;
-pub use futures;
-pub use futures::future::FutureExt;
-#[cfg(feature = "standard_framework")]
-#[doc(hidden)]
-pub use static_assertions;
-
 #[cfg(all(feature = "client", feature = "gateway"))]
 pub use crate::client::Client;
 pub use crate::error::{Error, Result};
@@ -140,8 +132,6 @@ compile_error!(
 ///
 /// Not exported:
 /// - [`crate::json`]: it's a general-purpose JSON wrapper, not intrinsic to serenity
-/// - [`crate::framework::standard`]: has many standard_framework-specific items that may collide
-/// with items from the rest of serenity
 pub mod all {
     #[cfg(feature = "builder")]
     #[doc(no_inline)]
@@ -187,4 +177,5 @@ pub mod all {
 }
 
 // Re-exports of crates used internally which are already publically exposed.
+pub use async_trait::async_trait;
 pub use nonmax;
