@@ -1,8 +1,6 @@
 use std::collections::{HashMap, VecDeque};
 use std::num::NonZeroU16;
 use std::sync::Arc;
-#[cfg(feature = "framework")]
-use std::sync::OnceLock;
 
 use futures::channel::mpsc::UnboundedReceiver as Receiver;
 use futures::StreamExt;
@@ -53,7 +51,7 @@ pub struct ShardQueuer {
     pub raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
     /// A copy of the framework
     #[cfg(feature = "framework")]
-    pub framework: Arc<OnceLock<Arc<dyn Framework>>>,
+    pub framework: Option<Arc<dyn Framework>>,
     /// The instant that a shard was last started.
     ///
     /// This is used to determine how long to wait between shard IDENTIFYs.
@@ -229,7 +227,7 @@ impl ShardQueuer {
             event_handlers: self.event_handlers.clone(),
             raw_event_handlers: self.raw_event_handlers.clone(),
             #[cfg(feature = "framework")]
-            framework: self.framework.get().cloned(),
+            framework: self.framework.clone(),
             manager: Arc::clone(&self.manager),
             #[cfg(feature = "voice")]
             voice_manager: self.voice_manager.clone(),

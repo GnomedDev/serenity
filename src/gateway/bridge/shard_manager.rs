@@ -1,8 +1,6 @@
 use std::collections::HashMap;
 use std::num::NonZeroU16;
 use std::sync::Arc;
-#[cfg(feature = "framework")]
-use std::sync::OnceLock;
 use std::time::Duration;
 
 use futures::channel::mpsc::{self, UnboundedReceiver as Receiver, UnboundedSender as Sender};
@@ -365,7 +363,7 @@ pub struct ShardManagerOptions {
     pub event_handlers: Vec<Arc<dyn EventHandler>>,
     pub raw_event_handlers: Vec<Arc<dyn RawEventHandler>>,
     #[cfg(feature = "framework")]
-    pub framework: Arc<OnceLock<Arc<dyn Framework>>>,
+    pub framework: Option<Arc<dyn Framework>>,
     #[cfg(feature = "voice")]
     pub voice_manager: Option<Arc<dyn VoiceGatewayManager>>,
     pub ws_url: Arc<str>,
