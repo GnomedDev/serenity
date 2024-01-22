@@ -40,7 +40,7 @@ impl CreateButton {
     /// Creates a link button to the given URL. You must also set [`Self::label`] and/or
     /// [`Self::emoji`] after this.
     ///
-    /// Clicking this button _will not_ trigger an interaction event in your bot.
+    /// Clicking link buttons _will not_ trigger an interaction event in your bot.
     pub fn new_link(url: impl Into<String>) -> Self {
         Self(Button {
             kind: ComponentType::Button,
