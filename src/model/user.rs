@@ -434,7 +434,7 @@ impl User {
     /// #[serenity::async_trait]
     /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
-    ///     async fn message(&self, ctx: Context, msg: Message) {
+    ///     async fn message(&self, ctx: &Context, msg: &Message) {
     ///         if msg.content == "~help" {
     ///             let builder = CreateMessage::new().content("Helpful info here.");
     ///
@@ -557,7 +557,7 @@ impl User {
     /// #[serenity::async_trait]
     /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
-    ///     async fn message(&self, context: Context, msg: Message) {
+    ///     async fn message(&self, context: &Context, msg: &Message) {
     ///         if msg.content == "!mytag" {
     ///             let content = format!("Your tag is: {}", msg.author.tag());
     ///             let _ = msg.channel_id.say(&context.http, &content).await;
