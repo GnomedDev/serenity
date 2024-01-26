@@ -176,7 +176,7 @@ pub struct Guild {
     ///
     ///
     /// [`discord documentation`]: https://discord.com/developers/docs/resources/guild#guild-object-guild-features
-    pub features: FixedArray<FixedString>,
+    pub features: FixedArray<FixedString<u8>, u16>,
     /// Indicator of whether the guild requires multi-factor authentication for [`Role`]s or
     /// [`User`]s with moderation permissions.
     pub mfa_level: MfaLevel,
@@ -2391,7 +2391,7 @@ pub struct GuildInfo {
     /// The permissions that the current user has.
     pub permissions: Permissions,
     /// See [`Guild::features`].
-    pub features: FixedArray<String>,
+    pub features: FixedArray<FixedString<u8>, u16>,
 }
 
 #[cfg(feature = "model")]

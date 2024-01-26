@@ -47,7 +47,7 @@ pub struct CurrentApplicationInfo {
     pub icon: Option<ImageHash>,
     pub description: FixedString,
     #[serde(default)]
-    pub rpc_origins: FixedArray<String>,
+    pub rpc_origins: FixedArray<FixedString>,
     pub bot_public: bool,
     pub bot_require_code_grant: bool,
     #[serde(default)]
@@ -69,7 +69,7 @@ pub struct CurrentApplicationInfo {
     #[serde(default)]
     pub flags: Option<ApplicationFlags>,
     #[serde(default)]
-    pub tags: Option<Vec<String>>,
+    pub tags: Option<FixedArray<FixedString>>,
     #[serde(default)]
     pub install_params: Option<InstallParams>,
     #[serde(default)]
@@ -108,7 +108,7 @@ pub struct TeamMember {
     /// The list of permissions of the member on the team.
     ///
     /// NOTE: Will always be ["*"] for now.
-    pub permissions: FixedArray<String>,
+    pub permissions: FixedArray<FixedString<u8>, u8>,
     /// The ID of the team they are a member of.
     pub team_id: GenericId,
     /// The user type of the team member.

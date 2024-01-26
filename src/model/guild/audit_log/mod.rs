@@ -389,7 +389,7 @@ pub struct AuditLogEntry {
     /// The user that did this action on a target.
     pub user_id: UserId,
     /// What changes were made.
-    pub changes: Option<Vec<Change>>,
+    pub changes: Option<FixedArray<Change>>,
     /// The id of this entry.
     pub id: AuditLogEntryId,
     /// Some optional data associated with this entry.

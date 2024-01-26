@@ -295,7 +295,7 @@ pub struct GuildMembersChunkEvent {
     pub not_found: FixedArray<GenericId>,
     /// When passing true to [`crate::gateway::ShardRunnerMessage::ChunkGuild`], presences of the
     /// returned members will be here.
-    pub presences: Option<Vec<Presence>>,
+    pub presences: Option<FixedArray<Presence>>,
     /// Nonce used in the [`crate::gateway::ShardRunnerMessage::ChunkGuild`] request.
     pub nonce: Option<FixedString>,
 }
@@ -919,7 +919,7 @@ pub struct ThreadListSyncEvent {
     /// The parent channel Id whose threads are being synced. If omitted, then threads were synced
     /// for the entire guild. This array may contain channel Ids that have no active threads as
     /// well, so you know to clear that data.
-    pub channel_ids: Option<Vec<ChannelId>>,
+    pub channel_ids: Option<FixedArray<ChannelId>>,
     /// All active threads in the given channels that the current user can access.
     pub threads: FixedArray<GuildChannel>,
     /// All thread member objects from the synced threads for the current user, indicating which

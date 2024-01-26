@@ -27,7 +27,7 @@ pub struct GuildPreview {
     /// The guild features. See [`Guild::features`]
     ///
     /// [`Guild::features`]: super::Guild::features
-    pub features: FixedArray<String>,
+    pub features: FixedArray<FixedString<u8>, u16>,
     /// Approximate number of members in this guild.
     pub approximate_member_count: u64,
     /// Approximate number of online members in this guild.

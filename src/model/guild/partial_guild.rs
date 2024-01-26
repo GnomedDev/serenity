@@ -122,7 +122,7 @@ pub struct PartialGuild {
     ///
     ///
     /// [`discord documentation`]: https://discord.com/developers/docs/resources/guild#guild-object-guild-features
-    pub features: FixedArray<FixedString>,
+    pub features: FixedArray<FixedString<u8>, u16>,
     /// Indicator of whether the guild requires multi-factor authentication for [`Role`]s or
     /// [`User`]s with moderation permissions.
     pub mfa_level: MfaLevel,

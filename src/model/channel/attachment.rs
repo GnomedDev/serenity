@@ -6,7 +6,7 @@ use crate::internal::prelude::*;
 use crate::model::prelude::*;
 use crate::model::utils::is_false;
 
-fn base64_bytes<'de, D>(deserializer: D) -> Result<Option<Vec<u8>>, D::Error>
+fn base64_bytes<'de, D>(deserializer: D) -> Result<Option<FixedArray<u8>>, D::Error>
 where
     D: serde::Deserializer<'de>,
 {
@@ -14,12 +14,12 @@ where
     use serde::de::Error;
 
     let base64 = <Option<String>>::deserialize(deserializer)?;
-    let bytes = match base64 {
-        Some(base64) => {
-            Some(base64::prelude::BASE64_STANDARD.decode(base64).map_err(D::Error::custom)?)
-        },
-        None => None,
-    };
+    let bytes = base64
+        .map(|base64| base64::prelude::BASE64_STANDARD.decode(base64))
+        .transpose()
+        .map_err(D::Error::custom)?
+        .map(FixedArray::from_vec_trunc);
+
     Ok(bytes)
 }
 
@@ -73,7 +73,7 @@ pub struct Attachment {
     /// The waveform details are a Discord implementation detail and may change without warning or
     /// documentation.
     #[serde(default, deserialize_with = "base64_bytes")]
-    pub waveform: Option<Vec<u8>>,
+    pub waveform: Option<FixedArray<u8>>,
 }
 
 #[cfg(feature = "model")]

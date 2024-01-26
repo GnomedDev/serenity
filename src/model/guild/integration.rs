@@ -30,7 +30,7 @@ pub struct Integration {
     pub subscriber_count: Option<NonMaxU64>,
     pub revoked: Option<bool>,
     pub application: Option<IntegrationApplication>,
-    pub scopes: Option<Vec<Scope>>,
+    pub scopes: Option<FixedArray<Scope>>,
     /// Only present in [`IntegrationCreateEvent`] and [`IntegrationUpdateEvent`].
     pub guild_id: Option<GuildId>,
 }

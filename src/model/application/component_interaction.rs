@@ -239,7 +239,7 @@ impl Serialize for ComponentInteraction {
 #[derive(Clone, Debug)]
 pub enum ComponentInteractionDataKind {
     Button,
-    StringSelect { values: FixedArray<String> },
+    StringSelect { values: FixedArray<FixedString> },
     UserSelect { values: FixedArray<UserId> },
     RoleSelect { values: FixedArray<RoleId> },
     MentionableSelect { values: FixedArray<GenericId> },

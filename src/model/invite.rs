@@ -216,7 +216,7 @@ pub struct InviteGuild {
     pub banner: Option<ImageHash>,
     pub description: Option<FixedString>,
     pub icon: Option<ImageHash>,
-    pub features: FixedArray<String>,
+    pub features: FixedArray<FixedString<u8>, u16>,
     pub verification_level: VerificationLevel,
     pub vanity_url_code: Option<FixedString>,
     pub nsfw_level: NsfwLevel,
