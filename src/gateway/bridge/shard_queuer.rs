@@ -6,6 +6,7 @@ use std::sync::OnceLock;
 
 use dashmap::DashMap;
 use futures::channel::mpsc::UnboundedReceiver as Receiver;
+use futures::channel::oneshot;
 use futures::StreamExt;
 use tokio::time::{sleep, timeout, Duration, Instant};
 use tracing::{debug, info, warn};
@@ -134,12 +135,13 @@ impl ShardQueuer {
                     Some(ShardQueuerMessage::ShutdownShard {
                         shard_id,
                         code,
+                        resp,
                     }) => {
                         debug!(
                             "[Shard Queuer] Received to shutdown shard {} with code {}",
                             shard_id.0, code
                         );
-                        self.shutdown(shard_id, code);
+                        self.shutdown(shard_id, code, Some(resp));
                     },
                     Some(ShardQueuerMessage::Shutdown) => {
                         debug!("[Shard Queuer] Received to shutdown all shards");
@@ -268,7 +270,8 @@ impl ShardQueuer {
         info!("Shutting down all shards");
 
         for shard_id in keys {
-            self.shutdown(shard_id, 1000);
+            // We pass None as we do not want to wait for all shards to finish shutting down.
+            self.shutdown(shard_id, 1000, None);
         }
     }
 
@@ -278,11 +281,16 @@ impl ShardQueuer {
     /// - no longer exists, then the shard runner will not know it should shut down. This _should
     /// never happen_. It may already be stopped.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub fn shutdown(&mut self, shard_id: ShardId, code: u16) {
+    pub fn shutdown(
+        &mut self,
+        shard_id: ShardId,
+        code: u16,
+        resp_channel: Option<oneshot::Sender<()>>,
+    ) {
         info!("Shutting down shard {}", shard_id);
 
         if let Some(runner) = self.runners.get(&shard_id) {
-            let msg = ShardRunnerMessage::Shutdown(shard_id, code);
+            let msg = ShardRunnerMessage::Shutdown(code, resp_channel);
 
             if let Err(why) = runner.runner_tx.tx.unbounded_send(msg) {
                 warn!(

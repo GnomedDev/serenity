@@ -4,9 +4,8 @@ use std::sync::Arc;
 use std::sync::OnceLock;
 use std::time::Duration;
 
-use futures::channel::mpsc::{self, Receiver, Sender, UnboundedReceiver, UnboundedSender};
-use futures::{SinkExt as _, StreamExt as _};
-use tokio::sync::Mutex;
+use futures::channel::mpsc::{self, Receiver, Sender, UnboundedSender};
+use futures::SinkExt as _;
 use tokio::time::timeout;
 use tracing::{info, warn};
 
@@ -99,10 +98,6 @@ pub struct ShardManager {
     /// prefer to use methods on this struct that are provided where possible.
     pub runners: Arc<dashmap::DashMap<ShardId, ShardRunnerInfo>>,
     shard_queuer: UnboundedSender<ShardQueuerMessage>,
-    // We can safely use a Mutex for this field, as it is only ever used in one single place
-    // and only is ever used to receive a single message
-    shard_shutdown: Mutex<UnboundedReceiver<ShardId>>,
-    shard_shutdown_send: UnboundedSender<ShardId>,
     gateway_intents: GatewayIntents,
 }
 
@@ -115,13 +110,10 @@ impl ShardManager {
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
         let runners = Arc::new(dashmap::DashMap::new());
-        let (shutdown_send, shutdown_recv) = mpsc::unbounded();
 
         let manager = Arc::new(Self {
             return_value_tx: parking_lot::Mutex::new(Some(return_value_tx)),
             shard_queuer: shard_queue_tx,
-            shard_shutdown: Mutex::new(shutdown_recv),
-            shard_shutdown_send: shutdown_send,
             runners: Arc::clone(&runners),
             gateway_intents: opt.intents,
         });
@@ -227,30 +219,17 @@ impl ShardManager {
 
         info!("Shutting down shard {}", shard_id);
 
-        {
-            let mut shard_shutdown = self.shard_shutdown.lock().await;
+        let (finished_channel_tx, finished_channel_rx) = futures::channel::oneshot::channel();
+        let msg = ShardQueuerMessage::ShutdownShard {
+            resp: finished_channel_tx,
+            shard_id,
+            code,
+        };
 
-            drop(self.shard_queuer.unbounded_send(ShardQueuerMessage::ShutdownShard {
-                shard_id,
-                code,
-            }));
-            match timeout(TIMEOUT, shard_shutdown.next()).await {
-                Ok(Some(shutdown_shard_id)) => {
-                    if shutdown_shard_id != shard_id {
-                        warn!("Failed to cleanly shutdown shard {shard_id}: Shutdown channel sent incorrect ID");
-                    }
-                },
-                Ok(None) => (),
-                Err(why) => {
-                    warn!(
-                        "Failed to cleanly shutdown shard {}, reached timeout: {:?}",
-                        shard_id, why
-                    );
-                },
+        if self.shard_queuer.unbounded_send(msg).is_ok() {
+            if let Err(err) = timeout(TIMEOUT, finished_channel_rx).await {
+                warn!("Failed to cleanly shutdown shard {shard_id}, reached timeout: {err:?}");
             }
-            // shard_shutdown is dropped here and releases the lock
-            // in theory we should never have two calls to shutdown()
-            // at the same time but this is a safety measure just in case:tm:
         }
 
         self.runners.remove(&shard_id);
@@ -315,19 +294,6 @@ impl ShardManager {
 
         if let Err(e) = return_value_tx.send(ret).await {
             tracing::warn!("failed to send return value: {}", e);
-        }
-    }
-
-    pub fn shutdown_finished(&self, id: ShardId) {
-        if let Err(e) = self.shard_shutdown_send.unbounded_send(id) {
-            tracing::warn!("failed to notify about finished shutdown: {}", e);
-        }
-    }
-
-    pub async fn restart_shard(&self, shard_id: ShardId) {
-        self.restart(shard_id).await;
-        if let Err(e) = self.shard_shutdown_send.unbounded_send(shard_id) {
-            tracing::warn!("failed to notify about finished shutdown: {e}");
         }
     }
 

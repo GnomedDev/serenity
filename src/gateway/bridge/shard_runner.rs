@@ -2,6 +2,7 @@ use std::borrow::Cow;
 use std::sync::Arc;
 
 use futures::channel::mpsc::{self, UnboundedReceiver as Receiver, UnboundedSender as Sender};
+use futures::channel::oneshot;
 use tokio_tungstenite::tungstenite;
 use tokio_tungstenite::tungstenite::error::Error as TungsteniteError;
 use tokio_tungstenite::tungstenite::protocol::frame::CloseFrame;
@@ -12,7 +13,7 @@ use super::event::ShardStageUpdateEvent;
 use super::CollectorCallback;
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
-use super::{ShardId, ShardManager, ShardRunnerMessage};
+use super::{ShardManager, ShardRunnerMessage};
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::dispatch::dispatch_model;
@@ -224,13 +225,11 @@ impl ShardRunner {
     //
     // If true, the WebSocket client was _not_ shutdown. If false, it was.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    async fn checked_shutdown(&mut self, id: ShardId, close_code: u16) -> bool {
-        // First verify the ID so we know for certain this runner is to shutdown.
-        if id != self.shard.shard_info().id {
-            // Not meant for this runner for some reason, don't shutdown.
-            return true;
-        }
-
+    async fn checked_shutdown(
+        &mut self,
+        close_code: u16,
+        resp_channel: Option<oneshot::Sender<()>>,
+    ) -> bool {
         // Send a Close Frame to Discord, which allows a bot to "log off"
         drop(
             self.shard
@@ -259,7 +258,12 @@ impl ShardRunner {
         }
 
         // Inform the manager that shutdown for this shard has finished.
-        self.manager.shutdown_finished(id);
+        if let Some(resp_channel) = resp_channel {
+            if resp_channel.send(()).is_err() {
+                warn!("Shard ID {} took too long to shut down", self.shard.shard_info().id);
+            }
+        }
+
         false
     }
 
@@ -283,8 +287,8 @@ impl ShardRunner {
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
     async fn handle_rx_value(&mut self, msg: ShardRunnerMessage) -> bool {
         match msg {
-            ShardRunnerMessage::Restart(id) => self.checked_shutdown(id, 4000).await,
-            ShardRunnerMessage::Shutdown(id, code) => self.checked_shutdown(id, code).await,
+            ShardRunnerMessage::Restart(resp) => self.checked_shutdown(4000, resp).await,
+            ShardRunnerMessage::Shutdown(code, resp) => self.checked_shutdown(code, resp).await,
             ShardRunnerMessage::ChunkGuild {
                 guild_id,
                 limit,
@@ -450,7 +454,8 @@ impl ShardRunner {
         self.update_manager();
 
         let shard_id = self.shard.shard_info().id;
-        self.manager.restart_shard(shard_id).await;
+
+        self.manager.restart(shard_id).await;
 
         #[cfg(feature = "voice")]
         if let Some(voice_manager) = &self.voice_manager {

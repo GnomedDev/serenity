@@ -53,6 +53,8 @@ use std::fmt;
 use std::num::NonZeroU16;
 use std::time::Duration as StdDuration;
 
+use futures::channel::oneshot;
+
 pub use self::event::ShardStageUpdateEvent;
 pub use self::shard_manager::{ShardManager, ShardManagerOptions};
 pub use self::shard_messenger::ShardMessenger;
@@ -67,7 +69,7 @@ use crate::model::event::Event;
 use crate::model::id::ShardId;
 
 /// A message to be sent to the [`ShardQueuer`].
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub enum ShardQueuerMessage {
     /// Message to set the shard total.
     SetShardTotal(NonZeroU16),
@@ -76,7 +78,7 @@ pub enum ShardQueuerMessage {
     /// Message to shutdown the shard queuer.
     Shutdown,
     /// Message to dequeue/shutdown a shard.
-    ShutdownShard { shard_id: ShardId, code: u16 },
+    ShutdownShard { shard_id: ShardId, code: u16, resp: oneshot::Sender<()> },
 }
 
 /// Information about a [`ShardRunner`].
