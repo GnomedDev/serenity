@@ -4,9 +4,9 @@ use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
 
+use dashmap::DashMap;
 use futures::channel::mpsc::UnboundedReceiver as Receiver;
 use futures::StreamExt;
-use tokio::sync::Mutex;
 use tokio::time::{sleep, timeout, Duration, Instant};
 use tracing::{debug, info, warn};
 
@@ -63,7 +63,7 @@ pub struct ShardQueuer {
     /// The shards that are queued for booting.
     pub queue: ShardQueue,
     /// A copy of the map of shard runners.
-    pub runners: Arc<Mutex<HashMap<ShardId, ShardRunnerInfo>>>,
+    pub runners: Arc<DashMap<ShardId, ShardRunnerInfo>>,
     /// A receiver channel for the shard queuer to be told to start shards.
     pub rx: Receiver<ShardQueuerMessage>,
     /// A copy of the client's voice manager.
@@ -139,11 +139,11 @@ impl ShardQueuer {
                             "[Shard Queuer] Received to shutdown shard {} with code {}",
                             shard_id.0, code
                         );
-                        self.shutdown(shard_id, code).await;
+                        self.shutdown(shard_id, code);
                     },
                     Some(ShardQueuerMessage::Shutdown) => {
                         debug!("[Shard Queuer] Received to shutdown all shards");
-                        self.shutdown_runners().await;
+                        self.shutdown_runners();
                         break;
                     },
                     None => break,
@@ -250,27 +250,25 @@ impl ShardQueuer {
             debug!("[ShardRunner {:?}] Stopping", runner.shard.shard_info());
         });
 
-        self.runners.lock().await.insert(shard_id, runner_info);
+        self.runners.insert(shard_id, runner_info);
 
         Ok(())
     }
 
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    async fn shutdown_runners(&mut self) {
+    fn shutdown_runners(&mut self) {
         let keys = {
-            let runners = self.runners.lock().await;
-
-            if runners.is_empty() {
+            if self.runners.is_empty() {
                 return;
             }
 
-            runners.keys().copied().collect::<Vec<_>>()
+            self.runners.iter().map(|v| *v.key()).collect::<Vec<_>>()
         };
 
         info!("Shutting down all shards");
 
         for shard_id in keys {
-            self.shutdown(shard_id, 1000).await;
+            self.shutdown(shard_id, 1000);
         }
     }
 
@@ -280,10 +278,10 @@ impl ShardQueuer {
     /// - no longer exists, then the shard runner will not know it should shut down. This _should
     /// never happen_. It may already be stopped.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub async fn shutdown(&mut self, shard_id: ShardId, code: u16) {
+    pub fn shutdown(&mut self, shard_id: ShardId, code: u16) {
         info!("Shutting down shard {}", shard_id);
 
-        if let Some(runner) = self.runners.lock().await.get(&shard_id) {
+        if let Some(runner) = self.runners.get(&shard_id) {
             let msg = ShardRunnerMessage::Shutdown(shard_id, code);
 
             if let Err(why) = runner.runner_tx.tx.unbounded_send(msg) {

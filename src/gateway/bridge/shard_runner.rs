@@ -118,7 +118,7 @@ impl ShardRunner {
             let post = self.shard.stage();
 
             if post != pre {
-                self.update_manager().await;
+                self.update_manager();
 
                 for event_handler in self.event_handlers.clone() {
                     let context = self.make_context();
@@ -430,7 +430,7 @@ impl ShardRunner {
         };
 
         if is_ack {
-            self.update_manager().await;
+            self.update_manager();
         }
 
         #[cfg(feature = "voice")]
@@ -447,7 +447,7 @@ impl ShardRunner {
     async fn request_restart(&mut self) {
         debug!("[ShardRunner {:?}] Requesting restart", self.shard.shard_info());
 
-        self.update_manager().await;
+        self.update_manager();
 
         let shard_id = self.shard.shard_info().id;
         self.manager.restart_shard(shard_id).await;
@@ -459,14 +459,12 @@ impl ShardRunner {
     }
 
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    async fn update_manager(&self) {
-        self.manager
-            .update_shard_latency_and_stage(
-                self.shard.shard_info().id,
-                self.shard.latency(),
-                self.shard.stage(),
-            )
-            .await;
+    fn update_manager(&self) {
+        self.manager.update_shard_latency_and_stage(
+            self.shard.shard_info().id,
+            self.shard.latency(),
+            self.shard.stage(),
+        );
     }
 }
 

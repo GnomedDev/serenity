@@ -1,12 +1,11 @@
-use std::collections::HashMap;
 use std::num::NonZeroU16;
 use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
 use std::time::Duration;
 
-use futures::channel::mpsc::{self, UnboundedReceiver as Receiver, UnboundedSender as Sender};
-use futures::{SinkExt, StreamExt};
+use futures::channel::mpsc::{self, Receiver, Sender, UnboundedReceiver, UnboundedSender};
+use futures::{SinkExt as _, StreamExt as _};
 use tokio::sync::Mutex;
 use tokio::time::timeout;
 use tracing::{info, warn};
@@ -93,17 +92,17 @@ use crate::model::gateway::GatewayIntents;
 /// [`Client`]: crate::Client
 #[derive(Debug)]
 pub struct ShardManager {
-    return_value_tx: Mutex<Sender<Result<(), GatewayError>>>,
+    return_value_tx: parking_lot::Mutex<Option<Sender<Result<(), GatewayError>>>>,
     /// The shard runners currently managed.
     ///
     /// **Note**: It is highly unrecommended to mutate this yourself unless you need to. Instead
     /// prefer to use methods on this struct that are provided where possible.
-    pub runners: Arc<Mutex<HashMap<ShardId, ShardRunnerInfo>>>,
-    shard_queuer: Sender<ShardQueuerMessage>,
+    pub runners: Arc<dashmap::DashMap<ShardId, ShardRunnerInfo>>,
+    shard_queuer: UnboundedSender<ShardQueuerMessage>,
     // We can safely use a Mutex for this field, as it is only ever used in one single place
     // and only is ever used to receive a single message
-    shard_shutdown: Mutex<Receiver<ShardId>>,
-    shard_shutdown_send: Sender<ShardId>,
+    shard_shutdown: Mutex<UnboundedReceiver<ShardId>>,
+    shard_shutdown_send: UnboundedSender<ShardId>,
     gateway_intents: GatewayIntents,
 }
 
@@ -112,14 +111,14 @@ impl ShardManager {
     /// separate thread.
     #[must_use]
     pub fn new(opt: ShardManagerOptions) -> (Arc<Self>, Receiver<Result<(), GatewayError>>) {
-        let (return_value_tx, return_value_rx) = mpsc::unbounded();
+        let (return_value_tx, return_value_rx) = mpsc::channel(1);
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
-        let runners = Arc::new(Mutex::new(HashMap::new()));
+        let runners = Arc::new(dashmap::DashMap::new());
         let (shutdown_send, shutdown_recv) = mpsc::unbounded();
 
         let manager = Arc::new(Self {
-            return_value_tx: Mutex::new(return_value_tx),
+            return_value_tx: parking_lot::Mutex::new(Some(return_value_tx)),
             shard_queuer: shard_queue_tx,
             shard_shutdown: Mutex::new(shutdown_recv),
             shard_shutdown_send: shutdown_send,
@@ -160,8 +159,8 @@ impl ShardManager {
     /// responsible for the given ID.
     ///
     /// If a shard has been queued but has not yet been initiated, then this will return `false`.
-    pub async fn has(&self, shard_id: ShardId) -> bool {
-        self.runners.lock().await.contains_key(&shard_id)
+    pub fn has(&self, shard_id: ShardId) -> bool {
+        self.runners.contains_key(&shard_id)
     }
 
     /// Initializes all shards that the manager is responsible for.
@@ -210,8 +209,8 @@ impl ShardManager {
     ///
     /// [`ShardRunner`]: super::ShardRunner
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub async fn shards_instantiated(&self) -> Vec<ShardId> {
-        self.runners.lock().await.keys().copied().collect()
+    pub fn shards_instantiated(&self) -> Vec<ShardId> {
+        self.runners.iter().map(|v| *v.key()).collect()
     }
 
     /// Attempts to shut down the shard runner by Id.
@@ -238,10 +237,7 @@ impl ShardManager {
             match timeout(TIMEOUT, shard_shutdown.next()).await {
                 Ok(Some(shutdown_shard_id)) => {
                     if shutdown_shard_id != shard_id {
-                        warn!(
-                        "Failed to cleanly shutdown shard {}: Shutdown channel sent incorrect ID",
-                        shard_id,
-                    );
+                        warn!("Failed to cleanly shutdown shard {shard_id}: Shutdown channel sent incorrect ID");
                     }
                 },
                 Ok(None) => (),
@@ -257,7 +253,7 @@ impl ShardManager {
             // at the same time but this is a safety measure just in case:tm:
         }
 
-        self.runners.lock().await.remove(&shard_id);
+        self.runners.remove(&shard_id);
     }
 
     /// Sends a shutdown message for all shards that the manager is responsible for that are still
@@ -268,13 +264,11 @@ impl ShardManager {
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
     pub async fn shutdown_all(&self) {
         let keys = {
-            let runners = self.runners.lock().await;
-
-            if runners.is_empty() {
+            if self.runners.is_empty() {
                 return;
             }
 
-            runners.keys().copied().collect::<Vec<_>>()
+            self.runners.iter().map(|v| *v.key()).collect::<Vec<_>>()
         };
 
         info!("Shutting down all shards");
@@ -287,7 +281,7 @@ impl ShardManager {
 
         // this message is received by Client::start_connection, which lets the main thread know
         // and finally return from Client::start
-        drop(self.return_value_tx.lock().await.unbounded_send(Ok(())));
+        self.return_with_value(Ok(())).await;
     }
 
     fn set_shard_total(&self, shard_total: NonZeroU16) {
@@ -314,7 +308,12 @@ impl ShardManager {
     }
 
     pub async fn return_with_value(&self, ret: Result<(), GatewayError>) {
-        if let Err(e) = self.return_value_tx.lock().await.send(ret).await {
+        let Some(mut return_value_tx) = self.return_value_tx.lock().take() else {
+            tracing::warn!("failed to send return value as value has already been sent");
+            return;
+        };
+
+        if let Err(e) = return_value_tx.send(ret).await {
             tracing::warn!("failed to send return value: {}", e);
         }
     }
@@ -332,13 +331,13 @@ impl ShardManager {
         }
     }
 
-    pub async fn update_shard_latency_and_stage(
+    pub fn update_shard_latency_and_stage(
         &self,
         id: ShardId,
         latency: Option<Duration>,
         stage: ConnectionStage,
     ) {
-        if let Some(runner) = self.runners.lock().await.get_mut(&id) {
+        if let Some(mut runner) = self.runners.get_mut(&id) {
             runner.latency = latency;
             runner.stage = stage;
         }
