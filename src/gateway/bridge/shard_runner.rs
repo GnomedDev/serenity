@@ -13,7 +13,7 @@ use super::event::ShardStageUpdateEvent;
 use super::CollectorCallback;
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
-use super::{ShardManager, ShardRunnerMessage};
+use super::{ShardLatencyInfo, ShardManager, ShardRunnerMessage};
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::dispatch::dispatch_model;
@@ -119,8 +119,6 @@ impl ShardRunner {
             let post = self.shard.stage();
 
             if post != pre {
-                self.update_manager();
-
                 for event_handler in self.event_handlers.clone() {
                     let context = self.make_context();
                     let event = ShardStageUpdateEvent {
@@ -321,6 +319,15 @@ impl ShardRunner {
                 self.shard.set_status(status);
                 self.shard.update_presence().await.is_ok()
             },
+            ShardRunnerMessage::GetLatencyInfo(resp) => {
+                // We do not want to shut the Shard down if this latency query fails.
+                let _res = resp.send(ShardLatencyInfo {
+                    latency: self.shard.latency(),
+                    stage: self.shard.stage(),
+                });
+
+                true
+            },
         }
     }
 
@@ -433,10 +440,6 @@ impl ShardRunner {
             },
         };
 
-        if is_ack {
-            self.update_manager();
-        }
-
         #[cfg(feature = "voice")]
         {
             if let Some(event) = &event {
@@ -451,8 +454,6 @@ impl ShardRunner {
     async fn request_restart(&mut self) {
         debug!("[ShardRunner {:?}] Requesting restart", self.shard.shard_info());
 
-        self.update_manager();
-
         let shard_id = self.shard.shard_info().id;
 
         self.manager.restart(shard_id).await;
@@ -461,15 +462,6 @@ impl ShardRunner {
         if let Some(voice_manager) = &self.voice_manager {
             voice_manager.deregister_shard(shard_id.0).await;
         }
-    }
-
-    #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    fn update_manager(&self) {
-        self.manager.update_shard_latency_and_stage(
-            self.shard.shard_info().id,
-            self.shard.latency(),
-            self.shard.stage(),
-        );
     }
 }
 

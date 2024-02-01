@@ -60,11 +60,10 @@ async fn main() {
         loop {
             sleep(Duration::from_secs(30)).await;
 
-            for key_value in manager.runners.iter() {
-                let (id, runner) = key_value.pair();
+            for (id, shard) in manager.latency_info().await.iter() {
                 println!(
                     "Shard ID {} is {} with a latency of {:?}",
-                    id, runner.stage, runner.latency,
+                    id, shard.stage, shard.latency,
                 );
             }
         }

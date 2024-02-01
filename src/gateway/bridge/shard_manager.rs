@@ -1,23 +1,24 @@
+use std::collections::HashMap;
 use std::num::NonZeroU16;
 use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
-use std::time::Duration;
 
 use futures::channel::mpsc::{self, Receiver, Sender, UnboundedSender};
+use futures::channel::oneshot;
 use futures::SinkExt as _;
 use tokio::time::timeout;
 use tracing::{info, warn};
 
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
-use super::{ShardId, ShardQueue, ShardQueuer, ShardQueuerMessage, ShardRunnerInfo};
+use super::{ShardId, ShardLatencyInfo, ShardQueue, ShardQueuer, ShardQueuerMessage};
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::{EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
-use crate::gateway::{ConnectionStage, GatewayError, PresenceData};
+use crate::gateway::{GatewayError, PresenceData};
 use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::internal::tokio::spawn_named;
@@ -92,11 +93,6 @@ use crate::model::gateway::GatewayIntents;
 #[derive(Debug)]
 pub struct ShardManager {
     return_value_tx: parking_lot::Mutex<Option<Sender<Result<(), GatewayError>>>>,
-    /// The shard runners currently managed.
-    ///
-    /// **Note**: It is highly unrecommended to mutate this yourself unless you need to. Instead
-    /// prefer to use methods on this struct that are provided where possible.
-    pub runners: Arc<dashmap::DashMap<ShardId, ShardRunnerInfo>>,
     shard_queuer: UnboundedSender<ShardQueuerMessage>,
     gateway_intents: GatewayIntents,
 }
@@ -109,12 +105,9 @@ impl ShardManager {
         let (return_value_tx, return_value_rx) = mpsc::channel(1);
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
-        let runners = Arc::new(dashmap::DashMap::new());
-
         let manager = Arc::new(Self {
             return_value_tx: parking_lot::Mutex::new(Some(return_value_tx)),
             shard_queuer: shard_queue_tx,
-            runners: Arc::clone(&runners),
             gateway_intents: opt.intents,
         });
 
@@ -127,7 +120,7 @@ impl ShardManager {
             last_start: None,
             manager: Arc::clone(&manager),
             queue: ShardQueue::new(opt.max_concurrency),
-            runners,
+            runners: HashMap::new(),
             rx: shard_queue_rx,
             #[cfg(feature = "voice")]
             voice_manager: opt.voice_manager,
@@ -151,8 +144,29 @@ impl ShardManager {
     /// responsible for the given ID.
     ///
     /// If a shard has been queued but has not yet been initiated, then this will return `false`.
-    pub fn has(&self, shard_id: ShardId) -> bool {
-        self.runners.contains_key(&shard_id)
+    pub async fn has(&self, shard_id: ShardId) -> bool {
+        let (tx, rx) = oneshot::channel();
+        let msg = ShardQueuerMessage::ContainsShard {
+            shard_id,
+            resp: tx,
+        };
+
+        if self.shard_queuer.unbounded_send(msg).is_err() {
+            return false;
+        };
+
+        rx.await.unwrap_or_default()
+    }
+
+    pub async fn latency_info(&self) -> FixedArray<(ShardId, ShardLatencyInfo), u16> {
+        let (tx, rx) = oneshot::channel();
+        let msg = ShardQueuerMessage::LatencyInfo(tx);
+
+        if self.shard_queuer.unbounded_send(msg).is_err() {
+            return FixedArray::empty();
+        };
+
+        rx.await.unwrap_or_default()
     }
 
     /// Initializes all shards that the manager is responsible for.
@@ -196,15 +210,6 @@ impl ShardManager {
         self.boot(shard_id, false);
     }
 
-    /// Returns the [`ShardId`]s of the shards that have been instantiated and currently have a
-    /// valid [`ShardRunner`].
-    ///
-    /// [`ShardRunner`]: super::ShardRunner
-    #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub fn shards_instantiated(&self) -> Vec<ShardId> {
-        self.runners.iter().map(|v| *v.key()).collect()
-    }
-
     /// Attempts to shut down the shard runner by Id.
     ///
     /// Returns a boolean indicating whether a shard runner was present. This is _not_ necessary an
@@ -231,8 +236,6 @@ impl ShardManager {
                 warn!("Failed to cleanly shutdown shard {shard_id}, reached timeout: {err:?}");
             }
         }
-
-        self.runners.remove(&shard_id);
     }
 
     /// Sends a shutdown message for all shards that the manager is responsible for that are still
@@ -242,20 +245,7 @@ impl ShardManager {
     /// [`Self::shutdown`] method.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
     pub async fn shutdown_all(&self) {
-        let keys = {
-            if self.runners.is_empty() {
-                return;
-            }
-
-            self.runners.iter().map(|v| *v.key()).collect::<Vec<_>>()
-        };
-
         info!("Shutting down all shards");
-
-        for shard_id in keys {
-            self.shutdown(shard_id, 1000).await;
-        }
-
         drop(self.shard_queuer.unbounded_send(ShardQueuerMessage::Shutdown));
 
         // this message is received by Client::start_connection, which lets the main thread know
@@ -294,18 +284,6 @@ impl ShardManager {
 
         if let Err(e) = return_value_tx.send(ret).await {
             tracing::warn!("failed to send return value: {}", e);
-        }
-    }
-
-    pub fn update_shard_latency_and_stage(
-        &self,
-        id: ShardId,
-        latency: Option<Duration>,
-        stage: ConnectionStage,
-    ) {
-        if let Some(mut runner) = self.runners.get_mut(&id) {
-            runner.latency = latency;
-            runner.stage = stage;
         }
     }
 }

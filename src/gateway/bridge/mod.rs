@@ -54,6 +54,7 @@ use std::num::NonZeroU16;
 use std::time::Duration as StdDuration;
 
 use futures::channel::oneshot;
+use small_fixed_array::FixedArray;
 
 pub use self::event::ShardStageUpdateEvent;
 pub use self::shard_manager::{ShardManager, ShardManagerOptions};
@@ -79,6 +80,10 @@ pub enum ShardQueuerMessage {
     Shutdown,
     /// Message to dequeue/shutdown a shard.
     ShutdownShard { shard_id: ShardId, code: u16, resp: oneshot::Sender<()> },
+    /// Message to query if the runner contains a shard.
+    ContainsShard { shard_id: ShardId, resp: oneshot::Sender<bool> },
+    /// Message to query the latency info of a runner.
+    LatencyInfo(oneshot::Sender<FixedArray<(ShardId, ShardLatencyInfo), u16>>),
 }
 
 /// Information about a [`ShardRunner`].
@@ -86,12 +91,9 @@ pub enum ShardQueuerMessage {
 /// The [`ShardId`] is not included because, as it stands, you probably already know the Id if you
 /// obtained this.
 #[derive(Debug)]
-pub struct ShardRunnerInfo {
+pub struct ShardLatencyInfo {
     /// The latency between when a heartbeat was sent and when the acknowledgement was received.
     pub latency: Option<StdDuration>,
-    /// The channel used to communicate with the shard runner, telling it what to do with regards
-    /// to its status.
-    pub runner_tx: ShardMessenger,
     /// The current connection stage of the shard.
     pub stage: ConnectionStage,
 }

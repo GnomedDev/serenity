@@ -2,12 +2,13 @@
 use std::sync::Arc;
 
 use futures::channel::mpsc::UnboundedSender as Sender;
+use futures::channel::oneshot;
 use tokio_tungstenite::tungstenite::Message;
 
 #[cfg(feature = "collector")]
 use super::CollectorCallback;
-use super::{ChunkGuildFilter, ShardRunner, ShardRunnerMessage};
-use crate::gateway::ActivityData;
+use super::{ChunkGuildFilter, ShardLatencyInfo, ShardRunner, ShardRunnerMessage};
+use crate::gateway::{ActivityData, ConnectionStage};
 use crate::model::prelude::*;
 
 /// A handle to a [`ShardRunner`].
@@ -190,6 +191,17 @@ impl ShardMessenger {
     /// Shuts down the websocket by attempting to cleanly close the connection.
     pub fn shutdown_clean(&self) {
         self.send_to_shard(ShardRunnerMessage::Close(1000, None));
+    }
+
+    /// Gets the latency info of the shard.
+    pub async fn get_latency_info(&self) -> ShardLatencyInfo {
+        let (tx, rx) = oneshot::channel();
+        self.send_to_shard(ShardRunnerMessage::GetLatencyInfo(tx));
+
+        rx.await.unwrap_or(ShardLatencyInfo {
+            latency: None,
+            stage: ConnectionStage::Disconnected,
+        })
     }
 
     /// Sends a raw message over the WebSocket.

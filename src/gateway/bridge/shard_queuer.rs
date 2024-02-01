@@ -4,7 +4,6 @@ use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
 
-use dashmap::DashMap;
 use futures::channel::mpsc::UnboundedReceiver as Receiver;
 use futures::channel::oneshot;
 use futures::StreamExt;
@@ -15,11 +14,11 @@ use tracing::{debug, info, warn};
 use super::VoiceGatewayManager;
 use super::{
     ShardId,
+    ShardLatencyInfo,
     ShardManager,
     ShardMessenger,
     ShardQueuerMessage,
     ShardRunner,
-    ShardRunnerInfo,
     ShardRunnerOptions,
 };
 #[cfg(feature = "cache")]
@@ -27,7 +26,7 @@ use crate::cache::Cache;
 use crate::client::{EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
-use crate::gateway::{ConnectionStage, PresenceData, Shard, ShardRunnerMessage};
+use crate::gateway::{PresenceData, Shard, ShardRunnerMessage};
 use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::internal::tokio::spawn_named;
@@ -64,7 +63,7 @@ pub struct ShardQueuer {
     /// The shards that are queued for booting.
     pub queue: ShardQueue,
     /// A copy of the map of shard runners.
-    pub runners: Arc<DashMap<ShardId, ShardRunnerInfo>>,
+    pub runners: HashMap<ShardId, ShardMessenger>,
     /// A receiver channel for the shard queuer to be told to start shards.
     pub rx: Receiver<ShardQueuerMessage>,
     /// A copy of the client's voice manager.
@@ -147,6 +146,17 @@ impl ShardQueuer {
                         debug!("[Shard Queuer] Received to shutdown all shards");
                         self.shutdown_runners();
                         break;
+                    },
+                    Some(ShardQueuerMessage::ContainsShard {
+                        shard_id,
+                        resp,
+                    }) => {
+                        if resp.send(self.runners.contains_key(&shard_id)).is_err() {
+                            warn!("Failed to response to ContainsShard query");
+                        }
+                    },
+                    Some(ShardQueuerMessage::LatencyInfo(resp)) => {
+                        self.collect_latency_info(resp).await;
                     },
                     None => break,
                 }
@@ -241,18 +251,12 @@ impl ShardQueuer {
             http: Arc::clone(&self.http),
         });
 
-        let runner_info = ShardRunnerInfo {
-            latency: None,
-            runner_tx: ShardMessenger::new(&runner),
-            stage: ConnectionStage::Disconnected,
-        };
+        self.runners.insert(shard_id, ShardMessenger::new(&runner));
 
         spawn_named("shard_queuer::stop", async move {
             drop(runner.run().await);
             debug!("[ShardRunner {:?}] Stopping", runner.shard.shard_info());
         });
-
-        self.runners.insert(shard_id, runner_info);
 
         Ok(())
     }
@@ -264,7 +268,7 @@ impl ShardQueuer {
                 return;
             }
 
-            self.runners.iter().map(|v| *v.key()).collect::<Vec<_>>()
+            self.runners.keys().copied().collect::<Vec<_>>()
         };
 
         info!("Shutting down all shards");
@@ -290,16 +294,33 @@ impl ShardQueuer {
         info!("Shutting down shard {}", shard_id);
 
         if let Some(runner) = self.runners.get(&shard_id) {
-            let msg = ShardRunnerMessage::Shutdown(code, resp_channel);
-
-            if let Err(why) = runner.runner_tx.tx.unbounded_send(msg) {
-                warn!(
-                    "Failed to cleanly shutdown shard {} when sending message to shard runner: {:?}",
-                    shard_id,
-                    why,
-                );
-            }
+            runner.send_to_shard(ShardRunnerMessage::Shutdown(code, resp_channel));
         }
+    }
+
+    /// Send a message to all runners to ask for their current stage and latency.
+    #[cold]
+    async fn collect_latency_info(
+        &mut self,
+        response_channel: oneshot::Sender<FixedArray<(ShardId, ShardLatencyInfo), u16>>,
+    ) {
+        let mut responses = tokio::task::JoinSet::new();
+        for (&shard_id, messenger) in &self.runners {
+            let messenger = messenger.clone();
+            responses.spawn(async move {
+                let info = messenger.get_latency_info().await;
+                (shard_id, info)
+            });
+        }
+
+        let mut buffer = Vec::with_capacity(self.runners.len());
+        while let Some(response) = responses.join_next().await {
+            buffer.push(response.expect("spawned task should not panic"));
+        }
+
+        let _res = response_channel.send(
+            buffer.into_boxed_slice().try_into().expect("should never be more than 64k shards"),
+        );
     }
 }
 

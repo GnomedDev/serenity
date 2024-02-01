@@ -1,6 +1,7 @@
 use futures::channel::oneshot;
 use tokio_tungstenite::tungstenite::Message;
 
+use super::ShardLatencyInfo;
 use crate::gateway::{ActivityData, ChunkGuildFilter};
 use crate::model::id::GuildId;
 use crate::model::user::OnlineStatus;
@@ -50,4 +51,6 @@ pub enum ShardRunnerMessage {
     SetPresence(Option<ActivityData>, OnlineStatus),
     /// Indicates that the client is to update the shard's presence's status.
     SetStatus(OnlineStatus),
+    /// Queries for the shard's latency information.
+    GetLatencyInfo(oneshot::Sender<ShardLatencyInfo>),
 }
