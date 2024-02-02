@@ -1,4 +1,5 @@
 use std::borrow::Cow;
+use std::ops::ControlFlow;
 use std::sync::Arc;
 
 use futures::channel::mpsc::{self, UnboundedReceiver as Receiver, UnboundedSender as Sender};
@@ -101,7 +102,11 @@ impl ShardRunner {
 
         loop {
             trace!("[ShardRunner {:?}] loop iteration started.", self.shard.shard_info());
-            if !self.recv().await {
+            if let ControlFlow::Break(should_restart) = self.recv().await {
+                if should_restart {
+                    self.request_restart().await;
+                }
+
                 return Ok(());
             }
 
@@ -275,14 +280,9 @@ impl ShardRunner {
     }
 
     // Handles a received value over the shard runner rx channel.
-    //
-    // Returns a boolean on whether the shard runner can continue.
-    //
-    // This always returns true, except in the case that the shard manager asked the runner to
-    // shutdown.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    async fn handle_rx_value(&mut self, msg: ShardRunnerMessage) -> bool {
-        match msg {
+    async fn handle_rx_value(&mut self, msg: ShardRunnerMessage) -> ControlFlow<()> {
+        let should_continue = match msg {
             ShardRunnerMessage::Restart(id) => self.checked_shutdown(id, 4000).await,
             ShardRunnerMessage::Shutdown(id, code) => self.checked_shutdown(id, code).await,
             ShardRunnerMessage::ChunkGuild {
@@ -327,6 +327,12 @@ impl ShardRunner {
                 self.shard.set_status(status);
                 self.shard.update_presence().await.is_ok()
             },
+        };
+
+        if should_continue {
+            ControlFlow::Continue(())
+        } else {
+            ControlFlow::Break(())
         }
     }
 
@@ -365,29 +371,20 @@ impl ShardRunner {
     // happen, as the sending half is kept on the runner.
     // Returns whether the shard runner is in a state that can continue.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    async fn recv(&mut self) -> bool {
-        loop {
-            match self.runner_rx.try_next() {
-                Ok(Some(value)) => {
-                    if !self.handle_rx_value(value).await {
-                        return false;
-                    }
-                },
-                Ok(None) => {
-                    warn!(
-                        "[ShardRunner {:?}] Sending half DC; restarting",
-                        self.shard.shard_info(),
-                    );
-
-                    self.request_restart().await;
-                    return false;
-                },
-                Err(_) => break,
+    async fn recv(&mut self) -> ControlFlow<bool> {
+        while let Ok(value) = self.runner_rx.try_next() {
+            if let Some(value) = value {
+                if let ControlFlow::Break(()) = self.handle_rx_value(value).await {
+                    return ControlFlow::Break(false);
+                }
+            } else {
+                warn!("[ShardRunner {:?}] Sending half DC; restarting", self.shard.shard_info(),);
+                return ControlFlow::Break(true);
             }
         }
 
         // There are no longer any values available.
-        true
+        ControlFlow::Continue(())
     }
 
     /// Returns a received event, as well as whether reading the potentially present event was
