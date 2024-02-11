@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::num::NonZeroU16;
 use std::sync::Arc;
 #[cfg(feature = "framework")]
@@ -10,6 +9,7 @@ use futures::{SinkExt, StreamExt};
 use tokio::sync::Mutex;
 use tokio::time::timeout;
 use tracing::{info, warn};
+use vec_map::VecMap;
 
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
@@ -98,7 +98,7 @@ pub struct ShardManager {
     ///
     /// **Note**: It is highly unrecommended to mutate this yourself unless you need to. Instead
     /// prefer to use methods on this struct that are provided where possible.
-    pub runners: Arc<Mutex<HashMap<ShardId, ShardRunnerInfo>>>,
+    pub runners: Arc<Mutex<VecMap<ShardRunnerInfo>>>,
     shard_queuer: Sender<ShardQueuerMessage>,
     // We can safely use a Mutex for this field, as it is only ever used in one single place
     // and only is ever used to receive a single message
@@ -115,7 +115,7 @@ impl ShardManager {
         let (return_value_tx, return_value_rx) = mpsc::unbounded();
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
-        let runners = Arc::new(Mutex::new(HashMap::new()));
+        let runners = Arc::new(Mutex::new(VecMap::new()));
         let (shutdown_send, shutdown_recv) = mpsc::unbounded();
 
         let manager = Arc::new(Self {
@@ -161,7 +161,7 @@ impl ShardManager {
     ///
     /// If a shard has been queued but has not yet been initiated, then this will return `false`.
     pub async fn has(&self, shard_id: ShardId) -> bool {
-        self.runners.lock().await.contains_key(&shard_id)
+        self.runners.lock().await.contains_key(shard_id.0.into())
     }
 
     /// Initializes all shards that the manager is responsible for.
@@ -211,7 +211,7 @@ impl ShardManager {
     /// [`ShardRunner`]: super::ShardRunner
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
     pub async fn shards_instantiated(&self) -> Vec<ShardId> {
-        self.runners.lock().await.keys().copied().collect()
+        self.runners.lock().await.keys().map(|i| ShardId(i as u16)).collect()
     }
 
     /// Attempts to shut down the shard runner by Id.
@@ -257,7 +257,7 @@ impl ShardManager {
             // at the same time but this is a safety measure just in case:tm:
         }
 
-        self.runners.lock().await.remove(&shard_id);
+        self.runners.lock().await.remove(shard_id.0.into());
     }
 
     /// Sends a shutdown message for all shards that the manager is responsible for that are still
@@ -274,7 +274,7 @@ impl ShardManager {
                 return;
             }
 
-            runners.keys().copied().collect::<Vec<_>>()
+            runners.keys().map(|i| ShardId(i as u16)).collect::<Vec<_>>()
         };
 
         info!("Shutting down all shards");
@@ -338,7 +338,7 @@ impl ShardManager {
         latency: Option<Duration>,
         stage: ConnectionStage,
     ) {
-        if let Some(runner) = self.runners.lock().await.get_mut(&id) {
+        if let Some(runner) = self.runners.lock().await.get_mut(id.0.into()) {
             runner.latency = latency;
             runner.stage = stage;
         }

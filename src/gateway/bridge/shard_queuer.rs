@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::VecDeque;
 use std::num::NonZeroU16;
 use std::sync::Arc;
 #[cfg(feature = "framework")]
@@ -9,6 +9,7 @@ use futures::StreamExt;
 use tokio::sync::Mutex;
 use tokio::time::{sleep, timeout, Duration, Instant};
 use tracing::{debug, info, warn};
+use vec_map::VecMap;
 
 #[cfg(feature = "voice")]
 use super::VoiceGatewayManager;
@@ -63,7 +64,7 @@ pub struct ShardQueuer {
     /// The shards that are queued for booting.
     pub queue: ShardQueue,
     /// A copy of the map of shard runners.
-    pub runners: Arc<Mutex<HashMap<ShardId, ShardRunnerInfo>>>,
+    pub runners: Arc<Mutex<VecMap<ShardRunnerInfo>>>,
     /// A receiver channel for the shard queuer to be told to start shards.
     pub rx: Receiver<ShardQueuerMessage>,
     /// A copy of the client's voice manager.
@@ -250,7 +251,7 @@ impl ShardQueuer {
             debug!("[ShardRunner {:?}] Stopping", runner.shard.shard_info());
         });
 
-        self.runners.lock().await.insert(shard_id, runner_info);
+        self.runners.lock().await.insert(shard_id.0.into(), runner_info);
 
         Ok(())
     }
@@ -264,7 +265,7 @@ impl ShardQueuer {
                 return;
             }
 
-            runners.keys().copied().collect::<Vec<_>>()
+            runners.keys().map(|k| ShardId(k as u16)).collect::<Vec<_>>()
         };
 
         info!("Shutting down all shards");
@@ -283,7 +284,7 @@ impl ShardQueuer {
     pub async fn shutdown(&mut self, shard_id: ShardId, code: u16) {
         info!("Shutting down shard {}", shard_id);
 
-        if let Some(runner) = self.runners.lock().await.get(&shard_id) {
+        if let Some(runner) = self.runners.lock().await.get(shard_id.0.into()) {
             let msg = ShardRunnerMessage::Shutdown(shard_id, code);
 
             if let Err(why) = runner.runner_tx.tx.unbounded_send(msg) {
