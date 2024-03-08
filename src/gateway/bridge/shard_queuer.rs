@@ -4,9 +4,9 @@ use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
 
-use futures::channel::mpsc::UnboundedReceiver as Receiver;
+use futures::channel::mpsc::{Sender, UnboundedReceiver, UnboundedSender};
 use futures::channel::oneshot;
-use futures::StreamExt;
+use futures::{SinkExt as _, StreamExt};
 use tokio::time::{sleep, timeout, Duration, Instant};
 use tracing::{debug, info, warn};
 
@@ -15,7 +15,6 @@ use super::VoiceGatewayManager;
 use super::{
     ShardId,
     ShardLatencyInfo,
-    ShardManager,
     ShardMessenger,
     ShardQueuerMessage,
     ShardRunner,
@@ -26,7 +25,7 @@ use crate::cache::Cache;
 use crate::client::{EventHandler, RawEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
-use crate::gateway::{PresenceData, Shard, ShardRunnerMessage};
+use crate::gateway::{GatewayError, PresenceData, Shard, ShardRunnerMessage};
 use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::internal::tokio::spawn_named;
@@ -58,14 +57,16 @@ pub struct ShardQueuer {
     ///
     /// This is used to determine how long to wait between shard IDENTIFYs.
     pub last_start: Option<Instant>,
-    /// A copy of the [`ShardManager`] to communicate with it.
-    pub manager: Arc<ShardManager>,
+    /// The channel to send the shutdown value for the ShardManager's start call.
+    pub manager_shutdown_channel: Sender<Result<(), GatewayError>>,
     /// The shards that are queued for booting.
     pub queue: ShardQueue,
     /// A copy of the map of shard runners.
     pub runners: HashMap<ShardId, ShardMessenger>,
     /// A receiver channel for the shard queuer to be told to start shards.
-    pub rx: Receiver<ShardQueuerMessage>,
+    pub rx: UnboundedReceiver<ShardQueuerMessage>,
+    /// A sender channel for shard runners to communicate back to the queuer.
+    pub tx: UnboundedSender<ShardQueuerMessage>,
     /// A copy of the client's voice manager.
     #[cfg(feature = "voice")]
     pub voice_manager: Option<Arc<dyn VoiceGatewayManager + 'static>>,
@@ -140,7 +141,7 @@ impl ShardQueuer {
                             "[Shard Queuer] Received to shutdown shard {} with code {}",
                             shard_id.0, code
                         );
-                        self.shutdown(shard_id, code, Some(resp));
+                        self.shutdown(shard_id, code, resp);
                     },
                     Some(ShardQueuerMessage::Shutdown) => {
                         debug!("[Shard Queuer] Received to shutdown all shards");
@@ -242,7 +243,7 @@ impl ShardQueuer {
             raw_event_handlers: self.raw_event_handlers.clone(),
             #[cfg(feature = "framework")]
             framework: self.framework.get().cloned(),
-            manager: Arc::clone(&self.manager),
+            manager_shutdown_channel: self.manager_shutdown_channel.clone(),
             #[cfg(feature = "voice")]
             voice_manager: self.voice_manager.clone(),
             shard,
@@ -251,11 +252,37 @@ impl ShardQueuer {
             http: Arc::clone(&self.http),
         });
 
-        self.runners.insert(shard_id, ShardMessenger::new(&runner));
+        let mut queuer_tx = self.tx.clone();
 
-        spawn_named("shard_queuer::stop", async move {
-            drop(runner.run().await);
-            debug!("[ShardRunner {:?}] Stopping", runner.shard.shard_info());
+        self.runners.insert(shard_id, ShardMessenger::new(&runner));
+        spawn_named("shard_queuer::runner", async move {
+            let shard_info = runner.shard.shard_info();
+            match runner.run().await {
+                Ok(true) => {
+                    debug!("[ShardRunner {shard_info:?}] Restarting");
+                    let msgs = [
+                        ShardQueuerMessage::ShutdownShard {
+                            shard_id,
+                            code: 4000,
+                            resp: None,
+                        },
+                        ShardQueuerMessage::Start {
+                            shard_id,
+                            concurrent: false,
+                        },
+                    ];
+
+                    if queuer_tx.send_all(&mut futures::stream::iter(msgs.map(Ok))).await.is_err() {
+                        warn!("[ShardRunner {shard_info:?}] Couldn't notify queuer of restart");
+                    };
+                },
+                Ok(false) => {
+                    debug!("[ShardRunner {shard_info:?}] Shutdown");
+                },
+                Err(err) => {
+                    debug!("[ShardRunner {shard_info:?}] Errored: {err}");
+                },
+            }
         });
 
         Ok(())
@@ -277,6 +304,10 @@ impl ShardQueuer {
             // We pass None as we do not want to wait for all shards to finish shutting down.
             self.shutdown(shard_id, 1000, None);
         }
+
+        // If this blocks, the manager already has a shutdown request queued,
+        // so it doesn't matter that this failed.
+        drop(self.manager_shutdown_channel.try_send(Ok(())));
     }
 
     /// Attempts to shut down the shard runner by Id.
@@ -293,7 +324,7 @@ impl ShardQueuer {
     ) {
         info!("Shutting down shard {}", shard_id);
 
-        if let Some(runner) = self.runners.get(&shard_id) {
+        if let Some(runner) = self.runners.remove(&shard_id) {
             runner.send_to_shard(ShardRunnerMessage::Shutdown(code, resp_channel));
         }
     }

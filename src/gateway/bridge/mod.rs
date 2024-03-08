@@ -79,7 +79,7 @@ pub enum ShardQueuerMessage {
     /// Message to shutdown the shard queuer.
     Shutdown,
     /// Message to dequeue/shutdown a shard.
-    ShutdownShard { shard_id: ShardId, code: u16, resp: oneshot::Sender<()> },
+    ShutdownShard { shard_id: ShardId, code: u16, resp: Option<oneshot::Sender<()>> },
     /// Message to query if the runner contains a shard.
     ContainsShard { shard_id: ShardId, resp: oneshot::Sender<bool> },
     /// Message to query the latency info of a runner.

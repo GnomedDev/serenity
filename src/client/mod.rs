@@ -456,7 +456,7 @@ pub struct Client {
     /// # use std::time::Duration;
     /// #
     /// # fn run(client: Client) {
-    /// // Create a clone of the `Arc` containing the shard manager.
+    /// // Create a clone of the shard manager.
     /// let shard_manager = client.shard_manager.clone();
     ///
     /// // Create a thread which will sleep for 60 seconds and then have the shard manager
@@ -470,7 +470,7 @@ pub struct Client {
     /// });
     /// # }
     /// ```
-    pub shard_manager: Arc<ShardManager>,
+    pub shard_manager: ShardManager,
     shard_manager_return_value: Receiver<Result<(), GatewayError>>,
     /// The voice manager for the client.
     ///

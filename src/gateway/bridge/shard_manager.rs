@@ -4,9 +4,8 @@ use std::sync::Arc;
 #[cfg(feature = "framework")]
 use std::sync::OnceLock;
 
-use futures::channel::mpsc::{self, Receiver, Sender, UnboundedSender};
+use futures::channel::mpsc::{self, Receiver, UnboundedSender};
 use futures::channel::oneshot;
-use futures::SinkExt as _;
 use tokio::time::timeout;
 use tracing::{info, warn};
 
@@ -90,9 +89,8 @@ use crate::model::gateway::GatewayIntents;
 /// ```
 ///
 /// [`Client`]: crate::Client
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ShardManager {
-    return_value_tx: parking_lot::Mutex<Option<Sender<Result<(), GatewayError>>>>,
     shard_queuer: UnboundedSender<ShardQueuerMessage>,
     gateway_intents: GatewayIntents,
 }
@@ -101,15 +99,14 @@ impl ShardManager {
     /// Creates a new shard manager, returning both the manager and a monitor for usage in a
     /// separate thread.
     #[must_use]
-    pub fn new(opt: ShardManagerOptions) -> (Arc<Self>, Receiver<Result<(), GatewayError>>) {
+    pub fn new(opt: ShardManagerOptions) -> (Self, Receiver<Result<(), GatewayError>>) {
         let (return_value_tx, return_value_rx) = mpsc::channel(1);
         let (shard_queue_tx, shard_queue_rx) = mpsc::unbounded();
 
-        let manager = Arc::new(Self {
-            return_value_tx: parking_lot::Mutex::new(Some(return_value_tx)),
-            shard_queuer: shard_queue_tx,
+        let manager = Self {
+            shard_queuer: shard_queue_tx.clone(),
             gateway_intents: opt.intents,
-        });
+        };
 
         let mut shard_queuer = ShardQueuer {
             data: opt.data,
@@ -118,10 +115,11 @@ impl ShardManager {
             #[cfg(feature = "framework")]
             framework: opt.framework,
             last_start: None,
-            manager: Arc::clone(&manager),
+            manager_shutdown_channel: return_value_tx,
             queue: ShardQueue::new(opt.max_concurrency),
             runners: HashMap::new(),
             rx: shard_queue_rx,
+            tx: shard_queue_tx,
             #[cfg(feature = "voice")]
             voice_manager: opt.voice_manager,
             ws_url: opt.ws_url,
@@ -137,7 +135,7 @@ impl ShardManager {
             shard_queuer.run().await;
         });
 
-        (Arc::clone(&manager), return_value_rx)
+        (manager, return_value_rx)
     }
 
     /// Returns whether the shard manager contains either an active instance of a shard runner
@@ -226,7 +224,7 @@ impl ShardManager {
 
         let (finished_channel_tx, finished_channel_rx) = futures::channel::oneshot::channel();
         let msg = ShardQueuerMessage::ShutdownShard {
-            resp: finished_channel_tx,
+            resp: Some(finished_channel_tx),
             shard_id,
             code,
         };
@@ -244,13 +242,10 @@ impl ShardManager {
     /// If you only need to shutdown a select number of shards, prefer looping over the
     /// [`Self::shutdown`] method.
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    pub async fn shutdown_all(&self) {
+    pub fn shutdown_all(&self) {
         info!("Shutting down all shards");
-        drop(self.shard_queuer.unbounded_send(ShardQueuerMessage::Shutdown));
 
-        // this message is received by Client::start_connection, which lets the main thread know
-        // and finally return from Client::start
-        self.return_with_value(Ok(())).await;
+        drop(self.shard_queuer.unbounded_send(ShardQueuerMessage::Shutdown));
     }
 
     fn set_shard_total(&self, shard_total: NonZeroU16) {
@@ -274,17 +269,6 @@ impl ShardManager {
     #[must_use]
     pub fn intents(&self) -> GatewayIntents {
         self.gateway_intents
-    }
-
-    pub async fn return_with_value(&self, ret: Result<(), GatewayError>) {
-        let Some(mut return_value_tx) = self.return_value_tx.lock().take() else {
-            tracing::warn!("failed to send return value as value has already been sent");
-            return;
-        };
-
-        if let Err(e) = return_value_tx.send(ret).await {
-            tracing::warn!("failed to send return value: {}", e);
-        }
     }
 }
 
