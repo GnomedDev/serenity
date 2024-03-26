@@ -85,7 +85,7 @@ impl<'a> EditSticker<'a> {
         http: &Http,
         guild_id: GuildId,
         sticker_id: StickerId,
-    ) -> Result<Sticker> {
+    ) -> HttpResult<Sticker> {
         http.edit_sticker(guild_id, sticker_id, &self, self.audit_log_reason).await
     }
 }

@@ -64,6 +64,8 @@ impl ErrorResponse {
     }
 }
 
+pub type HttpResult<T> = StdResult<T, HttpError>;
+
 #[derive(Debug)]
 #[non_exhaustive]
 pub enum HttpError {
@@ -84,6 +86,8 @@ pub enum HttpError {
     Request(ReqwestError),
     /// When an application id was expected but missing.
     ApplicationIdMissing,
+    /// Unable to serialize arguments or deserialize a response.
+    Json(serde_json::Error),
 }
 
 impl HttpError {
@@ -139,6 +143,12 @@ impl From<InvalidHeaderValue> for HttpError {
     }
 }
 
+impl From<serde_json::Error> for HttpError {
+    fn from(value: serde_json::Error) -> Self {
+        Self::Json(value)
+    }
+}
+
 impl fmt::Display for HttpError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -170,6 +180,7 @@ impl fmt::Display for HttpError {
             Self::InvalidHeader(_) => f.write_str("Provided value is an invalid header value."),
             Self::Request(_) => f.write_str("Error while sending HTTP request."),
             Self::ApplicationIdMissing => f.write_str("Application id was expected but missing."),
+            Self::Json(_) => f.write_str("Unable to serialize argumentsor deserialize a response."),
         }
     }
 }
@@ -179,6 +190,7 @@ impl StdError for HttpError {
         match self {
             Self::Url(inner) => Some(inner),
             Self::Request(inner) => Some(inner),
+            Self::Json(inner) => Some(inner),
             _ => None,
         }
     }

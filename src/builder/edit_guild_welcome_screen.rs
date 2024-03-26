@@ -71,7 +71,7 @@ impl<'a> EditGuildWelcomeScreen<'a> {
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, guild_id: GuildId) -> Result<GuildWelcomeScreen> {
+    pub async fn execute(self, http: &Http, guild_id: GuildId) -> HttpResult<GuildWelcomeScreen> {
         http.edit_guild_welcome_screen(guild_id, &self, self.audit_log_reason).await
     }
 }

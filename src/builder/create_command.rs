@@ -477,7 +477,7 @@ impl<'a> CreateCommand<'a> {
         http: &Http,
         guild_id: Option<GuildId>,
         command_id: Option<CommandId>,
-    ) -> Result<Command> {
+    ) -> HttpResult<Command> {
         match (guild_id, command_id) {
             (Some(guild_id), Some(cmd_id)) => {
                 http.edit_guild_command(guild_id, cmd_id, &self).await

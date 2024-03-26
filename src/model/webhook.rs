@@ -150,7 +150,7 @@ impl WebhookGuild {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if the current user is not in the guild.
-    pub async fn to_partial_guild_with_counts(self, http: &Http) -> Result<PartialGuild> {
+    pub async fn to_partial_guild_with_counts(self, http: &Http) -> HttpResult<PartialGuild> {
         http.get_guild_with_counts(self.id).await
     }
 }
@@ -212,7 +212,7 @@ impl Webhook {
     ///
     /// May also return an [`Error::Json`] if there is an error in deserialising Discord's
     /// response.
-    pub async fn from_id(http: &Http, webhook_id: WebhookId) -> Result<Self> {
+    pub async fn from_id(http: &Http, webhook_id: WebhookId) -> HttpResult<Self> {
         http.get_webhook(webhook_id).await
     }
 
@@ -248,7 +248,7 @@ impl Webhook {
         http: &Http,
         webhook_id: WebhookId,
         token: &str,
-    ) -> Result<Self> {
+    ) -> HttpResult<Self> {
         http.get_webhook_with_token(webhook_id, token).await
     }
 
@@ -279,7 +279,7 @@ impl Webhook {
     ///
     /// May also return an [`Error::Json`] if there is an error in deserialising Discord's
     /// response.
-    pub async fn from_url(http: &Http, url: &str) -> Result<Self> {
+    pub async fn from_url(http: &Http, url: &str) -> HttpResult<Self> {
         http.get_webhook_from_url(url).await
     }
 
@@ -515,7 +515,7 @@ impl WebhookId {
     /// May also return an [`Error::Json`] if there is an error in deserialising the response.
     ///
     /// [Manage Webhooks]: super::permissions::Permissions::MANAGE_WEBHOOKS
-    pub async fn to_webhook(self, http: &Http) -> Result<Webhook> {
+    pub async fn to_webhook(self, http: &Http) -> HttpResult<Webhook> {
         http.get_webhook(self).await
     }
 }

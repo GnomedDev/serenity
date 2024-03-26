@@ -116,6 +116,7 @@ impl<'a> EditInteractionResponse<'a> {
 
         let files = self.0.attachments.as_mut().map_or(Vec::new(), EditAttachments::take_files);
 
-        http.edit_original_interaction_response(interaction_token, &self, files).await
+        let response = http.edit_original_interaction_response(interaction_token, &self, files).await?;
+        Ok(response)
     }
 }

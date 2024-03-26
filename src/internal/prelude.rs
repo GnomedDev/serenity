@@ -10,5 +10,6 @@ pub use small_fixed_array::{FixedArray, FixedString, TruncatingInto};
 
 pub(crate) use super::utils::join_to_string;
 pub use crate::error::{Error, Result};
+pub use crate::http::HttpResult;
 
 pub type JsonMap = serde_json::Map<String, Value>;

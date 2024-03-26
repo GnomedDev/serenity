@@ -140,7 +140,11 @@ impl<'a> CreateScheduledEvent<'a> {
         #[cfg(feature = "cache")]
         crate::utils::user_has_guild_perms(&cache_http, channel_id, Permissions::CREATE_EVENTS)?;
 
-        cache_http.http().create_scheduled_event(channel_id, &self, self.audit_log_reason).await
+        let event = cache_http
+            .http()
+            .create_scheduled_event(channel_id, &self, self.audit_log_reason)
+            .await?;
+        Ok(event)
     }
 }
 

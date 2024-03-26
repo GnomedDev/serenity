@@ -152,7 +152,7 @@ impl Command {
     pub async fn set_global_commands(
         http: &Http,
         commands: &[CreateCommand<'_>],
-    ) -> Result<Vec<Command>> {
+    ) -> HttpResult<Vec<Command>> {
         http.create_global_commands(&commands).await
     }
 
@@ -174,7 +174,7 @@ impl Command {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_global_commands(http: &Http) -> Result<Vec<Command>> {
+    pub async fn get_global_commands(http: &Http) -> HttpResult<Vec<Command>> {
         http.get_global_commands().await
     }
 
@@ -183,7 +183,7 @@ impl Command {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_global_commands_with_localizations(http: &Http) -> Result<Vec<Command>> {
+    pub async fn get_global_commands_with_localizations(http: &Http) -> HttpResult<Vec<Command>> {
         http.get_global_commands_with_localizations().await
     }
 
@@ -192,7 +192,7 @@ impl Command {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_global_command(http: &Http, command_id: CommandId) -> Result<Command> {
+    pub async fn get_global_command(http: &Http, command_id: CommandId) -> HttpResult<Command> {
         http.get_global_command(command_id).await
     }
 

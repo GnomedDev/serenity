@@ -181,7 +181,7 @@ impl<'a> EditScheduledEvent<'a> {
         http: &Http,
         guild_id: GuildId,
         event_id: ScheduledEventId,
-    ) -> Result<ScheduledEvent> {
+    ) -> HttpResult<ScheduledEvent> {
         http.edit_scheduled_event(guild_id, event_id, &self, self.audit_log_reason).await
     }
 }

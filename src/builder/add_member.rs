@@ -97,7 +97,7 @@ impl<'a> AddMember<'a> {
         http: &Http,
         guild_id: GuildId,
         user_id: UserId,
-    ) -> Result<Option<Member>> {
+    ) -> HttpResult<Option<Member>> {
         http.add_guild_member(guild_id, user_id, &self).await
     }
 }

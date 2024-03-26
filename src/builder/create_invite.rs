@@ -222,6 +222,8 @@ impl<'a> CreateInvite<'a> {
             }
         }
 
-        cache_http.http().create_invite(channel_id, &self, self.audit_log_reason).await
+        let invite =
+            cache_http.http().create_invite(channel_id, &self, self.audit_log_reason).await?;
+        Ok(invite)
     }
 }

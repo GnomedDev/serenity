@@ -45,7 +45,7 @@ impl GuildId {
     /// Returns an [`Error::Http`] if the guild is unavailable.
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn automod_rules(self, http: &Http) -> Result<Vec<Rule>> {
+    pub async fn automod_rules(self, http: &Http) -> HttpResult<Vec<Rule>> {
         http.get_automod_rules(self).await
     }
 
@@ -58,7 +58,7 @@ impl GuildId {
     /// Returns an [`Error::Http`] if a rule with the given ID does not exist.
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn automod_rule(self, http: &Http, rule_id: RuleId) -> Result<Rule> {
+    pub async fn automod_rule(self, http: &Http, rule_id: RuleId) -> HttpResult<Rule> {
         http.get_automod_rule(self, rule_id).await
     }
 
@@ -238,7 +238,7 @@ impl GuildId {
         http: &Http,
         target: Option<UserPagination>,
         limit: Option<NonMaxU16>,
-    ) -> Result<Vec<Ban>> {
+    ) -> HttpResult<Vec<Ban>> {
         http.get_bans(self, target, limit).await
     }
 
@@ -259,7 +259,7 @@ impl GuildId {
         user_id: Option<UserId>,
         before: Option<AuditLogEntryId>,
         limit: Option<NonMaxU8>,
-    ) -> Result<AuditLogs> {
+    ) -> HttpResult<AuditLogs> {
         http.get_audit_logs(self, action_type, user_id, before, limit).await
     }
 
@@ -893,7 +893,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if the current user is not in the guild.
-    pub async fn to_partial_guild_with_counts(self, http: &Http) -> Result<PartialGuild> {
+    pub async fn to_partial_guild_with_counts(self, http: &Http) -> HttpResult<PartialGuild> {
         http.get_guild_with_counts(self).await
     }
 
@@ -902,7 +902,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if the guild is unavailable.
-    pub async fn emojis(self, http: &Http) -> Result<Vec<Emoji>> {
+    pub async fn emojis(self, http: &Http) -> HttpResult<Vec<Emoji>> {
         http.get_emojis(self).await
     }
 
@@ -911,7 +911,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if an emoji with that id does not exist.
-    pub async fn emoji(self, http: &Http, emoji_id: EmojiId) -> Result<Emoji> {
+    pub async fn emoji(self, http: &Http, emoji_id: EmojiId) -> HttpResult<Emoji> {
         http.get_emoji(self, emoji_id).await
     }
 
@@ -920,7 +920,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if the guild is unavailable.
-    pub async fn stickers(self, http: &Http) -> Result<Vec<Sticker>> {
+    pub async fn stickers(self, http: &Http) -> HttpResult<Vec<Sticker>> {
         http.get_guild_stickers(self).await
     }
 
@@ -929,7 +929,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if an sticker with that Id does not exist.
-    pub async fn sticker(self, http: &Http, sticker_id: StickerId) -> Result<Sticker> {
+    pub async fn sticker(self, http: &Http, sticker_id: StickerId) -> HttpResult<Sticker> {
         http.get_guild_sticker(self, sticker_id).await
     }
 
@@ -943,7 +943,7 @@ impl GuildId {
     /// [`Error::Json`] if there is an error in deserializing the API response.
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn integrations(self, http: &Http) -> Result<Vec<Integration>> {
+    pub async fn integrations(self, http: &Http) -> HttpResult<Vec<Integration>> {
         http.get_guild_integrations(self).await
     }
 
@@ -957,7 +957,7 @@ impl GuildId {
     /// [`Error::Json`] if there is an error in deserializing the API response.
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn invites(self, http: &Http) -> Result<Vec<RichInvite>> {
+    pub async fn invites(self, http: &Http) -> HttpResult<Vec<RichInvite>> {
         http.get_guild_invites(self).await
     }
 
@@ -990,7 +990,7 @@ impl GuildId {
     ///
     /// Returns an [`Error::Http`] if the current user is not in the guild or the access token
     /// lacks the necessary scope.
-    pub async fn current_user_member(self, http: &Http) -> Result<Member> {
+    pub async fn current_user_member(self, http: &Http) -> HttpResult<Member> {
         http.get_current_user_guild_member(self).await
     }
 
@@ -1046,7 +1046,7 @@ impl GuildId {
         http: &Http,
         limit: Option<NonMaxU16>,
         after: Option<UserId>,
-    ) -> Result<Vec<Member>> {
+    ) -> HttpResult<Vec<Member>> {
         http.get_guild_members(self, limit, after).await
     }
 
@@ -1129,7 +1129,7 @@ impl GuildId {
     /// Returns [`Error::Http`] if the current user does not have permission.
     ///
     /// [Kick Members]: Permissions::KICK_MEMBERS
-    pub async fn prune_count(self, http: &Http, days: u8) -> Result<GuildPrune> {
+    pub async fn prune_count(self, http: &Http, days: u8) -> HttpResult<GuildPrune> {
         http.get_guild_prune_count(self, days).await
     }
 
@@ -1180,7 +1180,7 @@ impl GuildId {
         http: &Http,
         query: &str,
         limit: Option<NonMaxU16>,
-    ) -> Result<Vec<Member>> {
+    ) -> HttpResult<Vec<Member>> {
         http.search_guild_members(self, query, limit).await
     }
 
@@ -1201,7 +1201,7 @@ impl GuildId {
         http: &Http,
         event_id: ScheduledEventId,
         with_user_count: bool,
-    ) -> Result<ScheduledEvent> {
+    ) -> HttpResult<ScheduledEvent> {
         http.get_scheduled_event(self, event_id, with_user_count).await
     }
 
@@ -1219,7 +1219,7 @@ impl GuildId {
         self,
         http: &Http,
         with_user_count: bool,
-    ) -> Result<Vec<ScheduledEvent>> {
+    ) -> HttpResult<Vec<ScheduledEvent>> {
         http.get_scheduled_events(self, with_user_count).await
     }
 
@@ -1240,7 +1240,7 @@ impl GuildId {
         http: &Http,
         event_id: ScheduledEventId,
         limit: Option<NonMaxU8>,
-    ) -> Result<Vec<ScheduledEventUser>> {
+    ) -> HttpResult<Vec<ScheduledEventUser>> {
         http.get_scheduled_event_users(self, event_id, limit, None, None).await
     }
 
@@ -1262,7 +1262,7 @@ impl GuildId {
         limit: Option<NonMaxU8>,
         target: Option<UserPagination>,
         with_member: Option<bool>,
-    ) -> Result<Vec<ScheduledEventUser>> {
+    ) -> HttpResult<Vec<ScheduledEventUser>> {
         http.get_scheduled_event_users(self, event_id, limit, target, with_member).await
     }
 
@@ -1307,7 +1307,7 @@ impl GuildId {
     /// Returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Kick Members]: Permissions::KICK_MEMBERS
-    pub async fn start_prune(self, http: &Http, days: u8) -> Result<GuildPrune> {
+    pub async fn start_prune(self, http: &Http, days: u8) -> HttpResult<GuildPrune> {
         http.start_guild_prune(self, days, None).await
     }
 
@@ -1334,7 +1334,7 @@ impl GuildId {
     /// [`Error::Json`] if there is an error deserializing the API response.
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
-    pub async fn vanity_url(self, http: &Http) -> Result<String> {
+    pub async fn vanity_url(self, http: &Http) -> HttpResult<String> {
         http.get_guild_vanity_url(self).await
     }
 
@@ -1348,7 +1348,7 @@ impl GuildId {
     ///
     /// Will return an [`Error::Http`] if the bot is lacking permissions. Can also return an
     /// [`Error::Json`] if there is an error deserializing the API response.
-    pub async fn webhooks(self, http: &Http) -> Result<Vec<Webhook>> {
+    pub async fn webhooks(self, http: &Http) -> HttpResult<Vec<Webhook>> {
         http.get_guild_webhooks(self).await
     }
     /// Returns a builder which can be awaited to obtain a message or stream of messages in this
@@ -1397,7 +1397,7 @@ impl GuildId {
         self,
         http: &Http,
         commands: &[CreateCommand<'_>],
-    ) -> Result<Vec<Command>> {
+    ) -> HttpResult<Vec<Command>> {
         http.create_guild_commands(self, &commands).await
     }
 
@@ -1422,7 +1422,7 @@ impl GuildId {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_commands(self, http: &Http) -> Result<Vec<Command>> {
+    pub async fn get_commands(self, http: &Http) -> HttpResult<Vec<Command>> {
         http.get_guild_commands(self).await
     }
 
@@ -1431,7 +1431,7 @@ impl GuildId {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_commands_with_localizations(self, http: &Http) -> Result<Vec<Command>> {
+    pub async fn get_commands_with_localizations(self, http: &Http) -> HttpResult<Vec<Command>> {
         http.get_guild_commands_with_localizations(self).await
     }
 
@@ -1440,7 +1440,7 @@ impl GuildId {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_command(self, http: &Http, command_id: CommandId) -> Result<Command> {
+    pub async fn get_command(self, http: &Http, command_id: CommandId) -> HttpResult<Command> {
         http.get_guild_command(self, command_id).await
     }
 
@@ -1472,7 +1472,10 @@ impl GuildId {
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    pub async fn get_commands_permissions(self, http: &Http) -> Result<Vec<CommandPermissions>> {
+    pub async fn get_commands_permissions(
+        self,
+        http: &Http,
+    ) -> HttpResult<Vec<CommandPermissions>> {
         http.get_guild_commands_permissions(self).await
     }
 
@@ -1485,7 +1488,7 @@ impl GuildId {
         self,
         http: &Http,
         command_id: CommandId,
-    ) -> Result<CommandPermissions> {
+    ) -> HttpResult<CommandPermissions> {
         http.get_guild_command_permissions(self, command_id).await
     }
 
@@ -1494,7 +1497,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns [`Error::Http`] if the guild does not have a welcome screen.
-    pub async fn get_welcome_screen(self, http: &Http) -> Result<GuildWelcomeScreen> {
+    pub async fn get_welcome_screen(self, http: &Http) -> HttpResult<GuildWelcomeScreen> {
         http.get_guild_welcome_screen(self).await
     }
 
@@ -1506,7 +1509,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns [`Error::Http`] if the bot cannot see the guild preview, see the note.
-    pub async fn get_preview(self, http: &Http) -> Result<GuildPreview> {
+    pub async fn get_preview(self, http: &Http) -> HttpResult<GuildPreview> {
         http.get_guild_preview(self).await
     }
 
@@ -1515,7 +1518,7 @@ impl GuildId {
     /// # Errors
     ///
     /// Returns [`Error::Http`] if the bot does not have `MANAGE_MESSAGES` permission.
-    pub async fn get_widget(self, http: &Http) -> Result<GuildWidget> {
+    pub async fn get_widget(self, http: &Http) -> HttpResult<GuildWidget> {
         http.get_guild_widget(self).await
     }
 
@@ -1531,7 +1534,7 @@ impl GuildId {
     ///
     /// Returns [`Error::Http`] if there is an error in the deserialization, or if the bot issuing
     /// the request is not in the guild.
-    pub async fn get_active_threads(self, http: &Http) -> Result<ThreadsData> {
+    pub async fn get_active_threads(self, http: &Http) -> HttpResult<ThreadsData> {
         http.get_guild_active_threads(self).await
     }
 }

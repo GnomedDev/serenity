@@ -86,7 +86,7 @@ impl<'a> EditProfile<'a> {
     /// Returns an [`Error::Http`] if an invalid value is set. May also return an [`Error::Json`]
     /// if there is an error in deserializing the API response.
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http) -> Result<CurrentUser> {
+    pub async fn execute(self, http: &Http) -> HttpResult<CurrentUser> {
         http.edit_profile(&self).await
     }
 }

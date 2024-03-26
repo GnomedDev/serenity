@@ -43,7 +43,7 @@ impl<'a> EditCommandPermissions<'a> {
         http: &Http,
         guild_id: GuildId,
         command_id: CommandId,
-    ) -> Result<CommandPermissions> {
+    ) -> HttpResult<CommandPermissions> {
         http.edit_guild_command_permissions(guild_id, command_id, &self).await
     }
 }

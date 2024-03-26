@@ -68,7 +68,7 @@ impl ModalInteraction {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if there is no interaction response.
-    pub async fn get_response(&self, http: &Http) -> Result<Message> {
+    pub async fn get_response(&self, http: &Http) -> HttpResult<Message> {
         http.get_original_interaction_response(&self.token).await
     }
 

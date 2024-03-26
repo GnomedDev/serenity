@@ -14,7 +14,7 @@ impl StickerId {
     ///
     /// Returns [`Error::Http`] if a [`Sticker`] with that [`StickerId`] does not exist, or is
     /// otherwise unavailable.
-    pub async fn to_sticker(self, http: &Http) -> Result<Sticker> {
+    pub async fn to_sticker(self, http: &Http) -> HttpResult<Sticker> {
         http.get_sticker(self).await
     }
 }

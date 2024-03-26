@@ -169,9 +169,11 @@ impl<'a> CreateInteractionResponseFollowup<'a> {
 
         let files = self.attachments.take_files();
 
-        match message_id {
-            Some(id) => http.edit_followup_message(interaction_token, id, &self, files).await,
-            None => http.create_followup_message(interaction_token, &self, files).await,
-        }
+        let response = match message_id {
+            Some(id) => http.edit_followup_message(interaction_token, id, &self, files).await?,
+            None => http.create_followup_message(interaction_token, &self, files).await?,
+        };
+
+        Ok(response)
     }
 }

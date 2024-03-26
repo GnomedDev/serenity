@@ -89,7 +89,7 @@ impl CommandInteraction {
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if there is no interaction response.
-    pub async fn get_response(&self, http: &Http) -> Result<Message> {
+    pub async fn get_response(&self, http: &Http) -> HttpResult<Message> {
         http.get_original_interaction_response(&self.token).await
     }
 
@@ -190,7 +190,7 @@ impl CommandInteraction {
     ///
     /// May return [`Error::Http`] if the API returns an error. Such as if the response was
     /// deleted.
-    pub async fn get_followup(&self, http: &Http, message_id: MessageId) -> Result<Message> {
+    pub async fn get_followup(&self, http: &Http, message_id: MessageId) -> HttpResult<Message> {
         http.get_followup_message(&self.token, message_id).await
     }
 

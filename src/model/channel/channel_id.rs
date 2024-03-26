@@ -130,7 +130,7 @@ impl ChannelId {
     /// Returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
-    pub async fn delete(self, http: &Http) -> Result<Channel> {
+    pub async fn delete(self, http: &Http) -> HttpResult<Channel> {
         http.delete_channel(self, None).await
     }
 
@@ -399,7 +399,7 @@ impl ChannelId {
     /// Returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
-    pub async fn invites(self, http: &Http) -> Result<Vec<RichInvite>> {
+    pub async fn invites(self, http: &Http) -> HttpResult<Vec<RichInvite>> {
         http.get_channel_invites(self).await
     }
 
@@ -520,7 +520,7 @@ impl ChannelId {
     /// author of the message.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn crosspost(self, http: &Http, message_id: MessageId) -> Result<Message> {
+    pub async fn crosspost(self, http: &Http, message_id: MessageId) -> HttpResult<Message> {
         http.crosspost_message(self, message_id).await
     }
 
@@ -755,7 +755,7 @@ impl ChannelId {
     /// Returns [`Error::Http`] if the current user lacks permission.
     ///
     /// [Manage Webhooks]: Permissions::MANAGE_WEBHOOKS
-    pub async fn webhooks(self, http: &Http) -> Result<Vec<Webhook>> {
+    pub async fn webhooks(self, http: &Http) -> HttpResult<Vec<Webhook>> {
         http.get_channel_webhooks(self).await
     }
 
@@ -804,7 +804,7 @@ impl ChannelId {
     ///
     /// Returns [`Error::Http`] if the channel is not a stage channel, or if there is no stage
     /// instance currently.
-    pub async fn get_stage_instance(self, http: &Http) -> Result<StageInstance> {
+    pub async fn get_stage_instance(self, http: &Http) -> HttpResult<StageInstance> {
         http.get_stage_instance(self).await
     }
 
@@ -903,7 +903,7 @@ impl ChannelId {
     /// # Errors
     ///
     /// It may return an [`Error::Http`] if the channel is not a thread channel
-    pub async fn get_thread_members(self, http: &Http) -> Result<Vec<ThreadMember>> {
+    pub async fn get_thread_members(self, http: &Http) -> HttpResult<Vec<ThreadMember>> {
         http.get_channel_thread_members(self).await
     }
 
@@ -955,7 +955,7 @@ impl ChannelId {
         http: &Http,
         user_id: UserId,
         with_member: bool,
-    ) -> Result<ThreadMember> {
+    ) -> HttpResult<ThreadMember> {
         http.get_thread_channel_member(self, user_id, with_member).await
     }
 
@@ -969,7 +969,7 @@ impl ChannelId {
         http: &Http,
         before: Option<Timestamp>,
         limit: Option<u64>,
-    ) -> Result<ThreadsData> {
+    ) -> HttpResult<ThreadsData> {
         http.get_channel_archived_private_threads(self, before, limit).await
     }
 
@@ -983,7 +983,7 @@ impl ChannelId {
         http: &Http,
         before: Option<Timestamp>,
         limit: Option<u64>,
-    ) -> Result<ThreadsData> {
+    ) -> HttpResult<ThreadsData> {
         http.get_channel_archived_public_threads(self, before, limit).await
     }
 
@@ -997,7 +997,7 @@ impl ChannelId {
         http: &Http,
         before: Option<ChannelId>,
         limit: Option<u64>,
-    ) -> Result<ThreadsData> {
+    ) -> HttpResult<ThreadsData> {
         http.get_channel_joined_archived_private_threads(self, before, limit).await
     }
 }

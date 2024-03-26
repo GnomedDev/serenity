@@ -109,7 +109,7 @@ impl<'a> EditThread<'a> {
     ///
     /// Returns [`Error::Http`] if the current user lacks permission.
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> Result<GuildChannel> {
+    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> HttpResult<GuildChannel> {
         http.edit_thread(channel_id, &self, self.audit_log_reason).await
     }
 }
