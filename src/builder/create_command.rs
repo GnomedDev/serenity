@@ -439,7 +439,7 @@ impl CreateCommand {
 
     #[cfg(feature = "unstable_discord_api")]
     /// Sets the installation contexts that this application command can be used in.
-    pub fn set_integration_types(mut self, integration_types: Vec<InstallationContext>) -> Self {
+    pub fn integration_types(mut self, integration_types: Vec<InstallationContext>) -> Self {
         self.integration_types = Some(integration_types);
         self
     }
@@ -453,7 +453,7 @@ impl CreateCommand {
 
     #[cfg(feature = "unstable_discord_api")]
     /// Sets the interaction contexts that this application command can be used in.
-    pub fn set_contexts(mut self, contexts: Vec<InteractionContext>) -> Self {
+    pub fn contexts(mut self, contexts: Vec<InteractionContext>) -> Self {
         self.contexts = Some(contexts);
         self
     }
