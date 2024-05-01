@@ -25,8 +25,6 @@ use crate::http::{CacheHttp, Http};
 use crate::internal::prelude::*;
 use crate::model::prelude::*;
 use crate::model::utils::{discord_colours, StrOrInt};
-#[cfg(all(feature = "model", feature = "cache"))]
-use crate::utils;
 
 /// A representation of a message over a guild's text channel, a group, or a private channel.
 ///
@@ -166,30 +164,13 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
-    ///
     /// Returns a [`ModelError::MessageAlreadyCrossposted`] if the message has already been
     /// crossposted.
     ///
     /// Returns a [`ModelError::CannotCrosspostMessage`] if the message cannot be crossposted.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn crosspost(&self, cache_http: impl CacheHttp) -> Result<Message> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                if self.author.id != cache.current_user().id {
-                    utils::user_has_perms_cache(
-                        cache,
-                        guild_id,
-                        self.channel_id,
-                        Permissions::MANAGE_MESSAGES,
-                    )?;
-                }
-            }
-        }
-
+    pub async fn crosspost(&self, http: &Http) -> Result<Message> {
         if let Some(flags) = self.flags {
             if flags.contains(MessageFlags::CROSSPOSTED) {
                 return Err(Error::Model(ModelError::MessageAlreadyCrossposted));
@@ -200,7 +181,7 @@ impl Message {
             }
         }
 
-        self.channel_id.crosspost(cache_http.http(), self.id).await
+        self.channel_id.crosspost(http, self.id).await
     }
 
     /// First attempts to find a [`Channel`] by its Id in the cache, upon failure requests it via
@@ -230,26 +211,11 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` feature is enabled, then returns a [`ModelError::InvalidPermissions`] if the
-    /// current user does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn delete(&self, cache_http: impl CacheHttp, reason: Option<&str>) -> Result<()> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                if self.author.id != cache.current_user().id {
-                    utils::user_has_perms_cache(
-                        cache,
-                        guild_id,
-                        self.channel_id,
-                        Permissions::MANAGE_MESSAGES,
-                    )?;
-                }
-            }
-        }
-
-        self.channel_id.delete_message(cache_http.http(), self.id, reason).await
+    pub async fn delete(&self, http: &Http, reason: Option<&str>) -> Result<()> {
+        self.channel_id.delete_message(http, self.id, reason).await
     }
 
     /// Deletes all of the [`Reaction`]s associated with the message.
@@ -258,24 +224,11 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` feature is enabled, then returns a [`ModelError::InvalidPermissions`] if the
-    /// current user does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn delete_reactions(&self, cache_http: impl CacheHttp) -> Result<()> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                utils::user_has_perms_cache(
-                    cache,
-                    guild_id,
-                    self.channel_id,
-                    Permissions::MANAGE_MESSAGES,
-                )?;
-            }
-        }
-
-        self.channel_id.delete_reactions(cache_http.http(), self.id).await
+    pub async fn delete_reactions(&self, http: &Http) -> Result<()> {
+        self.channel_id.delete_reactions(http, self.id).await
     }
 
     /// Deletes the given [`Reaction`] from the message.
@@ -304,31 +257,15 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` feature is enabled, then returns a [`ModelError::InvalidPermissions`] if the
-    /// current user does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
     pub async fn delete_reaction_emoji(
         &self,
-        cache_http: impl CacheHttp,
+        http: &Http,
         reaction_type: impl Into<ReactionType>,
     ) -> Result<()> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                utils::user_has_perms_cache(
-                    cache,
-                    guild_id,
-                    self.channel_id,
-                    Permissions::MANAGE_MESSAGES,
-                )?;
-            }
-        }
-
-        cache_http
-            .http()
-            .delete_message_reaction_emoji(self.channel_id, self.id, &reaction_type.into())
-            .await
+        http.delete_message_reaction_emoji(self.channel_id, self.id, &reaction_type.into()).await
     }
 
     /// Edits this message, replacing the original content with new content.
@@ -486,24 +423,11 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn pin(&self, cache_http: impl CacheHttp, reason: Option<&str>) -> Result<()> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                utils::user_has_perms_cache(
-                    cache,
-                    guild_id,
-                    self.channel_id,
-                    Permissions::MANAGE_MESSAGES,
-                )?;
-            }
-        }
-
-        self.channel_id.pin(cache_http.http(), self.id, reason).await
+    pub async fn pin(&self, http: &Http, reason: Option<&str>) -> Result<()> {
+        self.channel_id.pin(http, self.id, reason).await
     }
 
     /// React to the message with a custom [`Emoji`] or unicode character.
@@ -512,10 +436,10 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required [permissions].
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Add Reactions]: Permissions::ADD_REACTIONS
+<<<<<<< HEAD
     /// [permissions]: crate::model::permissions
     pub async fn react(
         &self,
@@ -523,24 +447,27 @@ impl Message {
         reaction_type: impl Into<ReactionType>,
     ) -> Result<Reaction> {
         self.react_(cache_http, reaction_type.into(), false).await
+=======
+    pub async fn react(&self, http: &Http, reaction_type: impl Into<ReactionType>) -> Result<()> {
+        http.create_reaction(self.channel_id, self.id, &reaction_type.into()).await
+>>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// React to the message with a custom [`Emoji`] or unicode character.
     ///
-    /// **Note**: Requires  [Add Reactions] and [Use External Emojis] permissions.
+    /// **Note**: Requires [Add Reactions] and [Use External Emojis] permissions.
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required [permissions].
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Add Reactions]: Permissions::ADD_REACTIONS
     /// [Use External Emojis]: Permissions::USE_EXTERNAL_EMOJIS
-    /// [permissions]: crate::model::permissions
     pub async fn super_react(
         &self,
-        cache_http: impl CacheHttp,
+        http: &Http,
         reaction_type: impl Into<ReactionType>,
+<<<<<<< HEAD
     ) -> Result<Reaction> {
         self.react_(cache_http, reaction_type.into(), true).await
     }
@@ -601,6 +528,10 @@ impl Message {
             burst_colours: None,
             reaction_type: reaction_types,
         })
+=======
+    ) -> Result<()> {
+        http.create_super_reaction(self.channel_id, self.id, &reaction_type.into()).await
+>>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// Uses Discord's inline reply to a user without pinging them.
@@ -613,19 +544,21 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
-    ///
     /// Returns a [`ModelError::TooLarge`] if the content of the message is over the above
     /// limit, containing the number of unicode code points over the limit.
     ///
     /// [Send Messages]: Permissions::SEND_MESSAGES
+<<<<<<< HEAD
     pub async fn reply(
         &self,
         cache_http: impl CacheHttp,
         content: impl Into<Cow<'_, str>>,
     ) -> Result<Message> {
         self.reply_(cache_http, content, Some(false)).await
+=======
+    pub async fn reply(&self, http: &Http, content: impl Into<Cow<'_, str>>) -> Result<Message> {
+        self._reply(http, content, Some(false)).await
+>>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// Uses Discord's inline reply to a user with a ping.
@@ -636,8 +569,7 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// Returns a [`ModelError::TooLarge`] if the content of the message is over the above
     /// limit, containing the number of unicode code points over the limit.
@@ -645,10 +577,14 @@ impl Message {
     /// [Send Messages]: Permissions::SEND_MESSAGES
     pub async fn reply_ping(
         &self,
-        cache_http: impl CacheHttp,
+        http: &Http,
         content: impl Into<Cow<'_, str>>,
     ) -> Result<Message> {
+<<<<<<< HEAD
         self.reply_(cache_http, content, Some(true)).await
+=======
+        self._reply(http, content, Some(true)).await
+>>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// Replies to the user, mentioning them prior to the content in the form of: `@<USER_ID>
@@ -662,40 +598,32 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// Returns a [`ModelError::TooLarge`] if the content of the message is over the above
     /// limit, containing the number of unicode code points over the limit.
     ///
     /// [Send Messages]: Permissions::SEND_MESSAGES
+<<<<<<< HEAD
     pub async fn reply_mention(
         &self,
         cache_http: impl CacheHttp,
         content: impl Display,
     ) -> Result<Message> {
         self.reply_(cache_http, format!("{} {content}", self.author.mention()), None).await
+=======
+    pub async fn reply_mention(&self, http: &Http, content: impl Display) -> Result<Message> {
+        self._reply(http, format!("{} {content}", self.author.mention()), None).await
+>>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// `inlined` decides whether this reply is inlined and whether it pings.
     async fn reply_(
         &self,
-        cache_http: impl CacheHttp,
+        http: &Http,
         content: impl Into<Cow<'_, str>>,
         inlined: Option<bool>,
     ) -> Result<Message> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                utils::user_has_perms_cache(
-                    cache,
-                    guild_id,
-                    self.channel_id,
-                    Permissions::SEND_MESSAGES,
-                )?;
-            }
-        }
-
         let mut builder = CreateMessage::new().content(content);
         if let Some(ping_user) = inlined {
             let allowed_mentions = CreateAllowedMentions::new()
@@ -707,7 +635,7 @@ impl Message {
                 .all_roles(true);
             builder = builder.reference_message(self).allowed_mentions(allowed_mentions);
         }
-        self.channel_id.send_message(cache_http, builder).await
+        self.channel_id.send_message(http, builder).await
     }
 
     /// Checks whether the message mentions passed [`UserId`].
@@ -746,24 +674,11 @@ impl Message {
     ///
     /// # Errors
     ///
-    /// If the `cache` is enabled, returns a [`ModelError::InvalidPermissions`] if the current user
-    /// does not have the required permissions.
+    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
-    pub async fn unpin(&self, cache_http: impl CacheHttp, reason: Option<&str>) -> Result<()> {
-        #[cfg(feature = "cache")]
-        {
-            if let (Some(cache), Some(guild_id)) = (cache_http.cache(), self.guild_id) {
-                utils::user_has_perms_cache(
-                    cache,
-                    guild_id,
-                    self.channel_id,
-                    Permissions::MANAGE_MESSAGES,
-                )?;
-            }
-        }
-
-        cache_http.http().unpin_message(self.channel_id, self.id, reason).await
+    pub async fn unpin(&self, http: &Http, reason: Option<&str>) -> Result<()> {
+        http.unpin_message(self.channel_id, self.id, reason).await
     }
 
     /// Ends the [`Poll`] on this message, if there is one.
