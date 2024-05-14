@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client/event_handler.rs`."><title>event_handler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/client/event_handler.rs`."><title>event_handler.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -448,46 +448,167 @@
 <a href="#448" id="448">448</a>
 <a href="#449" id="449">449</a>
 <a href="#450" id="450">450</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
+<a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::VecDeque;
+<span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
+</span><span class="kw">use </span>std::num::NonZeroU16;
+<span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_trait::async_trait;
+<span class="kw">use </span>strum::{EnumCount, IntoStaticStr, VariantNames};
 
 <span class="kw">use </span><span class="kw">super</span>::context::Context;
 <span class="kw">use </span><span class="kw">crate</span>::gateway::ShardStageUpdateEvent;
 <span class="kw">use </span><span class="kw">crate</span>::http::RatelimitInfo;
-<span class="kw">use </span><span class="kw">crate</span>::model::application::{CommandPermissions, Interaction};
-<span class="kw">use </span><span class="kw">crate</span>::model::guild::audit_log::AuditLogEntry;
-<span class="kw">use </span><span class="kw">crate</span>::model::guild::automod::{ActionExecution, Rule};
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
-<span class="macro">macro_rules! </span>event_handler {
+<span class="macro">macro_rules!</span> event_handler {
     ( $(
         $( <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>:literal] </span>)*
-        $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>:literal)] </span>)<span class="question-mark">?
-        </span><span class="kw">async fn </span><span class="macro-nonterminal">$method_name</span>:ident(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="macro-nonterminal">$variant_name</span>:ident { $(
-            <span class="macro-nonterminal">$arg_name</span>:ident: <span class="macro-nonterminal">$arg_type</span>:ty
-        ),* $(,)<span class="question-mark">? </span>} );
+        $( <span class="attr">#[deprecated = <span class="macro-nonterminal">$deprecated</span>:literal] </span>)<span class="question-mark">?
+        </span>$( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>:literal)] </span>)<span class="question-mark">?
+        </span><span class="macro-nonterminal">$variant_name</span>:ident { $( <span class="macro-nonterminal">$arg_name</span>:ident: <span class="macro-nonterminal">$arg_type</span>:ty ),* } =&gt; <span class="kw">async fn </span><span class="macro-nonterminal">$method_name</span>:ident(<span class="kw-2">&amp;</span><span class="self">self </span>$(, <span class="macro-nonterminal">$context</span>:ident: Context)<span class="question-mark">?</span>);
     )* ) =&gt; {
         <span class="doccomment">/// The core trait for handling events by serenity.
         </span><span class="attr">#[async_trait]
-        </span><span class="kw">pub trait </span>EventHandler: Send + Sync { $(
-            $( <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>] </span>)* $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
-            </span><span class="kw">async fn </span><span class="macro-nonterminal">$method_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, $( <span class="macro-nonterminal">$arg_name</span>: <span class="macro-nonterminal">$arg_type </span>),* ) {
-                <span class="comment">// Suppress unused argument warnings
-                </span>drop(( $( <span class="macro-nonterminal">$arg_name </span>),* ));
-            }
-        )* }
+        </span><span class="kw">pub trait </span>EventHandler: Send + Sync {
+            $(
+                $( <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>] </span>)*
+                $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
+                </span>$( <span class="attr">#[deprecated = <span class="macro-nonterminal">$deprecated</span>] </span>)<span class="question-mark">?
+                </span><span class="kw">async fn </span><span class="macro-nonterminal">$method_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, $(<span class="macro-nonterminal">$context</span>: Context,)<span class="question-mark">? </span>$( <span class="macro-nonterminal">$arg_name</span>: <span class="macro-nonterminal">$arg_type </span>),<span class="kw-2">*</span>) {
+                    <span class="comment">// Suppress unused argument warnings
+                    </span><span class="attr">#[allow(dropping_references, dropping_copy_types)]
+                    </span>drop(( $(<span class="macro-nonterminal">$context</span>,)<span class="question-mark">? </span>$(<span class="macro-nonterminal">$arg_name</span>),* ))
+                }
+            )*
+
+            <span class="doccomment">/// Checks if the `event` should be dispatched (`true`) or ignored (`false`).
+            ///
+            /// This affects [`crate::collector::collect`], [`crate::framework::Framework::dispatch`] and this `EventHandler` trait.
+            ///
+            /// ## Warning
+            ///
+            /// This will run synchronously on every event in the dispatch loop
+            /// of the shard that is receiving the event. If your filter code
+            /// takes too long, it may delay other events from being dispatched
+            /// in a timely manner. It is recommended to keep the runtime
+            /// complexity of the filter code low to avoid unnecessarily blocking
+            /// your bot.
+            </span><span class="kw">fn </span>filter_event(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context, event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+                    <span class="comment">// Suppress unused argument warnings
+                    </span><span class="attr">#[allow(dropping_references, dropping_copy_types)]
+                    </span>drop(( context, event ));
+                <span class="bool-val">true
+            </span>}
+        }
 
         <span class="doccomment">/// This enum stores every possible event that an [`EventHandler`] can receive.
-        </span><span class="attr">#[non_exhaustive]
-        #[allow(clippy::large_enum_variant)] </span><span class="comment">// TODO: do some boxing to fix this
-        </span><span class="attr">#[derive(Clone, Debug)]
-        </span><span class="kw">pub enum </span>FullEvent { $(
-            $( <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>] </span>)* $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
-            </span><span class="macro-nonterminal">$variant_name </span>{
-                $( <span class="macro-nonterminal">$arg_name</span>: <span class="macro-nonterminal">$arg_type </span>),*
-            },
-        )* }
+        </span><span class="attr">#[cfg_attr(not(feature = <span class="string">"unstable"</span>), non_exhaustive)]
+        #[derive(Clone, Debug, VariantNames, IntoStaticStr, EnumCount)]
+        #[strum(serialize_all = <span class="string">"SCREAMING_SNAKE_CASE"</span>)]
+        </span><span class="kw">pub enum </span>FullEvent {
+            $(
+                $( <span class="attr">#[doc = <span class="macro-nonterminal">$doc</span>] </span>)*
+                $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
+                </span>$( <span class="attr">#[deprecated = <span class="macro-nonterminal">$deprecated</span>] </span>)<span class="question-mark">?
+                </span><span class="macro-nonterminal">$variant_name </span>{
+                    $( <span class="macro-nonterminal">$arg_name</span>: <span class="macro-nonterminal">$arg_type </span>),*
+                },
+            )*
+        }
 
         <span class="kw">impl </span>FullEvent {
             <span class="doccomment">/// Returns the name of this event as a snake case string
@@ -496,119 +617,126 @@
             /// # use serenity::client::{Context, FullEvent};
             /// # fn _foo(ctx: Context, event: FullEvent) {
             /// if let FullEvent::Message { .. } = &amp;event {
-            ///     assert_eq!(event.snake_case_name(), &quot;message&quot;);
+            ///     assert_eq!(event.snake_case_name(), "message");
             /// }
             /// # }
             /// ```
             </span><span class="attr">#[must_use]
-            </span><span class="kw">pub fn </span>snake_case_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-                <span class="kw">match </span><span class="self">self </span>{ $(
-                    $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
-                    </span><span class="self">Self</span>::<span class="macro-nonterminal">$variant_name </span>{ .. } =&gt; <span class="macro">stringify!</span>(<span class="macro-nonterminal">$method_name</span>),
-                )* }
+            </span><span class="kw">pub fn </span>snake_case_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+                <span class="attr">#[allow(deprecated)]
+                </span><span class="kw">match </span><span class="self">self </span>{
+                    $(
+                        $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
+                        </span><span class="self">Self</span>::<span class="macro-nonterminal">$variant_name </span>{ .. } =&gt; <span class="macro">stringify!</span>(<span class="macro-nonterminal">$method_name</span>),
+                    )*
+                }
             }
 
-            <span class="doccomment">/// Runs the given [`EventHandler`]&#39;s code for this event.
-            </span><span class="kw">pub async fn </span>dispatch(<span class="self">self</span>, handler: <span class="kw-2">&amp;</span><span class="kw">dyn </span>EventHandler) {
-                <span class="kw">match </span><span class="self">self </span>{ $(
-                    $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
-                    </span><span class="self">Self</span>::<span class="macro-nonterminal">$variant_name </span>{ $( <span class="macro-nonterminal">$arg_name </span>),* } =&gt; {
-                        handler.<span class="macro-nonterminal">$method_name</span>( $( <span class="macro-nonterminal">$arg_name </span>),* ).<span class="kw">await</span>;
-                    }
-                )* }
+            <span class="doccomment">/// Runs the given [`EventHandler`]'s code for this event.
+            </span><span class="kw">pub async fn </span>dispatch(<span class="self">self</span>, ctx: Context, handler: <span class="kw-2">&amp;</span><span class="kw">dyn </span>EventHandler) {
+                <span class="attr">#[allow(deprecated)]
+                </span><span class="kw">match </span><span class="self">self </span>{
+                    $(
+                        $( <span class="attr">#[cfg(feature = <span class="macro-nonterminal">$feature</span>)] </span>)<span class="question-mark">?
+                        </span><span class="self">Self</span>::<span class="macro-nonterminal">$variant_name </span>{ $( <span class="macro-nonterminal">$arg_name </span>),* } =&gt; {
+                            $( <span class="kw">let </span><span class="macro-nonterminal">$context </span>= ctx; )<span class="question-mark">?
+                            </span>handler.<span class="macro-nonterminal">$method_name</span>( $(<span class="macro-nonterminal">$context</span>,)<span class="question-mark">? </span>$( <span class="macro-nonterminal">$arg_name </span>),* ).<span class="kw">await</span>;
+                        }
+                    )*
+                }
             }
         }
     };
 }
 
-<span class="macro">event_handler! </span>{
+<span class="macro">event_handler!</span> {
     <span class="doccomment">/// Dispatched when the permissions of an application command was updated.
     ///
-    /// Provides said permission&#39;s data.
-    </span><span class="kw">async fn </span>command_permissions_update(<span class="kw-2">&amp;</span><span class="self">self</span>, CommandPermissionsUpdate { ctx: Context, permission: CommandPermissions });
+    /// Provides said permission's data.
+    </span>CommandPermissionsUpdate { permission: CommandPermissions } =&gt; <span class="kw">async fn </span>command_permissions_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an auto moderation rule was created.
     ///
-    /// Provides said rule&#39;s data.
-    </span><span class="kw">async fn </span>auto_moderation_rule_create(<span class="kw-2">&amp;</span><span class="self">self</span>, AutoModRuleCreate { ctx: Context, rule: Rule });
+    /// Provides said rule's data.
+    </span>AutoModRuleCreate { rule: Rule } =&gt; <span class="kw">async fn </span>auto_moderation_rule_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an auto moderation rule was updated.
     ///
-    /// Provides said rule&#39;s data.
-    </span><span class="kw">async fn </span>auto_moderation_rule_update(<span class="kw-2">&amp;</span><span class="self">self</span>, AutoModRuleUpdate { ctx: Context, rule: Rule });
+    /// Provides said rule's data.
+    </span>AutoModRuleUpdate { rule: Rule } =&gt; <span class="kw">async fn </span>auto_moderation_rule_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an auto moderation rule was deleted.
     ///
-    /// Provides said rule&#39;s data.
-    </span><span class="kw">async fn </span>auto_moderation_rule_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, AutoModRuleDelete { ctx: Context, rule: Rule });
+    /// Provides said rule's data.
+    </span>AutoModRuleDelete { rule: Rule } =&gt; <span class="kw">async fn </span>auto_moderation_rule_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an auto moderation rule was triggered and an action was executed.
     ///
-    /// Provides said action execution&#39;s data.
-    </span><span class="kw">async fn </span>auto_moderation_action_execution(<span class="kw-2">&amp;</span><span class="self">self</span>, AutoModActionExecution { ctx: Context, execution: ActionExecution });
+    /// Provides said action execution's data.
+    </span>AutoModActionExecution { execution: ActionExecution } =&gt; <span class="kw">async fn </span>auto_moderation_action_execution(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the cache has received and inserted all data from guilds.
     ///
     /// This process happens upon starting your bot and should be fairly quick. However, cache
     /// actions performed prior this event may fail as the data could be not inserted yet.
     ///
-    /// Provides the cached guilds&#39; ids.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
-    </span><span class="kw">async fn </span>cache_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, CacheReady { ctx: Context, guilds: Vec&lt;GuildId&gt; });
+    /// Provides the cached guilds' ids.
+    </span><span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
+    </span>CacheReady { guilds: Vec&lt;GuildId&gt; } =&gt; <span class="kw">async fn </span>cache_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when every shard has received a Ready event
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
-    </span><span class="kw">async fn </span>shards_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, ShardsReady { ctx: Context, total_shards: u32 });
+    </span><span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
+    </span>ShardsReady { total_shards: NonZeroU16 } =&gt; <span class="kw">async fn </span>shards_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a channel is created.
     ///
-    /// Provides said channel&#39;s data.
-    </span><span class="kw">async fn </span>channel_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ChannelCreate { ctx: Context, channel: GuildChannel });
+    /// Provides said channel's data.
+    </span>ChannelCreate { channel: GuildChannel } =&gt; <span class="kw">async fn </span>channel_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a category is created.
     ///
-    /// Provides said category&#39;s data.
-    </span><span class="kw">async fn </span>category_create(<span class="kw-2">&amp;</span><span class="self">self</span>, CategoryCreate { ctx: Context, category: GuildChannel });
+    /// Provides said category's data.
+    </span>CategoryCreate { category: GuildChannel } =&gt; <span class="kw">async fn </span>category_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a category is deleted.
     ///
-    /// Provides said category&#39;s data.
-    </span><span class="kw">async fn </span>category_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, CategoryDelete { ctx: Context, category: GuildChannel });
+    /// Provides said category's data.
+    </span>CategoryDelete { category: GuildChannel } =&gt; <span class="kw">async fn </span>category_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a channel is deleted.
     ///
-    /// Provides said channel&#39;s data.
-    </span><span class="kw">async fn </span>channel_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ChannelDelete { ctx: Context, channel: GuildChannel, messages: <span class="prelude-ty">Option</span>&lt;Vec&lt;Message&gt;&gt; });
+    /// Provides said channel's data.
+    </span>ChannelDelete { channel: GuildChannel, messages: <span class="prelude-ty">Option</span>&lt;VecDeque&lt;Message&gt;&gt; } =&gt; <span class="kw">async fn </span>channel_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a pin is added, deleted.
     ///
-    /// Provides said pin&#39;s data.
-    </span><span class="kw">async fn </span>channel_pins_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ChannelPinsUpdate { ctx: Context, pin: ChannelPinsUpdateEvent });
+    /// Provides said pin's data.
+    </span>ChannelPinsUpdate { pin: ChannelPinsUpdateEvent } =&gt; <span class="kw">async fn </span>channel_pins_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a channel is updated.
     ///
     /// The old channel data is only provided when the cache feature is enabled.
-    </span><span class="kw">async fn </span>channel_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ChannelUpdate { ctx: Context, old: <span class="prelude-ty">Option</span>&lt;Channel&gt;, new: Channel });
+    </span>ChannelUpdate { old: <span class="prelude-ty">Option</span>&lt;GuildChannel&gt;, new: GuildChannel } =&gt; <span class="kw">async fn </span>channel_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a new audit log entry is created.
     ///
-    /// Provides said entry&#39;s data and the id of the guild where it was created.
-    </span><span class="kw">async fn </span>guild_audit_log_entry_create(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildAuditLogEntryCreate { ctx: Context, entry: AuditLogEntry, guild_id: GuildId });
+    /// Provides said entry's data and the id of the guild where it was created.
+    </span>GuildAuditLogEntryCreate { entry: AuditLogEntry, guild_id: GuildId } =&gt; <span class="kw">async fn </span>guild_audit_log_entry_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a user is banned from a guild.
     ///
-    /// Provides the guild&#39;s id and the banned user&#39;s data.
-    </span><span class="kw">async fn </span>guild_ban_addition(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildBanAddition { ctx: Context, guild_id: GuildId, banned_user: User });
+    /// Provides the guild's id and the banned user's data.
+    </span>GuildBanAddition { guild_id: GuildId, banned_user: User } =&gt; <span class="kw">async fn </span>guild_ban_addition(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a user&#39;s ban is lifted from a guild.
+    <span class="doccomment">/// Dispatched when a user's ban is lifted from a guild.
     ///
-    /// Provides the guild&#39;s id and the lifted user&#39;s data.
-    </span><span class="kw">async fn </span>guild_ban_removal(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildBanRemoval { ctx: Context, guild_id: GuildId, unbanned_user: User });
+    /// Provides the guild's id and the lifted user's data.
+    </span>GuildBanRemoval { guild_id: GuildId, unbanned_user: User } =&gt; <span class="kw">async fn </span>guild_ban_removal(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a guild is created; or an existing guild&#39;s data is sent to us.
+    <span class="doccomment">/// Dispatched when a guild is created; or an existing guild's data is sent to us.
     ///
-    /// Provides the guild&#39;s data and whether the guild is new (only when cache feature is enabled).
-    </span><span class="kw">async fn </span>guild_create(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildCreate { ctx: Context, guild: Guild, is_new: <span class="prelude-ty">Option</span>&lt;bool&gt; });
+    /// Provides the guild's data and whether the guild is new (only when cache feature is enabled).
+    </span>GuildCreate { guild: Guild, is_new: <span class="prelude-ty">Option</span>&lt;bool&gt; } =&gt; <span class="kw">async fn </span>guild_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild is deleted.
     ///
@@ -620,238 +748,242 @@
     /// flag is true, the guild went offline.
     ///
     /// [`unavailable`]: UnavailableGuild::unavailable
-    </span><span class="kw">async fn </span>guild_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildDelete { ctx: Context, incomplete: UnavailableGuild, full: <span class="prelude-ty">Option</span>&lt;Guild&gt; });
+    </span>GuildDelete { incomplete: UnavailableGuild, full: <span class="prelude-ty">Option</span>&lt;Guild&gt; } =&gt; <span class="kw">async fn </span>guild_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="comment">// the emojis were updated.
 
     </span><span class="doccomment">/// Dispatched when the emojis are updated.
     ///
-    /// Provides the guild&#39;s id and the new state of the emojis in the guild.
-    </span><span class="kw">async fn </span>guild_emojis_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildEmojisUpdate { ctx: Context, guild_id: GuildId, current_state: HashMap&lt;EmojiId, Emoji&gt; });
+    /// Provides the guild's id and the new state of the emojis in the guild.
+    </span>GuildEmojisUpdate { guild_id: GuildId, current_state: ExtractMap&lt;EmojiId, Emoji&gt; } =&gt; <span class="kw">async fn </span>guild_emojis_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a guild&#39;s integration is added, updated or removed.
+    <span class="doccomment">/// Dispatched when a guild's integration is added, updated or removed.
     ///
-    /// Provides the guild&#39;s id.
-    </span><span class="kw">async fn </span>guild_integrations_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildIntegrationsUpdate { ctx: Context, guild_id: GuildId });
+    /// Provides the guild's id.
+    </span>GuildIntegrationsUpdate { guild_id: GuildId } =&gt; <span class="kw">async fn </span>guild_integrations_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a user joins a guild.
     ///
-    /// Provides the guild&#39;s id and the user&#39;s member data.
+    /// Provides the guild's id and the user's member data.
     ///
-    /// Note: This event will not trigger unless the &quot;guild members&quot; privileged intent is enabled
+    /// Note: This event will not trigger unless the "guild members" privileged intent is enabled
     /// on the bot application page.
-    </span><span class="kw">async fn </span>guild_member_addition(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildMemberAddition { ctx: Context, new_member: Member });
+    </span>GuildMemberAddition { new_member: Member } =&gt; <span class="kw">async fn </span>guild_member_addition(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a user&#39;s membership ends by leaving, getting kicked, or being banned.
+    <span class="doccomment">/// Dispatched when a user's membership ends by leaving, getting kicked, or being banned.
     ///
-    /// Provides the guild&#39;s id, the user&#39;s data, and the user&#39;s member data if cache feature is
+    /// Provides the guild's id, the user's data, and the user's member data if cache feature is
     /// enabled and the data is available.
     ///
-    /// Note: This event will not trigger unless the &quot;guild members&quot; privileged intent is enabled
+    /// Note: This event will not trigger unless the "guild members" privileged intent is enabled
     /// on the bot application page.
-    </span><span class="kw">async fn </span>guild_member_removal(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildMemberRemoval { ctx: Context, guild_id: GuildId, user: User, member_data_if_available: <span class="prelude-ty">Option</span>&lt;Member&gt; });
+    </span>GuildMemberRemoval { guild_id: GuildId, user: User, member_data_if_available: <span class="prelude-ty">Option</span>&lt;Member&gt; } =&gt; <span class="kw">async fn </span>guild_member_removal(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a member is updated (e.g their nickname is updated).
     ///
-    /// Provides the member&#39;s old and new data (if cache feature is enabled and data is available)
+    /// Provides the member's old and new data (if cache feature is enabled and data is available)
     /// and the new raw data about updated fields.
     ///
-    /// Note: This event will not trigger unless the &quot;guild members&quot; privileged intent is enabled
+    /// Note: This event will not trigger unless the "guild members" privileged intent is enabled
     /// on the bot application page.
-    </span><span class="kw">async fn </span>guild_member_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildMemberUpdate { ctx: Context, old_if_available: <span class="prelude-ty">Option</span>&lt;Member&gt;, new: <span class="prelude-ty">Option</span>&lt;Member&gt;, event: GuildMemberUpdateEvent });
+    </span>GuildMemberUpdate { old_if_available: <span class="prelude-ty">Option</span>&lt;Member&gt;, new: <span class="prelude-ty">Option</span>&lt;Member&gt;, event: GuildMemberUpdateEvent } =&gt; <span class="kw">async fn </span>guild_member_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the data for offline members was requested.
     ///
-    /// Provides the guild&#39;s id and the data.
-    </span><span class="kw">async fn </span>guild_members_chunk(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildMembersChunk { ctx: Context, chunk: GuildMembersChunkEvent });
+    /// Provides the guild's id and the data.
+    </span>GuildMembersChunk { chunk: GuildMembersChunkEvent } =&gt; <span class="kw">async fn </span>guild_members_chunk(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a role is created.
     ///
-    /// Provides the guild&#39;s id and the new role&#39;s data.
-    </span><span class="kw">async fn </span>guild_role_create(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildRoleCreate { ctx: Context, new: Role });
+    /// Provides the guild's id and the new role's data.
+    </span>GuildRoleCreate { new: Role } =&gt; <span class="kw">async fn </span>guild_role_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a role is deleted.
     ///
-    /// Provides the guild&#39;s id, the role&#39;s id and its data (if cache feature is enabled and the
+    /// Provides the guild's id, the role's id and its data (if cache feature is enabled and the
     /// data is available).
-    </span><span class="kw">async fn </span>guild_role_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildRoleDelete { ctx: Context, guild_id: GuildId, removed_role_id: RoleId, removed_role_data_if_available: <span class="prelude-ty">Option</span>&lt;Role&gt; });
+    </span>GuildRoleDelete { guild_id: GuildId, removed_role_id: RoleId, removed_role_data_if_available: <span class="prelude-ty">Option</span>&lt;Role&gt; } =&gt; <span class="kw">async fn </span>guild_role_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a role is updated.
     ///
-    /// Provides the guild&#39;s id, the role&#39;s old (if cache feature is enabled and the data is
+    /// Provides the guild's id, the role's old (if cache feature is enabled and the data is
     /// available) and new data.
-    </span><span class="kw">async fn </span>guild_role_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildRoleUpdate { ctx: Context, old_data_if_available: <span class="prelude-ty">Option</span>&lt;Role&gt;, new: Role });
+    </span>GuildRoleUpdate { old_data_if_available: <span class="prelude-ty">Option</span>&lt;Role&gt;, new: Role } =&gt; <span class="kw">async fn </span>guild_role_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the stickers are updated.
     ///
-    /// Provides the guild&#39;s id and the new state of the stickers in the guild.
-    </span><span class="kw">async fn </span>guild_stickers_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildStickersUpdate { ctx: Context, guild_id: GuildId, current_state: HashMap&lt;StickerId, Sticker&gt; });
+    /// Provides the guild's id and the new state of the stickers in the guild.
+    </span>GuildStickersUpdate { guild_id: GuildId, current_state: ExtractMap&lt;StickerId, Sticker&gt; } =&gt; <span class="kw">async fn </span>guild_stickers_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the guild is updated.
     ///
-    /// Provides the guild&#39;s old data (if cache feature is enabled and the data is available)
+    /// Provides the guild's old data (if cache feature is enabled and the data is available)
     /// and the new data.
-    </span><span class="kw">async fn </span>guild_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildUpdate { ctx: Context, old_data_if_available: <span class="prelude-ty">Option</span>&lt;Guild&gt;, new_data: PartialGuild });
+    </span>GuildUpdate { old_data_if_available: <span class="prelude-ty">Option</span>&lt;Guild&gt;, new_data: PartialGuild } =&gt; <span class="kw">async fn </span>guild_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a invite is created.
     ///
     /// Provides data about the invite.
-    </span><span class="kw">async fn </span>invite_create(<span class="kw-2">&amp;</span><span class="self">self</span>, InviteCreate { ctx: Context, data: InviteCreateEvent });
+    </span>InviteCreate { data: InviteCreateEvent } =&gt; <span class="kw">async fn </span>invite_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a invite is deleted.
     ///
     /// Provides data about the invite.
-    </span><span class="kw">async fn </span>invite_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, InviteDelete { ctx: Context, data: InviteDeleteEvent });
+    </span>InviteDelete { data: InviteDeleteEvent } =&gt; <span class="kw">async fn </span>invite_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a message is created.
     ///
-    /// Provides the message&#39;s data.
-    </span><span class="kw">async fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>, Message { ctx: Context, new_message: Message });
+    /// Provides the message's data.
+    </span>Message { new_message: Message } =&gt; <span class="kw">async fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a message is deleted.
     ///
-    /// Provides the guild&#39;s id, the channel&#39;s id and the message&#39;s id.
-    </span><span class="kw">async fn </span>message_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, MessageDelete { ctx: Context, channel_id: ChannelId, deleted_message_id: MessageId, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt; });
+    /// Provides the guild's id, the channel's id and the message's id.
+    </span>MessageDelete { channel_id: ChannelId, deleted_message_id: MessageId, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt; } =&gt; <span class="kw">async fn </span>message_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when multiple messages were deleted at once.
     ///
-    /// Provides the guild&#39;s id, channel&#39;s id and the deleted messages&#39; ids.
-    </span><span class="kw">async fn </span>message_delete_bulk(<span class="kw-2">&amp;</span><span class="self">self</span>, MessageDeleteBulk { ctx: Context, channel_id: ChannelId, multiple_deleted_messages_ids: Vec&lt;MessageId&gt;, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt; });
+    /// Provides the guild's id, channel's id and the deleted messages' ids.
+    </span>MessageDeleteBulk { channel_id: ChannelId, multiple_deleted_messages_ids: Vec&lt;MessageId&gt;, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt; } =&gt; <span class="kw">async fn </span>message_delete_bulk(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a message is updated.
     ///
     /// Provides the message update data, as well as the actual old and new message if cache
     /// feature is enabled and the data is available.
-    </span><span class="kw">async fn </span>message_update(<span class="kw-2">&amp;</span><span class="self">self</span>, MessageUpdate { ctx: Context, old_if_available: <span class="prelude-ty">Option</span>&lt;Message&gt;, new: <span class="prelude-ty">Option</span>&lt;Message&gt;, event: MessageUpdateEvent });
+    </span>MessageUpdate { old_if_available: <span class="prelude-ty">Option</span>&lt;Message&gt;, new: <span class="prelude-ty">Option</span>&lt;Message&gt;, event: MessageUpdateEvent } =&gt; <span class="kw">async fn </span>message_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a new reaction is attached to a message.
     ///
-    /// Provides the reaction&#39;s data.
-    </span><span class="kw">async fn </span>reaction_add(<span class="kw-2">&amp;</span><span class="self">self</span>, ReactionAdd { ctx: Context, add_reaction: Reaction });
+    /// Provides the reaction's data.
+    </span>ReactionAdd { add_reaction: Reaction } =&gt; <span class="kw">async fn </span>reaction_add(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a reaction is detached from a message.
     ///
-    /// Provides the reaction&#39;s data.
-    </span><span class="kw">async fn </span>reaction_remove(<span class="kw-2">&amp;</span><span class="self">self</span>, ReactionRemove { ctx: Context, removed_reaction: Reaction });
+    /// Provides the reaction's data.
+    </span>ReactionRemove { removed_reaction: Reaction } =&gt; <span class="kw">async fn </span>reaction_remove(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when all reactions of a message are detached from a message.
     ///
-    /// Provides the channel&#39;s id and the message&#39;s id.
-    </span><span class="kw">async fn </span>reaction_remove_all(<span class="kw-2">&amp;</span><span class="self">self</span>, ReactionRemoveAll { ctx: Context, channel_id: ChannelId, removed_from_message_id: MessageId });
+    /// Provides the channel's id and the message's id.
+    </span>ReactionRemoveAll { channel_id: ChannelId, removed_from_message_id: MessageId } =&gt; <span class="kw">async fn </span>reaction_remove_all(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when all reactions of a message are detached from a message.
     ///
-    /// Provides the channel&#39;s id and the message&#39;s id.
-    </span><span class="kw">async fn </span>reaction_remove_emoji(<span class="kw-2">&amp;</span><span class="self">self</span>, ReactionRemoveEmoji { ctx: Context, removed_reactions: Reaction });
+    /// Provides the channel's id and the message's id.
+    </span>ReactionRemoveEmoji { removed_reactions: Reaction } =&gt; <span class="kw">async fn </span>reaction_remove_emoji(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// This event is legacy, and likely no longer sent by discord.
-    </span><span class="kw">async fn </span>presence_replace(<span class="kw-2">&amp;</span><span class="self">self</span>, PresenceReplace { ctx: Context, presences: Vec&lt;Presence&gt; });
-
-    <span class="doccomment">/// Dispatched when a user&#39;s presence is updated (e.g off -&gt; on).
+    <span class="doccomment">/// Dispatched when a user's presence is updated (e.g off -&gt; on).
     ///
-    /// Provides the presence&#39;s new data.
+    /// Provides the presence's new data, as well as the old presence data if the
+    /// cache feature is enabled and the data is available.
     ///
-    /// Note: This event will not trigger unless the &quot;guild presences&quot; privileged intent is enabled
+    /// Note: This event will not trigger unless the "guild presences" privileged intent is enabled
     /// on the bot application page.
-    </span><span class="kw">async fn </span>presence_update(<span class="kw-2">&amp;</span><span class="self">self</span>, PresenceUpdate { ctx: Context, new_data: Presence });
+    </span>PresenceUpdate { old_data: <span class="prelude-ty">Option</span>&lt;Presence&gt;, new_data: Presence } =&gt; <span class="kw">async fn </span>presence_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched upon startup.
     ///
-    /// Provides data about the bot and the guilds it&#39;s in.
-    </span><span class="kw">async fn </span>ready(<span class="kw-2">&amp;</span><span class="self">self</span>, Ready { ctx: Context, data_about_bot: Ready });
+    /// Provides data about the bot and the guilds it's in.
+    </span>Ready { data_about_bot: Ready } =&gt; <span class="kw">async fn </span>ready(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched upon reconnection.
-    </span><span class="kw">async fn </span>resume(<span class="kw-2">&amp;</span><span class="self">self</span>, Resume { ctx: Context, event: ResumedEvent });
+    </span>Resume { event: ResumedEvent } =&gt; <span class="kw">async fn </span>resume(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a shard&#39;s connection stage is updated
+    <span class="doccomment">/// Dispatched when a shard's connection stage is updated
     ///
     /// Provides the context of the shard and the event information about the update.
-    </span><span class="kw">async fn </span>shard_stage_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ShardStageUpdate { ctx: Context, event: ShardStageUpdateEvent });
+    </span>ShardStageUpdate { event: ShardStageUpdateEvent } =&gt; <span class="kw">async fn </span>shard_stage_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a user starts typing.
-    </span><span class="kw">async fn </span>typing_start(<span class="kw-2">&amp;</span><span class="self">self</span>, TypingStart { ctx: Context, event: TypingStartEvent });
+    </span>TypingStart { event: TypingStartEvent } =&gt; <span class="kw">async fn </span>typing_start(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when the bot&#39;s data is updated.
+    <span class="doccomment">/// Dispatched when the bot's data is updated.
     ///
     /// Provides the old (if cache feature is enabled and the data is available) and new data.
-    </span><span class="kw">async fn </span>user_update(<span class="kw-2">&amp;</span><span class="self">self</span>, UserUpdate { ctx: Context, old_data: <span class="prelude-ty">Option</span>&lt;CurrentUser&gt;, new: CurrentUser });
+    </span>UserUpdate { old_data: <span class="prelude-ty">Option</span>&lt;CurrentUser&gt;, new: CurrentUser } =&gt; <span class="kw">async fn </span>user_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a guild&#39;s voice server was updated (or changed to another one).
+    <span class="doccomment">/// Dispatched when a guild's voice server was updated (or changed to another one).
     ///
-    /// Provides the voice server&#39;s data.
-    </span><span class="kw">async fn </span>voice_server_update(<span class="kw-2">&amp;</span><span class="self">self</span>, VoiceServerUpdate { ctx: Context, event: VoiceServerUpdateEvent });
+    /// Provides the voice server's data.
+    </span>VoiceServerUpdate { event: VoiceServerUpdateEvent } =&gt; <span class="kw">async fn </span>voice_server_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a user joins, leaves or moves to a voice channel.
     ///
-    /// Provides the guild&#39;s id (if available) and the old state (if cache feature is enabled and
-    /// [`GatewayIntents::GUILDS`] is enabled) and the new state of the guild&#39;s voice channels.
-    </span><span class="kw">async fn </span>voice_state_update(<span class="kw-2">&amp;</span><span class="self">self</span>, VoiceStateUpdate { ctx: Context, old: <span class="prelude-ty">Option</span>&lt;VoiceState&gt;, new: VoiceState });
+    /// Provides the guild's id (if available) and the old state (if cache feature is enabled and
+    /// [`GatewayIntents::GUILDS`] is enabled) and the new state of the guild's voice channels.
+    </span>VoiceStateUpdate { old: <span class="prelude-ty">Option</span>&lt;VoiceState&gt;, new: VoiceState } =&gt; <span class="kw">async fn </span>voice_state_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
-    <span class="doccomment">/// Dispatched when a guild&#39;s webhook is updated.
+    <span class="doccomment">/// Dispatched when a voice channel's status is updated.
     ///
-    /// Provides the guild&#39;s id and the channel&#39;s id the webhook belongs in.
-    </span><span class="kw">async fn </span>webhook_update(<span class="kw-2">&amp;</span><span class="self">self</span>, WebhookUpdate { ctx: Context, guild_id: GuildId, belongs_to_channel_id: ChannelId });
+    /// Provides the status, channel's id and the guild's id.
+    </span>VoiceChannelStatusUpdate { old: <span class="prelude-ty">Option</span>&lt;String&gt;, status: <span class="prelude-ty">Option</span>&lt;String&gt;, id: ChannelId, guild_id: GuildId } =&gt; <span class="kw">async fn </span>voice_channel_status_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a guild's webhook is updated.
+    ///
+    /// Provides the guild's id and the channel's id the webhook belongs in.
+    </span>WebhookUpdate { guild_id: GuildId, belongs_to_channel_id: ChannelId } =&gt; <span class="kw">async fn </span>webhook_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an interaction is created (e.g a slash command was used or a button was clicked).
     ///
     /// Provides the created interaction.
-    </span><span class="kw">async fn </span>interaction_create(<span class="kw-2">&amp;</span><span class="self">self</span>, InteractionCreate { ctx: Context, interaction: Interaction });
+    </span>InteractionCreate { interaction: Interaction } =&gt; <span class="kw">async fn </span>interaction_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild integration is created.
     ///
     /// Provides the created integration.
-    </span><span class="kw">async fn </span>integration_create(<span class="kw-2">&amp;</span><span class="self">self</span>, IntegrationCreate { ctx: Context, integration: Integration });
+    </span>IntegrationCreate { integration: Integration } =&gt; <span class="kw">async fn </span>integration_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild integration is updated.
     ///
     /// Provides the updated integration.
-    </span><span class="kw">async fn </span>integration_update(<span class="kw-2">&amp;</span><span class="self">self</span>, IntegrationUpdate { ctx: Context, integration: Integration });
+    </span>IntegrationUpdate { integration: Integration } =&gt; <span class="kw">async fn </span>integration_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild integration is deleted.
     ///
-    /// Provides the integration&#39;s id, the id of the guild it belongs to, and its associated application id
-    </span><span class="kw">async fn </span>integration_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, IntegrationDelete { ctx: Context, integration_id: IntegrationId, guild_id: GuildId, application_id: <span class="prelude-ty">Option</span>&lt;ApplicationId&gt; });
+    /// Provides the integration's id, the id of the guild it belongs to, and its associated application id
+    </span>IntegrationDelete { integration_id: IntegrationId, guild_id: GuildId, application_id: <span class="prelude-ty">Option</span>&lt;ApplicationId&gt; } =&gt; <span class="kw">async fn </span>integration_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a stage instance is created.
     ///
     /// Provides the created stage instance.
-    </span><span class="kw">async fn </span>stage_instance_create(<span class="kw-2">&amp;</span><span class="self">self</span>, StageInstanceCreate { ctx: Context, stage_instance: StageInstance });
+    </span>StageInstanceCreate { stage_instance: StageInstance } =&gt; <span class="kw">async fn </span>stage_instance_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a stage instance is updated.
     ///
     /// Provides the updated stage instance.
-    </span><span class="kw">async fn </span>stage_instance_update(<span class="kw-2">&amp;</span><span class="self">self</span>, StageInstanceUpdate { ctx: Context, stage_instance: StageInstance });
+    </span>StageInstanceUpdate { stage_instance: StageInstance } =&gt; <span class="kw">async fn </span>stage_instance_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a stage instance is deleted.
     ///
     /// Provides the deleted stage instance.
-    </span><span class="kw">async fn </span>stage_instance_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, StageInstanceDelete { ctx: Context, stage_instance: StageInstance });
+    </span>StageInstanceDelete { stage_instance: StageInstance } =&gt; <span class="kw">async fn </span>stage_instance_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a thread is created or the current user is added to a private thread.
     ///
     /// Provides the thread.
-    </span><span class="kw">async fn </span>thread_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadCreate { ctx: Context, thread: GuildChannel });
+    </span>ThreadCreate { thread: GuildChannel } =&gt; <span class="kw">async fn </span>thread_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a thread is updated.
     ///
-    /// Provides the updated thread.
-    </span><span class="kw">async fn </span>thread_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadUpdate { ctx: Context, thread: GuildChannel });
+    /// Provides the updated thread and the old thread data, provided the thread was cached prior to dispatch.
+    </span>ThreadUpdate { old: <span class="prelude-ty">Option</span>&lt;GuildChannel&gt;, new: GuildChannel } =&gt; <span class="kw">async fn </span>thread_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a thread is deleted.
     ///
-    /// Provides the partial deleted thread.
-    </span><span class="kw">async fn </span>thread_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadDelete { ctx: Context, thread: PartialGuildChannel });
+    /// Provides the partial data about the deleted thread and, if it was present in the cache
+    /// before its deletion, its full data.
+    </span>ThreadDelete { thread: PartialGuildChannel, full_thread_data: <span class="prelude-ty">Option</span>&lt;GuildChannel&gt; } =&gt; <span class="kw">async fn </span>thread_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the current user gains access to a channel.
     ///
     /// Provides the threads the current user can access, the thread members, the guild Id, and the
     /// channel Ids of the parent channels being synced.
-    </span><span class="kw">async fn </span>thread_list_sync(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadListSync { ctx: Context, thread_list_sync: ThreadListSyncEvent });
+    </span>ThreadListSync { thread_list_sync: ThreadListSyncEvent } =&gt; <span class="kw">async fn </span>thread_list_sync(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when the [`ThreadMember`] for the current user is updated.
     ///
     /// Provides the updated thread member.
-    </span><span class="kw">async fn </span>thread_member_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadMemberUpdate { ctx: Context, thread_member: ThreadMember });
+    </span>ThreadMemberUpdate { thread_member: ThreadMember } =&gt; <span class="kw">async fn </span>thread_member_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when anyone is added to or removed from a thread. If the current user does not
     /// have the [`GatewayIntents::GUILDS`], then this event will only be sent if the current user
@@ -861,35 +993,63 @@
     /// the thread Id and its guild Id.
     ///
     /// [`GatewayIntents::GUILDS`]: crate::model::gateway::GatewayIntents::GUILDS
-    </span><span class="kw">async fn </span>thread_members_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ThreadMembersUpdate { ctx: Context, thread_members_update: ThreadMembersUpdateEvent });
+    </span>ThreadMembersUpdate { thread_members_update: ThreadMembersUpdateEvent } =&gt; <span class="kw">async fn </span>thread_members_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a scheduled event is created.
     ///
     /// Provides data about the scheduled event.
-    </span><span class="kw">async fn </span>guild_scheduled_event_create(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildScheduledEventCreate { ctx: Context, event: ScheduledEvent });
+    </span>GuildScheduledEventCreate { event: ScheduledEvent } =&gt; <span class="kw">async fn </span>guild_scheduled_event_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a scheduled event is updated.
     ///
     /// Provides data about the scheduled event.
-    </span><span class="kw">async fn </span>guild_scheduled_event_update(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildScheduledEventUpdate { ctx: Context, event: ScheduledEvent });
+    </span>GuildScheduledEventUpdate { event: ScheduledEvent } =&gt; <span class="kw">async fn </span>guild_scheduled_event_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a scheduled event is deleted.
     ///
     /// Provides data about the scheduled event.
-    </span><span class="kw">async fn </span>guild_scheduled_event_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildScheduledEventDelete { ctx: Context, event: ScheduledEvent });
+    </span>GuildScheduledEventDelete { event: ScheduledEvent } =&gt; <span class="kw">async fn </span>guild_scheduled_event_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild member has subscribed to a scheduled event.
     ///
     /// Provides data about the subscription.
-    </span><span class="kw">async fn </span>guild_scheduled_event_user_add(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildScheduledEventUserAdd { ctx: Context, subscribed: GuildScheduledEventUserAddEvent });
+    </span>GuildScheduledEventUserAdd { subscribed: GuildScheduledEventUserAddEvent } =&gt; <span class="kw">async fn </span>guild_scheduled_event_user_add(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when a guild member has unsubscribed from a scheduled event.
     ///
     /// Provides data about the cancelled subscription.
-    </span><span class="kw">async fn </span>guild_scheduled_event_user_remove(<span class="kw-2">&amp;</span><span class="self">self</span>, GuildScheduledEventUserRemove { ctx: Context, unsubscribed: GuildScheduledEventUserRemoveEvent });
+    </span>GuildScheduledEventUserRemove { unsubscribed: GuildScheduledEventUserRemoveEvent } =&gt; <span class="kw">async fn </span>guild_scheduled_event_user_remove(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a user subscribes to a SKU.
+    ///
+    /// Provides data about the subscription.
+    </span>EntitlementCreate { entitlement: Entitlement } =&gt; <span class="kw">async fn </span>entitlement_create(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a user's entitlement has been updated, such as when a subscription is
+    /// renewed for the next billing period.
+    ///
+    /// Provides data abut the updated subscription. If the entitlement is renewed, the
+    /// [`Entitlement::ends_at`] field will have changed.
+    </span>EntitlementUpdate { entitlement: Entitlement } =&gt; <span class="kw">async fn </span>entitlement_update(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a user's entitlement has been deleted. This happens rarely, but can occur
+    /// if a subscription is refunded or otherwise deleted by Discord. Entitlements are not deleted
+    /// when they expire.
+    ///
+    /// Provides data about the subscription. Specifically, the [`Entitlement::deleted`] field will
+    /// be set.
+    </span>EntitlementDelete { entitlement: Entitlement } =&gt; <span class="kw">async fn </span>entitlement_delete(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a user votes on a message poll.
+    ///
+    /// This will be dispatched multiple times if multiple answers are selected.
+    </span>MessagePollVoteAdd { event: MessagePollVoteAddEvent } =&gt; <span class="kw">async fn </span>poll_vote_add(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
+
+    <span class="doccomment">/// Dispatched when a user removes a previous vote on a poll.
+    </span>MessagePollVoteRemove { event: MessagePollVoteRemoveEvent } =&gt; <span class="kw">async fn </span>poll_vote_remove(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: Context);
 
     <span class="doccomment">/// Dispatched when an HTTP rate limit is hit
-    </span><span class="kw">async fn </span>ratelimit(<span class="kw-2">&amp;</span><span class="self">self</span>, Ratelimit { data: RatelimitInfo });
+    </span>Ratelimit { data: RatelimitInfo } =&gt; <span class="kw">async fn </span>ratelimit(<span class="kw-2">&amp;</span><span class="self">self</span>);
 }
 
 <span class="doccomment">/// This core trait for handling raw events
@@ -897,5 +1057,31 @@
 </span><span class="kw">pub trait </span>RawEventHandler: Send + Sync {
     <span class="doccomment">/// Dispatched when any event occurs
     </span><span class="kw">async fn </span>raw_event(<span class="kw-2">&amp;</span><span class="self">self</span>, _ctx: Context, _ev: Event) {}
+
+    <span class="doccomment">/// Checks if the `event` should be dispatched (`true`) or ignored (`false`).
+    ///
+    /// This affects [`crate::collector::collect`], [`crate::framework::Framework::dispatch`] and
+    /// this `EventHandler` trait.
+    ///
+    /// ## Warning
+    ///
+    /// This will run synchronously on every event in the dispatch loop
+    /// of the shard that is receiving the event. If your filter code
+    /// takes too long, it may delay other events from being dispatched
+    /// in a timely manner. It is recommended to keep the runtime
+    /// complexity of the filter code low to avoid unnecessarily blocking
+    /// your bot.
+    </span><span class="kw">fn </span>filter_event(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context, event: <span class="kw-2">&amp;</span>Event) -&gt; bool {
+        <span class="comment">// Suppress unused argument warnings
+        </span><span class="attr">#[allow(dropping_references, dropping_copy_types)]
+        </span>drop((context, event));
+        <span class="bool-val">true
+    </span>}
+}
+
+<span class="attr">#[derive(Clone)]
+</span><span class="kw">pub enum </span>InternalEventHandler {
+    Raw(Arc&lt;<span class="kw">dyn </span>RawEventHandler&gt;),
+    Normal(Arc&lt;<span class="kw">dyn </span>EventHandler&gt;),
 }
 </code></pre></div></section></main></body></html>

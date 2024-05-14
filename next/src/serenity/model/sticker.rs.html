@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/sticker.rs`."><title>sticker.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/sticker.rs`."><title>sticker.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -261,102 +261,43 @@
 <a href="#261" id="261">261</a>
 <a href="#262" id="262">262</a>
 <a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
-<a href="#269" id="269">269</a>
-<a href="#270" id="270">270</a>
-<a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::builder::EditSticker;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::http::Http;
+<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::utils::comma_separated_string;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>StickerId {
-    <span class="doccomment">/// Delete a guild sticker.
-    ///
-    /// **Note**: The [Manage Emojis and Stickers] permission is required.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission.
-    ///
-    /// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS
-    </span><span class="kw">pub async fn </span>delete(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;, guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        guild_id.into().delete_sticker(http, <span class="self">self</span>).<span class="kw">await
-    </span>}
-
     <span class="doccomment">/// Requests the sticker via the REST API to get a [`Sticker`] with all details.
     ///
     /// # Errors
     ///
     /// Returns [`Error::Http`] if a [`Sticker`] with that [`StickerId`] does not exist, or is
     /// otherwise unavailable.
-    </span><span class="kw">pub async fn </span>to_sticker(<span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
-        http.as_ref().get_sticker(<span class="self">self</span>).<span class="kw">await
-    </span>}
-
-    <span class="doccomment">/// Edits the sticker.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the current user lacks permission, or if invalid data is given.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    </span><span class="kw">pub async fn </span>edit(
-        <span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;,
-        builder: EditSticker&lt;<span class="lifetime">&#39;_</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
-        guild_id.into().edit_sticker(cache_http, <span class="self">self</span>, builder).<span class="kw">await
+    </span><span class="kw">pub async fn </span>to_sticker(<span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
+        http.get_sticker(<span class="self">self</span>).<span class="kw">await
     </span>}
 }
 
 <span class="doccomment">/// The smallest amount of data required to render a sticker.
 ///
 /// [Discord docs](https://discord.com/developers/docs/resources/sticker#sticker-item-object).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StickerItem {
     <span class="doccomment">/// The unique ID given to this sticker.
     </span><span class="kw">pub </span>id: StickerId,
     <span class="doccomment">/// The name of the sticker.
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: FixedString,
     <span class="doccomment">/// The type of sticker format.
     </span><span class="kw">pub </span>format_type: StickerFormatType,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>StickerItem {
     <span class="doccomment">/// Requests the sticker via the REST API to get a [`Sticker`] with all details.
     ///
@@ -364,16 +305,14 @@
     ///
     /// Returns [`Error::Http`] if a [`Sticker`] with that [`StickerId`] does
     /// not exist, or is otherwise unavailable.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub async fn </span>to_sticker(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
+    </span><span class="kw">pub async fn </span>to_sticker(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
         <span class="self">self</span>.id.to_sticker(http).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Retrieves the URL to the sticker image.
     ///
     /// **Note**: This will only be `None` if the format_type is unknown.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>image_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         sticker_url(<span class="self">self</span>.id, <span class="self">self</span>.format_type)
     }
@@ -390,22 +329,22 @@
     <span class="doccomment">/// The unique ID given to this sticker sticker pack.
     </span><span class="kw">pub </span>id: StickerPackId,
     <span class="doccomment">/// The stickers in the pack
-    </span><span class="kw">pub </span>stickers: Vec&lt;Sticker&gt;,
+    </span><span class="kw">pub </span>stickers: FixedArray&lt;Sticker&gt;,
     <span class="doccomment">/// The name of the sticker pack
-    </span><span class="kw">pub </span>name: String,
-    <span class="doccomment">/// The unique ID given to the pack&#39;s SKU.
+    </span><span class="kw">pub </span>name: FixedString,
+    <span class="doccomment">/// The unique ID given to the pack's SKU.
     </span><span class="kw">pub </span>sku_id: SkuId,
-    <span class="doccomment">/// ID of a sticker in the pack which is shown as the pack&#39;s icon.
+    <span class="doccomment">/// ID of a sticker in the pack which is shown as the pack's icon.
     </span><span class="kw">pub </span>cover_sticker_id: <span class="prelude-ty">Option</span>&lt;StickerId&gt;,
     <span class="doccomment">/// Description of the sticker pack.
-    </span><span class="kw">pub </span>description: String,
-    <span class="doccomment">/// The unique ID given to the sticker pack&#39;s banner image.
+    </span><span class="kw">pub </span>description: FixedString,
+    <span class="doccomment">/// The unique ID given to the sticker pack's banner image.
     </span><span class="kw">pub </span>banner_asset_id: StickerPackBannerId,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>StickerPack {
-    <span class="doccomment">/// Returns the sticker that is shown as the pack&#39;s icon
+    <span class="doccomment">/// Returns the sticker that is shown as the pack's icon
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>cover_sticker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Sticker&gt; {
         <span class="self">self</span>.cover_sticker_id.and_then(|id| <span class="self">self</span>.stickers.iter().find(|s| s.id == id))
@@ -417,17 +356,16 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>banner_url(banner_asset_id: StickerPackBannerId) -&gt; String {
-    <span class="macro">cdn!</span>(<span class="string">&quot;/app-assets/710982414301790216/store/{}.webp?size=1024&quot;</span>, banner_asset_id.<span class="number">0</span>)
+    <span class="macro">cdn!</span>(<span class="string">"/app-assets/710982414301790216/store/{}.webp?size=1024"</span>, banner_asset_id)
 }
 
 <span class="doccomment">/// A sticker sent with a message.
 ///
-/// Bots cannot send stickers.
-///
 /// [Discord docs](https://discord.com/developers/docs/resources/sticker#sticker-object).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Sticker {
     <span class="doccomment">/// The unique ID given to this sticker.
@@ -435,15 +373,15 @@
     <span class="doccomment">/// The unique ID of the pack the sticker is from.
     </span><span class="kw">pub </span>pack_id: <span class="prelude-ty">Option</span>&lt;StickerPackId&gt;,
     <span class="doccomment">/// The name of the sticker.
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: FixedString,
     <span class="doccomment">/// Description of the sticker
-    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// For guild stickers, the Discord name of a unicode emoji representing the sticker&#39;s
+    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
+    <span class="doccomment">/// For guild stickers, the Discord name of a unicode emoji representing the sticker's
     /// expression. For standard stickers, a list of related expressions.
-    </span><span class="attr">#[serde(with = <span class="string">&quot;comma_separated_string&quot;</span>)]
-    </span><span class="kw">pub </span>tags: Vec&lt;String&gt;,
+    </span><span class="attr">#[serde(with = <span class="string">"comma_separated_string"</span>)]
+    </span><span class="kw">pub </span>tags: FixedArray&lt;FixedString&gt;,
     <span class="doccomment">/// The type of sticker.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>kind: StickerType,
     <span class="doccomment">/// The type of sticker format.
     </span><span class="kw">pub </span>format_type: StickerFormatType,
@@ -452,30 +390,33 @@
     </span><span class="kw">pub </span>available: bool,
     <span class="doccomment">/// Id of the guild that owns this sticker.
     </span><span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
-    <span class="doccomment">/// User that uploaded the sticker. This will be `None` if the current user does not have the
-    /// [Manage Emojis and Stickers] permission.
+    <span class="doccomment">/// User that uploaded the sticker. This will be `None` if the current user does not have
+    /// either the [Create Guild Expressions] nor the [Manage Guild Expressions] permission.
     ///
-    /// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS
+    /// [Create Guild Expressions]: Permissions::CREATE_GUILD_EXPRESSIONS
+    /// [Manage Guild Expressions]: Permissions::MANAGE_GUILD_EXPRESSIONS
     </span><span class="kw">pub </span>user: <span class="prelude-ty">Option</span>&lt;User&gt;,
-    <span class="doccomment">/// A sticker&#39;s sort order within a pack.
+    <span class="doccomment">/// A sticker's sort order within a pack.
     </span><span class="kw">pub </span>sort_value: <span class="prelude-ty">Option</span>&lt;u16&gt;,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>Sticker {
-    <span class="doccomment">/// Deletes a [`Sticker`] by Id from the guild.
+    <span class="doccomment">/// Deletes the [`Sticker`] from its guild.
     ///
-    /// Requires the [Manage Emojis and Stickers] permission.
+    /// **Note**: If the sticker was created by the current user, requires either the [Create Guild
+    /// Expressions] or the [Manage Guild Expressions] permission. Otherwise, the [Manage Guild
+    /// Expressions] permission is required.
     ///
     /// # Errors
     ///
     /// Returns [`Error::Http`] if the current user lacks permission to delete the sticker.
     ///
-    /// [Manage Emojis and Stickers]: crate::model::permissions::Permissions::MANAGE_EMOJIS_AND_STICKERS
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    /// [Create Guild Expressions]: Permissions::CREATE_GUILD_EXPRESSIONS
+    /// [Manage Guild Expressions]: Permissions::MANAGE_GUILD_EXPRESSIONS
+    </span><span class="kw">pub async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(guild_id) = <span class="self">self</span>.guild_id {
-            guild_id.delete_sticker(http, <span class="self">self</span>.id).<span class="kw">await
+            guild_id.delete_sticker(http, <span class="self">self</span>.id, reason).<span class="kw">await
         </span>} <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(Error::Model(ModelError::DeleteNitroSticker))
         }
@@ -483,7 +424,9 @@
 
     <span class="doccomment">/// Edits the sticker.
     ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
+    /// **Note**: If the sticker was created by the current user, requires either the [Create Guild
+    /// Expressions] or the [Manage Guild Expressions] permission. Otherwise, the [Manage Guild
+    /// Expressions] permission is required.
     ///
     /// # Examples
     ///
@@ -498,7 +441,7 @@
     /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     /// # let http: Http = unimplemented!();
     /// # let mut sticker: Sticker = unimplemented!();
-    /// let builder = EditSticker::new().name(&quot;Bun bun meow&quot;);
+    /// let builder = EditSticker::new().name("Bun bun meow");
     /// sticker.edit(&amp;http, builder).await?;
     /// # Ok(())
     /// # }
@@ -508,15 +451,11 @@
     ///
     /// Returns [`Error::Http`] if the current user lacks permission.
     ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub async fn </span>edit(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: EditSticker&lt;<span class="lifetime">&#39;_</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    /// [Create Guild Expressions]: Permissions::CREATE_GUILD_EXPRESSIONS
+    /// [Manage Guild Expressions]: Permissions::MANAGE_GUILD_EXPRESSIONS
+    </span><span class="kw">pub async fn </span>edit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, builder: EditSticker&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(guild_id) = <span class="self">self</span>.guild_id {
-            <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.id.edit(cache_http, guild_id, builder).<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw-2">*</span><span class="self">self </span>= guild_id.edit_sticker(http, <span class="self">self</span>.id, builder).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(Error::Model(ModelError::DeleteNitroSticker))
@@ -526,35 +465,40 @@
     <span class="doccomment">/// Retrieves the URL to the sticker image.
     ///
     /// **Note**: This will only be `None` if the format_type is unknown.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>image_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         sticker_url(<span class="self">self</span>.id, <span class="self">self</span>.format_type)
     }
 }
 
-<span class="macro">enum_number! </span>{
+<span class="kw">impl </span>ExtractKey&lt;StickerId&gt; <span class="kw">for </span>Sticker {
+    <span class="kw">fn </span>extract_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>StickerId {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.id
+    }
+}
+
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// Differentiates between sticker types.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>StickerType {
         <span class="doccomment">/// An official sticker in a pack, part of Nitro or in a removed purchasable pack.
         </span>Standard = <span class="number">1</span>,
-        <span class="doccomment">/// A sticker uploaded to a Boosted guild for the guild&#39;s members.
+        <span class="doccomment">/// A sticker uploaded to a Boosted guild for the guild's members.
         </span>Guild = <span class="number">2</span>,
         <span class="kw">_ </span>=&gt; Unknown(u8),
     }
 }
 
-<span class="macro">enum_number! </span>{
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// Differentiates between sticker formats.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>StickerFormatType {
         <span class="doccomment">/// A PNG format sticker.
@@ -569,15 +513,15 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>sticker_url(sticker_id: StickerId, sticker_format_type: StickerFormatType) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
     <span class="kw">let </span>ext = <span class="kw">match </span>sticker_format_type {
-        StickerFormatType::Png | StickerFormatType::Apng =&gt; <span class="string">&quot;png&quot;</span>,
-        StickerFormatType::Lottie =&gt; <span class="string">&quot;json&quot;</span>,
-        StickerFormatType::Gif =&gt; <span class="string">&quot;gif&quot;</span>,
-        StickerFormatType::Unknown(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        StickerFormatType::Png | StickerFormatType::Apng =&gt; <span class="string">"png"</span>,
+        StickerFormatType::Lottie =&gt; <span class="string">"json"</span>,
+        StickerFormatType::Gif =&gt; <span class="string">"gif"</span>,
+        StickerFormatType(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
     };
 
-    <span class="prelude-val">Some</span>(<span class="macro">cdn!</span>(<span class="string">&quot;/stickers/{}.{}&quot;</span>, sticker_id, ext))
+    <span class="prelude-val">Some</span>(<span class="macro">cdn!</span>(<span class="string">"/stickers/{}.{}"</span>, sticker_id, ext))
 }
 </code></pre></div></section></main></body></html>

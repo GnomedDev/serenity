@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/builder/edit_message.rs`."><title>edit_message.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/builder/edit_message.rs`."><title>edit_message.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -262,20 +262,18 @@
 <a href="#262" id="262">262</a>
 <a href="#263" id="263">263</a>
 <a href="#264" id="264">264</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
-</span><span class="kw">use super</span>::{check_overflow, Builder};
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
+
 <span class="kw">use super</span>::{
     CreateActionRow,
     CreateAllowedMentions,
     CreateAttachment,
     CreateEmbed,
-    ExistingAttachment,
+    EditAttachments,
 };
-<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::constants;
-<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"http"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::CacheHttp;
-<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"http"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
@@ -283,23 +281,17 @@
 ///
 /// # Examples
 ///
-/// Editing the content of a [`Message`] to `&quot;hello&quot;`:
+/// Editing the content of a [`Message`] to `"hello"`:
 ///
 /// ```rust,no_run
 /// # use serenity::builder::EditMessage;
 /// # use serenity::model::channel::Message;
 /// # use serenity::model::id::ChannelId;
-/// # #[cfg(feature = &quot;client&quot;)]
-/// # use serenity::client::Context;
-/// # #[cfg(feature = &quot;framework&quot;)]
-/// # use serenity::framework::standard::{CommandResult, macros::command};
-/// #
-/// # #[cfg(all(feature = &quot;model&quot;, feature = &quot;utils&quot;, feature = &quot;framework&quot;))]
-/// # #[command]
-/// # async fn example(ctx: &amp;Context) -&gt; CommandResult {
-/// # let mut message: Message = unimplemented!();
-/// let builder = EditMessage::new().content(&quot;hello&quot;);
-/// message.edit(ctx, builder).await?;
+/// # use serenity::http::Http;
+///
+/// # async fn example(http: &amp;Http, mut message: Message) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+/// let builder = EditMessage::new().content("hello");
+/// message.edit(http, builder).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -307,53 +299,36 @@
 /// [Discord docs](https://discord.com/developers/docs/resources/channel#edit-message)
 </span><span class="attr">#[derive(Clone, Debug, Default, Serialize)]
 #[must_use]
-</span><span class="kw">pub struct </span>EditMessage {
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>content: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>embeds: <span class="prelude-ty">Option</span>&lt;Vec&lt;CreateEmbed&gt;&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+</span><span class="kw">pub struct </span>EditMessage&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>content: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>embeds: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, [CreateEmbed&lt;<span class="lifetime">'a</span>&gt;]&gt;&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span>flags: <span class="prelude-ty">Option</span>&lt;MessageFlags&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>allowed_mentions: <span class="prelude-ty">Option</span>&lt;CreateAllowedMentions&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;CreateActionRow&gt;&gt;,
-    <span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span>attachments: <span class="prelude-ty">Option</span>&lt;Vec&lt;ExistingAttachment&gt;&gt;,
-
-    <span class="attr">#[serde(skip)]
-    </span>files: Vec&lt;CreateAttachment&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>allowed_mentions: <span class="prelude-ty">Option</span>&lt;CreateAllowedMentions&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>components: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">'a</span>, [CreateActionRow&lt;<span class="lifetime">'a</span>&gt;]&gt;&gt;,
+    <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span>attachments: <span class="prelude-ty">Option</span>&lt;EditAttachments&lt;<span class="lifetime">'a</span>&gt;&gt;,
 }
 
-<span class="kw">impl </span>EditMessage {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; EditMessage&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Equivalent to [`Self::default`].
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::default()
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
-    </span><span class="kw">fn </span>check_length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(content) = <span class="kw-2">&amp;</span><span class="self">self</span>.content {
-            check_overflow(content.chars().count(), constants::MESSAGE_CODE_LIMIT)
-                .map_err(|overflow| Error::Model(ModelError::MessageTooLong(overflow)))<span class="question-mark">?</span>;
-        }
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(embeds) = <span class="kw-2">&amp;</span><span class="self">self</span>.embeds {
-            check_overflow(embeds.len(), constants::EMBED_MAX_COUNT)
-                .map_err(|<span class="kw">_</span>| Error::Model(ModelError::EmbedAmount))<span class="question-mark">?</span>;
-            <span class="kw">for </span>embed <span class="kw">in </span>embeds {
-                embed.check_length()<span class="question-mark">?</span>;
-            }
-        }
-
-        <span class="prelude-val">Ok</span>(())
+    <span class="attr">#[cfg(feature = <span class="string">"http"</span>)]
+    </span><span class="kw">fn </span>check_length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ModelError&gt; {
+        <span class="kw">super</span>::check_lengths(<span class="self">self</span>.content.as_deref(), <span class="self">self</span>.embeds.as_deref(), <span class="number">0</span>)
     }
 
     <span class="doccomment">/// Set the content of the message.
     ///
     /// **Note**: Message contents must be under 2000 unicode code points.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>content(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>content(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.content = <span class="prelude-val">Some</span>(content.into());
         <span class="self">self
     </span>}
@@ -362,8 +337,8 @@
     ///
     /// **Note**: This will keep all existing embeds. Use [`Self::embed()`] to replace existing
     /// embeds.
-    </span><span class="kw">pub fn </span>add_embed(<span class="kw-2">mut </span><span class="self">self</span>, embed: CreateEmbed) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.embeds.get_or_insert_with(Vec::new).push(embed);
+    </span><span class="kw">pub fn </span>add_embed(<span class="kw-2">mut </span><span class="self">self</span>, embed: CreateEmbed&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.embeds.get_or_insert_with(Cow::default).to_mut().push(embed);
         <span class="self">self
     </span>}
 
@@ -371,8 +346,8 @@
     ///
     /// **Note**: This will keep all existing embeds. Use [`Self::embeds()`] to replace existing
     /// embeds.
-    </span><span class="kw">pub fn </span>add_embeds(<span class="kw-2">mut </span><span class="self">self</span>, embeds: Vec&lt;CreateEmbed&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.embeds.get_or_insert_with(Vec::new).extend(embeds);
+    </span><span class="kw">pub fn </span>add_embeds(<span class="kw-2">mut </span><span class="self">self</span>, embeds: <span class="kw">impl </span>IntoIterator&lt;Item = CreateEmbed&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.embeds.get_or_insert_with(Cow::default).to_mut().extend(embeds);
         <span class="self">self
     </span>}
 
@@ -380,7 +355,7 @@
     ///
     /// **Note**: This will replace all existing embeds. Use [`Self::add_embed()`] to keep existing
     /// embeds.
-    </span><span class="kw">pub fn </span>embed(<span class="self">self</span>, embed: CreateEmbed) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>embed(<span class="self">self</span>, embed: CreateEmbed&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.embeds(<span class="macro">vec!</span>[embed])
     }
 
@@ -388,32 +363,32 @@
     ///
     /// **Note**: This will replace all existing embeds. Use [`Self::add_embeds()`] to keep existing
     /// embeds.
-    </span><span class="kw">pub fn </span>embeds(<span class="kw-2">mut </span><span class="self">self</span>, embeds: Vec&lt;CreateEmbed&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.embeds = <span class="prelude-val">Some</span>(embeds);
+    </span><span class="kw">pub fn </span>embeds(<span class="kw-2">mut </span><span class="self">self</span>, embeds: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, [CreateEmbed&lt;<span class="lifetime">'a</span>&gt;]&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.embeds = <span class="prelude-val">Some</span>(embeds.into());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Suppress or unsuppress embeds in the message, this includes those generated by Discord
     /// themselves.
     ///
-    /// If this is sent directly after posting the message, there is a small chance Discord hasn&#39;t
+    /// If this is sent directly after posting the message, there is a small chance Discord hasn't
     /// yet fully parsed the contained links and generated the embeds, so this embed suppression
     /// request has no effect. To mitigate this, you can defer the embed suppression until the
     /// embeds have loaded:
     ///
     /// ```rust,no_run
     /// # use serenity::all::*;
-    /// # #[cfg(feature = &quot;collector&quot;)]
+    /// # #[cfg(feature = "collector")]
     /// # async fn test(ctx: &amp;Context, channel_id: ChannelId) -&gt; Result&lt;(), Error&gt; {
     /// use std::time::Duration;
     ///
     /// use futures::StreamExt;
     ///
-    /// let mut msg = channel_id.say(ctx, &quot;&lt;link that spawns an embed&gt;&quot;).await?;
+    /// let mut msg = channel_id.say(&amp;ctx.http, "&lt;link that spawns an embed&gt;").await?;
     ///
     /// // When the embed appears, a MessageUpdate event is sent and we suppress the embed.
     /// // No MessageUpdate event is sent if the message contains no embeddable link or if the link
-    /// // has been posted before and is still cached in Discord&#39;s servers (in which case the
+    /// // has been posted before and is still cached in Discord's servers (in which case the
     /// // embed appears immediately), no MessageUpdate event is sent. To not wait forever in those
     /// // cases, a timeout of 2000ms was added.
     /// let msg_id = msg.id;
@@ -436,14 +411,14 @@
     </span>}
 
     <span class="doccomment">/// Set the allowed mentions for the message.
-    </span><span class="kw">pub fn </span>allowed_mentions(<span class="kw-2">mut </span><span class="self">self</span>, allowed_mentions: CreateAllowedMentions) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>allowed_mentions(<span class="kw-2">mut </span><span class="self">self</span>, allowed_mentions: CreateAllowedMentions&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.allowed_mentions = <span class="prelude-val">Some</span>(allowed_mentions);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Sets the components of this message.
-    </span><span class="kw">pub fn </span>components(<span class="kw-2">mut </span><span class="self">self</span>, components: Vec&lt;CreateActionRow&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.components = <span class="prelude-val">Some</span>(components);
+    </span><span class="kw">pub fn </span>components(<span class="kw-2">mut </span><span class="self">self</span>, components: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, [CreateActionRow&lt;<span class="lifetime">'a</span>&gt;]&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.components = <span class="prelude-val">Some</span>(components.into());
         <span class="self">self
     </span>}
     <span class="macro">super::button_and_select_menu_convenience_methods!</span>(<span class="self">self</span>.components);
@@ -454,44 +429,50 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Add a new attachment for the message.
+    <span class="doccomment">/// Sets attachments, see [`EditAttachments`] for more details.
+    </span><span class="kw">pub fn </span>attachments(<span class="kw-2">mut </span><span class="self">self</span>, attachments: EditAttachments&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.attachments = <span class="prelude-val">Some</span>(attachments);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Adds a new attachment to the message.
     ///
-    /// This can be called multiple times.
-    </span><span class="kw">pub fn </span>attachment(<span class="kw-2">mut </span><span class="self">self</span>, attachment: CreateAttachment) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.files.push(attachment);
+    /// Resets existing attachments. See the documentation for [`EditAttachments`] for details.
+    </span><span class="kw">pub fn </span>new_attachment(<span class="kw-2">mut </span><span class="self">self</span>, attachment: CreateAttachment&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>attachments = <span class="self">self</span>.attachments.get_or_insert_with(Default::default);
+        <span class="self">self</span>.attachments = <span class="prelude-val">Some</span>(std::mem::take(attachments).add(attachment));
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Add an existing attachment by id.
-    </span><span class="kw">pub fn </span>add_existing_attachment(<span class="kw-2">mut </span><span class="self">self</span>, id: AttachmentId) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.attachments.get_or_insert_with(Vec::new).push(ExistingAttachment {
-            id,
-        });
+    <span class="doccomment">/// Shorthand for [`EditAttachments::keep`].
+    </span><span class="kw">pub fn </span>keep_existing_attachment(<span class="kw-2">mut </span><span class="self">self</span>, id: AttachmentId) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>attachments = <span class="self">self</span>.attachments.get_or_insert_with(Default::default);
+        <span class="self">self</span>.attachments = <span class="prelude-val">Some</span>(std::mem::take(attachments).keep(id));
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Remove an existing attachment by id.
+    <span class="doccomment">/// Shorthand for [`EditAttachments::remove`].
     </span><span class="kw">pub fn </span>remove_existing_attachment(<span class="kw-2">mut </span><span class="self">self</span>, id: AttachmentId) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(attachments) = <span class="kw-2">&amp;mut </span><span class="self">self</span>.attachments {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(attachment_index) = attachments.iter().position(|a| a.id == id) {
-                attachments.remove(attachment_index);
-            };
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(attachments) = <span class="self">self</span>.attachments {
+            <span class="self">self</span>.attachments = <span class="prelude-val">Some</span>(attachments.remove(id));
         }
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Remove all attachments.
+    <span class="doccomment">/// Shorthand for calling [`Self::attachments`] with [`EditAttachments::new`].
     </span><span class="kw">pub fn </span>remove_all_attachments(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.attachments.get_or_insert_with(Vec::new).clear();
+        <span class="self">self</span>.attachments = <span class="prelude-val">Some</span>(EditAttachments::new());
         <span class="self">self
     </span>}
-}
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;http&quot;</span>)]
-#[async_trait::async_trait]
-</span><span class="kw">impl </span>Builder <span class="kw">for </span>EditMessage {
-    <span class="kw">type </span>Context&lt;<span class="lifetime">&#39;ctx</span>&gt; = (ChannelId, MessageId);
-    <span class="kw">type </span>Built = Message;
+    <span class="kw">fn </span>is_only_suppress_embeds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.flags == <span class="prelude-val">Some</span>(MessageFlags::SUPPRESS_EMBEDS)
+            &amp;&amp; <span class="self">self</span>.content.is_none()
+            &amp;&amp; <span class="self">self</span>.embeds.is_none()
+            &amp;&amp; <span class="self">self</span>.allowed_mentions.is_none()
+            &amp;&amp; <span class="self">self</span>.components.is_none()
+            &amp;&amp; <span class="self">self</span>.attachments.is_none()
+    }
 
     <span class="doccomment">/// Edits a message in the channel.
     ///
@@ -504,26 +485,45 @@
     ///
     /// **Note**: If any embeds or attachments are set, they will overwrite the existing contents
     /// of the message, deleting existing embeds and attachments. Preserving them requires calling
-    /// [`Self::add_existing_attachment`] in the case of attachments. In the case of embeds,
+    /// [`Self::keep_existing_attachment`] in the case of attachments. In the case of embeds,
     /// duplicate copies of the existing embeds must be sent. Luckily, [`CreateEmbed`] implements
     /// [`From&lt;Embed&gt;`], so one can simply call `embed.into()`.
     ///
     /// # Errors
     ///
-    /// Returns a [`ModelError::MessageTooLong`] if the message contents are over the above limits.
+    /// Returns a [`ModelError::TooLarge`] if the message contents are over the above limits.
     ///
     /// Returns [`Error::Http`] if the user lacks permission, as well as if invalid data is given.
     ///
     /// [Manage Messages]: Permissions::MANAGE_MESSAGES
     /// [`From&lt;Embed&gt;`]: CreateEmbed#impl-From&lt;Embed&gt;
-    </span><span class="kw">async fn </span>execute(
+    </span><span class="attr">#[cfg(feature = <span class="string">"http"</span>)]
+    </span><span class="kw">pub async fn </span>execute(
         <span class="kw-2">mut </span><span class="self">self</span>,
         cache_http: <span class="kw">impl </span>CacheHttp,
-        ctx: <span class="self">Self</span>::Context&lt;<span class="lifetime">&#39;_</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Built&gt; {
+        channel_id: ChannelId,
+        message_id: MessageId,
+        user_id: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="self">self</span>.check_length()<span class="question-mark">?</span>;
-        <span class="kw">let </span>files = std::mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.files);
-        cache_http.http().edit_message(ctx.<span class="number">0</span>, ctx.<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="self">self</span>, files).<span class="kw">await
+
+        <span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(user_id) = user_id {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
+                <span class="kw">if </span>user_id != cache.current_user().id &amp;&amp; !<span class="self">self</span>.is_only_suppress_embeds() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::InvalidUser));
+                }
+            }
+        }
+
+        <span class="kw">let </span>files = <span class="self">self</span>.attachments.as_mut().map_or(Vec::new(), EditAttachments::take_files);
+
+        <span class="kw">let </span>http = cache_http.http();
+        <span class="kw">if </span><span class="self">self</span>.allowed_mentions.is_none() {
+            <span class="self">self</span>.allowed_mentions.clone_from(<span class="kw-2">&amp;</span>http.default_allowed_mentions);
+        }
+
+        http.edit_message(channel_id, message_id, <span class="kw-2">&amp;</span><span class="self">self</span>, files).<span class="kw">await
     </span>}
 }
 </code></pre></div></section></main></body></html>

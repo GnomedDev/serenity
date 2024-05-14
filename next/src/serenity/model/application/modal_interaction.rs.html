@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/modal_interaction.rs`."><title>modal_interaction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/modal_interaction.rs`."><title>modal_interaction.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -218,29 +218,26 @@
 <a href="#218" id="218">218</a>
 <a href="#219" id="219">219</a>
 <a href="#220" id="220">220</a>
-<a href="#221" id="221">221</a>
-<a href="#222" id="222">222</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>serde::de::{Deserialize, Deserializer};
-<span class="kw">use </span>serde::Serialize;
+</pre></div><pre class="rust"><code><span class="kw">use </span>serde::Serialize;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::builder::{
-    Builder,
     CreateInteractionResponse,
     CreateInteractionResponseFollowup,
     CreateInteractionResponseMessage,
     EditInteractionResponse,
 };
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::http::Http;
 <span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// An interaction triggered by a modal submit.
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(remote = <span class="string">&quot;Self&quot;</span>)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(remote = <span class="string">"Self"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModalInteraction {
     <span class="doccomment">/// Id of the interaction.
@@ -250,7 +247,7 @@
     <span class="doccomment">/// The data of the interaction which was triggered.
     </span><span class="kw">pub </span>data: ModalInteractionData,
     <span class="doccomment">/// The guild Id this interaction was sent from, if there is one.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="doccomment">/// Channel that the interaction was sent from.
     </span><span class="kw">pub </span>channel: <span class="prelude-ty">Option</span>&lt;PartialChannel&gt;,
@@ -259,38 +256,40 @@
     <span class="doccomment">/// The `member` data for the invoking user.
     ///
     /// **Note**: It is only present if the interaction is triggered in a guild.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;Member&gt;,
     <span class="doccomment">/// The `user` object for the invoking user.
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>user: User,
     <span class="doccomment">/// A continuation token for responding to the interaction.
-    </span><span class="kw">pub </span>token: String,
+    </span><span class="kw">pub </span>token: FixedString,
     <span class="doccomment">/// Always `1`.
     </span><span class="kw">pub </span>version: u8,
     <span class="doccomment">/// The message this interaction was triggered by
     ///
     /// **Note**: Does not exist if the modal interaction originates from an application command
     /// interaction
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>message: <span class="prelude-ty">Option</span>&lt;Box&lt;Message&gt;&gt;,
     <span class="doccomment">/// Permissions the app or bot has within the channel the interaction was sent from.
     </span><span class="kw">pub </span>app_permissions: <span class="prelude-ty">Option</span>&lt;Permissions&gt;,
     <span class="doccomment">/// The selected language of the invoking user.
-    </span><span class="kw">pub </span>locale: String,
-    <span class="doccomment">/// The guild&#39;s preferred locale.
-    </span><span class="kw">pub </span>guild_locale: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>locale: FixedString,
+    <span class="doccomment">/// The guild's preferred locale.
+    </span><span class="kw">pub </span>guild_locale: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
+    <span class="doccomment">/// For monetized applications, any entitlements of the invoking user.
+    </span><span class="kw">pub </span>entitlements: Vec&lt;Entitlement&gt;,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>ModalInteraction {
     <span class="doccomment">/// Gets the interaction response.
     ///
     /// # Errors
     ///
     /// Returns an [`Error::Http`] if there is no interaction response.
-    </span><span class="kw">pub async fn </span>get_response(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        http.as_ref().get_original_interaction_response(<span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_response(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        http.get_original_interaction_response(<span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Creates a response to the interaction received.
@@ -304,10 +303,10 @@
     /// deserializing the API response.
     </span><span class="kw">pub async fn </span>create_response(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: CreateInteractionResponse,
+        http: <span class="kw-2">&amp;</span>Http,
+        builder: CreateInteractionResponse&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        builder.execute(cache_http, (<span class="self">self</span>.id, <span class="kw-2">&amp;</span><span class="self">self</span>.token)).<span class="kw">await
+        builder.execute(http, <span class="self">self</span>.id, <span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edits the initial interaction response.
@@ -321,10 +320,10 @@
     /// deserializing the API response.
     </span><span class="kw">pub async fn </span>edit_response(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: EditInteractionResponse,
+        http: <span class="kw-2">&amp;</span>Http,
+        builder: EditInteractionResponse&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        builder.execute(cache_http, <span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
+        builder.execute(http, <span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes the initial interaction response.
@@ -335,8 +334,8 @@
     ///
     /// May return [`Error::Http`] if the API returns an error. Such as if the response was already
     /// deleted.
-    </span><span class="kw">pub async fn </span>delete_response(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        http.as_ref().delete_original_interaction_response(<span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
+    </span><span class="kw">pub async fn </span>delete_response(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        http.delete_original_interaction_response(<span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Creates a followup response to the response sent.
@@ -350,10 +349,10 @@
     /// response.
     </span><span class="kw">pub async fn </span>create_followup(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: CreateInteractionResponseFollowup,
+        http: <span class="kw-2">&amp;</span>Http,
+        builder: CreateInteractionResponseFollowup&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        builder.execute(cache_http, (<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.token)).<span class="kw">await
+        builder.execute(http, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edits a followup response to the response sent.
@@ -367,11 +366,11 @@
     /// response.
     </span><span class="kw">pub async fn </span>edit_followup(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        message_id: <span class="kw">impl </span>Into&lt;MessageId&gt;,
-        builder: CreateInteractionResponseFollowup,
+        http: <span class="kw-2">&amp;</span>Http,
+        message_id: MessageId,
+        builder: CreateInteractionResponseFollowup&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        builder.execute(cache_http, (<span class="prelude-val">Some</span>(message_id.into()), <span class="kw-2">&amp;</span><span class="self">self</span>.token)).<span class="kw">await
+        builder.execute(http, <span class="prelude-val">Some</span>(message_id), <span class="kw-2">&amp;</span><span class="self">self</span>.token).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes a followup message.
@@ -380,12 +379,8 @@
     ///
     /// May return [`Error::Http`] if the API returns an error. Such as if the response was already
     /// deleted.
-    </span><span class="kw">pub async fn </span>delete_followup&lt;M: Into&lt;MessageId&gt;&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-        message_id: M,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        http.as_ref().delete_followup_message(<span class="kw-2">&amp;</span><span class="self">self</span>.token, message_id.into()).<span class="kw">await
+    </span><span class="kw">pub async fn </span>delete_followup(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, message_id: MessageId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        http.delete_followup_message(<span class="kw-2">&amp;</span><span class="self">self</span>.token, message_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Helper function to defer an interaction.
@@ -394,8 +389,8 @@
     ///
     /// Returns an [`Error::Http`] if the API returns an error, or an [`Error::Json`] if there is
     /// an error in deserializing the API response.
-    </span><span class="kw">pub async fn </span>defer(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="self">self</span>.create_response(cache_http, CreateInteractionResponse::Acknowledge).<span class="kw">await
+    </span><span class="kw">pub async fn </span>defer(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.create_response(http, CreateInteractionResponse::Acknowledge).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Helper function to defer an interaction ephemerally
@@ -404,21 +399,21 @@
     ///
     /// May also return an [`Error::Http`] if the API returns an error, or an [`Error::Json`] if
     /// there is an error in deserializing the API response.
-    </span><span class="kw">pub async fn </span>defer_ephemeral(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    </span><span class="kw">pub async fn </span>defer_ephemeral(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span>builder = CreateInteractionResponse::Defer(
             CreateInteractionResponseMessage::new().ephemeral(<span class="bool-val">true</span>),
         );
-        <span class="self">self</span>.create_response(cache_http, builder).<span class="kw">await
+        <span class="self">self</span>.create_response(http, builder).<span class="kw">await
     </span>}
 }
 
-<span class="comment">// Manual impl needed to insert guild_id into resolved Role&#39;s
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>ModalInteraction {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+<span class="comment">// Manual impl needed to insert guild_id into resolved Role's
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>ModalInteraction {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>interaction = <span class="self">Self</span>::deserialize(deserializer)<span class="question-mark">?</span>; <span class="comment">// calls #[serde(remote)]-generated inherent method
         </span><span class="kw">if let </span>(<span class="prelude-val">Some</span>(guild_id), <span class="prelude-val">Some</span>(member)) = (interaction.guild_id, <span class="kw-2">&amp;mut </span>interaction.member) {
             member.guild_id = guild_id;
-            <span class="comment">// If `member` is present, `user` wasn&#39;t sent and is still filled with default data
+            <span class="comment">// If `member` is present, `user` wasn't sent and is still filled with default data
             </span>interaction.user = member.user.clone();
         }
         <span class="prelude-val">Ok</span>(interaction)
@@ -434,12 +429,13 @@
 <span class="doccomment">/// A modal submit interaction data, provided by [`ModalInteraction::data`]
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ModalInteractionData {
     <span class="doccomment">/// The custom id of the modal
-    </span><span class="kw">pub </span>custom_id: String,
+    </span><span class="kw">pub </span>custom_id: FixedString,
     <span class="doccomment">/// The components.
-    </span><span class="kw">pub </span>components: Vec&lt;ActionRow&gt;,
+    </span><span class="kw">pub </span>components: FixedArray&lt;ActionRow&gt;,
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/command.rs`."><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/application/command.rs`."><title>command.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -414,27 +414,17 @@
 <a href="#414" id="414">414</a>
 <a href="#415" id="415">415</a>
 <a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 
-<span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>serde::Serialize;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::builder::{Builder, CreateCommand};
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::json::Value;
+<span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+</span><span class="kw">use super</span>::{InstallationContext, InteractionContext};
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::builder::CreateCommand;
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::http::Http;
+<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::channel::ChannelType;
 <span class="kw">use </span><span class="kw">crate</span>::model::id::{
     ApplicationId,
@@ -450,13 +440,15 @@
 <span class="doccomment">/// The base command model that belongs to an application.
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[bool_to_bitflags::bool_to_bitflags]
+#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Command {
     <span class="doccomment">/// The command Id.
     </span><span class="kw">pub </span>id: CommandId,
     <span class="doccomment">/// The application command kind.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>kind: CommandType,
     <span class="doccomment">/// The parent application Id.
     </span><span class="kw">pub </span>application_id: ApplicationId,
@@ -465,13 +457,13 @@
     /// **Note**: It may only be present if it is received through the gateway.
     </span><span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="doccomment">/// The command name.
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: FixedString&lt;u8&gt;,
     <span class="doccomment">/// The localized command name of the selected locale.
     ///
     /// If the name is localized, either this field or [`Self::name_localizations`] is set,
     /// depending on which endpoint this data was retrieved from
     /// ([source](https://discord.com/developers/docs/interactions/application-commands#retrieving-localized-commands)).
-    </span><span class="kw">pub </span>name_localized: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>name_localized: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u8&gt;&gt;,
     <span class="doccomment">/// All localized command names.
     ///
     /// If the name is localized, either this field or [`Self::name_localized`] is set, depending
@@ -479,13 +471,13 @@
     /// ([source](https://discord.com/developers/docs/interactions/application-commands#retrieving-localized-commands)).
     </span><span class="kw">pub </span>name_localizations: <span class="prelude-ty">Option</span>&lt;HashMap&lt;String, String&gt;&gt;,
     <span class="doccomment">/// The command description.
-    </span><span class="kw">pub </span>description: String,
+    </span><span class="kw">pub </span>description: FixedString&lt;u16&gt;,
     <span class="doccomment">/// The localized command description of the selected locale.
     ///
     /// If the description is localized, either this field or [`Self::description_localizations`]
     /// is set, depending on which endpoint this data was retrieved from
     /// ([source](https://discord.com/developers/docs/interactions/application-commands#retrieving-localized-commands)).
-    </span><span class="kw">pub </span>description_localized: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>description_localized: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
     <span class="doccomment">/// All localized command descriptions.
     ///
     /// If the description is localized, either this field or [`Self::description_localized`] is
@@ -494,22 +486,29 @@
     </span><span class="kw">pub </span>description_localizations: <span class="prelude-ty">Option</span>&lt;HashMap&lt;String, String&gt;&gt;,
     <span class="doccomment">/// The parameters for the command.
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>options: Vec&lt;CommandOption&gt;,
+    </span><span class="kw">pub </span>options: FixedArray&lt;CommandOption&gt;,
     <span class="doccomment">/// The default permissions required to execute the command.
     </span><span class="kw">pub </span>default_member_permissions: <span class="prelude-ty">Option</span>&lt;Permissions&gt;,
-    <span class="doccomment">/// Indicates whether the command is available in DMs with the app, only for globally-scoped
-    /// commands. By default, commands are visible.
-    </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>dm_permission: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// Indicates whether the command is [age-restricted](https://discord.com/developers/docs/interactions/application-commands#agerestricted-commands),
     /// defaults to false.
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>nsfw: bool,
+    <span class="doccomment">/// Installation context(s) where the command is available, only for globally-scoped commands.
+    ///
+    /// Defaults to [`InstallationContext::Guild`]
+    </span><span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+    #[serde(default)]
+    </span><span class="kw">pub </span>integration_types: Vec&lt;InstallationContext&gt;,
+    <span class="doccomment">/// Interaction context(s) where the command can be used, only for globally-scoped commands.
+    ///
+    /// By default, all interaction context types are included.
+    </span><span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+    </span><span class="kw">pub </span>contexts: <span class="prelude-ty">Option</span>&lt;Vec&lt;InteractionContext&gt;&gt;,
     <span class="doccomment">/// An autoincremented version identifier updated during substantial record changes.
     </span><span class="kw">pub </span>version: CommandVersionId,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>Command {
     <span class="doccomment">/// Create a global [`Command`], overriding an existing one with the same name if it exists.
     ///
@@ -535,7 +534,7 @@
     /// use serenity::model::application::Command;
     /// use serenity::model::id::ApplicationId;
     ///
-    /// let builder = CreateCommand::new(&quot;ping&quot;).description(&quot;A simple ping command&quot;);
+    /// let builder = CreateCommand::new("ping").description("A simple ping command");
     /// let _ = Command::create_global_command(&amp;http, builder).await;
     /// # }
     /// ```
@@ -553,8 +552,8 @@
     /// use serenity::model::id::ApplicationId;
     ///
     /// let builder =
-    ///     CreateCommand::new(&quot;echo&quot;).description(&quot;Makes the bot send a message&quot;).add_option(
-    ///         CreateOption::new(CommandOptionType::String, &quot;message&quot;, &quot;The message to send&quot;)
+    ///     CreateCommand::new("echo").description("Makes the bot send a message").add_option(
+    ///         CreateOption::new(CommandOptionType::String, "message", "The message to send")
     ///             .required(true),
     ///     );
     /// let _ = Command::create_global_command(&amp;http, builder).await;
@@ -566,11 +565,8 @@
     /// See [`CreateCommand::execute`] for a list of possible errors.
     ///
     /// [`InteractionCreate`]: crate::client::EventHandler::interaction_create
-    </span><span class="kw">pub async fn </span>create_global_command(
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: CreateCommand,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(cache_http, (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>)).<span class="kw">await
+    </span><span class="kw">pub async fn </span>create_global_command(http: <span class="kw-2">&amp;</span>Http, builder: CreateCommand&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
+        builder.execute(http, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Override all global application commands.
@@ -579,10 +575,10 @@
     ///
     /// Returns the same errors as [`Self::create_global_command`].
     </span><span class="kw">pub async fn </span>set_global_commands(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-        commands: Vec&lt;CreateCommand&gt;,
+        http: <span class="kw-2">&amp;</span>Http,
+        commands: <span class="kw-2">&amp;</span>[CreateCommand&lt;<span class="lifetime">'_</span>&gt;],
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().create_global_commands(<span class="kw-2">&amp;</span>commands).<span class="kw">await
+        http.create_global_commands(<span class="kw-2">&amp;</span>commands).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Edit a global command, given its Id.
@@ -591,11 +587,11 @@
     ///
     /// See [`CreateCommand::execute`] for a list of possible errors.
     </span><span class="kw">pub async fn </span>edit_global_command(
-        cache_http: <span class="kw">impl </span>CacheHttp,
+        http: <span class="kw-2">&amp;</span>Http,
         command_id: CommandId,
-        builder: CreateCommand,
+        builder: CreateCommand&lt;<span class="lifetime">'_</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        builder.execute(cache_http, (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(command_id))).<span class="kw">await
+        builder.execute(http, <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(command_id)).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets all global commands.
@@ -603,8 +599,8 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_global_commands(http: <span class="kw">impl </span>AsRef&lt;Http&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().get_global_commands().<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_global_commands(http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.get_global_commands().<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets all global commands with localizations.
@@ -612,10 +608,8 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_global_commands_with_localizations(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
-        http.as_ref().get_global_commands_with_localizations().<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_global_commands_with_localizations(http: <span class="kw-2">&amp;</span>Http) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Command&gt;&gt; {
+        http.get_global_commands_with_localizations().<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets a global command by its Id.
@@ -623,11 +617,8 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>get_global_command(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-        command_id: CommandId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
-        http.as_ref().get_global_command(command_id).<span class="kw">await
+    </span><span class="kw">pub async fn </span>get_global_command(http: <span class="kw-2">&amp;</span>Http, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
+        http.get_global_command(command_id).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Deletes a global command by its Id.
@@ -635,20 +626,17 @@
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>delete_global_command(
-        http: <span class="kw">impl </span>AsRef&lt;Http&gt;,
-        command_id: CommandId,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        http.as_ref().delete_global_command(command_id).<span class="kw">await
+    </span><span class="kw">pub async fn </span>delete_global_command(http: <span class="kw-2">&amp;</span>Http, command_id: CommandId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        http.delete_global_command(command_id).<span class="kw">await
     </span>}
 }
 
-<span class="macro">enum_number! </span>{
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// The type of an application command.
     ///
     /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>CommandType {
         ChatInput = <span class="number">1</span>,
@@ -661,22 +649,23 @@
 <span class="doccomment">/// The parameters for an [`Command`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CommandOption {
     <span class="doccomment">/// The option type.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>kind: CommandOptionType,
     <span class="doccomment">/// The option name.
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: FixedString&lt;u8&gt;,
     <span class="doccomment">/// Localizations of the option name with locale as the key
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>name_localizations: <span class="prelude-ty">Option</span>&lt;std::collections::HashMap&lt;String, String&gt;&gt;,
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span><span class="kw">pub </span>name_localizations: <span class="prelude-ty">Option</span>&lt;HashMap&lt;FixedString&lt;u8&gt;, FixedString&lt;u8&gt;&gt;&gt;,
     <span class="doccomment">/// The option description.
-    </span><span class="kw">pub </span>description: String,
+    </span><span class="kw">pub </span>description: FixedString&lt;u16&gt;,
     <span class="doccomment">/// Localizations of the option description with locale as the key
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>description_localizations: <span class="prelude-ty">Option</span>&lt;std::collections::HashMap&lt;String, String&gt;&gt;,
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span><span class="kw">pub </span>description_localizations: <span class="prelude-ty">Option</span>&lt;HashMap&lt;FixedString&lt;u16&gt;, FixedString&lt;u16&gt;&gt;&gt;,
     <span class="doccomment">/// Whether the parameter is optional or required.
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>required: bool,
@@ -687,7 +676,7 @@
     /// [`String`]: CommandOptionType::String
     /// [`Integer`]: CommandOptionType::Integer
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>choices: Vec&lt;CommandOptionChoice&gt;,
+    </span><span class="kw">pub </span>choices: FixedArray&lt;CommandOptionChoice, u8&gt;,
     <span class="doccomment">/// The nested options.
     ///
     /// **Note**: Only available for [`SubCommand`] or [`SubCommandGroup`].
@@ -700,7 +689,7 @@
     ///
     /// [`Channel`]: CommandOptionType::Channel
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>channel_types: Vec&lt;ChannelType&gt;,
+    </span><span class="kw">pub </span>channel_types: FixedArray&lt;ChannelType&gt;,
     <span class="doccomment">/// Minimum permitted value for Integer or Number options
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>min_value: <span class="prelude-ty">Option</span>&lt;serde_json::Number&gt;,
@@ -717,12 +706,12 @@
     </span><span class="kw">pub </span>autocomplete: bool,
 }
 
-<span class="macro">enum_number! </span>{
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// The type of an [`CommandOption`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>CommandOptionType {
         SubCommand = <span class="number">1</span>,
@@ -743,14 +732,15 @@
 <span class="doccomment">/// The only valid values a user can pick in an [`CommandOption`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CommandOptionChoice {
     <span class="doccomment">/// The choice name.
-    </span><span class="kw">pub </span>name: String,
+    </span><span class="kw">pub </span>name: FixedString,
     <span class="doccomment">/// Localizations of the choice name, with locale as key
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
-    </span><span class="kw">pub </span>name_localizations: <span class="prelude-ty">Option</span>&lt;std::collections::HashMap&lt;String, String&gt;&gt;,
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
+    </span><span class="kw">pub </span>name_localizations: <span class="prelude-ty">Option</span>&lt;HashMap&lt;String, String&gt;&gt;,
     <span class="doccomment">/// The choice value.
     </span><span class="kw">pub </span>value: Value,
 }
@@ -758,7 +748,8 @@
 <span class="doccomment">/// An [`Command`] permission.
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CommandPermissions {
     <span class="doccomment">/// The id of the command.
@@ -768,30 +759,31 @@
     <span class="doccomment">/// The id of the guild.
     </span><span class="kw">pub </span>guild_id: GuildId,
     <span class="doccomment">/// The permissions for the command in the guild.
-    </span><span class="kw">pub </span>permissions: Vec&lt;CommandPermission&gt;,
+    </span><span class="kw">pub </span>permissions: FixedArray&lt;CommandPermission&gt;,
 }
 
 <span class="doccomment">/// The [`CommandPermission`] data.
 ///
 /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CommandPermission {
     <span class="doccomment">/// The [`RoleId`] or [`UserId`], depends on `kind` value.
     </span><span class="kw">pub </span>id: CommandPermissionId,
     <span class="doccomment">/// The type of data this permissions applies to.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>kind: CommandPermissionType,
     <span class="doccomment">/// Whether or not the provided data can use the command or not.
     </span><span class="kw">pub </span>permission: bool,
 }
 
-<span class="macro">enum_number! </span>{
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// The type of a [`CommandPermission`].
     ///
     /// [Discord docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>CommandPermissionType {
         Role = <span class="number">1</span>,
@@ -805,49 +797,37 @@
     <span class="doccomment">/// Converts this [`CommandPermissionId`] to [`UserId`].
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>to_user_id(<span class="self">self</span>) -&gt; UserId {
-        <span class="self">self</span>.<span class="number">0</span>.into()
+        <span class="self">self</span>.into()
     }
 
     <span class="doccomment">/// Converts this [`CommandPermissionId`] to [`RoleId`].
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>to_role_id(<span class="self">self</span>) -&gt; RoleId {
-        <span class="self">self</span>.<span class="number">0</span>.into()
+        <span class="self">self</span>.into()
     }
 }
 
 <span class="kw">impl </span>From&lt;RoleId&gt; <span class="kw">for </span>CommandPermissionId {
     <span class="kw">fn </span>from(id: RoleId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RoleId&gt; <span class="kw">for </span>CommandPermissionId {
-    <span class="kw">fn </span>from(id: <span class="kw-2">&amp;</span>RoleId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
+        <span class="self">Self</span>::new(id.get())
     }
 }
 
 <span class="kw">impl </span>From&lt;UserId&gt; <span class="kw">for </span>CommandPermissionId {
     <span class="kw">fn </span>from(id: UserId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>UserId&gt; <span class="kw">for </span>CommandPermissionId {
-    <span class="kw">fn </span>from(id: <span class="kw-2">&amp;</span>UserId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
+        <span class="self">Self</span>::new(id.get())
     }
 }
 
 <span class="kw">impl </span>From&lt;CommandPermissionId&gt; <span class="kw">for </span>RoleId {
     <span class="kw">fn </span>from(id: CommandPermissionId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
+        <span class="self">Self</span>::new(id.get())
     }
 }
 
 <span class="kw">impl </span>From&lt;CommandPermissionId&gt; <span class="kw">for </span>UserId {
     <span class="kw">fn </span>from(id: CommandPermissionId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(id.<span class="number">0</span>)
+        <span class="self">Self</span>::new(id.get())
     }
 }
 </code></pre></div></section></main></body></html>

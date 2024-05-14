@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cache/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cache/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -591,482 +591,44 @@
 <a href="#591" id="591">591</a>
 <a href="#592" id="592">592</a>
 <a href="#593" id="593">593</a>
-<a href="#594" id="594">594</a>
-<a href="#595" id="595">595</a>
-<a href="#596" id="596">596</a>
-<a href="#597" id="597">597</a>
-<a href="#598" id="598">598</a>
-<a href="#599" id="599">599</a>
-<a href="#600" id="600">600</a>
-<a href="#601" id="601">601</a>
-<a href="#602" id="602">602</a>
-<a href="#603" id="603">603</a>
-<a href="#604" id="604">604</a>
-<a href="#605" id="605">605</a>
-<a href="#606" id="606">606</a>
-<a href="#607" id="607">607</a>
-<a href="#608" id="608">608</a>
-<a href="#609" id="609">609</a>
-<a href="#610" id="610">610</a>
-<a href="#611" id="611">611</a>
-<a href="#612" id="612">612</a>
-<a href="#613" id="613">613</a>
-<a href="#614" id="614">614</a>
-<a href="#615" id="615">615</a>
-<a href="#616" id="616">616</a>
-<a href="#617" id="617">617</a>
-<a href="#618" id="618">618</a>
-<a href="#619" id="619">619</a>
-<a href="#620" id="620">620</a>
-<a href="#621" id="621">621</a>
-<a href="#622" id="622">622</a>
-<a href="#623" id="623">623</a>
-<a href="#624" id="624">624</a>
-<a href="#625" id="625">625</a>
-<a href="#626" id="626">626</a>
-<a href="#627" id="627">627</a>
-<a href="#628" id="628">628</a>
-<a href="#629" id="629">629</a>
-<a href="#630" id="630">630</a>
-<a href="#631" id="631">631</a>
-<a href="#632" id="632">632</a>
-<a href="#633" id="633">633</a>
-<a href="#634" id="634">634</a>
-<a href="#635" id="635">635</a>
-<a href="#636" id="636">636</a>
-<a href="#637" id="637">637</a>
-<a href="#638" id="638">638</a>
-<a href="#639" id="639">639</a>
-<a href="#640" id="640">640</a>
-<a href="#641" id="641">641</a>
-<a href="#642" id="642">642</a>
-<a href="#643" id="643">643</a>
-<a href="#644" id="644">644</a>
-<a href="#645" id="645">645</a>
-<a href="#646" id="646">646</a>
-<a href="#647" id="647">647</a>
-<a href="#648" id="648">648</a>
-<a href="#649" id="649">649</a>
-<a href="#650" id="650">650</a>
-<a href="#651" id="651">651</a>
-<a href="#652" id="652">652</a>
-<a href="#653" id="653">653</a>
-<a href="#654" id="654">654</a>
-<a href="#655" id="655">655</a>
-<a href="#656" id="656">656</a>
-<a href="#657" id="657">657</a>
-<a href="#658" id="658">658</a>
-<a href="#659" id="659">659</a>
-<a href="#660" id="660">660</a>
-<a href="#661" id="661">661</a>
-<a href="#662" id="662">662</a>
-<a href="#663" id="663">663</a>
-<a href="#664" id="664">664</a>
-<a href="#665" id="665">665</a>
-<a href="#666" id="666">666</a>
-<a href="#667" id="667">667</a>
-<a href="#668" id="668">668</a>
-<a href="#669" id="669">669</a>
-<a href="#670" id="670">670</a>
-<a href="#671" id="671">671</a>
-<a href="#672" id="672">672</a>
-<a href="#673" id="673">673</a>
-<a href="#674" id="674">674</a>
-<a href="#675" id="675">675</a>
-<a href="#676" id="676">676</a>
-<a href="#677" id="677">677</a>
-<a href="#678" id="678">678</a>
-<a href="#679" id="679">679</a>
-<a href="#680" id="680">680</a>
-<a href="#681" id="681">681</a>
-<a href="#682" id="682">682</a>
-<a href="#683" id="683">683</a>
-<a href="#684" id="684">684</a>
-<a href="#685" id="685">685</a>
-<a href="#686" id="686">686</a>
-<a href="#687" id="687">687</a>
-<a href="#688" id="688">688</a>
-<a href="#689" id="689">689</a>
-<a href="#690" id="690">690</a>
-<a href="#691" id="691">691</a>
-<a href="#692" id="692">692</a>
-<a href="#693" id="693">693</a>
-<a href="#694" id="694">694</a>
-<a href="#695" id="695">695</a>
-<a href="#696" id="696">696</a>
-<a href="#697" id="697">697</a>
-<a href="#698" id="698">698</a>
-<a href="#699" id="699">699</a>
-<a href="#700" id="700">700</a>
-<a href="#701" id="701">701</a>
-<a href="#702" id="702">702</a>
-<a href="#703" id="703">703</a>
-<a href="#704" id="704">704</a>
-<a href="#705" id="705">705</a>
-<a href="#706" id="706">706</a>
-<a href="#707" id="707">707</a>
-<a href="#708" id="708">708</a>
-<a href="#709" id="709">709</a>
-<a href="#710" id="710">710</a>
-<a href="#711" id="711">711</a>
-<a href="#712" id="712">712</a>
-<a href="#713" id="713">713</a>
-<a href="#714" id="714">714</a>
-<a href="#715" id="715">715</a>
-<a href="#716" id="716">716</a>
-<a href="#717" id="717">717</a>
-<a href="#718" id="718">718</a>
-<a href="#719" id="719">719</a>
-<a href="#720" id="720">720</a>
-<a href="#721" id="721">721</a>
-<a href="#722" id="722">722</a>
-<a href="#723" id="723">723</a>
-<a href="#724" id="724">724</a>
-<a href="#725" id="725">725</a>
-<a href="#726" id="726">726</a>
-<a href="#727" id="727">727</a>
-<a href="#728" id="728">728</a>
-<a href="#729" id="729">729</a>
-<a href="#730" id="730">730</a>
-<a href="#731" id="731">731</a>
-<a href="#732" id="732">732</a>
-<a href="#733" id="733">733</a>
-<a href="#734" id="734">734</a>
-<a href="#735" id="735">735</a>
-<a href="#736" id="736">736</a>
-<a href="#737" id="737">737</a>
-<a href="#738" id="738">738</a>
-<a href="#739" id="739">739</a>
-<a href="#740" id="740">740</a>
-<a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
-<a href="#748" id="748">748</a>
-<a href="#749" id="749">749</a>
-<a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-<a href="#753" id="753">753</a>
-<a href="#754" id="754">754</a>
-<a href="#755" id="755">755</a>
-<a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a>
-<a href="#758" id="758">758</a>
-<a href="#759" id="759">759</a>
-<a href="#760" id="760">760</a>
-<a href="#761" id="761">761</a>
-<a href="#762" id="762">762</a>
-<a href="#763" id="763">763</a>
-<a href="#764" id="764">764</a>
-<a href="#765" id="765">765</a>
-<a href="#766" id="766">766</a>
-<a href="#767" id="767">767</a>
-<a href="#768" id="768">768</a>
-<a href="#769" id="769">769</a>
-<a href="#770" id="770">770</a>
-<a href="#771" id="771">771</a>
-<a href="#772" id="772">772</a>
-<a href="#773" id="773">773</a>
-<a href="#774" id="774">774</a>
-<a href="#775" id="775">775</a>
-<a href="#776" id="776">776</a>
-<a href="#777" id="777">777</a>
-<a href="#778" id="778">778</a>
-<a href="#779" id="779">779</a>
-<a href="#780" id="780">780</a>
-<a href="#781" id="781">781</a>
-<a href="#782" id="782">782</a>
-<a href="#783" id="783">783</a>
-<a href="#784" id="784">784</a>
-<a href="#785" id="785">785</a>
-<a href="#786" id="786">786</a>
-<a href="#787" id="787">787</a>
-<a href="#788" id="788">788</a>
-<a href="#789" id="789">789</a>
-<a href="#790" id="790">790</a>
-<a href="#791" id="791">791</a>
-<a href="#792" id="792">792</a>
-<a href="#793" id="793">793</a>
-<a href="#794" id="794">794</a>
-<a href="#795" id="795">795</a>
-<a href="#796" id="796">796</a>
-<a href="#797" id="797">797</a>
-<a href="#798" id="798">798</a>
-<a href="#799" id="799">799</a>
-<a href="#800" id="800">800</a>
-<a href="#801" id="801">801</a>
-<a href="#802" id="802">802</a>
-<a href="#803" id="803">803</a>
-<a href="#804" id="804">804</a>
-<a href="#805" id="805">805</a>
-<a href="#806" id="806">806</a>
-<a href="#807" id="807">807</a>
-<a href="#808" id="808">808</a>
-<a href="#809" id="809">809</a>
-<a href="#810" id="810">810</a>
-<a href="#811" id="811">811</a>
-<a href="#812" id="812">812</a>
-<a href="#813" id="813">813</a>
-<a href="#814" id="814">814</a>
-<a href="#815" id="815">815</a>
-<a href="#816" id="816">816</a>
-<a href="#817" id="817">817</a>
-<a href="#818" id="818">818</a>
-<a href="#819" id="819">819</a>
-<a href="#820" id="820">820</a>
-<a href="#821" id="821">821</a>
-<a href="#822" id="822">822</a>
-<a href="#823" id="823">823</a>
-<a href="#824" id="824">824</a>
-<a href="#825" id="825">825</a>
-<a href="#826" id="826">826</a>
-<a href="#827" id="827">827</a>
-<a href="#828" id="828">828</a>
-<a href="#829" id="829">829</a>
-<a href="#830" id="830">830</a>
-<a href="#831" id="831">831</a>
-<a href="#832" id="832">832</a>
-<a href="#833" id="833">833</a>
-<a href="#834" id="834">834</a>
-<a href="#835" id="835">835</a>
-<a href="#836" id="836">836</a>
-<a href="#837" id="837">837</a>
-<a href="#838" id="838">838</a>
-<a href="#839" id="839">839</a>
-<a href="#840" id="840">840</a>
-<a href="#841" id="841">841</a>
-<a href="#842" id="842">842</a>
-<a href="#843" id="843">843</a>
-<a href="#844" id="844">844</a>
-<a href="#845" id="845">845</a>
-<a href="#846" id="846">846</a>
-<a href="#847" id="847">847</a>
-<a href="#848" id="848">848</a>
-<a href="#849" id="849">849</a>
-<a href="#850" id="850">850</a>
-<a href="#851" id="851">851</a>
-<a href="#852" id="852">852</a>
-<a href="#853" id="853">853</a>
-<a href="#854" id="854">854</a>
-<a href="#855" id="855">855</a>
-<a href="#856" id="856">856</a>
-<a href="#857" id="857">857</a>
-<a href="#858" id="858">858</a>
-<a href="#859" id="859">859</a>
-<a href="#860" id="860">860</a>
-<a href="#861" id="861">861</a>
-<a href="#862" id="862">862</a>
-<a href="#863" id="863">863</a>
-<a href="#864" id="864">864</a>
-<a href="#865" id="865">865</a>
-<a href="#866" id="866">866</a>
-<a href="#867" id="867">867</a>
-<a href="#868" id="868">868</a>
-<a href="#869" id="869">869</a>
-<a href="#870" id="870">870</a>
-<a href="#871" id="871">871</a>
-<a href="#872" id="872">872</a>
-<a href="#873" id="873">873</a>
-<a href="#874" id="874">874</a>
-<a href="#875" id="875">875</a>
-<a href="#876" id="876">876</a>
-<a href="#877" id="877">877</a>
-<a href="#878" id="878">878</a>
-<a href="#879" id="879">879</a>
-<a href="#880" id="880">880</a>
-<a href="#881" id="881">881</a>
-<a href="#882" id="882">882</a>
-<a href="#883" id="883">883</a>
-<a href="#884" id="884">884</a>
-<a href="#885" id="885">885</a>
-<a href="#886" id="886">886</a>
-<a href="#887" id="887">887</a>
-<a href="#888" id="888">888</a>
-<a href="#889" id="889">889</a>
-<a href="#890" id="890">890</a>
-<a href="#891" id="891">891</a>
-<a href="#892" id="892">892</a>
-<a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
-<a href="#895" id="895">895</a>
-<a href="#896" id="896">896</a>
-<a href="#897" id="897">897</a>
-<a href="#898" id="898">898</a>
-<a href="#899" id="899">899</a>
-<a href="#900" id="900">900</a>
-<a href="#901" id="901">901</a>
-<a href="#902" id="902">902</a>
-<a href="#903" id="903">903</a>
-<a href="#904" id="904">904</a>
-<a href="#905" id="905">905</a>
-<a href="#906" id="906">906</a>
-<a href="#907" id="907">907</a>
-<a href="#908" id="908">908</a>
-<a href="#909" id="909">909</a>
-<a href="#910" id="910">910</a>
-<a href="#911" id="911">911</a>
-<a href="#912" id="912">912</a>
-<a href="#913" id="913">913</a>
-<a href="#914" id="914">914</a>
-<a href="#915" id="915">915</a>
-<a href="#916" id="916">916</a>
-<a href="#917" id="917">917</a>
-<a href="#918" id="918">918</a>
-<a href="#919" id="919">919</a>
-<a href="#920" id="920">920</a>
-<a href="#921" id="921">921</a>
-<a href="#922" id="922">922</a>
-<a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
-<a href="#925" id="925">925</a>
-<a href="#926" id="926">926</a>
-<a href="#927" id="927">927</a>
-<a href="#928" id="928">928</a>
-<a href="#929" id="929">929</a>
-<a href="#930" id="930">930</a>
-<a href="#931" id="931">931</a>
-<a href="#932" id="932">932</a>
-<a href="#933" id="933">933</a>
-<a href="#934" id="934">934</a>
-<a href="#935" id="935">935</a>
-<a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
-<a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
-<a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
-<a href="#952" id="952">952</a>
-<a href="#953" id="953">953</a>
-<a href="#954" id="954">954</a>
-<a href="#955" id="955">955</a>
-<a href="#956" id="956">956</a>
-<a href="#957" id="957">957</a>
-<a href="#958" id="958">958</a>
-<a href="#959" id="959">959</a>
-<a href="#960" id="960">960</a>
-<a href="#961" id="961">961</a>
-<a href="#962" id="962">962</a>
-<a href="#963" id="963">963</a>
-<a href="#964" id="964">964</a>
-<a href="#965" id="965">965</a>
-<a href="#966" id="966">966</a>
-<a href="#967" id="967">967</a>
-<a href="#968" id="968">968</a>
-<a href="#969" id="969">969</a>
-<a href="#970" id="970">970</a>
-<a href="#971" id="971">971</a>
-<a href="#972" id="972">972</a>
-<a href="#973" id="973">973</a>
-<a href="#974" id="974">974</a>
-<a href="#975" id="975">975</a>
-<a href="#976" id="976">976</a>
-<a href="#977" id="977">977</a>
-<a href="#978" id="978">978</a>
-<a href="#979" id="979">979</a>
-<a href="#980" id="980">980</a>
-<a href="#981" id="981">981</a>
-<a href="#982" id="982">982</a>
-<a href="#983" id="983">983</a>
-<a href="#984" id="984">984</a>
-<a href="#985" id="985">985</a>
-<a href="#986" id="986">986</a>
-<a href="#987" id="987">987</a>
-<a href="#988" id="988">988</a>
-<a href="#989" id="989">989</a>
-<a href="#990" id="990">990</a>
-<a href="#991" id="991">991</a>
-<a href="#992" id="992">992</a>
-<a href="#993" id="993">993</a>
-<a href="#994" id="994">994</a>
-<a href="#995" id="995">995</a>
-<a href="#996" id="996">996</a>
-<a href="#997" id="997">997</a>
-<a href="#998" id="998">998</a>
-<a href="#999" id="999">999</a>
-<a href="#1000" id="1000">1000</a>
-<a href="#1001" id="1001">1001</a>
-<a href="#1002" id="1002">1002</a>
-<a href="#1003" id="1003">1003</a>
-<a href="#1004" id="1004">1004</a>
-<a href="#1005" id="1005">1005</a>
-<a href="#1006" id="1006">1006</a>
-<a href="#1007" id="1007">1007</a>
-<a href="#1008" id="1008">1008</a>
-<a href="#1009" id="1009">1009</a>
-<a href="#1010" id="1010">1010</a>
-<a href="#1011" id="1011">1011</a>
-<a href="#1012" id="1012">1012</a>
-<a href="#1013" id="1013">1013</a>
-<a href="#1014" id="1014">1014</a>
-<a href="#1015" id="1015">1015</a>
-<a href="#1016" id="1016">1016</a>
-<a href="#1017" id="1017">1017</a>
-<a href="#1018" id="1018">1018</a>
-<a href="#1019" id="1019">1019</a>
-<a href="#1020" id="1020">1020</a>
-<a href="#1021" id="1021">1021</a>
-<a href="#1022" id="1022">1022</a>
-<a href="#1023" id="1023">1023</a>
-<a href="#1024" id="1024">1024</a>
-<a href="#1025" id="1025">1025</a>
-<a href="#1026" id="1026">1026</a>
-<a href="#1027" id="1027">1027</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! A cache containing data received from [`Shard`]s.
 //!
 //! Using the cache allows to avoid REST API requests via the [`http`] module where possible.
 //! Issuing too many requests will lead to ratelimits.
 //!
-//! Following a policy to never hand out locks, the cache will clone all values when calling its
-//! methods.
-//!
 //! # Use by Models
 //!
 //! Most models of Discord objects, such as the [`Message`], [`GuildChannel`], or [`Emoji`], have
-//! methods for interacting with that single instance. This feature is only compiled if the
-//! `methods` feature is enabled. An example of this is [`Guild::edit`], which performs a check to
-//! ensure that the current user is the owner of the guild, prior to actually performing the HTTP
-//! request. The cache is involved due to the function&#39;s use of unlocking the cache and retrieving
+//! methods for interacting with that single instance. This feature is only compiled if the `model`
+//! feature is enabled. An example of this is [`Guild::edit`], which performs a check to ensure that
+//! the current user is the owner of the guild, prior to actually performing the HTTP request.
+//! The cache is involved due to the function's use of unlocking the cache and retrieving
 //! the Id of the current user, and comparing it to the Id of the user that owns the guild. This is
 //! an inexpensive method of being able to access data required by these sugary methods.
 //!
 //! # Do I need the Cache?
 //!
-//! If you&#39;re asking this, the answer is likely &quot;definitely yes&quot; or &quot;definitely no&quot;; any in-between
-//! tends to be &quot;yes&quot;. If you are low on RAM, and need to run on only a couple MB, then the answer
-//! is &quot;definitely no&quot;. If you do not care about RAM and want your bot to be able to access data
-//! while needing to hit the REST API as little as possible, then the answer is &quot;yes&quot;.
+//! If you're asking this, the answer is likely "definitely yes" or "definitely no"; any in-between
+//! tends to be "yes". If you are low on RAM, and need to run on only a couple MB, then the answer
+//! is "definitely no". If you do not care about RAM and want your bot to be able to access data
+//! while needing to hit the REST API as little as possible, then the answer is "yes".
 //!
 //! [`Shard`]: crate::gateway::Shard
 //! [`http`]: crate::http
 
-</span><span class="kw">use </span>std::collections::{HashMap, HashSet, VecDeque};
+</span><span class="kw">use </span>std::collections::{HashSet, VecDeque};
 <span class="kw">use </span>std::hash::Hash;
-<span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+<span class="kw">use </span>std::num::NonZeroU16;
+<span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
 </span><span class="kw">use </span>std::sync::Arc;
-<span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
 </span><span class="kw">use </span>std::time::Duration;
 
-<span class="kw">use </span>dashmap::mapref::entry::Entry;
-<span class="kw">use </span>dashmap::mapref::one::Ref;
+<span class="kw">use </span>dashmap::mapref::one::{MappedRef, Ref};
 <span class="kw">use </span>dashmap::DashMap;
-<span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
 </span><span class="kw">use </span>mini_moka::sync::Cache <span class="kw">as </span>MokaCache;
 <span class="kw">use </span>parking_lot::RwLock;
-<span class="kw">use </span>tracing::instrument;
 
 <span class="kw">pub use </span><span class="self">self</span>::cache_update::CacheUpdate;
 <span class="kw">pub use </span><span class="self">self</span>::settings::Settings;
@@ -1077,69 +639,76 @@
 <span class="kw">mod </span>settings;
 <span class="kw">mod </span>wrappers;
 
+<span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>wrappers::MaybeOwnedArc;
 <span class="kw">use </span>wrappers::{BuildHasher, MaybeMap, ReadOnlyMapRef};
-
-<span class="kw">type </span>MessageCache = DashMap&lt;ChannelId, HashMap&lt;MessageId, Message&gt;, BuildHasher&gt;;
 
 <span class="kw">struct </span>NotSend;
 
-<span class="kw">enum </span>CacheRefInner&lt;<span class="lifetime">&#39;a</span>, K, V&gt; {
-    <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+<span class="kw">enum </span>CacheRefInner&lt;<span class="lifetime">'a</span>, K, V, T&gt; {
+    <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
     </span>Arc(Arc&lt;V&gt;),
-    DashRef(Ref&lt;<span class="lifetime">&#39;a</span>, K, V, BuildHasher&gt;),
-    ReadGuard(parking_lot::RwLockReadGuard&lt;<span class="lifetime">&#39;a</span>, V&gt;),
+    DashRef(Ref&lt;<span class="lifetime">'a</span>, K, V, BuildHasher&gt;),
+    DashMappedRef(MappedRef&lt;<span class="lifetime">'a</span>, K, T, V, BuildHasher&gt;),
+    ReadGuard(parking_lot::RwLockReadGuard&lt;<span class="lifetime">'a</span>, V&gt;),
 }
 
-<span class="kw">pub struct </span>CacheRef&lt;<span class="lifetime">&#39;a</span>, K, V&gt; {
-    inner: CacheRefInner&lt;<span class="lifetime">&#39;a</span>, K, V&gt;,
+<span class="kw">pub struct </span>CacheRef&lt;<span class="lifetime">'a</span>, K, V, T = ()&gt; {
+    inner: CacheRefInner&lt;<span class="lifetime">'a</span>, K, V, T&gt;,
     phantom: std::marker::PhantomData&lt;<span class="kw-2">*const </span>NotSend&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, K, V&gt; CacheRef&lt;<span class="lifetime">&#39;a</span>, K, V&gt; {
-    <span class="kw">fn </span>new(inner: CacheRefInner&lt;<span class="lifetime">&#39;a</span>, K, V&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, K, V, T&gt; CacheRef&lt;<span class="lifetime">'a</span>, K, V, T&gt; {
+    <span class="kw">fn </span>new(inner: CacheRefInner&lt;<span class="lifetime">'a</span>, K, V, T&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             inner,
             phantom: std::marker::PhantomData,
         }
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-    </span><span class="kw">fn </span>from_arc(inner: Arc&lt;V&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new(CacheRefInner::Arc(inner))
+    <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+    </span><span class="kw">fn </span>from_arc(inner: MaybeOwnedArc&lt;V&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(CacheRefInner::Arc(inner.get_inner()))
     }
 
-    <span class="kw">fn </span>from_ref(inner: Ref&lt;<span class="lifetime">&#39;a</span>, K, V, BuildHasher&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from_ref(inner: Ref&lt;<span class="lifetime">'a</span>, K, V, BuildHasher&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(CacheRefInner::DashRef(inner))
     }
 
-    <span class="kw">fn </span>from_guard(inner: parking_lot::RwLockReadGuard&lt;<span class="lifetime">&#39;a</span>, V&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from_mapped_ref(inner: MappedRef&lt;<span class="lifetime">'a</span>, K, T, V, BuildHasher&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(CacheRefInner::DashMappedRef(inner))
+    }
+
+    <span class="kw">fn </span>from_guard(inner: parking_lot::RwLockReadGuard&lt;<span class="lifetime">'a</span>, V&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(CacheRefInner::ReadGuard(inner))
     }
 }
 
-<span class="kw">impl</span>&lt;K: Eq + Hash, V&gt; std::ops::Deref <span class="kw">for </span>CacheRef&lt;<span class="lifetime">&#39;_</span>, K, V&gt; {
+<span class="kw">impl</span>&lt;K: Eq + Hash, V, T&gt; std::ops::Deref <span class="kw">for </span>CacheRef&lt;<span class="lifetime">'_</span>, K, V, T&gt; {
     <span class="kw">type </span>Target = V;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.inner {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
             </span>CacheRefInner::Arc(inner) =&gt; inner,
             CacheRefInner::DashRef(inner) =&gt; inner.value(),
+            CacheRefInner::DashMappedRef(inner) =&gt; inner.value(),
             CacheRefInner::ReadGuard(inner) =&gt; inner,
         }
     }
 }
 
-<span class="kw">pub type </span>UserRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, UserId, User&gt;;
-<span class="kw">pub type </span>GuildRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, GuildId, Guild&gt;;
-<span class="kw">pub type </span>CurrentUserRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, (), CurrentUser&gt;;
-<span class="kw">pub type </span>GuildChannelRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, ChannelId, GuildChannel&gt;;
-<span class="kw">pub type </span>PrivateChannelRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, ChannelId, PrivateChannel&gt;;
-<span class="kw">pub type </span>ChannelMessagesRef&lt;<span class="lifetime">&#39;a</span>&gt; = CacheRef&lt;<span class="lifetime">&#39;a</span>, ChannelId, HashMap&lt;MessageId, Message&gt;&gt;;
+<span class="kw">pub type </span>UserRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, UserId, User&gt;;
+<span class="kw">pub type </span>GuildRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, GuildId, Guild&gt;;
+<span class="kw">pub type </span>SettingsRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, (), Settings&gt;;
+<span class="kw">pub type </span>CurrentUserRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, (), CurrentUser&gt;;
+<span class="kw">pub type </span>ChannelMessagesRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, ChannelId, VecDeque&lt;Message&gt;&gt;;
+<span class="kw">pub type </span>MessageRef&lt;<span class="lifetime">'a</span>&gt; = CacheRef&lt;<span class="lifetime">'a</span>, ChannelId, Message, VecDeque&lt;Message&gt;&gt;;
 
-<span class="attr">#[derive(Debug)]
+<span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Debug)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>CachedShardData {
-    <span class="kw">pub </span>total: u32,
+    <span class="kw">pub </span>total: NonZeroU16,
     <span class="kw">pub </span>connected: HashSet&lt;ShardId&gt;,
     <span class="kw">pub </span>has_sent_shards_ready: bool,
 }
@@ -1151,7 +720,6 @@
 ///
 /// This is the list of cached resources and the events that populate them:
 /// - channels: [`ChannelCreateEvent`], [`ChannelUpdateEvent`], [`GuildCreateEvent`]
-/// - private_channels: [`ChannelCreateEvent`]
 /// - guilds: [`GuildCreateEvent`]
 /// - unavailable_guilds: [`ReadyEvent`], [`GuildDeleteEvent`]
 /// - users: [`GuildMemberAddEvent`], [`GuildMemberRemoveEvent`], [`GuildMembersChunkEvent`],
@@ -1163,7 +731,8 @@
 ///
 /// [`Shard`]: crate::gateway::Shard
 /// [`http`]: crate::http
-</span><span class="attr">#[derive(Debug)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Debug)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Cache {
     <span class="comment">// Temp cache:
@@ -1171,70 +740,44 @@
     </span><span class="doccomment">/// Cache of channels that have been fetched via to_channel.
     ///
     /// The TTL for each value is configured in CacheSettings.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_channels: MokaCache&lt;ChannelId, GuildChannel, BuildHasher&gt;,
+    </span><span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_channels: MokaCache&lt;ChannelId, MaybeOwnedArc&lt;GuildChannel&gt;, BuildHasher&gt;,
+    <span class="doccomment">/// Cache of private channels created via create_dm_channel.
+    ///
+    /// The TTL for each value is configured in CacheSettings.
+    </span><span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_private_channels: MokaCache&lt;UserId, MaybeOwnedArc&lt;PrivateChannel&gt;, BuildHasher&gt;,
+    <span class="doccomment">/// Cache of messages that have been fetched via message.
+    ///
+    /// The TTL for each value is configured in CacheSettings.
+    </span><span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_messages: MokaCache&lt;MessageId, MaybeOwnedArc&lt;Message&gt;, BuildHasher&gt;,
     <span class="doccomment">/// Cache of users who have been fetched from `to_user`.
     ///
     /// The TTL for each value is configured in CacheSettings.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_users: MokaCache&lt;UserId, Arc&lt;User&gt;, BuildHasher&gt;,
-
-    <span class="comment">// Channels cache:
-    // ---
-    </span><span class="doccomment">/// A map of channels in [`Guild`]s that the current user has received data for.
-    ///
-    /// When a [`Event::GuildDelete`] is received and processed by the cache, the relevant channels
-    /// are also removed from this map.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) channels: MaybeMap&lt;ChannelId, GuildChannel&gt;,
-    <span class="doccomment">/// A map of direct message channels that the current user has open with other users.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) private_channels: MaybeMap&lt;ChannelId, PrivateChannel&gt;,
+    </span><span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) temp_users: MokaCache&lt;UserId, MaybeOwnedArc&lt;User&gt;, BuildHasher&gt;,
 
     <span class="comment">// Guilds cache:
     // ---
     </span><span class="doccomment">/// A map of guilds with full data available. This includes data like [`Role`]s and [`Emoji`]s
     /// that are not available through the REST API.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) guilds: MaybeMap&lt;GuildId, Guild&gt;,
-    <span class="doccomment">/// A list of guilds which are &quot;unavailable&quot;.
+    <span class="doccomment">/// A list of guilds which are "unavailable".
     ///
     /// Additionally, guilds are always unavailable for bot users when a Ready is received. Guilds
-    /// are &quot;sent in&quot; over time through the receiving of [`Event::GuildCreate`]s.
+    /// are "sent in" over time through the receiving of [`Event::GuildCreate`]s.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) unavailable_guilds: MaybeMap&lt;GuildId, ()&gt;,
-
-    <span class="comment">// Users cache:
-    // ---
-    </span><span class="doccomment">/// A map of users that the current user sees.
-    ///
-    /// Users are added to - and updated from - this map via the following received events:
-    ///
-    /// - [`GuildMemberAdd`][`GuildMemberAddEvent`]
-    /// - [`GuildMemberRemove`][`GuildMemberRemoveEvent`]
-    /// - [`GuildMembersChunk`][`GuildMembersChunkEvent`]
-    /// - [`PresenceUpdate`][`PresenceUpdateEvent`]
-    /// - [`Ready`][`ReadyEvent`]
-    ///
-    /// Note, however, that users are _not_ removed from the map on removal events such as
-    /// [`GuildMemberRemove`][`GuildMemberRemoveEvent`], as other structs such as members or
-    /// recipients may still exist.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) users: MaybeMap&lt;UserId, User&gt;,
-    <span class="doccomment">/// A map of users&#39; presences. This is updated in real-time. Note that status updates are often
-    /// &quot;eaten&quot; by the gateway, and this should not be treated as being entirely 100% accurate.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) presences: MaybeMap&lt;UserId, Presence&gt;,
 
     <span class="comment">// Messages cache:
     // ---
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) messages: MessageCache,
-    <span class="doccomment">/// Queue of message IDs for each channel.
-    ///
-    /// This is simply a vecdeque so we can keep track of the order of messages inserted into the
-    /// cache. When a maximum number of messages are in a channel&#39;s cache, we can pop the front and
-    /// remove that ID from the cache.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) message_queue: DashMap&lt;ChannelId, VecDeque&lt;MessageId&gt;, BuildHasher&gt;,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) messages: DashMap&lt;ChannelId, VecDeque&lt;Message&gt;, BuildHasher&gt;,
 
     <span class="comment">// Miscellanous fixed-size data
     // ---
     </span><span class="doccomment">/// Information about running shards
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) shard_data: RwLock&lt;CachedShardData&gt;,
-    <span class="doccomment">/// The current user &quot;logged in&quot; and for which events are being received for.
+    <span class="doccomment">/// The current user "logged in" and for which events are being received for.
     ///
     /// The current user contains information that a regular [`User`] does not, such as whether it
     /// is a bot, whether the user is verified, etc.
@@ -1247,8 +790,7 @@
 
 <span class="kw">impl </span>Cache {
     <span class="doccomment">/// Creates a new cache.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::default()
     }
@@ -1265,37 +807,34 @@
     ///
     /// let cache = Cache::new_with_settings(settings);
     /// ```
-    </span><span class="attr">#[instrument]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"tracing_instrument"</span>, instrument)]
     </span><span class="kw">pub fn </span>new_with_settings(settings: Settings) -&gt; <span class="self">Self </span>{
-        <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
         </span><span class="kw">fn </span>temp_cache&lt;K, V&gt;(ttl: Duration) -&gt; MokaCache&lt;K, V, BuildHasher&gt;
         <span class="kw">where
-            </span>K: Hash + Eq + Send + Sync + <span class="lifetime">&#39;static</span>,
-            V: Clone + Send + Sync + <span class="lifetime">&#39;static</span>,
+            </span>K: Hash + Eq + Send + Sync + <span class="lifetime">'static</span>,
+            V: Clone + Send + Sync + <span class="lifetime">'static</span>,
         {
             MokaCache::builder().time_to_live(ttl).build_with_hasher(BuildHasher::default())
         }
 
         <span class="self">Self </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+            </span>temp_private_channels: temp_cache(settings.time_to_live),
+            <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
             </span>temp_channels: temp_cache(settings.time_to_live),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+            </span>temp_messages: temp_cache(settings.time_to_live),
+            <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
             </span>temp_users: temp_cache(settings.time_to_live),
-
-            channels: MaybeMap(settings.cache_channels.then(DashMap::default)),
-            private_channels: MaybeMap(settings.cache_channels.then(DashMap::default)),
 
             guilds: MaybeMap(settings.cache_guilds.then(DashMap::default)),
             unavailable_guilds: MaybeMap(settings.cache_guilds.then(DashMap::default)),
 
-            users: MaybeMap(settings.cache_users.then(DashMap::default)),
-            presences: MaybeMap(settings.cache_users.then(DashMap::default)),
-
             messages: DashMap::default(),
-            message_queue: DashMap::default(),
 
             shard_data: RwLock::new(CachedShardData {
-                total: <span class="number">1</span>,
+                total: NonZeroU16::MIN,
                 connected: HashSet::new(),
                 has_sent_shards_ready: <span class="bool-val">false</span>,
             }),
@@ -1316,27 +855,15 @@
     /// ```rust,no_run
     /// # use serenity::model::prelude::*;
     /// # use serenity::prelude::*;
-    /// #
-    /// # #[cfg(feature = &quot;client&quot;)]
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// use std::thread;
-    /// use std::time::Duration;
-    ///
     /// struct Handler;
     ///
     /// #[serenity::async_trait]
+    /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
     ///     async fn cache_ready(&amp;self, ctx: Context, _: Vec&lt;GuildId&gt;) {
-    ///         println!(&quot;{} unknown members&quot;, ctx.cache.unknown_members());
+    ///         println!("{} unknown members", ctx.cache.unknown_members());
     ///     }
     /// }
-    ///
-    /// let mut client =
-    ///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;
-    ///
-    /// client.start().await?;
-    /// # Ok(())
-    /// # }
     /// ```
     ///
     /// [`Shard::chunk_guild`]: crate::gateway::Shard::chunk_guild
@@ -1356,30 +883,10 @@
         total
     }
 
-    <span class="doccomment">/// Fetches a vector of all [`PrivateChannel`] Ids that are stored in the cache.
-    ///
-    /// # Examples
-    ///
-    /// If there are 6 private channels and 2 groups in the cache, then `8` Ids will be returned.
-    ///
-    /// Printing the count of all private channels and groups:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// #
-    /// # let cache = Cache::default();
-    /// let amount = cache.private_channels().len();
-    ///
-    /// println!(&quot;There are {} private channels&quot;, amount);
-    /// ```
-    </span><span class="kw">pub fn </span>private_channels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadOnlyMapRef&lt;<span class="lifetime">&#39;_</span>, ChannelId, PrivateChannel&gt; {
-        <span class="self">self</span>.private_channels.as_read_only()
-    }
-
-    <span class="doccomment">/// Fetches a vector of all [`Guild`]s&#39; Ids that are stored in the cache.
+    <span class="doccomment">/// Fetches a vector of all [`Guild`]s' Ids that are stored in the cache.
     ///
     /// Note that if you are utilizing multiple [`Shard`]s, then the guilds retrieved over all
-    /// shards are included in this count -- not just the current [`Context`]&#39;s shard, if accessing
+    /// shards are included in this count -- not just the current [`Context`]'s shard, if accessing
     /// from one.
     ///
     /// # Examples
@@ -1397,7 +904,7 @@
     ///     async fn ready(&amp;self, context: Context, _: Ready) {
     ///         let guilds = context.cache.guilds().len();
     ///
-    ///         println!(&quot;Guilds in the Cache: {}&quot;, guilds);
+    ///         println!("Guilds in the Cache: {}", guilds);
     ///     }
     /// }
     /// ```
@@ -1412,40 +919,6 @@
         <span class="self">self</span>.guilds.iter().map(|i| <span class="kw-2">*</span>i.key()).chain(unavailable_guild_ids).collect()
     }
 
-    <span class="doccomment">/// Retrieves a [`Channel`] from the cache based on the given Id.
-    ///
-    /// This will search the `channels` map, then the [`Self::private_channels`] map.
-    ///
-    /// If you know what type of channel you&#39;re looking for, you should instead manually retrieve
-    /// from one of the respective methods:
-    ///
-    /// - [`GuildChannel`]: [`Self::guild_channel`] or [`Self::guild_channels`]
-    /// - [`PrivateChannel`]: [`Self::private_channel`] or [`Self::private_channels`]
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>channel&lt;C: Into&lt;ChannelId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: C) -&gt; <span class="prelude-ty">Option</span>&lt;Channel&gt; {
-        <span class="self">self</span>._channel(id.into())
-    }
-
-    <span class="kw">fn </span>_channel(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;Channel&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(channel) = <span class="self">self</span>.channels.get(<span class="kw-2">&amp;</span>id) {
-            <span class="kw">let </span>channel = channel.clone();
-            <span class="kw">return </span><span class="prelude-val">Some</span>(Channel::Guild(channel));
-        }
-
-        <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-        </span>{
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(channel) = <span class="self">self</span>.temp_channels.get(<span class="kw-2">&amp;</span>id) {
-                <span class="kw">return </span><span class="prelude-val">Some</span>(Channel::Guild(channel));
-            }
-        }
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(private_channel) = <span class="self">self</span>.private_channels.get(<span class="kw-2">&amp;</span>id) {
-            <span class="kw">return </span><span class="prelude-val">Some</span>(Channel::Private(private_channel.clone()));
-        }
-
-        <span class="prelude-val">None
-    </span>}
-
     <span class="doccomment">/// Get a reference to the cached messages for a channel based on the given `Id`.
     ///
     /// # Examples
@@ -1453,17 +926,16 @@
     /// Find all messages by user ID 8 in channel ID 7:
     ///
     /// ```rust,no_run
+    /// # use serenity::model::id::ChannelId;
+    /// #
     /// # let cache: serenity::cache::Cache = todo!();
-    /// let messages_in_channel = cache.channel_messages(7);
-    /// let messages_by_user = messages_in_channel
-    ///     .as_ref()
-    ///     .map(|msgs| msgs.values().filter(|m| m.author.id == 8).collect::&lt;Vec&lt;_&gt;&gt;());
+    /// if let Some(messages_in_channel) = cache.channel_messages(ChannelId::new(7)) {
+    ///     let messages_by_user: Vec&lt;_&gt; =
+    ///         messages_in_channel.iter().filter(|m| m.author.id == 8).collect();
+    /// }
     /// ```
-    </span><span class="kw">pub fn </span>channel_messages(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        channel_id: <span class="kw">impl </span>Into&lt;ChannelId&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;ChannelMessagesRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>.messages.get(<span class="kw-2">&amp;</span>channel_id.into()).map(CacheRef::from_ref)
+    </span><span class="kw">pub fn </span>channel_messages(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;ChannelMessagesRef&lt;<span class="lifetime">'_</span>&gt;&gt; {
+        <span class="self">self</span>.messages.get(<span class="kw-2">&amp;</span>channel_id).map(CacheRef::from_ref)
     }
 
     <span class="doccomment">/// Gets a reference to a guild from the cache based on the given `id`.
@@ -1474,19 +946,15 @@
     ///
     /// ```rust,no_run
     /// # use serenity::cache::Cache;
+    /// # use serenity::model::id::GuildId;
     /// #
     /// # let cache = Cache::default();
     /// // assuming the cache is in scope, e.g. via `Context`
-    /// if let Some(guild) = cache.guild(7) {
-    ///     println!(&quot;Guild name: {}&quot;, guild.name);
+    /// if let Some(guild) = cache.guild(GuildId::new(7)) {
+    ///     println!("Guild name: {}", guild.name);
     /// };
     /// ```
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>guild&lt;G: Into&lt;GuildId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: G) -&gt; <span class="prelude-ty">Option</span>&lt;GuildRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>._guild(id.into())
-    }
-
-    <span class="kw">fn </span>_guild(<span class="kw-2">&amp;</span><span class="self">self</span>, id: GuildId) -&gt; <span class="prelude-ty">Option</span>&lt;GuildRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>guild(<span class="kw-2">&amp;</span><span class="self">self</span>, id: GuildId) -&gt; <span class="prelude-ty">Option</span>&lt;GuildRef&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>id).map(CacheRef::from_ref)
     }
 
@@ -1495,215 +963,17 @@
         <span class="self">self</span>.guilds.len()
     }
 
-    <span class="doccomment">/// Retrieves a reference to a [`Guild`]&#39;s channel. Unlike [`Self::channel`], this will only
-    /// search guilds for the given channel.
-    ///
-    /// The only advantage of this method is that you can pass in anything that is indirectly a
-    /// [`ChannelId`].
-    ///
-    /// # Examples
-    ///
-    /// Getting a guild&#39;s channel via the Id of the message received through a
-    /// [`EventHandler::message`] event dispatch:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::model::prelude::*;
-    /// # use serenity::prelude::*;
-    /// #
-    /// struct Handler;
-    ///
-    /// #[serenity::async_trait]
-    /// impl EventHandler for Handler {
-    ///     async fn message(&amp;self, context: Context, message: Message) {
-    ///         let channel_opt = context.cache.guild_channel(message.channel_id).as_deref().cloned();
-    ///         let channel = match channel_opt {
-    ///             Some(channel) =&gt; channel,
-    ///             None =&gt; {
-    ///                 let result = message
-    ///                     .channel_id
-    ///                     .say(&amp;context, &quot;Could not find guild&#39;s channel data&quot;)
-    ///                     .await;
-    ///                 if let Err(why) = result {
-    ///                     println!(&quot;Error sending message: {:?}&quot;, why);
-    ///                 }
-    ///
-    ///                 return;
-    ///             },
-    ///         };
-    ///     }
-    /// }
-    ///
-    /// # #[cfg(feature = &quot;client&quot;)]
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// let mut client =
-    ///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;
-    ///
-    /// client.start().await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
-    /// [`EventHandler::message`]: crate::client::EventHandler::message
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>guild_channel&lt;C: Into&lt;ChannelId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: C) -&gt; <span class="prelude-ty">Option</span>&lt;GuildChannelRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>._guild_channel(id.into())
-    }
-
-    <span class="kw">fn </span>_guild_channel(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;GuildChannelRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>.channels.get(<span class="kw-2">&amp;</span>id).map(CacheRef::from_ref)
-    }
-
-    <span class="doccomment">/// Retrieves a [`Guild`]&#39;s member from the cache based on the guild&#39;s and user&#39;s given Ids.
-    ///
-    /// **Note**: This will clone the entire member. Instead, retrieve the guild and retrieve from
-    /// the guild&#39;s [`members`] map to avoid this.
-    ///
-    /// # Examples
-    ///
-    /// Retrieving the member object of the user that posted a message, in a
-    /// [`EventHandler::message`] context:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// # use serenity::http::Http;
-    /// # use serenity::model::channel::Message;
-    /// #
-    /// # async fn run(http: Http, cache: Cache, message: Message) {
-    /// #
-    /// let member = {
-    ///     let channel = match cache.guild_channel(message.channel_id) {
-    ///         Some(channel) =&gt; channel,
-    ///         None =&gt; {
-    ///             if let Err(why) = message.channel_id.say(http, &quot;Error finding channel data&quot;).await {
-    ///                 println!(&quot;Error sending message: {:?}&quot;, why);
-    ///             }
-    ///             return;
-    ///         },
-    ///     };
-    ///
-    ///     match cache.member(channel.guild_id, message.author.id) {
-    ///         Some(member) =&gt; member,
-    ///         None =&gt; {
-    ///             if let Err(why) = message.channel_id.say(&amp;http, &quot;Error finding member data&quot;).await {
-    ///                 println!(&quot;Error sending message: {:?}&quot;, why);
-    ///             }
-    ///             return;
-    ///         },
-    ///     }
-    /// };
-    ///
-    /// let msg = format!(&quot;You have {} roles&quot;, member.roles.len());
-    ///
-    /// if let Err(why) = message.channel_id.say(&amp;http, &amp;msg).await {
-    ///     println!(&quot;Error sending message: {:?}&quot;, why);
-    /// }
-    /// # }
-    /// ```
-    ///
-    /// [`EventHandler::message`]: crate::client::EventHandler::message
-    /// [`members`]: crate::model::guild::Guild::members
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>member&lt;G, U&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: G, user_id: U) -&gt; <span class="prelude-ty">Option</span>&lt;Member&gt;
-    <span class="kw">where
-        </span>G: Into&lt;GuildId&gt;,
-        U: Into&lt;UserId&gt;,
-    {
-        <span class="self">self</span>._member(guild_id.into(), user_id.into())
-    }
-
-    <span class="kw">fn </span>_member(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId, user_id: UserId) -&gt; <span class="prelude-ty">Option</span>&lt;Member&gt; {
-        <span class="kw">match </span><span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id) {
-            <span class="prelude-val">Some</span>(guild) =&gt; guild.members.get(<span class="kw-2">&amp;</span>user_id).cloned(),
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
-        }
-    }
-
-    <span class="doccomment">/// This method allows to only clone a field of a member instead of the entire member by
-    /// providing a `field_selector`-closure picking what you want to clone.
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// #
-    /// # fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let cache = Cache::default();
-    /// // We clone only the `name` instead of the entire channel.
-    /// if let Some(Some(nick)) = cache.member_field(7, 8, |member| member.nick.clone()) {
-    ///     println!(&quot;Member&#39;s nick: {}&quot;, nick);
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>member_field&lt;Ret, Fun&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;,
-        user_id: <span class="kw">impl </span>Into&lt;UserId&gt;,
-        field_selector: Fun,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Ret&gt;
-    <span class="kw">where
-        </span>Fun: FnOnce(<span class="kw-2">&amp;</span>Member) -&gt; Ret,
-    {
-        <span class="self">self</span>._member_field(guild_id.into(), user_id.into(), field_selector)
-    }
-
-    <span class="kw">fn </span>_member_field&lt;Ret, Fun&gt;(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        guild_id: GuildId,
-        user_id: UserId,
-        field_selector: Fun,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Ret&gt;
-    <span class="kw">where
-        </span>Fun: FnOnce(<span class="kw-2">&amp;</span>Member) -&gt; Ret,
-    {
-        <span class="kw">let </span>guild = <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id)<span class="question-mark">?</span>;
-        <span class="kw">let </span>member = guild.members.get(<span class="kw-2">&amp;</span>user_id)<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Some</span>(field_selector(member))
-    }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>guild_roles(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;HashMap&lt;RoleId, Role&gt;&gt; {
-        <span class="self">self</span>._guild_roles(guild_id.into())
-    }
-
-    <span class="kw">fn </span>_guild_roles(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Option</span>&lt;HashMap&lt;RoleId, Role&gt;&gt; {
-        <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id).map(|g| g.roles.clone())
-    }
-
     <span class="doccomment">/// This method clones and returns all unavailable guilds.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>unavailable_guilds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadOnlyMapRef&lt;<span class="lifetime">&#39;_</span>, GuildId, ()&gt; {
+    </span><span class="kw">pub fn </span>unavailable_guilds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadOnlyMapRef&lt;<span class="lifetime">'_</span>, GuildId, ()&gt; {
         <span class="self">self</span>.unavailable_guilds.as_read_only()
     }
 
-    <span class="doccomment">/// This method returns all channels from a guild of with the given `guild_id`.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>guild_channels(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;DashMap&lt;ChannelId, GuildChannel, BuildHasher&gt;&gt; {
-        <span class="self">self</span>._guild_channels(guild_id.into())
-    }
-
-    <span class="kw">fn </span>_guild_channels(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        guild_id: GuildId,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;DashMap&lt;ChannelId, GuildChannel, BuildHasher&gt;&gt; {
-        <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id).map(|g| g.channels.clone().into_iter().collect())
-    }
-
-    <span class="doccomment">/// Returns the number of guild channels in the cache.
-    </span><span class="kw">pub fn </span>guild_channel_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.channels.len()
-    }
-
     <span class="doccomment">/// Returns the number of shards.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>shard_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+    </span><span class="kw">pub fn </span>shard_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonZeroU16 {
         <span class="self">self</span>.shard_data.read().total
     }
 
-    <span class="doccomment">/// Retrieves a [`Channel`]&#39;s message from the cache based on the channel&#39;s and message&#39;s given
+    <span class="doccomment">/// Retrieves a [`Channel`]'s message from the cache based on the channel's and message's given
     /// Ids.
     ///
     /// **Note**: This will clone the entire message.
@@ -1720,89 +990,22 @@
     /// #
     /// match cache.message(message.channel_id, message.id) {
     ///     Some(m) =&gt; assert_eq!(message.content, m.content),
-    ///     None =&gt; println!(&quot;No message found in cache.&quot;),
+    ///     None =&gt; println!("No message found in cache."),
     /// };
     /// # }
     /// ```
     ///
     /// [`EventHandler::message`]: crate::client::EventHandler::message
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>message&lt;C, M&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: C, message_id: M) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt;
-    <span class="kw">where
-        </span>C: Into&lt;ChannelId&gt;,
-        M: Into&lt;MessageId&gt;,
-    {
-        <span class="self">self</span>._message(channel_id.into(), message_id.into())
-    }
+    </span><span class="kw">pub fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId, message_id: MessageId) -&gt; <span class="prelude-ty">Option</span>&lt;MessageRef&lt;<span class="lifetime">'_</span>&gt;&gt; {
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(message) = <span class="self">self</span>.temp_messages.get(<span class="kw-2">&amp;</span>message_id) {
+            <span class="kw">return </span><span class="prelude-val">Some</span>(CacheRef::from_arc(message));
+        }
 
-    <span class="kw">fn </span>_message(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId, message_id: MessageId) -&gt; <span class="prelude-ty">Option</span>&lt;Message&gt; {
-        <span class="self">self</span>.messages.get(<span class="kw-2">&amp;</span>channel_id).and_then(|messages| messages.get(<span class="kw-2">&amp;</span>message_id).cloned())
-    }
-
-    <span class="doccomment">/// Retrieves a [`PrivateChannel`] from the cache&#39;s [`Self::private_channels`] map, if it
-    /// exists.
-    ///
-    /// The only advantage of this method is that you can pass in anything that is indirectly a
-    /// [`ChannelId`].
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a private channel from the cache and print its recipient&#39;s name:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// #
-    /// # let cache = Cache::default();
-    /// // assuming the cache has been unlocked
-    ///
-    /// if let Some(channel) = cache.private_channel(7) {
-    ///     println!(&quot;The recipient is {}&quot;, channel.recipient);
-    /// };
-    /// ```
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>private_channel(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        channel_id: <span class="kw">impl </span>Into&lt;ChannelId&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;PrivateChannelRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>._private_channel(channel_id.into())
-    }
-
-    <span class="kw">fn </span>_private_channel(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;PrivateChannelRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>.private_channels.get(<span class="kw-2">&amp;</span>channel_id).map(CacheRef::from_ref)
-    }
-
-    <span class="doccomment">/// Retrieves a [`Guild`]&#39;s role by their Ids.
-    ///
-    /// **Note**: This will clone the entire role. Instead, retrieve the guild and retrieve from
-    /// the guild&#39;s [`roles`] map to avoid this.
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a role from the cache and print its name:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::cache::Cache;
-    /// #
-    /// # let cache = Cache::default();
-    /// // assuming the cache is in scope, e.g. via `Context`
-    /// if let Some(role) = cache.role(7, 77) {
-    ///     println!(&quot;Role with Id 77 is called {}&quot;, role.name);
-    /// }
-    /// ```
-    ///
-    /// [`Guild`]: crate::model::guild::Guild
-    /// [`roles`]: crate::model::guild::Guild::roles
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>role&lt;G, R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: G, role_id: R) -&gt; <span class="prelude-ty">Option</span>&lt;Role&gt;
-    <span class="kw">where
-        </span>G: Into&lt;GuildId&gt;,
-        R: Into&lt;RoleId&gt;,
-    {
-        <span class="self">self</span>._role(guild_id.into(), role_id.into())
-    }
-
-    <span class="kw">fn </span>_role(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId, role_id: RoleId) -&gt; <span class="prelude-ty">Option</span>&lt;Role&gt; {
-        <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id).and_then(|g| g.roles.get(<span class="kw-2">&amp;</span>role_id).cloned())
+        <span class="kw">let </span>messages = <span class="self">self</span>.messages.get(<span class="kw-2">&amp;</span>channel_id)<span class="question-mark">?</span>;
+        <span class="kw">let </span>message =
+            messages.try_map(|messages| messages.iter().find(|m| m.id == message_id)).ok()<span class="question-mark">?</span>;
+        <span class="prelude-val">Some</span>(CacheRef::from_mapped_ref(message))
     }
 
     <span class="doccomment">/// Returns the settings.
@@ -1816,11 +1019,11 @@
     ///
     /// # fn test() {
     /// let mut cache = Cache::new();
-    /// println!(&quot;Max settings: {}&quot;, cache.settings().max_messages);
+    /// println!("Max settings: {}", cache.settings().max_messages);
     /// # }
     /// ```
-    </span><span class="kw">pub fn </span>settings(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Settings {
-        <span class="self">self</span>.settings.read().clone()
+    </span><span class="kw">pub fn </span>settings(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SettingsRef&lt;<span class="lifetime">'_</span>&gt; {
+        CacheRef::from_guard(<span class="self">self</span>.settings.read())
     }
 
     <span class="doccomment">/// Sets the maximum amount of messages per channel to cache.
@@ -1830,102 +1033,46 @@
         <span class="self">self</span>.settings.write().max_messages = max;
     }
 
-    <span class="doccomment">/// Retrieves a [`User`] from the cache&#39;s [`Self::users`] map, if it exists.
-    ///
-    /// The only advantage of this method is that you can pass in anything that is indirectly a
-    /// [`UserId`].
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a user from the cache and print their name:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::client::Context;
-    /// # use serenity::framework::standard::{CommandResult, macros::command};
-    /// #
-    /// # #[command]
-    /// # async fn test(context: &amp;Context) -&gt; CommandResult {
-    /// if let Some(user) = context.cache.user(7) {
-    ///     println!(&quot;User with Id 7 is currently named {}&quot;, user.name);
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>user&lt;U: Into&lt;UserId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, user_id: U) -&gt; <span class="prelude-ty">Option</span>&lt;UserRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>._user(user_id.into())
-    }
-
-    <span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-    </span><span class="kw">fn </span>_user(<span class="kw-2">&amp;</span><span class="self">self</span>, user_id: UserId) -&gt; <span class="prelude-ty">Option</span>&lt;UserRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = <span class="self">self</span>.users.get(<span class="kw-2">&amp;</span>user_id) {
-            <span class="prelude-val">Some</span>(CacheRef::from_ref(user))
-        } <span class="kw">else </span>{
-            <span class="self">self</span>.temp_users.get(<span class="kw-2">&amp;</span>user_id).map(CacheRef::from_arc)
-        }
-    }
-
-    <span class="attr">#[cfg(not(feature = <span class="string">&quot;temp_cache&quot;</span>))]
-    </span><span class="kw">fn </span>_user(<span class="kw-2">&amp;</span><span class="self">self</span>, user_id: UserId) -&gt; <span class="prelude-ty">Option</span>&lt;UserRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        <span class="self">self</span>.users.get(<span class="kw-2">&amp;</span>user_id).map(CacheRef::from_ref)
-    }
-
-    <span class="doccomment">/// Clones all users and returns them.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>users(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadOnlyMapRef&lt;<span class="lifetime">&#39;_</span>, UserId, User&gt; {
-        <span class="self">self</span>.users.as_read_only()
-    }
-
-    <span class="doccomment">/// Returns the amount of cached users.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>user_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.users.len()
-    }
-
     <span class="doccomment">/// This method provides a reference to the user used by the bot.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>current_user(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; CurrentUserRef&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>current_user(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; CurrentUserRef&lt;<span class="lifetime">'_</span>&gt; {
         CacheRef::from_guard(<span class="self">self</span>.user.read())
     }
 
-    <span class="doccomment">/// Clones all channel categories and returns them.
-    </span><span class="kw">pub fn </span>categories(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; DashMap&lt;ChannelId, GuildChannel&gt; {
-        <span class="self">self</span>.channels
-            .iter()
-            .filter(|channel| channel.value().kind == ChannelType::Category)
-            .map(|channel| (<span class="kw-2">*</span>channel.key(), channel.value().clone()))
-            .collect()
-    }
-
-    <span class="doccomment">/// Returns the number of channel categories.
-    </span><span class="kw">pub fn </span>category_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.channels.iter().filter(|channel| channel.value().kind == ChannelType::Category).count()
-    }
-
-    <span class="doccomment">/// Clones a channel category matching the given ID and returns it.
-    </span><span class="kw">pub fn </span>category(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;CacheRef&lt;<span class="lifetime">&#39;_</span>, ChannelId, GuildChannel&gt;&gt; {
-        <span class="kw">match </span><span class="self">self</span>.channels.get(<span class="kw-2">&amp;</span>channel_id) {
-            <span class="prelude-val">Some</span>(c) <span class="kw">if </span>c.kind == ChannelType::Category =&gt; <span class="prelude-val">Some</span>(CacheRef::from_ref(c)),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
-        }
-    }
-
-    <span class="doccomment">/// Returns the parent category of the given channel ID.
-    </span><span class="kw">pub fn </span>channel_category_id(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Option</span>&lt;ChannelId&gt; {
-        <span class="self">self</span>.channels.get(<span class="kw-2">&amp;</span>channel_id)<span class="question-mark">?</span>.parent_id
-    }
-
     <span class="doccomment">/// Clones all channel categories in the given guild and returns them.
-    </span><span class="kw">pub fn </span>guild_categories(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Option</span>&lt;HashMap&lt;ChannelId, GuildChannel&gt;&gt; {
+    </span><span class="kw">pub fn </span>guild_categories(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;ExtractMap&lt;ChannelId, GuildChannel&gt;&gt; {
         <span class="kw">let </span>guild = <span class="self">self</span>.guilds.get(<span class="kw-2">&amp;</span>guild_id)<span class="question-mark">?</span>;
-        <span class="prelude-val">Some</span>(
-            guild
-                .channels
-                .iter()
-                .filter(|(_id, channel)| channel.kind == ChannelType::Category)
-                .map(|(id, channel)| (<span class="kw-2">*</span>id, channel.clone()))
-                .collect(),
-        )
+
+        <span class="kw">let </span>filter = |channel: &amp;&amp;GuildChannel| channel.kind == ChannelType::Category;
+        <span class="prelude-val">Some</span>(guild.channels.iter().filter(filter).cloned().collect())
+    }
+
+    <span class="doccomment">/// Inserts new messages into the message cache for a channel manually.
+    ///
+    /// This will keep the ordering of the message cache consistent, even if the message iterator
+    /// contains randomly ordered messages, and respects the [`Settings::max_messages`] setting.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>fill_message_cache(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        channel_id: ChannelId,
+        new_messages: <span class="kw">impl </span>Iterator&lt;Item = Message&gt;,
+    ) {
+        <span class="kw">let </span>max_messages = <span class="self">self</span>.settings().max_messages;
+        <span class="kw">if </span>max_messages == <span class="number">0 </span>{
+            <span class="comment">// Early exit for common case of message cache being disabled.
+            </span><span class="kw">return</span>;
+        }
+
+        <span class="kw">let </span><span class="kw-2">mut </span>channel_messages = <span class="self">self</span>.messages.entry(channel_id).or_default();
+
+        <span class="comment">// Fill up the existing cache
+        </span>channel_messages.extend(new_messages.take(max_messages));
+        <span class="comment">// Make sure the cache stays sorted to messages
+        </span>channel_messages.make_contiguous().sort_unstable_by_key(|m| m.id);
+        <span class="comment">// Get rid of the overflow at the front of the queue.
+        </span><span class="kw">let </span>truncate_end_index = channel_messages.len().saturating_sub(max_messages);
+        channel_messages.drain(..truncate_end_index);
     }
 
     <span class="doccomment">/// Updates the cache with the update implementation for an event or other custom update
@@ -1938,22 +1085,9 @@
     /// Refer to the [`CacheUpdate` examples].
     ///
     /// [`CacheUpdate` examples]: CacheUpdate#examples
-    </span><span class="attr">#[instrument(skip(<span class="self">self</span>, e))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"tracing_instrument"</span>, instrument(skip(<span class="self">self</span>, e)))]
     </span><span class="kw">pub fn </span>update&lt;E: CacheUpdate&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, e: <span class="kw-2">&amp;mut </span>E) -&gt; <span class="prelude-ty">Option</span>&lt;E::Output&gt; {
         e.update(<span class="self">self</span>)
-    }
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>update_user_entry(<span class="kw-2">&amp;</span><span class="self">self</span>, user: <span class="kw-2">&amp;</span>User) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(users) = <span class="kw-2">&amp;</span><span class="self">self</span>.users.<span class="number">0 </span>{
-            <span class="kw">match </span>users.entry(user.id) {
-                Entry::Vacant(e) =&gt; {
-                    e.insert(user.clone());
-                },
-                Entry::Occupied(<span class="kw-2">mut </span>e) =&gt; {
-                    e.get_mut().clone_from(user);
-                },
-            }
-        }
     }
 }
 
@@ -1965,8 +1099,6 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>test {
-    <span class="kw">use </span>std::collections::HashMap;
-
     <span class="kw">use </span><span class="kw">crate</span>::cache::{Cache, CacheUpdate, Settings};
     <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
@@ -1978,7 +1110,7 @@
         };
         <span class="kw">let </span>cache = Cache::new_with_settings(settings);
 
-        <span class="comment">// Test inserting one message into a channel&#39;s message cache.
+        <span class="comment">// Test inserting one message into a channel's message cache.
         </span><span class="kw">let </span><span class="kw-2">mut </span>event = MessageCreateEvent {
             message: Message {
                 id: MessageId::new(<span class="number">3</span>),
@@ -1987,13 +1119,13 @@
             },
         };
 
-        <span class="comment">// Check that the channel cache doesn&#39;t exist.
+        <span class="comment">// Check that the channel cache doesn't exist.
         </span><span class="macro">assert!</span>(!cache.messages.contains_key(<span class="kw-2">&amp;</span>event.message.channel_id));
-        <span class="comment">// Add first message, none because message ID 2 doesn&#39;t already exist.
+        <span class="comment">// Add first message, none because message ID 2 doesn't already exist.
         </span><span class="macro">assert!</span>(event.update(<span class="kw-2">&amp;</span>cache).is_none());
         <span class="comment">// None, it only returns the oldest message if the cache was already full.
         </span><span class="macro">assert!</span>(event.update(<span class="kw-2">&amp;</span>cache).is_none());
-        <span class="comment">// Assert there&#39;s only 1 message in the channel&#39;s message cache.
+        <span class="comment">// Assert there's only 1 message in the channel's message cache.
         </span><span class="macro">assert_eq!</span>(cache.messages.get(<span class="kw-2">&amp;</span>event.message.channel_id).unwrap().len(), <span class="number">1</span>);
 
         <span class="comment">// Add a second message, assert that channel message cache length is 2.
@@ -2010,7 +1142,7 @@
 
             <span class="macro">assert_eq!</span>(channel.len(), <span class="number">2</span>);
             <span class="comment">// Check that the first message is now removed.
-            </span><span class="macro">assert!</span>(!channel.contains_key(<span class="kw-2">&amp;</span>MessageId::new(<span class="number">3</span>)));
+            </span><span class="macro">assert!</span>(!channel.iter().any(|m| m.id == MessageId::new(<span class="number">3</span>)));
         }
 
         <span class="kw">let </span>channel = GuildChannel {
@@ -2022,16 +1154,16 @@
         <span class="comment">// Add a channel delete event to the cache, the cached messages for that channel should now
         // be gone.
         </span><span class="kw">let </span><span class="kw-2">mut </span>delete = ChannelDeleteEvent {
-            channel: Channel::Guild(channel.clone()),
+            channel: channel.clone(),
         };
         <span class="macro">assert!</span>(cache.update(<span class="kw-2">&amp;mut </span>delete).is_some());
-        <span class="macro">assert!</span>(!cache.messages.contains_key(<span class="kw-2">&amp;</span>delete.channel.id()));
+        <span class="macro">assert!</span>(!cache.messages.contains_key(<span class="kw-2">&amp;</span>delete.channel.id));
 
-        <span class="comment">// Test deletion of a guild channel&#39;s message cache when a GuildDeleteEvent is received.
+        <span class="comment">// Test deletion of a guild channel's message cache when a GuildDeleteEvent is received.
         </span><span class="kw">let </span><span class="kw-2">mut </span>guild_create = GuildCreateEvent {
             guild: Guild {
                 id: GuildId::new(<span class="number">1</span>),
-                channels: HashMap::from([(ChannelId::new(<span class="number">2</span>), channel)]),
+                channels: ExtractMap::from_iter([channel]),
                 ..Default::default()
             },
         };
@@ -2045,10 +1177,10 @@
             },
         };
 
-        <span class="comment">// The guild existed in the cache, so the cache&#39;s guild is returned by the update.
+        <span class="comment">// The guild existed in the cache, so the cache's guild is returned by the update.
         </span><span class="macro">assert!</span>(cache.update(<span class="kw-2">&amp;mut </span>guild_delete).is_some());
 
-        <span class="comment">// Assert that the channel&#39;s message cache no longer exists.
+        <span class="comment">// Assert that the channel's message cache no longer exists.
         </span><span class="macro">assert!</span>(!cache.messages.contains_key(<span class="kw-2">&amp;</span>ChannelId::new(<span class="number">2</span>)));
     }
 }

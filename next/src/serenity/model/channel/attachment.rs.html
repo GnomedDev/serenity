@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/attachment.rs`."><title>attachment.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../serenity/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/attachment.rs`."><title>attachment.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -164,27 +164,26 @@
 <a href="#164" id="164">164</a>
 <a href="#165" id="165">165</a>
 <a href="#166" id="166">166</a>
-<a href="#167" id="167">167</a>
-<a href="#168" id="168">168</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="kw">use </span>nonmax::NonMaxU32;
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span>reqwest::Client <span class="kw">as </span>ReqwestClient;
+<span class="kw">use </span>serde_cow::CowStr;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::utils::is_false;
 
-<span class="kw">fn </span>base64_bytes&lt;<span class="lifetime">&#39;de</span>, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;, D::Error&gt;
+<span class="kw">fn </span>base64_bytes&lt;<span class="lifetime">'de</span>, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;, D::Error&gt;
 <span class="kw">where
-    </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">use </span>base64::Engine <span class="kw">as _</span>;
     <span class="kw">use </span>serde::de::Error;
 
-    <span class="kw">let </span>base64 = &lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
+    <span class="kw">let </span>base64 = &lt;<span class="prelude-ty">Option</span>&lt;CowStr&lt;<span class="lifetime">'de</span>&gt;&gt;&gt;::deserialize(deserializer)<span class="question-mark">?</span>;
     <span class="kw">let </span>bytes = <span class="kw">match </span>base64 {
-        <span class="prelude-val">Some</span>(base64) =&gt; {
-            <span class="prelude-val">Some</span>(base64::prelude::BASE64_STANDARD.decode(base64).map_err(D::Error::custom)<span class="question-mark">?</span>)
+        <span class="prelude-val">Some</span>(CowStr(base64)) =&gt; {
+            <span class="prelude-val">Some</span>(base64::prelude::BASE64_STANDARD.decode(<span class="kw-2">&amp;*</span>base64).map_err(D::Error::custom)<span class="question-mark">?</span>)
         },
         <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
     };
@@ -196,37 +195,38 @@
 /// [Discord docs](https://discord.com/developers/docs/resources/channel#attachment-object).
 ///
 /// [`Embed`]: super::Embed
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>Attachment {
     <span class="doccomment">/// The unique ID given to this attachment.
     </span><span class="kw">pub </span>id: AttachmentId,
     <span class="doccomment">/// The filename of the file that was uploaded. This is equivalent to what the uploader had
     /// their file named.
-    </span><span class="kw">pub </span>filename: String,
+    </span><span class="kw">pub </span>filename: FixedString,
     <span class="doccomment">/// Sescription for the file (max 1024 characters).
-    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
     <span class="doccomment">/// If the attachment is an image, then the height of the image is provided.
-    </span><span class="kw">pub </span>height: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+    </span><span class="kw">pub </span>height: <span class="prelude-ty">Option</span>&lt;NonMaxU32&gt;,
+    <span class="doccomment">/// If the attachment is an image, then the width of the image is provided.
+    </span><span class="kw">pub </span>width: <span class="prelude-ty">Option</span>&lt;NonMaxU32&gt;,
     <span class="doccomment">/// The proxy URL.
-    </span><span class="kw">pub </span>proxy_url: String,
+    </span><span class="kw">pub </span>proxy_url: FixedString,
     <span class="doccomment">/// The size of the file in bytes.
     </span><span class="kw">pub </span>size: u32,
     <span class="doccomment">/// The URL of the uploaded attachment.
-    </span><span class="kw">pub </span>url: String,
-    <span class="doccomment">/// If the attachment is an image, then the width of the image is provided.
-    </span><span class="kw">pub </span>width: <span class="prelude-ty">Option</span>&lt;u32&gt;,
-    <span class="doccomment">/// The attachment&#39;s [media type].
+    </span><span class="kw">pub </span>url: FixedString,
+    <span class="doccomment">/// The attachment's [media type].
     ///
     /// [media type]: https://en.wikipedia.org/wiki/Media_type
-    </span><span class="kw">pub </span>content_type: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>content_type: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
     <span class="doccomment">/// Whether this attachment is ephemeral.
     ///
     /// Ephemeral attachments will automatically be removed after a set period of time.
     ///
     /// Ephemeral attachments on messages are guaranteed to be available as long as the message
     /// itself exists.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;is_false&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"is_false"</span>)]
     </span><span class="kw">pub </span>ephemeral: bool,
     <span class="doccomment">/// The duration of the audio file (present if [`MessageFlags::IS_VOICE_MESSAGE`]).
     </span><span class="kw">pub </span>duration_secs: <span class="prelude-ty">Option</span>&lt;f64&gt;,
@@ -239,15 +239,15 @@
     ///
     /// The waveform details are a Discord implementation detail and may change without warning or
     /// documentation.
-    </span><span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;base64_bytes&quot;</span>)]
+    </span><span class="attr">#[serde(default, deserialize_with = <span class="string">"base64_bytes"</span>)]
     </span><span class="kw">pub </span>waveform: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>Attachment {
     <span class="doccomment">/// If this attachment is an image, then a tuple of the width and height in pixels is returned.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>dimensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(u32, u32)&gt; {
+    </span><span class="kw">pub fn </span>dimensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(NonMaxU32, NonMaxU32)&gt; {
         <span class="self">self</span>.width.and_then(|width| <span class="self">self</span>.height.map(|height| (width, height)))
     }
 
@@ -258,8 +258,6 @@
     /// Download all of the attachments associated with a [`Message`]:
     ///
     /// ```rust,no_run
-    /// # #[cfg(feature = &quot;client&quot;)]
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     /// use std::io::Write;
     /// use std::path::Path;
     ///
@@ -268,18 +266,21 @@
     /// use tokio::fs::File;
     /// use tokio::io::AsyncWriteExt;
     ///
-    /// struct Handler;
+    /// # struct Handler;
     ///
     /// #[serenity::async_trait]
+    /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
-    ///     async fn message(&amp;self, context: Context, mut message: Message) {
+    ///     async fn message(&amp;self, context: Context, message: Message) {
     ///         for attachment in message.attachments {
     ///             let content = match attachment.download().await {
     ///                 Ok(content) =&gt; content,
     ///                 Err(why) =&gt; {
-    ///                     println!(&quot;Error downloading attachment: {:?}&quot;, why);
-    ///                     let _ =
-    ///                         message.channel_id.say(&amp;context, &quot;Error downloading attachment&quot;).await;
+    ///                     println!("Error downloading attachment: {:?}", why);
+    ///                     let _ = message
+    ///                         .channel_id
+    ///                         .say(&amp;context.http, "Error downloading attachment")
+    ///                         .await;
     ///
     ///                     return;
     ///                 },
@@ -288,37 +289,26 @@
     ///             let mut file = match File::create(&amp;attachment.filename).await {
     ///                 Ok(file) =&gt; file,
     ///                 Err(why) =&gt; {
-    ///                     println!(&quot;Error creating file: {:?}&quot;, why);
-    ///                     let _ = message.channel_id.say(&amp;context, &quot;Error creating file&quot;).await;
+    ///                     println!("Error creating file: {:?}", why);
+    ///                     let _ = message.channel_id.say(&amp;context.http, "Error creating file").await;
     ///
     ///                     return;
     ///                 },
     ///             };
     ///
     ///             if let Err(why) = file.write_all(&amp;content).await {
-    ///                 println!(&quot;Error writing to file: {:?}&quot;, why);
+    ///                 println!("Error writing to file: {:?}", why);
     ///
     ///                 return;
     ///             }
     ///
     ///             let _ = message
     ///                 .channel_id
-    ///                 .say(&amp;context, &amp;format!(&quot;Saved {:?}&quot;, attachment.filename))
+    ///                 .say(&amp;context.http, &amp;format!("Saved {:?}", attachment.filename))
     ///                 .await;
     ///         }
     ///     }
-    ///
-    ///     async fn ready(&amp;self, _: Context, ready: Ready) {
-    ///         println!(&quot;{} is connected!&quot;, ready.user.name);
-    ///     }
     /// }
-    /// let token = std::env::var(&quot;DISCORD_TOKEN&quot;)?;
-    /// let mut client =
-    ///     Client::builder(&amp;token, GatewayIntents::default()).event_handler(Handler).await?;
-    ///
-    /// client.start().await?;
-    /// # Ok(())
-    /// # }
     /// ```
     ///
     /// # Errors
@@ -330,8 +320,14 @@
     /// [`Message`]: super::Message
     </span><span class="kw">pub async fn </span>download(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;&gt; {
         <span class="kw">let </span>reqwest = ReqwestClient::new();
-        <span class="kw">let </span>bytes = reqwest.get(<span class="kw-2">&amp;</span><span class="self">self</span>.url).send().<span class="kw">await</span><span class="question-mark">?</span>.bytes().<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>bytes = reqwest.get(<span class="kw-2">&amp;*</span><span class="self">self</span>.url).send().<span class="kw">await</span><span class="question-mark">?</span>.bytes().<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(bytes.to_vec())
+    }
+}
+
+<span class="kw">impl </span>ExtractKey&lt;AttachmentId&gt; <span class="kw">for </span>Attachment {
+    <span class="kw">fn </span>extract_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AttachmentId {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.id
     }
 }
 </code></pre></div></section></main></body></html>

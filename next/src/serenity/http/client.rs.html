@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/client.rs`."><title>client.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/client.rs`."><title>client.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -4255,307 +4255,29 @@
 <a href="#4255" id="4255">4255</a>
 <a href="#4256" id="4256">4256</a>
 <a href="#4257" id="4257">4257</a>
-<a href="#4258" id="4258">4258</a>
-<a href="#4259" id="4259">4259</a>
-<a href="#4260" id="4260">4260</a>
-<a href="#4261" id="4261">4261</a>
-<a href="#4262" id="4262">4262</a>
-<a href="#4263" id="4263">4263</a>
-<a href="#4264" id="4264">4264</a>
-<a href="#4265" id="4265">4265</a>
-<a href="#4266" id="4266">4266</a>
-<a href="#4267" id="4267">4267</a>
-<a href="#4268" id="4268">4268</a>
-<a href="#4269" id="4269">4269</a>
-<a href="#4270" id="4270">4270</a>
-<a href="#4271" id="4271">4271</a>
-<a href="#4272" id="4272">4272</a>
-<a href="#4273" id="4273">4273</a>
-<a href="#4274" id="4274">4274</a>
-<a href="#4275" id="4275">4275</a>
-<a href="#4276" id="4276">4276</a>
-<a href="#4277" id="4277">4277</a>
-<a href="#4278" id="4278">4278</a>
-<a href="#4279" id="4279">4279</a>
-<a href="#4280" id="4280">4280</a>
-<a href="#4281" id="4281">4281</a>
-<a href="#4282" id="4282">4282</a>
-<a href="#4283" id="4283">4283</a>
-<a href="#4284" id="4284">4284</a>
-<a href="#4285" id="4285">4285</a>
-<a href="#4286" id="4286">4286</a>
-<a href="#4287" id="4287">4287</a>
-<a href="#4288" id="4288">4288</a>
-<a href="#4289" id="4289">4289</a>
-<a href="#4290" id="4290">4290</a>
-<a href="#4291" id="4291">4291</a>
-<a href="#4292" id="4292">4292</a>
-<a href="#4293" id="4293">4293</a>
-<a href="#4294" id="4294">4294</a>
-<a href="#4295" id="4295">4295</a>
-<a href="#4296" id="4296">4296</a>
-<a href="#4297" id="4297">4297</a>
-<a href="#4298" id="4298">4298</a>
-<a href="#4299" id="4299">4299</a>
-<a href="#4300" id="4300">4300</a>
-<a href="#4301" id="4301">4301</a>
-<a href="#4302" id="4302">4302</a>
-<a href="#4303" id="4303">4303</a>
-<a href="#4304" id="4304">4304</a>
-<a href="#4305" id="4305">4305</a>
-<a href="#4306" id="4306">4306</a>
-<a href="#4307" id="4307">4307</a>
-<a href="#4308" id="4308">4308</a>
-<a href="#4309" id="4309">4309</a>
-<a href="#4310" id="4310">4310</a>
-<a href="#4311" id="4311">4311</a>
-<a href="#4312" id="4312">4312</a>
-<a href="#4313" id="4313">4313</a>
-<a href="#4314" id="4314">4314</a>
-<a href="#4315" id="4315">4315</a>
-<a href="#4316" id="4316">4316</a>
-<a href="#4317" id="4317">4317</a>
-<a href="#4318" id="4318">4318</a>
-<a href="#4319" id="4319">4319</a>
-<a href="#4320" id="4320">4320</a>
-<a href="#4321" id="4321">4321</a>
-<a href="#4322" id="4322">4322</a>
-<a href="#4323" id="4323">4323</a>
-<a href="#4324" id="4324">4324</a>
-<a href="#4325" id="4325">4325</a>
-<a href="#4326" id="4326">4326</a>
-<a href="#4327" id="4327">4327</a>
-<a href="#4328" id="4328">4328</a>
-<a href="#4329" id="4329">4329</a>
-<a href="#4330" id="4330">4330</a>
-<a href="#4331" id="4331">4331</a>
-<a href="#4332" id="4332">4332</a>
-<a href="#4333" id="4333">4333</a>
-<a href="#4334" id="4334">4334</a>
-<a href="#4335" id="4335">4335</a>
-<a href="#4336" id="4336">4336</a>
-<a href="#4337" id="4337">4337</a>
-<a href="#4338" id="4338">4338</a>
-<a href="#4339" id="4339">4339</a>
-<a href="#4340" id="4340">4340</a>
-<a href="#4341" id="4341">4341</a>
-<a href="#4342" id="4342">4342</a>
-<a href="#4343" id="4343">4343</a>
-<a href="#4344" id="4344">4344</a>
-<a href="#4345" id="4345">4345</a>
-<a href="#4346" id="4346">4346</a>
-<a href="#4347" id="4347">4347</a>
-<a href="#4348" id="4348">4348</a>
-<a href="#4349" id="4349">4349</a>
-<a href="#4350" id="4350">4350</a>
-<a href="#4351" id="4351">4351</a>
-<a href="#4352" id="4352">4352</a>
-<a href="#4353" id="4353">4353</a>
-<a href="#4354" id="4354">4354</a>
-<a href="#4355" id="4355">4355</a>
-<a href="#4356" id="4356">4356</a>
-<a href="#4357" id="4357">4357</a>
-<a href="#4358" id="4358">4358</a>
-<a href="#4359" id="4359">4359</a>
-<a href="#4360" id="4360">4360</a>
-<a href="#4361" id="4361">4361</a>
-<a href="#4362" id="4362">4362</a>
-<a href="#4363" id="4363">4363</a>
-<a href="#4364" id="4364">4364</a>
-<a href="#4365" id="4365">4365</a>
-<a href="#4366" id="4366">4366</a>
-<a href="#4367" id="4367">4367</a>
-<a href="#4368" id="4368">4368</a>
-<a href="#4369" id="4369">4369</a>
-<a href="#4370" id="4370">4370</a>
-<a href="#4371" id="4371">4371</a>
-<a href="#4372" id="4372">4372</a>
-<a href="#4373" id="4373">4373</a>
-<a href="#4374" id="4374">4374</a>
-<a href="#4375" id="4375">4375</a>
-<a href="#4376" id="4376">4376</a>
-<a href="#4377" id="4377">4377</a>
-<a href="#4378" id="4378">4378</a>
-<a href="#4379" id="4379">4379</a>
-<a href="#4380" id="4380">4380</a>
-<a href="#4381" id="4381">4381</a>
-<a href="#4382" id="4382">4382</a>
-<a href="#4383" id="4383">4383</a>
-<a href="#4384" id="4384">4384</a>
-<a href="#4385" id="4385">4385</a>
-<a href="#4386" id="4386">4386</a>
-<a href="#4387" id="4387">4387</a>
-<a href="#4388" id="4388">4388</a>
-<a href="#4389" id="4389">4389</a>
-<a href="#4390" id="4390">4390</a>
-<a href="#4391" id="4391">4391</a>
-<a href="#4392" id="4392">4392</a>
-<a href="#4393" id="4393">4393</a>
-<a href="#4394" id="4394">4394</a>
-<a href="#4395" id="4395">4395</a>
-<a href="#4396" id="4396">4396</a>
-<a href="#4397" id="4397">4397</a>
-<a href="#4398" id="4398">4398</a>
-<a href="#4399" id="4399">4399</a>
-<a href="#4400" id="4400">4400</a>
-<a href="#4401" id="4401">4401</a>
-<a href="#4402" id="4402">4402</a>
-<a href="#4403" id="4403">4403</a>
-<a href="#4404" id="4404">4404</a>
-<a href="#4405" id="4405">4405</a>
-<a href="#4406" id="4406">4406</a>
-<a href="#4407" id="4407">4407</a>
-<a href="#4408" id="4408">4408</a>
-<a href="#4409" id="4409">4409</a>
-<a href="#4410" id="4410">4410</a>
-<a href="#4411" id="4411">4411</a>
-<a href="#4412" id="4412">4412</a>
-<a href="#4413" id="4413">4413</a>
-<a href="#4414" id="4414">4414</a>
-<a href="#4415" id="4415">4415</a>
-<a href="#4416" id="4416">4416</a>
-<a href="#4417" id="4417">4417</a>
-<a href="#4418" id="4418">4418</a>
-<a href="#4419" id="4419">4419</a>
-<a href="#4420" id="4420">4420</a>
-<a href="#4421" id="4421">4421</a>
-<a href="#4422" id="4422">4422</a>
-<a href="#4423" id="4423">4423</a>
-<a href="#4424" id="4424">4424</a>
-<a href="#4425" id="4425">4425</a>
-<a href="#4426" id="4426">4426</a>
-<a href="#4427" id="4427">4427</a>
-<a href="#4428" id="4428">4428</a>
-<a href="#4429" id="4429">4429</a>
-<a href="#4430" id="4430">4430</a>
-<a href="#4431" id="4431">4431</a>
-<a href="#4432" id="4432">4432</a>
-<a href="#4433" id="4433">4433</a>
-<a href="#4434" id="4434">4434</a>
-<a href="#4435" id="4435">4435</a>
-<a href="#4436" id="4436">4436</a>
-<a href="#4437" id="4437">4437</a>
-<a href="#4438" id="4438">4438</a>
-<a href="#4439" id="4439">4439</a>
-<a href="#4440" id="4440">4440</a>
-<a href="#4441" id="4441">4441</a>
-<a href="#4442" id="4442">4442</a>
-<a href="#4443" id="4443">4443</a>
-<a href="#4444" id="4444">4444</a>
-<a href="#4445" id="4445">4445</a>
-<a href="#4446" id="4446">4446</a>
-<a href="#4447" id="4447">4447</a>
-<a href="#4448" id="4448">4448</a>
-<a href="#4449" id="4449">4449</a>
-<a href="#4450" id="4450">4450</a>
-<a href="#4451" id="4451">4451</a>
-<a href="#4452" id="4452">4452</a>
-<a href="#4453" id="4453">4453</a>
-<a href="#4454" id="4454">4454</a>
-<a href="#4455" id="4455">4455</a>
-<a href="#4456" id="4456">4456</a>
-<a href="#4457" id="4457">4457</a>
-<a href="#4458" id="4458">4458</a>
-<a href="#4459" id="4459">4459</a>
-<a href="#4460" id="4460">4460</a>
-<a href="#4461" id="4461">4461</a>
-<a href="#4462" id="4462">4462</a>
-<a href="#4463" id="4463">4463</a>
-<a href="#4464" id="4464">4464</a>
-<a href="#4465" id="4465">4465</a>
-<a href="#4466" id="4466">4466</a>
-<a href="#4467" id="4467">4467</a>
-<a href="#4468" id="4468">4468</a>
-<a href="#4469" id="4469">4469</a>
-<a href="#4470" id="4470">4470</a>
-<a href="#4471" id="4471">4471</a>
-<a href="#4472" id="4472">4472</a>
-<a href="#4473" id="4473">4473</a>
-<a href="#4474" id="4474">4474</a>
-<a href="#4475" id="4475">4475</a>
-<a href="#4476" id="4476">4476</a>
-<a href="#4477" id="4477">4477</a>
-<a href="#4478" id="4478">4478</a>
-<a href="#4479" id="4479">4479</a>
-<a href="#4480" id="4480">4480</a>
-<a href="#4481" id="4481">4481</a>
-<a href="#4482" id="4482">4482</a>
-<a href="#4483" id="4483">4483</a>
-<a href="#4484" id="4484">4484</a>
-<a href="#4485" id="4485">4485</a>
-<a href="#4486" id="4486">4486</a>
-<a href="#4487" id="4487">4487</a>
-<a href="#4488" id="4488">4488</a>
-<a href="#4489" id="4489">4489</a>
-<a href="#4490" id="4490">4490</a>
-<a href="#4491" id="4491">4491</a>
-<a href="#4492" id="4492">4492</a>
-<a href="#4493" id="4493">4493</a>
-<a href="#4494" id="4494">4494</a>
-<a href="#4495" id="4495">4495</a>
-<a href="#4496" id="4496">4496</a>
-<a href="#4497" id="4497">4497</a>
-<a href="#4498" id="4498">4498</a>
-<a href="#4499" id="4499">4499</a>
-<a href="#4500" id="4500">4500</a>
-<a href="#4501" id="4501">4501</a>
-<a href="#4502" id="4502">4502</a>
-<a href="#4503" id="4503">4503</a>
-<a href="#4504" id="4504">4504</a>
-<a href="#4505" id="4505">4505</a>
-<a href="#4506" id="4506">4506</a>
-<a href="#4507" id="4507">4507</a>
-<a href="#4508" id="4508">4508</a>
-<a href="#4509" id="4509">4509</a>
-<a href="#4510" id="4510">4510</a>
-<a href="#4511" id="4511">4511</a>
-<a href="#4512" id="4512">4512</a>
-<a href="#4513" id="4513">4513</a>
-<a href="#4514" id="4514">4514</a>
-<a href="#4515" id="4515">4515</a>
-<a href="#4516" id="4516">4516</a>
-<a href="#4517" id="4517">4517</a>
-<a href="#4518" id="4518">4518</a>
-<a href="#4519" id="4519">4519</a>
-<a href="#4520" id="4520">4520</a>
-<a href="#4521" id="4521">4521</a>
-<a href="#4522" id="4522">4522</a>
-<a href="#4523" id="4523">4523</a>
-<a href="#4524" id="4524">4524</a>
-<a href="#4525" id="4525">4525</a>
-<a href="#4526" id="4526">4526</a>
-<a href="#4527" id="4527">4527</a>
-<a href="#4528" id="4528">4528</a>
-<a href="#4529" id="4529">4529</a>
-<a href="#4530" id="4530">4530</a>
-<a href="#4531" id="4531">4531</a>
-<a href="#4532" id="4532">4532</a>
-<a href="#4533" id="4533">4533</a>
-<a href="#4534" id="4534">4534</a>
-<a href="#4535" id="4535">4535</a>
-<a href="#4536" id="4536">4536</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::missing_errors_doc)]
 
 </span><span class="kw">use </span>std::borrow::Cow;
-<span class="kw">use </span>std::convert::TryFrom;
-<span class="kw">use </span>std::num::NonZeroU64;
 <span class="kw">use </span>std::sync::atomic::{AtomicU64, Ordering};
 <span class="kw">use </span>std::sync::Arc;
 
+<span class="kw">use </span>arrayvec::ArrayVec;
+<span class="kw">use </span>nonmax::{NonMaxU16, NonMaxU8};
 <span class="kw">use </span>percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 <span class="kw">use </span>reqwest::header::{HeaderMap <span class="kw">as </span>Headers, HeaderValue};
-<span class="attr">#[cfg(feature = <span class="string">&quot;utils&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"utils"</span>)]
 </span><span class="kw">use </span>reqwest::Url;
 <span class="kw">use </span>reqwest::{Client, ClientBuilder, Response <span class="kw">as </span>ReqwestResponse, StatusCode};
-<span class="kw">use </span>secrecy::{ExposeSecret, SecretString};
+<span class="kw">use </span>secrecy::{ExposeSecret <span class="kw">as _</span>, Secret};
 <span class="kw">use </span>serde::de::DeserializeOwned;
-<span class="kw">use </span>tracing::{debug, instrument, trace};
+<span class="kw">use </span>serde_json::{from_value, json, to_string, to_vec};
+<span class="kw">use </span>to_arraystring::ToArrayString <span class="kw">as _</span>;
+<span class="kw">use </span>tracing::{debug, trace};
 
-<span class="kw">use </span><span class="kw">super</span>::multipart::Multipart;
+<span class="kw">use </span><span class="kw">super</span>::multipart::{Multipart, MultipartUpload};
 <span class="kw">use </span><span class="kw">super</span>::ratelimiting::Ratelimiter;
 <span class="kw">use </span><span class="kw">super</span>::request::Request;
 <span class="kw">use </span><span class="kw">super</span>::routing::Route;
-<span class="kw">use </span><span class="kw">super</span>::typing::Typing;
 <span class="kw">use super</span>::{
     ErrorResponse,
     GuildPagination,
@@ -4564,15 +4286,44 @@
     MessagePagination,
     UserPagination,
 };
-<span class="kw">use </span><span class="kw">crate</span>::builder::CreateAttachment;
+<span class="kw">use </span><span class="kw">crate</span>::builder::{CreateAllowedMentions, CreateAttachment};
 <span class="kw">use </span><span class="kw">crate</span>::constants;
 <span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::json::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::model::application::{Command, CommandPermissions};
-<span class="kw">use </span><span class="kw">crate</span>::model::guild::automod::Rule;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// A builder for the underlying [`Http`] client that performs requests to Discord&#39;s HTTP API. If
+<span class="attr">#[derive(Clone)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Token(Arc&lt;str&gt;);
+
+<span class="kw">impl </span>Token {
+    <span class="kw">pub fn </span>new(inner: Arc&lt;str&gt;) -&gt; Secret&lt;<span class="self">Self</span>&gt; {
+        Secret::new(<span class="self">Self</span>(inner))
+    }
+
+    <span class="kw">pub fn </span>get_inner(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Arc&lt;str&gt; {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl </span>std::ops::Deref <span class="kw">for </span>Token {
+    <span class="kw">type </span>Target = str;
+
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl </span>secrecy::Zeroize <span class="kw">for </span>Token {
+    <span class="kw">fn </span>zeroize(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(string) = Arc::get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0</span>) {
+            string.zeroize();
+        }
+    }
+}
+
+<span class="kw">impl </span>secrecy::CloneableSecret <span class="kw">for </span>Token {}
+<span class="kw">impl </span>secrecy::DebugSecret <span class="kw">for </span>Token {}
+
+<span class="doccomment">/// A builder for the underlying [`Http`] client that performs requests to Discord's HTTP API. If
 /// you do not need to use a proxy or do not need to disable the rate limiter, you can use
 /// [`Http::new`] instead.
 ///
@@ -4584,7 +4335,7 @@
 /// # use serenity::http::HttpBuilder;
 /// # fn run() {
 /// let http =
-///     HttpBuilder::new(&quot;token&quot;).proxy(&quot;http://127.0.0.1:3000&quot;).ratelimiter_disabled(true).build();
+///     HttpBuilder::new("token").proxy("http://127.0.0.1:3000").ratelimiter_disabled(true).build();
 /// # }
 /// ```
 </span><span class="attr">#[must_use]
@@ -4592,22 +4343,24 @@
     client: <span class="prelude-ty">Option</span>&lt;Client&gt;,
     ratelimiter: <span class="prelude-ty">Option</span>&lt;Ratelimiter&gt;,
     ratelimiter_disabled: bool,
-    token: SecretString,
-    proxy: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    token: Arc&lt;str&gt;,
+    proxy: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
     application_id: <span class="prelude-ty">Option</span>&lt;ApplicationId&gt;,
+    default_allowed_mentions: <span class="prelude-ty">Option</span>&lt;CreateAllowedMentions&lt;<span class="lifetime">'static</span>&gt;&gt;,
 }
 
 <span class="kw">impl </span>HttpBuilder {
     <span class="doccomment">/// Construct a new builder to call methods on for the HTTP construction. The `token` will
-    /// automatically be prefixed &quot;Bot &quot; if not already.
-    </span><span class="kw">pub fn </span>new(token: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="self">Self </span>{
+    /// automatically be prefixed "Bot " if not already.
+    </span><span class="kw">pub fn </span>new(token: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             client: <span class="prelude-val">None</span>,
             ratelimiter: <span class="prelude-val">None</span>,
             ratelimiter_disabled: <span class="bool-val">false</span>,
-            token: SecretString::new(parse_token(token)),
+            token: parse_token(token),
             proxy: <span class="prelude-val">None</span>,
             application_id: <span class="prelude-val">None</span>,
+            default_allowed_mentions: <span class="prelude-val">None</span>,
         }
     }
 
@@ -4617,20 +4370,20 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets a token for the bot. If the token is not prefixed &quot;Bot &quot;, this method will
+    <span class="doccomment">/// Sets a token for the bot. If the token is not prefixed "Bot ", this method will
     /// automatically do so.
-    </span><span class="kw">pub fn </span>token(<span class="kw-2">mut </span><span class="self">self</span>, token: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.token = SecretString::new(parse_token(token));
+    </span><span class="kw">pub fn </span>token(<span class="kw-2">mut </span><span class="self">self</span>, token: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.token = parse_token(token);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets the [`reqwest::Client`]. If one isn&#39;t provided, a default one will be used.
+    <span class="doccomment">/// Sets the [`reqwest::Client`]. If one isn't provided, a default one will be used.
     </span><span class="kw">pub fn </span>client(<span class="kw-2">mut </span><span class="self">self</span>, client: Client) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.client = <span class="prelude-val">Some</span>(client);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets the ratelimiter to be used. If one isn&#39;t provided, a default one will be used.
+    <span class="doccomment">/// Sets the ratelimiter to be used. If one isn't provided, a default one will be used.
     </span><span class="kw">pub fn </span>ratelimiter(<span class="kw-2">mut </span><span class="self">self</span>, ratelimiter: Ratelimiter) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.ratelimiter = <span class="prelude-val">Some</span>(ratelimiter);
         <span class="self">self
@@ -4656,63 +4409,89 @@
     ///
     /// This will simply send HTTP API requests to the proxy instead of Discord API to allow the
     /// proxy to intercept, rate limit, and forward requests. This is different than a native
-    /// proxy&#39;s behavior where it will tunnel requests that use TLS via [`HTTP CONNECT`] method
+    /// proxy's behavior where it will tunnel requests that use TLS via [`HTTP CONNECT`] method
     /// (e.g. using [`reqwest::Proxy`]).
+    ///
+    /// # Panics
+    ///
+    /// Panics if the proxy URL is larger than u16::MAX characters... what are you doing?
     ///
     /// [`twilight-http-proxy`]: https://github.com/twilight-rs/http-proxy
     /// [`HTTP CONNECT`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/CONNECT
-    </span><span class="kw">pub fn </span>proxy(<span class="kw-2">mut </span><span class="self">self</span>, proxy: <span class="kw">impl </span>Into&lt;String&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.proxy = <span class="prelude-val">Some</span>(proxy.into());
+    </span><span class="kw">pub fn </span>proxy&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, proxy: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>proxy = proxy.into();
+        u16::try_from(proxy.len()).expect(<span class="string">"Proxy URL should be less than u16::MAX characters"</span>);
+
+        <span class="kw">let </span>proxy = <span class="kw">match </span>proxy {
+            Cow::Owned(proxy) =&gt; FixedString::from_string_trunc(proxy),
+            Cow::Borrowed(proxy) =&gt; FixedString::from_str_trunc(proxy),
+        };
+
+        <span class="self">self</span>.proxy = <span class="prelude-val">Some</span>(proxy);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Sets the [`CreateAllowedMentions`] used by default for each request that would use it.
+    ///
+    /// This only takes effect if you are calling through the model or builder methods, not directly
+    /// calling [`Http`] methods, as [`Http`] is simply used as a convenient storage for these.
+    </span><span class="kw">pub fn </span>default_allowed_mentions(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        allowed_mentions: CreateAllowedMentions&lt;<span class="lifetime">'static</span>&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.default_allowed_mentions = <span class="prelude-val">Some</span>(allowed_mentions);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Use the given configuration to build the `Http` client.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; Http {
-        <span class="kw">let </span>application_id = AtomicU64::new(<span class="self">self</span>.application_id.map_or(<span class="number">0</span>, ApplicationId::get));
+        <span class="kw">let </span>application_id =
+            AtomicU64::new(<span class="self">self</span>.application_id.map_or(u64::MAX, ApplicationId::get));
 
         <span class="kw">let </span>client = <span class="self">self</span>.client.unwrap_or_else(|| {
             <span class="kw">let </span>builder = configure_client_backend(Client::builder());
-            builder.build().expect(<span class="string">&quot;Cannot build reqwest::Client&quot;</span>)
+            builder.build().expect(<span class="string">"Cannot build reqwest::Client"</span>)
         });
 
         <span class="kw">let </span>ratelimiter = (!<span class="self">self</span>.ratelimiter_disabled).then(|| {
             <span class="self">self</span>.ratelimiter
-                .unwrap_or_else(|| Ratelimiter::new(client.clone(), <span class="self">self</span>.token.expose_secret()))
+                .unwrap_or_else(|| Ratelimiter::new(client.clone(), Arc::clone(<span class="kw-2">&amp;</span><span class="self">self</span>.token)))
         });
 
         Http {
             client,
             ratelimiter,
             proxy: <span class="self">self</span>.proxy,
-            token: <span class="self">self</span>.token,
+            token: Token::new(<span class="self">self</span>.token),
             application_id,
+            default_allowed_mentions: <span class="self">self</span>.default_allowed_mentions,
         }
     }
 }
 
-<span class="kw">fn </span>parse_token(token: <span class="kw">impl </span>AsRef&lt;str&gt;) -&gt; String {
-    <span class="kw">let </span>token = token.as_ref().trim();
+<span class="kw">fn </span>parse_token(token: <span class="kw-2">&amp;</span>str) -&gt; Arc&lt;str&gt; {
+    <span class="kw">let </span>token = token.trim();
 
-    <span class="kw">if </span>token.starts_with(<span class="string">&quot;Bot &quot;</span>) || token.starts_with(<span class="string">&quot;Bearer &quot;</span>) {
-        token.to_string()
+    <span class="kw">if </span>token.starts_with(<span class="string">"Bot "</span>) || token.starts_with(<span class="string">"Bearer "</span>) {
+        Arc::from(token)
     } <span class="kw">else </span>{
-        <span class="macro">format!</span>(<span class="string">&quot;Bot {token}&quot;</span>)
+        Arc::from(<span class="macro">format!</span>(<span class="string">"Bot {token}"</span>))
     }
 }
 
 <span class="kw">fn </span>reason_into_header(reason: <span class="kw-2">&amp;</span>str) -&gt; Headers {
     <span class="kw">let </span><span class="kw-2">mut </span>headers = Headers::new();
 
-    <span class="comment">// &quot;The X-Audit-Log-Reason header supports 1-512 URL-encoded UTF-8 characters.&quot;
+    <span class="comment">// "The X-Audit-Log-Reason header supports 1-512 URL-encoded UTF-8 characters."
     // https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object
     </span><span class="kw">let </span>header_value = <span class="kw">match </span>Cow::from(utf8_percent_encode(reason, NON_ALPHANUMERIC)) {
         Cow::Borrowed(value) =&gt; HeaderValue::from_str(value),
         Cow::Owned(value) =&gt; HeaderValue::try_from(value),
     }
-    .expect(<span class="string">&quot;Invalid header value even after percent encode&quot;</span>);
+    .expect(<span class="string">"Invalid header value even after percent encode"</span>);
 
-    headers.insert(<span class="string">&quot;X-Audit-Log-Reason&quot;</span>, header_value);
+    headers.insert(<span class="string">"X-Audit-Log-Reason"</span>, header_value);
     headers
 }
 
@@ -4722,9 +4501,10 @@
 </span><span class="kw">pub struct </span>Http {
     <span class="kw">pub</span>(<span class="kw">crate</span>) client: Client,
     <span class="kw">pub </span>ratelimiter: <span class="prelude-ty">Option</span>&lt;Ratelimiter&gt;,
-    <span class="kw">pub </span>proxy: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    token: SecretString,
+    <span class="kw">pub </span>proxy: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
+    token: Secret&lt;Token&gt;,
     application_id: AtomicU64,
+    <span class="kw">pub </span>default_allowed_mentions: <span class="prelude-ty">Option</span>&lt;CreateAllowedMentions&lt;<span class="lifetime">'static</span>&gt;&gt;,
 }
 
 <span class="kw">impl </span>Http {
@@ -4735,7 +4515,11 @@
 
     <span class="kw">pub fn </span>application_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ApplicationId&gt; {
         <span class="kw">let </span>application_id = <span class="self">self</span>.application_id.load(Ordering::Relaxed);
-        NonZeroU64::new(application_id).map(ApplicationId)
+        <span class="kw">if </span>application_id == u64::MAX {
+            <span class="prelude-val">None
+        </span>} <span class="kw">else </span>{
+            <span class="prelude-val">Some</span>(ApplicationId::new(application_id))
+        }
     }
 
     <span class="kw">fn </span>try_application_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;ApplicationId&gt; {
@@ -4746,8 +4530,8 @@
         <span class="self">self</span>.application_id.store(application_id.get(), Ordering::Relaxed);
     }
 
-    <span class="kw">pub fn </span>token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.token.expose_secret()
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>token(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Arc&lt;str&gt; {
+        <span class="self">self</span>.token.expose_secret().get_inner()
     }
 
     <span class="doccomment">/// Adds a [`User`] to a [`Guild`] with a valid OAuth2 access token.
@@ -4778,15 +4562,11 @@
         <span class="kw">if </span>response.status() == <span class="number">204 </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         } <span class="kw">else </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(decode_resp(response).<span class="kw">await</span><span class="question-mark">?</span>))
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(response.json().<span class="kw">await</span><span class="question-mark">?</span>))
         }
     }
 
     <span class="doccomment">/// Adds a single [`Role`] to a [`Member`] in a [`Guild`].
-    ///
-    /// **Note**: Requires the [Manage Roles] permission and respect of role hierarchy.
-    ///
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
     </span><span class="kw">pub async fn </span>add_member_role(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -4813,11 +4593,7 @@
     /// days.
     ///
     /// Passing a `delete_message_days` of `0` is equivalent to not removing any messages. Up to
-    /// `7` days&#39; worth of messages may be deleted.
-    ///
-    /// **Note**: Requires that you have the [Ban Members] permission.
-    ///
-    /// [Ban Members]: Permissions::BAN_MEMBERS
+    /// `7` days' worth of messages may be deleted.
     </span><span class="kw">pub async fn </span>ban_user(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -4825,6 +4601,8 @@
         delete_message_days: u8,
         reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span>delete_message_seconds = u32::from(delete_message_days) * <span class="number">86400</span>;
+
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -4834,18 +4612,34 @@
                 guild_id,
                 user_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;delete_message_days&quot;</span>, delete_message_days.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"delete_message_seconds"</span>, <span class="kw-2">&amp;</span>delete_message_seconds.to_arraystring())]),
+        })
+        .<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Bans multiple users from a [`Guild`], optionally removing their messages.
+    ///
+    /// See the [Discord Docs](https://github.com/discord/discord-api-docs/pull/6720) for more information.
+    </span><span class="kw">pub async fn </span>bulk_ban_users(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
+        reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;BulkBanResponse&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
+            multipart: <span class="prelude-val">None</span>,
+            headers: reason.map(reason_into_header),
+            method: LightMethod::Post,
+            route: Route::GuildBulkBan {
+                guild_id,
+            },
+            params: <span class="prelude-val">None</span>,
         })
         .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Broadcasts that the current user is typing in the given [`Channel`].
-    ///
-    /// This lasts for about 10 seconds, and will then need to be renewed to indicate that the
-    /// current user is still typing.
-    ///
-    /// This should rarely be used for bots, although it is a good indicator that a long-running
-    /// command is still being processed.
     </span><span class="kw">pub async fn </span>broadcast_typing(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
             body: <span class="prelude-val">None</span>,
@@ -4861,13 +4655,6 @@
     </span>}
 
     <span class="doccomment">/// Creates a [`GuildChannel`] in the [`Guild`] given its Id.
-    ///
-    /// Refer to the Discord&#39;s [docs] for information on what fields this requires.
-    ///
-    /// **Note**: Requires the [Manage Channels] permission.
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/guild#create-guild-channel
-    /// [Manage Channels]: Permissions::MANAGE_CHANNELS
     </span><span class="kw">pub async fn </span>create_channel(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -4957,13 +4744,16 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
+        files: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GuildChannel&gt; {
-        <span class="kw">let </span>body = to_vec(map)<span class="question-mark">?</span>;
-
         <span class="self">self</span>.fire(Request {
-            body: <span class="prelude-val">Some</span>(body),
-            multipart: <span class="prelude-val">None</span>,
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">Some</span>(Multipart {
+                upload: MultipartUpload::Attachments(files),
+                payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
+                fields: <span class="macro">vec!</span>[],
+            }),
             headers: audit_log_reason.map(reason_into_header),
             method: LightMethod::Post,
             route: Route::ChannelForumPosts {
@@ -4975,16 +4765,10 @@
     </span>}
 
     <span class="doccomment">/// Creates an emoji in the given [`Guild`] with the given data.
-    ///
-    /// View the source code for [`Guild::create_emoji`] method to see what fields this requires.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
     </span><span class="kw">pub async fn </span>create_emoji(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        map: <span class="kw-2">&amp;</span>Value,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Emoji&gt; {
         <span class="self">self</span>.fire(Request {
@@ -5007,7 +4791,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         interaction_token: <span class="kw-2">&amp;</span>str,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        files: Vec&lt;CreateAttachment&gt;,
+        files: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
@@ -5025,7 +4809,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: files.into_iter().map(Into::into).collect(),
+                upload: MultipartUpload::Attachments(files),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -5035,15 +4819,6 @@
     </span>}
 
     <span class="doccomment">/// Creates a new global command.
-    ///
-    /// New global commands will be available in all guilds after 1 hour.
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// **Note**: Creating a command with the same name as an existing command for your application
-    /// will overwrite the old command.
-    ///
-    /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
     </span><span class="kw">pub async fn </span>create_global_command(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;Command&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
@@ -5101,35 +4876,8 @@
     /// Only a [`PartialGuild`] will be immediately returned, and a full [`Guild`] will be received
     /// over a [`Shard`], if at least one is running.
     ///
-    /// **Note**: This endpoint is currently limited to 10 active guilds. The limits are raised for
-    /// whitelisted [GameBridge] applications. See the [documentation on this endpoint] for more
-    /// info.
-    ///
-    /// # Examples
-    ///
-    /// Create a guild called `&quot;test&quot;` in the [US West region]:
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::json;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let map = json!({
-    ///     &quot;name&quot;: &quot;test&quot;,
-    /// });
-    ///
-    /// let _result = http.create_guild(&amp;map).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
     /// [`Shard`]: crate::gateway::Shard
-    /// [GameBridge]: https://discord.com/developers/docs/topics/gamebridge
-    /// [documentation on this endpoint]:
-    /// https://discord.com/developers/docs/resources/guild#create-guild
-    /// [whitelist]: https://discord.com/developers/docs/resources/guild#create-guild
-    </span><span class="kw">pub async fn </span>create_guild(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span>Value) -&gt; <span class="prelude-ty">Result</span>&lt;PartialGuild&gt; {
+    </span><span class="kw">pub async fn </span>create_guild(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;PartialGuild&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>),
             multipart: <span class="prelude-val">None</span>,
@@ -5144,10 +4892,6 @@
     <span class="doccomment">/// Creates a new guild command.
     ///
     /// New guild commands will be available in the guild immediately.
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
     </span><span class="kw">pub async fn </span>create_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -5168,18 +4912,11 @@
     </span>}
 
     <span class="doccomment">/// Creates an [`Integration`] for a [`Guild`].
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// **Note**: Requires the [Manage Guild] permission.
-    ///
-    /// [Manage Guild]: Permissions::MANAGE_GUILD
-    /// [docs]: https://discord.com/developers/docs/resources/guild#create-guild-integration
     </span><span class="kw">pub async fn </span>create_guild_integration(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         integration_id: IntegrationId,
-        map: <span class="kw-2">&amp;</span>Value,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
@@ -5197,17 +4934,12 @@
     </span>}
 
     <span class="doccomment">/// Creates a response to an [`Interaction`] from the gateway.
-    ///
-    /// Refer to Discord&#39;s [docs] for the object it takes.
-    ///
-    /// [`Interaction`]: crate::model::application::Interaction
-    /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response
     </span><span class="kw">pub async fn </span>create_interaction_response(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         interaction_id: InteractionId,
         interaction_token: <span class="kw-2">&amp;</span>str,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        files: Vec&lt;CreateAttachment&gt;,
+        files: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
@@ -5225,7 +4957,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: files.into_iter().map(Into::into).collect(),
+                upload: MultipartUpload::Attachments(files),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -5235,15 +4967,6 @@
     </span>}
 
     <span class="doccomment">/// Creates a [`RichInvite`] for the given [channel][`GuildChannel`].
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// All fields are optional.
-    ///
-    /// **Note**: Requires the [Create Instant Invite] permission.
-    ///
-    /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
-    /// [docs]: https://discord.com/developers/docs/resources/channel#create-channel-invite
     </span><span class="kw">pub async fn </span>create_invite(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
@@ -5290,7 +5013,10 @@
     </span>}
 
     <span class="doccomment">/// Creates a private channel with a user.
-    </span><span class="kw">pub async fn </span>create_private_channel(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span>Value) -&gt; <span class="prelude-ty">Result</span>&lt;PrivateChannel&gt; {
+    </span><span class="kw">pub async fn </span>create_private_channel(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;PrivateChannel&gt; {
         <span class="kw">let </span>body = to_vec(map)<span class="question-mark">?</span>;
 
         <span class="self">self</span>.fire(Request {
@@ -5347,19 +5073,13 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
     }
 
     <span class="doccomment">/// Creates a Guild Scheduled Event.
-    ///
-    /// Refer to Discord&#39;s docs for field information.
-    ///
-    /// **Note**: Requires the [Manage Events] permission.
-    ///
-    /// [Manage Events]: Permissions::MANAGE_EVENTS
     </span><span class="kw">pub async fn </span>create_scheduled_event(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -5381,23 +5101,19 @@
     </span>}
 
     <span class="doccomment">/// Creates a sticker.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
-    </span><span class="kw">pub async fn </span>create_sticker&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub async fn </span>create_sticker(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        map: Vec&lt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, String)&gt;,
-        file: CreateAttachment,
+        fields: Vec&lt;(Cow&lt;<span class="lifetime">'static</span>, str&gt;, Cow&lt;<span class="lifetime">'static</span>, str&gt;)&gt;,
+        file: CreateAttachment&lt;<span class="lifetime">'_</span>&gt;,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Sticker&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">Some</span>(Multipart {
-                files: <span class="macro">vec!</span>[file],
-                fields: map.into_iter().map(|(k, v)| (k.into(), v.into())).collect(),
+                upload: MultipartUpload::File(file),
                 payload_json: <span class="prelude-val">None</span>,
+                fields,
             }),
             headers: audit_log_reason.map(reason_into_header),
             method: LightMethod::Post,
@@ -5409,32 +5125,37 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Creates a webhook for the given [channel][`GuildChannel`]&#39;s Id, passing in the given data.
-    ///
-    /// This method requires authentication.
-    ///
-    /// The Value is a map with the values of:
-    /// - **avatar**: base64-encoded 128x128 image for the webhook&#39;s default avatar (_optional_);
-    /// - **name**: the name of the webhook, limited to between 2 and 100 characters long.
-    ///
-    /// # Examples
-    ///
-    /// Creating a webhook named `test`:
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::json;
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let channel_id = ChannelId::new(81384788765712384);
-    /// let map = json!({&quot;name&quot;: &quot;test&quot;});
-    ///
-    /// let webhook = http.create_webhook(channel_id, &amp;map, None).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
+    <span class="doccomment">/// Creates a test entitlement to a given SKU for a given guild or user. Discord will act as
+    /// though that user/guild has entitlement in perpetuity to the SKU. As a result, the returned
+    /// entitlement will have `starts_at` and `ends_at` both be `None`.
+    </span><span class="kw">pub async fn </span>create_test_entitlement(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        sku_id: SkuId,
+        owner: EntitlementOwner,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Entitlement&gt; {
+        <span class="kw">let </span>(owner_id, owner_type) = <span class="kw">match </span>owner {
+            EntitlementOwner::Guild(id) =&gt; (id.get(), <span class="number">1</span>),
+            EntitlementOwner::User(id) =&gt; (id.get(), <span class="number">2</span>),
+        };
+        <span class="kw">let </span>map = <span class="macro">json!</span>({
+            <span class="string">"sku_id"</span>: sku_id,
+            <span class="string">"owner_id"</span>: owner_id,
+            <span class="string">"owner_type"</span>: owner_type
+        });
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">Some</span>(to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>),
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Post,
+            route: Route::Entitlements {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+            },
+            params: <span class="prelude-val">None</span>,
+        })
+        .<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Creates a webhook for the given [`GuildChannel`]'s Id, passing in the given data.
     </span><span class="kw">pub async fn </span>create_webhook(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
@@ -5653,7 +5374,7 @@
     </span><span class="kw">pub async fn </span>delete_messages(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
-        map: <span class="kw-2">&amp;</span>Value,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
@@ -5670,23 +5391,6 @@
     </span>}
 
     <span class="doccomment">/// Deletes all of the [`Reaction`]s associated with a [`Message`].
-    ///
-    /// # Examples
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// #
-    /// use serenity::model::id::{ChannelId, MessageId};
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let channel_id = ChannelId::new(7);
-    /// let message_id = MessageId::new(8);
-    ///
-    /// http.delete_message_reactions(channel_id, message_id).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>delete_message_reactions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
@@ -5768,7 +5472,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Deletes a user&#39;s reaction from a message.
+    <span class="doccomment">/// Deletes a user's reaction from a message.
     </span><span class="kw">pub async fn </span>delete_reaction(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
@@ -5814,7 +5518,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Deletes a role from a server. Can&#39;t remove the default everyone role.
+    <span class="doccomment">/// Deletes a role from a server. Can't remove the default everyone role.
     </span><span class="kw">pub async fn </span>delete_role(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -5836,11 +5540,6 @@
     </span>}
 
     <span class="doccomment">/// Deletes a [Scheduled Event] from a server.
-    ///
-    /// **Note**: Requires the [Manage Events] permission.
-    ///
-    /// [Scheduled Event]: crate::model::guild::ScheduledEvent
-    /// [Manage Events]: Permissions::MANAGE_EVENTS
     </span><span class="kw">pub async fn </span>delete_scheduled_event(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -5861,10 +5560,6 @@
     </span>}
 
     <span class="doccomment">/// Deletes a sticker from a server.
-    ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
     </span><span class="kw">pub async fn </span>delete_sticker(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -5885,25 +5580,24 @@
         .<span class="kw">await
     </span>}
 
+    <span class="doccomment">/// Deletes a currently active test entitlement. Discord will act as though the corresponding
+    /// user/guild *no longer has* an entitlement to the corresponding SKU.
+    </span><span class="kw">pub async fn </span>delete_test_entitlement(<span class="kw-2">&amp;</span><span class="self">self</span>, entitlement_id: EntitlementId) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="self">self</span>.wind(<span class="number">204</span>, Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Delete,
+            route: Route::Entitlement {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+                entitlement_id,
+            },
+            params: <span class="prelude-val">None</span>,
+        })
+        .<span class="kw">await
+    </span>}
+
     <span class="doccomment">/// Deletes a [`Webhook`] given its Id.
-    ///
-    /// This method requires authentication, whereas [`Self::delete_webhook_with_token`] does not.
-    ///
-    /// # Examples
-    ///
-    /// Deletes a webhook given its Id:
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let webhook_id = WebhookId::new(245037420704169985);
-    /// http.delete_webhook(webhook_id, None).await?;
-    /// Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>delete_webhook(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -5925,24 +5619,6 @@
     <span class="doccomment">/// Deletes a [`Webhook`] given its Id and unique token.
     ///
     /// This method does _not_ require authentication.
-    ///
-    /// # Examples
-    ///
-    /// Deletes a webhook given its Id and unique token:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let token = &quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;;
-    ///
-    /// http.delete_webhook_with_token(id, token, None).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>delete_webhook_with_token(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -6010,7 +5686,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         emoji_id: EmojiId,
-        map: <span class="kw-2">&amp;</span>Value,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Emoji&gt; {
         <span class="kw">let </span>body = to_vec(map)<span class="question-mark">?</span>;
@@ -6030,16 +5706,12 @@
     </span>}
 
     <span class="doccomment">/// Edits a follow-up message for an interaction.
-    ///
-    /// Refer to Discord&#39;s [docs] for Edit Webhook Message for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/webhook#edit-webhook-message
     </span><span class="kw">pub async fn </span>edit_followup_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         interaction_token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        new_attachments: Vec&lt;CreateAttachment&gt;,
+        new_attachments: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
@@ -6058,7 +5730,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: new_attachments.into_iter().map(Into::into).collect(),
+                upload: MultipartUpload::Attachments(new_attachments),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -6068,10 +5740,6 @@
     </span>}
 
     <span class="doccomment">/// Get a follow-up message for an interaction.
-    ///
-    /// Refer to Discord&#39;s [docs] for Get Webhook Message for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/webhook#get-webhook-message
     </span><span class="kw">pub async fn </span>get_followup_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         interaction_token: <span class="kw-2">&amp;</span>str,
@@ -6093,12 +5761,6 @@
     </span>}
 
     <span class="doccomment">/// Edits a global command.
-    ///
-    /// Updates will be available in all guilds after 1 hour.
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
     </span><span class="kw">pub async fn </span>edit_global_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         command_id: CommandId,
@@ -6141,12 +5803,6 @@
     </span>}
 
     <span class="doccomment">/// Edits a guild command.
-    ///
-    /// Updates for guild commands will be available immediately.
-    ///
-    /// Refer to Discord&#39;s [docs] for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
     </span><span class="kw">pub async fn </span>edit_guild_command(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6169,12 +5825,6 @@
     </span>}
 
     <span class="doccomment">/// Edits a guild command permissions.
-    ///
-    /// Updates for guild commands will be available immediately.
-    ///
-    /// Refer to Discord&#39;s [documentation] for field information.
-    ///
-    /// [documentation]: https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions
     </span><span class="kw">pub async fn </span>edit_guild_command_permissions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6196,11 +5846,11 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Edits the positions of a guild&#39;s channels.
+    <span class="doccomment">/// Edits the positions of a guild's channels.
     </span><span class="kw">pub async fn </span>edit_guild_channel_positions(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        value: <span class="kw-2">&amp;</span>Value,
+        value: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span>body = to_vec(value)<span class="question-mark">?</span>;
 
@@ -6221,7 +5871,7 @@
     </span><span class="kw">pub async fn </span>edit_guild_mfa_level(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        value: <span class="kw-2">&amp;</span>Value,
+        value: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;MfaLevel&gt; {
         <span class="attr">#[derive(Deserialize)]
@@ -6245,7 +5895,7 @@
         </span>.map(|mfa: GuildMfaLevel| mfa.level)
     }
 
-    <span class="doccomment">/// Edits a [`Guild`]&#39;s widget.
+    <span class="doccomment">/// Edits a [`Guild`]'s widget.
     </span><span class="kw">pub async fn </span>edit_guild_widget(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6314,7 +5964,7 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value::&lt;Member&gt;(value).map_err(From::from)
@@ -6328,7 +5978,7 @@
         channel_id: ChannelId,
         message_id: MessageId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        new_attachments: Vec&lt;CreateAttachment&gt;,
+        new_attachments: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
@@ -6346,7 +5996,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: new_attachments,
+                upload: MultipartUpload::Attachments(new_attachments),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -6399,20 +6049,17 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Edits the current user&#39;s nickname for the provided [`Guild`] via its Id.
+    <span class="doccomment">/// Edits the current user's nickname for the provided [`Guild`] via its Id.
     ///
     /// Pass [`None`] to reset the nickname.
     </span><span class="kw">pub async fn </span>edit_nickname(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        new_nickname: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">let </span>map = <span class="macro">json!</span>({ <span class="string">&quot;nick&quot;</span>: new_nickname });
-        <span class="kw">let </span>body = to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>;
-
         <span class="self">self</span>.wind(<span class="number">200</span>, Request {
-            body: <span class="prelude-val">Some</span>(body),
+            body: <span class="prelude-val">Some</span>(to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>),
             multipart: <span class="prelude-val">None</span>,
             headers: audit_log_reason.map(reason_into_header),
             method: LightMethod::Patch,
@@ -6428,13 +6075,10 @@
     </span><span class="kw">pub async fn </span>follow_news_channel(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         news_channel_id: ChannelId,
-        target_channel_id: ChannelId,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;FollowedChannel&gt; {
-        <span class="kw">let </span>map = <span class="macro">json!</span>({ <span class="string">&quot;webhook_channel_id&quot;</span>: target_channel_id });
-        <span class="kw">let </span>body = to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>;
-
         <span class="self">self</span>.fire(Request {
-            body: <span class="prelude-val">Some</span>(body),
+            body: <span class="prelude-val">Some</span>(to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>),
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Post,
@@ -6466,15 +6110,11 @@
     </span>}
 
     <span class="doccomment">/// Edits the initial interaction response.
-    ///
-    /// Refer to Discord&#39;s [docs] for Edit Webhook Message for field information.
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/webhook#edit-webhook-message
     </span><span class="kw">pub async fn </span>edit_original_interaction_response(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         interaction_token: <span class="kw-2">&amp;</span>str,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        new_attachments: Vec&lt;CreateAttachment&gt;,
+        new_attachments: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
@@ -6492,7 +6132,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: new_attachments.into_iter().collect(),
+                upload: MultipartUpload::Attachments(new_attachments),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -6501,7 +6141,7 @@
         <span class="self">self</span>.fire(request).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Edits the current user&#39;s profile settings.
+    <span class="doccomment">/// Edits the current user's profile settings.
     </span><span class="kw">pub async fn </span>edit_profile(<span class="kw-2">&amp;</span><span class="self">self</span>, map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;CurrentUser&gt; {
         <span class="kw">let </span>body = to_vec(map)<span class="question-mark">?</span>;
 
@@ -6539,7 +6179,7 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
@@ -6549,19 +6189,12 @@
     </span><span class="kw">pub async fn </span>edit_role_position(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        role_id: RoleId,
-        position: u16,
+        map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Role&gt;&gt; {
-        <span class="kw">let </span>map = <span class="macro">json!</span>([{
-            <span class="string">&quot;id&quot;</span>: role_id,
-            <span class="string">&quot;position&quot;</span>: position,
-        }]);
-        <span class="kw">let </span>body = to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>;
-
         <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
             </span>.fire(Request {
-                body: <span class="prelude-val">Some</span>(body),
+                body: <span class="prelude-val">Some</span>(to_vec(<span class="kw-2">&amp;</span>map)<span class="question-mark">?</span>),
                 multipart: <span class="prelude-val">None</span>,
                 headers: audit_log_reason.map(reason_into_header),
                 method: LightMethod::Patch,
@@ -6575,7 +6208,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(array) = value.as_array_mut() {
             <span class="kw">for </span>role <span class="kw">in </span>array {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = role.as_object_mut() {
-                    map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+                    map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
                 }
             }
         }
@@ -6612,9 +6245,7 @@
 
     <span class="doccomment">/// Changes a sticker in a guild.
     ///
-    /// **Note**: Requires the [Manage Emojis and Stickers] permission.
-    ///
-    /// [Manage Emojis and Stickers]: Permissions::MANAGE_EMOJIS_AND_STICKERS
+    /// See [`GuildId::edit_sticker`] for permissions requirements.
     </span><span class="kw">pub async fn </span>edit_sticker(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6639,7 +6270,7 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
@@ -6665,36 +6296,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Changes another user&#39;s voice state in a stage channel.
-    ///
-    /// The Value is a map with values of:
-    /// - **channel_id**: ID of the channel the user is currently in (**required**)
-    /// - **suppress**: Bool which toggles user&#39;s suppressed state. Setting this to `false` will
-    ///   invite the user to speak.
-    ///
-    /// # Example
-    ///
-    /// Suppress a user
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::{json, prelude::*};
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let guild_id = GuildId::new(187450744427773963);
-    /// let user_id = UserId::new(150443906511667200);
-    /// let map = json!({
-    ///     &quot;channel_id&quot;: &quot;826929611849334784&quot;,
-    ///     &quot;suppress&quot;: true,
-    /// });
-    ///
-    /// // Edit state for another user
-    /// http.edit_voice_state(guild_id, user_id, &amp;map).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
+    <span class="doccomment">/// Changes another user's voice state in a stage channel.
     </span><span class="kw">pub async fn </span>edit_voice_state(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6715,39 +6317,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Changes the current user&#39;s voice state in a stage channel.
-    ///
-    /// The Value is a map with values of:
-    ///
-    /// - **channel_id**: ID of the channel the user is currently in (**required**)
-    /// - **suppress**: Bool which toggles user&#39;s suppressed state. Setting this to `false` will
-    ///   invite the user to speak.
-    /// - **request_to_speak_timestamp**: ISO8601 timestamp to set the user&#39;s request to speak. This
-    ///   can be any present or future time.
-    ///
-    /// # Example
-    ///
-    /// Unsuppress the current bot user
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::{json, prelude::*};
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let guild_id = GuildId::new(187450744427773963);
-    /// let map = json!({
-    ///     &quot;channel_id&quot;: &quot;826929611849334784&quot;,
-    ///     &quot;suppress&quot;: false,
-    ///     &quot;request_to_speak_timestamp&quot;: &quot;2021-03-31T18:45:31.297561+00:00&quot;
-    /// });
-    ///
-    /// // Edit state for current user
-    /// http.edit_voice_state_me(guild_id, &amp;map).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
+    <span class="doccomment">/// Changes the current user's voice state in a stage channel.
     </span><span class="kw">pub async fn </span>edit_voice_state_me(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -6767,37 +6337,6 @@
     </span>}
 
     <span class="doccomment">/// Edits a the webhook with the given data.
-    ///
-    /// The Value is a map with optional values of:
-    /// - **avatar**: base64-encoded 128x128 image for the webhook&#39;s default avatar (_optional_);
-    /// - **name**: the name of the webhook, limited to between 2 and 100 characters long.
-    ///
-    /// Note that, unlike with [`Self::create_webhook`], _all_ values are optional.
-    ///
-    /// This method requires authentication, whereas [`Self::edit_webhook_with_token`] does not.
-    ///
-    /// # Examples
-    ///
-    /// Edit the image of a webhook given its Id and unique token:
-    ///
-    /// ```rust,no_run
-    /// use serenity::builder::CreateAttachment;
-    /// use serenity::http::Http;
-    /// use serenity::json::json;
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let image = CreateAttachment::path(&quot;./webhook_img.png&quot;).await?;
-    /// let map = json!({
-    ///     &quot;avatar&quot;: image.to_base64(),
-    /// });
-    ///
-    /// let edited = http.edit_webhook(id, &amp;map, None).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>edit_webhook(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -6818,31 +6357,6 @@
     </span>}
 
     <span class="doccomment">/// Edits the webhook with the given data.
-    ///
-    /// Refer to the documentation for [`Self::edit_webhook`] for more information.
-    ///
-    /// This method does _not_ require authentication.
-    ///
-    /// # Examples
-    ///
-    /// Edit the name of a webhook given its Id and unique token:
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::prelude::*;
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let token = &quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;;
-    /// let value = json!({&quot;name&quot;: &quot;new name&quot;});
-    /// let map = value.as_object().unwrap();
-    ///
-    /// let edited = http.edit_webhook_with_token(id, token, map, None).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>edit_webhook_with_token(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -6866,69 +6380,24 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Executes a webhook, posting a [`Message`] in the webhook&#39;s associated [`Channel`].
-    ///
-    /// This method does _not_ require authentication.
-    ///
-    /// If `thread_id` is not `None`, then the message will be sent to the thread in the webhook&#39;s
-    /// associated [`Channel`] with the corresponding Id, which will be automatically unarchived.
-    ///
-    /// If `wait` is `false`, this function will return `Ok(None)` on success. Otherwise, it will
-    /// wait for server confirmation of the message having been sent, and return `Ok(Some(msg))`.
-    /// From the [Discord docs]:
-    ///
-    /// &gt; waits for server confirmation of message send before response, and returns the created
-    /// &gt; message body (defaults to false; when false a message that is not saved does not return
-    /// &gt; an error)
-    ///
-    /// The map can _optionally_ contain the following data:
-    /// - `avatar_url`: Override the default avatar of the webhook with a URL.
-    /// - `tts`: Whether this is a text-to-speech message (defaults to `false`).
-    /// - `username`: Override the default username of the webhook.
-    ///
-    /// Additionally, _at least one_ of the following must be given:
-    /// - `content`: The content of the message.
-    /// - `embeds`: An array of rich embeds.
-    ///
-    /// **Note**: For embed objects, all fields are registered by Discord except for `height`,
-    /// `provider`, `proxy_url`, `type` (it will always be `rich`), `video`, and `width`. The rest
-    /// will be determined by Discord.
-    ///
-    /// # Examples
-    ///
-    /// Sending a webhook with message content of `test`:
-    ///
-    /// ```rust,no_run
-    /// use serenity::http::Http;
-    /// use serenity::json::prelude::*;
-    /// use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let token = &quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;;
-    /// let value = json!({&quot;content&quot;: &quot;test&quot;});
-    /// let map = value.as_object().unwrap();
-    /// let files = vec![];
-    ///
-    /// let message = http.execute_webhook(id, None, token, true, files, map).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
-    /// [Discord docs]: https://discord.com/developers/docs/resources/webhook#execute-webhook-query-string-params
+    <span class="doccomment">/// Executes a webhook, posting a [`Message`] in the webhook's associated [`Channel`].
     </span><span class="kw">pub async fn </span>execute_webhook(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
         thread_id: <span class="prelude-ty">Option</span>&lt;ChannelId&gt;,
         token: <span class="kw-2">&amp;</span>str,
         wait: bool,
-        files: Vec&lt;CreateAttachment&gt;,
+        files: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Message&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[(<span class="string">&quot;wait&quot;</span>, wait.to_string())];
+        <span class="kw">let </span>thread_id_str;
+        <span class="kw">let </span>wait_str = wait.to_arraystring();
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
+
+        params.push((<span class="string">"wait"</span>, wait_str.as_str()));
         <span class="kw">if let </span><span class="prelude-val">Some</span>(thread_id) = thread_id {
-            params.push((<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string()));
+            thread_id_str = thread_id.to_arraystring();
+            params.push((<span class="string">"thread_id"</span>, <span class="kw-2">&amp;</span>thread_id_str));
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
@@ -6940,14 +6409,14 @@
                 webhook_id,
                 token,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         };
 
         <span class="kw">if </span>files.is_empty() {
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: files.into_iter().collect(),
+                upload: MultipartUpload::Attachments(files),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -6955,14 +6424,10 @@
 
         <span class="kw">let </span>response = <span class="self">self</span>.request(request).<span class="kw">await</span><span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="kw">if </span>response.status() == StatusCode::NO_CONTENT {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            decode_resp(response).<span class="kw">await</span><span class="question-mark">?
-        </span>})
+        <span class="prelude-val">Ok</span>(<span class="kw">if </span>response.status() == StatusCode::NO_CONTENT { <span class="prelude-val">None </span>} <span class="kw">else </span>{ response.json().<span class="kw">await</span><span class="question-mark">? </span>})
     }
 
-    <span class="comment">// Gets a webhook&#39;s message by Id
+    <span class="comment">// Gets a webhook's message by Id
     </span><span class="kw">pub async fn </span>get_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -6970,6 +6435,14 @@
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="kw">let </span>thread_id_str;
+        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="prelude-val">None</span>;
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(thread_id) = thread_id {
+            thread_id_str = thread_id.to_arraystring();
+            params = <span class="prelude-val">Some</span>([(<span class="string">"thread_id"</span>, thread_id_str.as_str())]);
+        }
+
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -6980,12 +6453,12 @@
                 token,
                 message_id,
             },
-            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
+            params: params.as_ref().map(&lt;[<span class="kw">_</span>; <span class="number">1</span>]&gt;::as_slice),
         })
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Edits a webhook&#39;s message by Id.
+    <span class="doccomment">/// Edits a webhook's message by Id.
     </span><span class="kw">pub async fn </span>edit_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -6993,8 +6466,16 @@
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
-        new_attachments: Vec&lt;CreateAttachment&gt;,
+        new_attachments: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="kw">let </span>thread_id_str;
+        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="prelude-val">None</span>;
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(thread_id) = thread_id {
+            thread_id_str = thread_id.to_arraystring();
+            params = <span class="prelude-val">Some</span>([(<span class="string">"thread_id"</span>, thread_id_str.as_str())]);
+        }
+
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7005,14 +6486,14 @@
                 token,
                 message_id,
             },
-            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
+            params: params.as_ref().map(&lt;[<span class="kw">_</span>; <span class="number">1</span>]&gt;::as_slice),
         };
 
         <span class="kw">if </span>new_attachments.is_empty() {
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: new_attachments,
+                upload: MultipartUpload::Attachments(new_attachments),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -7021,7 +6502,7 @@
         <span class="self">self</span>.fire(request).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Deletes a webhook&#39;s message by Id.
+    <span class="doccomment">/// Deletes a webhook's message by Id.
     </span><span class="kw">pub async fn </span>delete_webhook_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -7029,6 +6510,14 @@
         token: <span class="kw-2">&amp;</span>str,
         message_id: MessageId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span>thread_id_str;
+        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="prelude-val">None</span>;
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(thread_id) = thread_id {
+            thread_id_str = thread_id.to_arraystring();
+            params = <span class="prelude-val">Some</span>([(<span class="string">"thread_id"</span>, thread_id_str.as_str())]);
+        }
+
         <span class="self">self</span>.wind(<span class="number">204</span>, Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7039,12 +6528,12 @@
                 token,
                 message_id,
             },
-            params: thread_id.map(|thread_id| <span class="macro">vec!</span>[(<span class="string">&quot;thread_id&quot;</span>, thread_id.to_string())]),
+            params: params.as_ref().map(&lt;[<span class="kw">_</span>; <span class="number">1</span>]&gt;::as_slice),
         })
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets the active maintenances from Discord&#39;s Status API.
+    <span class="doccomment">/// Gets the active maintenances from Discord's Status API.
     ///
     /// Does not require authentication.
     </span><span class="kw">pub async fn </span>get_active_maintenances(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Maintenance&gt;&gt; {
@@ -7068,8 +6557,41 @@
         <span class="prelude-val">Ok</span>(status.scheduled_maintenances)
     }
 
-    <span class="doccomment">/// Gets all the users that are banned in specific guild.
-    </span><span class="kw">pub async fn </span>get_bans(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Ban&gt;&gt; {
+    <span class="doccomment">/// Gets all the users that are banned in specific guild, with additional options for
+    /// filtering.
+    ///
+    /// If `limit` is left unset, by default at most 1000 worths of data for banned users is
+    /// returned.
+    ///
+    /// If `target` is set, then users will be filtered by Id, such that their Id comes before or
+    /// after the provided [`UserId`] wrapped by the [`UserPagination`].
+    ///
+    /// [`UserId`]: crate::model::id::UserId
+    </span><span class="kw">pub async fn </span>get_bans(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+        target: <span class="prelude-ty">Option</span>&lt;UserPagination&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU16&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Ban&gt;&gt; {
+        <span class="kw">let </span>id_str;
+        <span class="kw">let </span>limit_str;
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, limit_str.as_str()));
+        }
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(target) = target {
+            <span class="kw">let </span>(name, id) = <span class="kw">match </span>target {
+                UserPagination::After(id) =&gt; (<span class="string">"after"</span>, id),
+                UserPagination::Before(id) =&gt; (<span class="string">"before"</span>, id),
+            };
+
+            id_str = id.to_arraystring();
+            params.push((name, <span class="kw-2">&amp;</span>id_str));
+        }
+
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7078,7 +6600,7 @@
             route: Route::GuildBans {
                 guild_id,
             },
-            params: <span class="prelude-val">None</span>,
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -7087,23 +6609,28 @@
     </span><span class="kw">pub async fn </span>get_audit_logs(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        action_type: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+        action_type: <span class="prelude-ty">Option</span>&lt;audit_log::Action&gt;,
         user_id: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
-        before: <span class="prelude-ty">Option</span>&lt;u64&gt;,
-        limit: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+        before: <span class="prelude-ty">Option</span>&lt;AuditLogEntryId&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU8&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;AuditLogs&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(action_type_str, before_str, limit_str, user_id_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">4</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(action_type) = action_type {
-            params.push((<span class="string">&quot;action_type&quot;</span>, action_type.to_string()));
+            action_type_str = action_type.num().to_arraystring();
+            params.push((<span class="string">"action_type"</span>, action_type_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(before) = before {
-            params.push((<span class="string">&quot;before&quot;</span>, before.to_string()));
+            before_str = before.to_arraystring();
+            params.push((<span class="string">"before"</span>, <span class="kw-2">&amp;</span>before_str));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(user_id) = user_id {
-            params.push((<span class="string">&quot;user_id&quot;</span>, user_id.to_string()));
+            user_id_str = user_id.to_arraystring();
+            params.push((<span class="string">"user_id"</span>, <span class="kw-2">&amp;</span>user_id_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -7114,14 +6641,12 @@
             route: Route::GuildAuditLogs {
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Retrieves all auto moderation rules in a guild.
-    ///
-    /// This method requires `MANAGE_GUILD` permissions.
     </span><span class="kw">pub async fn </span>get_automod_rules(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Rule&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -7137,8 +6662,6 @@
     </span>}
 
     <span class="doccomment">/// Retrieves an auto moderation rule in a guild.
-    ///
-    /// This method requires `MANAGE_GUILD` permissions.
     </span><span class="kw">pub async fn </span>get_automod_rule(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId, rule_id: RuleId) -&gt; <span class="prelude-ty">Result</span>&lt;Rule&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -7155,8 +6678,6 @@
     </span>}
 
     <span class="doccomment">/// Creates an auto moderation rule in a guild.
-    ///
-    /// This method requires `MANAGE_GUILD` permissions.
     </span><span class="kw">pub async fn </span>create_automod_rule(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -7179,8 +6700,6 @@
     </span>}
 
     <span class="doccomment">/// Retrieves an auto moderation rule in a guild.
-    ///
-    /// This method requires `MANAGE_GUILD` permissions.
     </span><span class="kw">pub async fn </span>edit_automod_rule(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -7205,8 +6724,6 @@
     </span>}
 
     <span class="doccomment">/// Deletes an auto moderation rule in a guild.
-    ///
-    /// This method requires `MANAGE_GUILD` permissions.
     </span><span class="kw">pub async fn </span>delete_automod_rule(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -7292,15 +6809,18 @@
     </span><span class="kw">pub async fn </span>get_channel_archived_public_threads(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
-        before: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        before: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
         limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadsData&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(before_str, limit_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(before) = before {
-            params.push((<span class="string">&quot;before&quot;</span>, before.to_string()));
+            before_str = before.to_string();
+            params.push((<span class="string">"before"</span>, before_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -7311,7 +6831,7 @@
             route: Route::ChannelArchivedPublicThreads {
                 channel_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -7320,15 +6840,18 @@
     </span><span class="kw">pub async fn </span>get_channel_archived_private_threads(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
-        before: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        before: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
         limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadsData&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(before_str, limit_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(before) = before {
-            params.push((<span class="string">&quot;before&quot;</span>, before.to_string()));
+            before_str = before.to_string();
+            params.push((<span class="string">"before"</span>, before_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -7339,7 +6862,7 @@
             route: Route::ChannelArchivedPrivateThreads {
                 channel_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -7348,15 +6871,18 @@
     </span><span class="kw">pub async fn </span>get_channel_joined_archived_private_threads(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
-        before: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        before: <span class="prelude-ty">Option</span>&lt;ChannelId&gt;,
         limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadsData&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(before_str, limit_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(before) = before {
-            params.push((<span class="string">&quot;before&quot;</span>, before.to_string()));
+            before_str = before.to_arraystring();
+            params.push((<span class="string">"before"</span>, before_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -7367,7 +6893,7 @@
             route: Route::ChannelJoinedPrivateThreads {
                 channel_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -7442,26 +6968,27 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Retrieves the webhooks for the given [channel][`GuildChannel`]&#39;s Id.
-    ///
-    /// This method requires authentication.
-    ///
-    /// # Examples
-    ///
-    /// Retrieve all of the webhooks owned by a channel:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let channel_id = ChannelId::new(81384788765712384);
-    ///
-    /// let webhooks = http.get_channel_webhooks(channel_id).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
+    <span class="kw">pub async fn </span>get_thread_channel_member(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        channel_id: ChannelId,
+        user_id: UserId,
+        with_member: bool,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ThreadMember&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Get,
+            route: Route::ChannelThreadMember {
+                channel_id,
+                user_id,
+            },
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_member"</span>, <span class="kw-2">&amp;</span>with_member.to_arraystring())]),
+        })
+        .<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Retrieves the webhooks for the given [channel][`GuildChannel`]'s Id.
     </span><span class="kw">pub async fn </span>get_channel_webhooks(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Webhook&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -7492,7 +7019,10 @@
     </span>}
 
     <span class="doccomment">/// Gets all channels in a guild.
-    </span><span class="kw">pub async fn </span>get_channels(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GuildChannel&gt;&gt; {
+    </span><span class="kw">pub async fn </span>get_channels(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        guild_id: GuildId,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ExtractMap&lt;ChannelId, GuildChannel&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7521,6 +7051,69 @@
         .<span class="kw">await
     </span>}
 
+    <span class="doccomment">/// Get a list of users that voted for this specific answer.
+    </span><span class="kw">pub async fn </span>get_poll_answer_voters(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        channel_id: ChannelId,
+        message_id: MessageId,
+        answer_id: AnswerId,
+        after: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;User&gt;&gt; {
+        <span class="attr">#[derive(serde::Deserialize)]
+        </span><span class="kw">struct </span>VotersResponse {
+            users: Vec&lt;User&gt;,
+        }
+
+        <span class="kw">let </span>(after_str, limit_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = Vec::with_capacity(<span class="number">2</span>);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(after) = after {
+            after_str = after.to_arraystring();
+            params.push((<span class="string">"after"</span>, after_str.as_str()));
+        }
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
+            limit_str = limit.to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
+        }
+
+        <span class="kw">let </span>resp: VotersResponse = <span class="self">self
+            </span>.fire(Request {
+                body: <span class="prelude-val">None</span>,
+                multipart: <span class="prelude-val">None</span>,
+                headers: <span class="prelude-val">None</span>,
+                method: LightMethod::Get,
+                route: Route::ChannelPollGetAnswerVoters {
+                    channel_id,
+                    message_id,
+                    answer_id,
+                },
+                params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
+            })
+            .<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(resp.users)
+    }
+
+    <span class="kw">pub async fn </span>expire_poll(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        channel_id: ChannelId,
+        message_id: MessageId,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Post,
+            route: Route::ChannelPollExpire {
+                channel_id,
+                message_id,
+            },
+            params: <span class="prelude-val">None</span>,
+        })
+        .<span class="kw">await
+    </span>}
+
     <span class="doccomment">/// Gets information about the current application.
     ///
     /// **Note**: Only applications may use this endpoint.
@@ -7536,7 +7129,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets information about the user we&#39;re connected with.
+    <span class="doccomment">/// Gets information about the user we're connected with.
     </span><span class="kw">pub async fn </span>get_current_user(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;CurrentUser&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -7580,6 +7173,63 @@
         .<span class="kw">await
     </span>}
 
+    <span class="attr">#[allow(clippy::too_many_arguments)]
+    </span><span class="doccomment">/// Gets all entitlements for the current app, active and expired.
+    </span><span class="kw">pub async fn </span>get_entitlements(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        user_id: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
+        sku_ids: <span class="prelude-ty">Option</span>&lt;Vec&lt;SkuId&gt;&gt;,
+        before: <span class="prelude-ty">Option</span>&lt;EntitlementId&gt;,
+        after: <span class="prelude-ty">Option</span>&lt;EntitlementId&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU8&gt;,
+        guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
+        exclude_ended: <span class="prelude-ty">Option</span>&lt;bool&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Entitlement&gt;&gt; {
+        <span class="kw">let </span>(user_id_str, sku_ids_str, before_str, after_str, limit_str, guild_id_str, exclude_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">7</span>&gt;::new();
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(user_id) = user_id {
+            user_id_str = user_id.to_arraystring();
+            params.push((<span class="string">"user_id"</span>, user_id_str.as_str()));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(sku_ids) = sku_ids {
+            sku_ids_str = join_to_string(<span class="string">','</span>, sku_ids);
+            params.push((<span class="string">"sku_ids"</span>, <span class="kw-2">&amp;</span>sku_ids_str));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(before) = before {
+            before_str = before.to_arraystring();
+            params.push((<span class="string">"before"</span>, <span class="kw-2">&amp;</span>before_str));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(after) = after {
+            after_str = after.to_arraystring();
+            params.push((<span class="string">"after"</span>, <span class="kw-2">&amp;</span>after_str));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(guild_id) = guild_id {
+            guild_id_str = guild_id.to_arraystring();
+            params.push((<span class="string">"guild_id"</span>, <span class="kw-2">&amp;</span>guild_id_str));
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(exclude_ended) = exclude_ended {
+            exclude_str = exclude_ended.to_arraystring();
+            params.push((<span class="string">"exclude_ended"</span>, <span class="kw-2">&amp;</span>exclude_str));
+        }
+
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Get,
+            route: Route::Entitlements {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+            },
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
+        })
+        .<span class="kw">await
+    </span>}
+
     <span class="doccomment">/// Gets current gateway.
     </span><span class="kw">pub async fn </span>get_gateway(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Gateway&gt; {
         <span class="self">self</span>.fire(Request {
@@ -7618,7 +7268,7 @@
             route: Route::Commands {
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_localizations&quot;</span>, <span class="bool-val">true</span>.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_localizations"</span>, <span class="string">"true"</span>)]),
         })
         .<span class="kw">await
     </span>}
@@ -7664,7 +7314,7 @@
             route: Route::Guild {
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_counts&quot;</span>, <span class="bool-val">true</span>.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_counts"</span>, <span class="string">"true"</span>)]),
         })
         .<span class="kw">await
     </span>}
@@ -7700,7 +7350,7 @@
                 application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_localizations&quot;</span>, <span class="bool-val">true</span>.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_localizations"</span>, <span class="string">"true"</span>)]),
         })
         .<span class="kw">await
     </span>}
@@ -7843,14 +7493,14 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets a guild&#39;s vanity URL if it has one.
+    <span class="doccomment">/// Gets a guild's vanity URL if it has one.
     </span><span class="kw">pub async fn </span>get_guild_vanity_url(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;String&gt; {
         <span class="attr">#[derive(Deserialize)]
         </span><span class="kw">struct </span>GuildVanityUrl {
             code: String,
         }
 
-        <span class="self">self</span>.fire::&lt;GuildVanityUrl&gt;(Request {
+        <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
@@ -7861,7 +7511,7 @@
             params: <span class="prelude-val">None</span>,
         })
         .<span class="kw">await
-        </span>.map(|x| x.code)
+        </span>.map(|x: GuildVanityUrl| x.code)
     }
 
     <span class="doccomment">/// Gets the members of a guild. Optionally pass a `limit` and the Id of the user to offset the
@@ -7869,19 +7519,18 @@
     </span><span class="kw">pub async fn </span>get_guild_members(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
-        limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
-        after: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU16&gt;,
+        after: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Member&gt;&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(l) = limit {
-            <span class="kw">if </span>!(<span class="number">1</span>..=constants::MEMBER_FETCH_LIMIT).contains(<span class="kw-2">&amp;</span>l) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(Error::NotInRange(<span class="string">&quot;limit&quot;</span>, l, <span class="number">1</span>, constants::MEMBER_FETCH_LIMIT));
-            }
-        }
+        <span class="kw">let </span>(limit_str, after_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
 
-        <span class="kw">let </span><span class="kw-2">mut </span>params =
-            <span class="macro">vec!</span>[(<span class="string">&quot;limit&quot;</span>, limit.unwrap_or(constants::MEMBER_FETCH_LIMIT).to_string())];
+        limit_str = limit.unwrap_or(constants::MEMBER_FETCH_LIMIT).get().to_arraystring();
+        params.push((<span class="string">"limit"</span>, limit_str.as_str()));
+
         <span class="kw">if let </span><span class="prelude-val">Some</span>(after) = after {
-            params.push((<span class="string">&quot;after&quot;</span>, after.to_string()));
+            after_str = after.to_arraystring();
+            params.push((<span class="string">"after"</span>, <span class="kw-2">&amp;</span>after_str));
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
@@ -7893,14 +7542,14 @@
                 route: Route::GuildMembers {
                     guild_id,
                 },
-                params: <span class="prelude-val">Some</span>(params),
+                params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
             })
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(values) = value.as_array_mut() {
             <span class="kw">for </span>value <span class="kw">in </span>values {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(element) = value.as_object_mut() {
-                    element.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+                    element.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
                 }
             }
         }
@@ -7910,6 +7559,7 @@
 
     <span class="doccomment">/// Gets the amount of users that can be pruned.
     </span><span class="kw">pub async fn </span>get_guild_prune_count(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId, days: u8) -&gt; <span class="prelude-ty">Result</span>&lt;GuildPrune&gt; {
+        <span class="kw">let </span>days_str = days.to_arraystring();
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7918,7 +7568,7 @@
             route: Route::GuildPrune {
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;days&quot;</span>, days.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"days"</span>, <span class="kw-2">&amp;</span>days_str)]),
         })
         .<span class="kw">await
     </span>}
@@ -7940,7 +7590,7 @@
     </span>}
 
     <span class="doccomment">/// Retrieves a list of roles in a [`Guild`].
-    </span><span class="kw">pub async fn </span>get_guild_roles(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Role&gt;&gt; {
+    </span><span class="kw">pub async fn </span>get_guild_roles(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;ExtractMap&lt;RoleId, Role&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
             </span>.fire(Request {
                 body: <span class="prelude-val">None</span>,
@@ -7957,7 +7607,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(array) = value.as_array_mut() {
             <span class="kw">for </span>sticker <span class="kw">in </span>array {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = sticker.as_object_mut() {
-                    map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+                    map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
                 }
             }
         }
@@ -7966,16 +7616,13 @@
     }
 
     <span class="doccomment">/// Gets a scheduled event by Id.
-    ///
-    /// **Note**: Requires the [Manage Events] permission.
-    ///
-    /// [Manage Events]: Permissions::MANAGE_EVENTS
     </span><span class="kw">pub async fn </span>get_scheduled_event(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         event_id: ScheduledEventId,
         with_user_count: bool,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ScheduledEvent&gt; {
+        <span class="kw">let </span>with_user_count_str = with_user_count.to_arraystring();
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -7985,21 +7632,18 @@
                 guild_id,
                 event_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_user_count&quot;</span>, with_user_count.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_user_count"</span>, <span class="kw-2">&amp;</span>with_user_count_str)]),
         })
         .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets a list of all scheduled events for the corresponding guild.
-    ///
-    /// **Note**: Requires the [Manage Events] permission.
-    ///
-    /// [Manage Events]: Permissions::MANAGE_EVENTS
     </span><span class="kw">pub async fn </span>get_scheduled_events(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         with_user_count: bool,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;ScheduledEvent&gt;&gt; {
+        <span class="kw">let </span>with_user_count_str = with_user_count.to_arraystring();
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -8008,46 +7652,39 @@
             route: Route::GuildScheduledEvents {
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;with_user_count&quot;</span>, with_user_count.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"with_user_count"</span>, <span class="kw-2">&amp;</span>with_user_count_str)]),
         })
         .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Gets a list of all interested users for the corresponding scheduled event, with additional
     /// options for filtering.
-    ///
-    /// If `limit` is left unset, by default at most 100 users are returned.
-    ///
-    /// If `target` is set, then users will be filtered by Id, such that their Id comes before or
-    /// after the provided [`UserId`] wrapped by the [`UserPagination`].
-    ///
-    /// If `with_member` is set to `Some(true)`, then the [`member`] field of the user struct will
-    /// be populated with [`Guild Member`] information, if the interested user is a member of the
-    /// guild the event takes place in.
-    ///
-    /// [`UserId`]: crate::model::id::UserId
-    /// [`member`]: ScheduledEventUser::member
-    /// [`Guild Member`]: crate::model::guild::Member
     </span><span class="kw">pub async fn </span>get_scheduled_event_users(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         event_id: ScheduledEventId,
-        limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU8&gt;,
         target: <span class="prelude-ty">Option</span>&lt;UserPagination&gt;,
         with_member: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;ScheduledEventUser&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(limit_str, with_member_str, id_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">3</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, limit_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(with_member) = with_member {
-            params.push((<span class="string">&quot;with_member&quot;</span>, with_member.to_string()));
+            with_member_str = with_member.to_arraystring();
+            params.push((<span class="string">"with_member"</span>, <span class="kw-2">&amp;</span>with_member_str));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(target) = target {
-            <span class="kw">match </span>target {
-                UserPagination::After(id) =&gt; params.push((<span class="string">&quot;after&quot;</span>, id.to_string())),
-                UserPagination::Before(id) =&gt; params.push((<span class="string">&quot;before&quot;</span>, id.to_string())),
-            }
+            <span class="kw">let </span>(name, id) = <span class="kw">match </span>target {
+                UserPagination::After(id) =&gt; (<span class="string">"after"</span>, id),
+                UserPagination::Before(id) =&gt; (<span class="string">"before"</span>, id),
+            };
+
+            id_str = id.to_arraystring();
+            params.push((name, <span class="kw-2">&amp;</span>id_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -8059,7 +7696,7 @@
                 guild_id,
                 event_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -8082,7 +7719,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(array) = value.as_array_mut() {
             <span class="kw">for </span>role <span class="kw">in </span>array {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = role.as_object_mut() {
-                    map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+                    map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
                 }
             }
         }
@@ -8111,32 +7748,13 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
     }
 
-    <span class="doccomment">/// Retrieves the webhooks for the given [guild][`Guild`]&#39;s Id.
-    ///
-    /// This method requires authentication.
-    ///
-    /// # Examples
-    ///
-    /// Retrieve all of the webhooks owned by a guild:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let guild_id = GuildId::new(81384788765712384);
-    ///
-    /// let webhooks = http.get_guild_webhooks(guild_id).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
+    <span class="doccomment">/// Retrieves the webhooks for the given [`Guild`]'s Id.
     </span><span class="kw">pub async fn </span>get_guild_webhooks(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Webhook&gt;&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -8151,46 +7769,26 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets a paginated list of the current user&#39;s guilds.
-    ///
-    /// The `limit` has a maximum value of 100.
-    ///
-    /// [Discord&#39;s documentation][docs]
-    ///
-    /// # Examples
-    ///
-    /// Get the first 10 guilds after a certain guild&#39;s Id:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// use serenity::http::GuildPagination;
-    /// use serenity::model::id::GuildId;
-    ///
-    /// let guild_id = GuildId::new(81384788765712384);
-    ///
-    /// let guilds = http.get_guilds(Some(GuildPagination::After(guild_id)), Some(10)).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/user#get-current-user-guilds
+    <span class="doccomment">/// Gets a paginated list of the current user's guilds.
     </span><span class="kw">pub async fn </span>get_guilds(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         target: <span class="prelude-ty">Option</span>&lt;GuildPagination&gt;,
-        limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU8&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GuildInfo&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(limit_str, id_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, limit_str.as_str()));
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(target) = target {
-            <span class="kw">match </span>target {
-                GuildPagination::After(id) =&gt; params.push((<span class="string">&quot;after&quot;</span>, id.to_string())),
-                GuildPagination::Before(id) =&gt; params.push((<span class="string">&quot;before&quot;</span>, id.to_string())),
-            }
+            <span class="kw">let </span>(name, id) = <span class="kw">match </span>target {
+                GuildPagination::After(id) =&gt; (<span class="string">"after"</span>, id),
+                GuildPagination::Before(id) =&gt; (<span class="string">"before"</span>, id),
+            };
+
+            id_str = id.to_arraystring();
+            params.push((name, <span class="kw-2">&amp;</span>id_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -8199,40 +7797,16 @@
             headers: <span class="prelude-val">None</span>,
             method: LightMethod::Get,
             route: Route::UserMeGuilds,
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Returns a guild [`Member`] object for the current user.
     ///
-    /// # Authorization
-    ///
     /// This method only works for user tokens with the [`GuildsMembersRead`] OAuth2 scope.
     ///
     /// [`GuildsMembersRead`]: crate::model::application::Scope::GuildsMembersRead
-    ///
-    /// # Examples
-    ///
-    /// Get the member object for the current user within the specified guild.
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// use serenity::model::id::GuildId;
-    ///
-    /// let guild_id = GuildId::new(81384788765712384);
-    ///
-    /// let member = http.get_current_user_guild_member(guild_id).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    ///
-    /// See the [Discord Developer Portal documentation][docs] for more.
-    ///
-    /// [docs]: https://discord.com/developers/docs/resources/user#get-current-user-guild-member
     </span><span class="kw">pub async fn </span>get_current_user_guild_member(<span class="kw-2">&amp;</span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="prelude-ty">Result</span>&lt;Member&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
             </span>.fire(Request {
@@ -8248,23 +7822,13 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
     }
 
     <span class="doccomment">/// Gets information about a specific invite.
-    ///
-    /// # Arguments
-    /// * `code` - The invite code.
-    /// * `member_counts` - Whether to include information about the current number
-    /// of members in the server that the invite belongs to.
-    /// * `expiration` - Whether to include information about when the invite expires.
-    /// * `event_id` - An optional server event ID to include with the invite.
-    ///
-    /// More information about these arguments can be found on Discord&#39;s
-    /// [API documentation](https://discord.com/developers/docs/resources/invite#get-invite).
     </span><span class="kw">pub async fn </span>get_invite(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         code: <span class="kw-2">&amp;</span>str,
@@ -8272,15 +7836,21 @@
         expiration: bool,
         event_id: <span class="prelude-ty">Option</span>&lt;ScheduledEventId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Invite&gt; {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;utils&quot;</span>)]
+        <span class="kw">let </span>(member_counts_str, expiration_str, event_id_str);
+        <span class="attr">#[cfg(feature = <span class="string">"utils"</span>)]
         </span><span class="kw">let </span>code = <span class="kw">crate</span>::utils::parse_invite(code);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[
-            (<span class="string">&quot;member_counts&quot;</span>, member_counts.to_string()),
-            (<span class="string">&quot;expiration&quot;</span>, expiration.to_string()),
-        ];
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">3</span>&gt;::new();
+
+        member_counts_str = member_counts.to_arraystring();
+        params.push((<span class="string">"member_counts"</span>, member_counts_str.as_str()));
+
+        expiration_str = expiration.to_arraystring();
+        params.push((<span class="string">"expiration"</span>, <span class="kw-2">&amp;</span>expiration_str));
+
         <span class="kw">if let </span><span class="prelude-val">Some</span>(event_id) = event_id {
-            params.push((<span class="string">&quot;event_id&quot;</span>, event_id.to_string()));
+            event_id_str = event_id.to_arraystring();
+            params.push((<span class="string">"event_id"</span>, <span class="kw-2">&amp;</span>event_id_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -8291,7 +7861,7 @@
             route: Route::Invite {
                 code,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -8313,7 +7883,7 @@
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = value.as_object_mut() {
-            map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+            map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
         }
 
         from_value(value).map_err(From::from)
@@ -8344,18 +7914,25 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
         target: <span class="prelude-ty">Option</span>&lt;MessagePagination&gt;,
-        limit: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU8&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Message&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[];
+        <span class="kw">let </span>(limit_str, id_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
+
         <span class="kw">if let </span><span class="prelude-val">Some</span>(limit) = limit {
-            params.push((<span class="string">&quot;limit&quot;</span>, limit.to_string()));
+            limit_str = limit.get().to_arraystring();
+            params.push((<span class="string">"limit"</span>, limit_str.as_str()));
         }
+
         <span class="kw">if let </span><span class="prelude-val">Some</span>(target) = target {
-            <span class="kw">match </span>target {
-                MessagePagination::After(id) =&gt; params.push((<span class="string">&quot;after&quot;</span>, id.to_string())),
-                MessagePagination::Around(id) =&gt; params.push((<span class="string">&quot;around&quot;</span>, id.to_string())),
-                MessagePagination::Before(id) =&gt; params.push((<span class="string">&quot;before&quot;</span>, id.to_string())),
-            }
+            <span class="kw">let </span>(name, id) = <span class="kw">match </span>target {
+                MessagePagination::After(id) =&gt; (<span class="string">"after"</span>, id),
+                MessagePagination::Around(id) =&gt; (<span class="string">"around"</span>, id),
+                MessagePagination::Before(id) =&gt; (<span class="string">"before"</span>, id),
+            };
+
+            id_str = id.to_arraystring();
+            params.push((name, <span class="kw-2">&amp;</span>id_str));
         }
 
         <span class="self">self</span>.fire(Request {
@@ -8366,7 +7943,7 @@
             route: Route::ChannelMessages {
                 channel_id,
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
         })
         .<span class="kw">await
     </span>}
@@ -8378,7 +7955,7 @@
             sticker_packs: Vec&lt;StickerPack&gt;,
         }
 
-        <span class="self">self</span>.fire::&lt;StickerPacks&gt;(Request {
+        <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
             headers: <span class="prelude-val">None</span>,
@@ -8387,7 +7964,7 @@
             params: <span class="prelude-val">None</span>,
         })
         .<span class="kw">await
-        </span>.map(|s| s.sticker_packs)
+        </span>.map(|s: StickerPacks| s.sticker_packs)
     }
 
     <span class="doccomment">/// Gets all pins of a channel.
@@ -8412,12 +7989,19 @@
         message_id: MessageId,
         reaction_type: <span class="kw-2">&amp;</span>ReactionType,
         limit: u8,
-        after: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        after: <span class="prelude-ty">Option</span>&lt;UserId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;User&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>params = <span class="macro">vec!</span>[(<span class="string">&quot;limit&quot;</span>, limit.to_string())];
+        <span class="kw">let </span>(limit_str, after_str);
+        <span class="kw">let </span><span class="kw-2">mut </span>params = ArrayVec::&lt;<span class="kw">_</span>, <span class="number">2</span>&gt;::new();
+
+        limit_str = limit.to_arraystring();
+        params.push((<span class="string">"limit"</span>, limit_str.as_str()));
+
         <span class="kw">if let </span><span class="prelude-val">Some</span>(after) = after {
-            params.push((<span class="string">&quot;after&quot;</span>, after.to_string()));
+            after_str = after.to_arraystring();
+            params.push((<span class="string">"after"</span>, <span class="kw-2">&amp;</span>after_str));
         }
+
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -8428,7 +8012,22 @@
                 message_id,
                 reaction: <span class="kw-2">&amp;</span>reaction_type.as_data(),
             },
-            params: <span class="prelude-val">Some</span>(params),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>params),
+        })
+        .<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// Gets all SKUs for the current application.
+    </span><span class="kw">pub async fn </span>get_skus(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Sku&gt;&gt; {
+        <span class="self">self</span>.fire(Request {
+            body: <span class="prelude-val">None</span>,
+            multipart: <span class="prelude-val">None</span>,
+            headers: <span class="prelude-val">None</span>,
+            method: LightMethod::Get,
+            route: Route::Skus {
+                application_id: <span class="self">self</span>.try_application_id()<span class="question-mark">?</span>,
+            },
+            params: <span class="prelude-val">None</span>,
         })
         .<span class="kw">await
     </span>}
@@ -8448,7 +8047,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets the current unresolved incidents from Discord&#39;s Status API.
+    <span class="doccomment">/// Gets the current unresolved incidents from Discord's Status API.
     ///
     /// Does not require authentication.
     </span><span class="kw">pub async fn </span>get_unresolved_incidents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Incident&gt;&gt; {
@@ -8472,7 +8071,7 @@
         <span class="prelude-val">Ok</span>(status.incidents)
     }
 
-    <span class="doccomment">/// Gets the upcoming (planned) maintenances from Discord&#39;s Status API.
+    <span class="doccomment">/// Gets the upcoming (planned) maintenances from Discord's Status API.
     ///
     /// Does not require authentication.
     </span><span class="kw">pub async fn </span>get_upcoming_maintenances(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Maintenance&gt;&gt; {
@@ -8511,7 +8110,7 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Gets the current user&#39;s third party connections.
+    <span class="doccomment">/// Gets the current user's third party connections.
     ///
     /// This method only works for user tokens with the [`Connections`] OAuth2 scope.
     ///
@@ -8558,22 +8157,6 @@
     ///
     /// This method requires authentication, whereas [`Http::get_webhook_with_token`] and
     /// [`Http::get_webhook_from_url`] do not.
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a webhook by Id:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let webhook = http.get_webhook(id).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>get_webhook(<span class="kw-2">&amp;</span><span class="self">self</span>, webhook_id: WebhookId) -&gt; <span class="prelude-ty">Result</span>&lt;Webhook&gt; {
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
@@ -8591,24 +8174,6 @@
     <span class="doccomment">/// Retrieves a webhook given its Id and unique token.
     ///
     /// This method does _not_ require authentication.
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a webhook by Id and its unique token:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let id = WebhookId::new(245037420704169985);
-    /// let token = &quot;ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;;
-    ///
-    /// let webhook = http.get_webhook_with_token(id, token).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
     </span><span class="kw">pub async fn </span>get_webhook_with_token(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         webhook_id: WebhookId,
@@ -8631,22 +8196,7 @@
     <span class="doccomment">/// Retrieves a webhook given its url.
     ///
     /// This method does _not_ require authentication
-    ///
-    /// # Examples
-    ///
-    /// Retrieve a webhook by url:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// let url = &quot;https://discord.com/api/webhooks/245037420704169985/ig5AO-wdVWpCBtUUMxmgsWryqgsW3DChbKYOINftJ4DCrUbnkedoYZD0VOH1QLr-S3sV&quot;;
-    /// let webhook = http.get_webhook_from_url(url).await?;
-    /// # Ok(())
-    /// # }
-    /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;utils&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"utils"</span>)]
     </span><span class="kw">pub async fn </span>get_webhook_from_url(<span class="kw-2">&amp;</span><span class="self">self</span>, url: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Webhook&gt; {
         <span class="kw">let </span>url = Url::parse(url).map_err(HttpError::Url)<span class="question-mark">?</span>;
         <span class="kw">let </span>(webhook_id, token) =
@@ -8702,14 +8252,10 @@
     </span>}
 
     <span class="doccomment">/// Sends a message to a channel.
-    ///
-    /// # Errors
-    ///
-    /// Returns an [`HttpError::UnsuccessfulRequest`] if the files are too large to send.
     </span><span class="kw">pub async fn </span>send_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         channel_id: ChannelId,
-        files: Vec&lt;CreateAttachment&gt;,
+        files: Vec&lt;CreateAttachment&lt;<span class="lifetime">'_</span>&gt;&gt;,
         map: <span class="kw-2">&amp;</span><span class="kw">impl </span>serde::Serialize,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>request = Request {
@@ -8727,7 +8273,7 @@
             request.body = <span class="prelude-val">Some</span>(to_vec(map)<span class="question-mark">?</span>);
         } <span class="kw">else </span>{
             request.multipart = <span class="prelude-val">Some</span>(Multipart {
-                files: files.into_iter().collect(),
+                upload: MultipartUpload::Attachments(files),
                 payload_json: <span class="prelude-val">Some</span>(to_string(map)<span class="question-mark">?</span>),
                 fields: <span class="macro">vec!</span>[],
             });
@@ -8779,10 +8325,6 @@
     </span>}
 
     <span class="doccomment">/// Deletes a single [`Role`] from a [`Member`] in a [`Guild`].
-    ///
-    /// **Note**: Requires the [Manage Roles] permission and respect of role hierarchy.
-    ///
-    /// [Manage Roles]: Permissions::MANAGE_ROLES
     </span><span class="kw">pub async fn </span>remove_member_role(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
@@ -8811,8 +8353,9 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         query: <span class="kw-2">&amp;</span>str,
-        limit: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+        limit: <span class="prelude-ty">Option</span>&lt;NonMaxU16&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Member&gt;&gt; {
+        <span class="kw">let </span>limit_str = limit.unwrap_or(constants::MEMBER_FETCH_LIMIT).get().to_arraystring();
         <span class="kw">let </span><span class="kw-2">mut </span>value: Value = <span class="self">self
             </span>.fire(Request {
                 body: <span class="prelude-val">None</span>,
@@ -8822,17 +8365,14 @@
                 route: Route::GuildMembersSearch {
                     guild_id,
                 },
-                params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                    (<span class="string">&quot;query&quot;</span>, query.to_string()),
-                    (<span class="string">&quot;limit&quot;</span>, limit.unwrap_or(constants::MEMBER_FETCH_LIMIT).to_string()),
-                ]),
+                params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"query"</span>, query), (<span class="string">"limit"</span>, <span class="kw-2">&amp;</span>limit_str)]),
             })
             .<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(members) = value.as_array_mut() {
             <span class="kw">for </span>member <span class="kw">in </span>members {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(map) = member.as_object_mut() {
-                    map.insert(<span class="string">&quot;guild_id&quot;</span>.to_string(), guild_id.get().into());
+                    map.insert(<span class="string">"guild_id"</span>.to_string(), guild_id.get().into());
                 }
             }
         }
@@ -8840,13 +8380,14 @@
         from_value(value).map_err(From::from)
     }
 
-    <span class="doccomment">/// Starts removing some members from a guild based on the last time they&#39;ve been online.
+    <span class="doccomment">/// Starts removing some members from a guild based on the last time they've been online.
     </span><span class="kw">pub async fn </span>start_guild_prune(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         guild_id: GuildId,
         days: u8,
         audit_log_reason: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GuildPrune&gt; {
+        <span class="kw">let </span>days_str = days.to_arraystring();
         <span class="self">self</span>.fire(Request {
             body: <span class="prelude-val">None</span>,
             multipart: <span class="prelude-val">None</span>,
@@ -8855,7 +8396,7 @@
             route: Route::GuildPrune {
                 guild_id,
             },
-            params: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[(<span class="string">&quot;days&quot;</span>, days.to_string())]),
+            params: <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>[(<span class="string">"days"</span>, <span class="kw-2">&amp;</span>days_str)]),
         })
         .<span class="kw">await
     </span>}
@@ -8880,46 +8421,6 @@
         .<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Starts typing in the specified [`Channel`] for an indefinite period of time.
-    ///
-    /// Returns [`Typing`] that is used to trigger the typing. [`Typing::stop`] must be called on
-    /// the returned struct to stop typing. Note that on some clients, typing may persist for a few
-    /// seconds after [`Typing::stop`] is called. Typing is also stopped when the struct is
-    /// dropped.
-    ///
-    /// If a message is sent while typing is triggered, the user will stop typing for a brief
-    /// period of time and then resume again until either [`Typing::stop`] is called or the struct
-    /// is dropped.
-    ///
-    /// This should rarely be used for bots, although it is a good indicator that a long-running
-    /// command is still being processed.
-    ///
-    /// ## Examples
-    ///
-    /// ```rust,no_run
-    /// # use std::sync::Arc;
-    /// # use serenity::http::{Http, Typing};
-    /// # use serenity::Result;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # fn long_process() {}
-    /// # fn main() {
-    /// # let http: Arc&lt;Http&gt; = unimplemented!();
-    /// // Initiate typing (assuming http is `Arc&lt;Http&gt;`)
-    /// let channel_id = ChannelId::new(7);
-    /// let typing = http.start_typing(channel_id);
-    ///
-    /// // Run some long-running process
-    /// long_process();
-    ///
-    /// // Stop typing
-    /// typing.stop();
-    /// # }
-    /// ```
-    </span><span class="kw">pub fn </span>start_typing(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;, channel_id: ChannelId) -&gt; Typing {
-        Typing::start(Arc::clone(<span class="self">self</span>), channel_id)
-    }
-
     <span class="doccomment">/// Unpins a message from a channel.
     </span><span class="kw">pub async fn </span>unpin_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -8943,84 +8444,31 @@
 
     <span class="doccomment">/// Fires off a request, deserializing the response reader via the given type bound.
     ///
-    /// If you don&#39;t need to deserialize the response and want the response instance itself, use
+    /// If you don't need to deserialize the response and want the response instance itself, use
     /// [`Self::request`].
-    ///
-    /// # Examples
-    ///
-    /// Create a new message and deserialize the response into a [`Message`]:
-    ///
-    /// ```rust,no_run
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # use serenity::http::Http;
-    /// #
-    /// # let http: Http = unimplemented!();
-    /// use serenity::{
-    ///     http::{LightMethod, Request, Route},
-    ///     model::prelude::*,
-    /// };
-    ///
-    /// let bytes = vec![
-    ///     // payload bytes here
-    /// ];
-    /// let channel_id = ChannelId::new(381880193700069377);
-    /// let route = Route::ChannelMessages { channel_id };
-    ///
-    /// let mut request = Request::new(route, LightMethod::Post).body(Some(bytes));
-    ///
-    /// let message = http.fire::&lt;Message&gt;(request).await?;
-    ///
-    /// println!(&quot;Message content: {}&quot;, message.content);
-    /// # Ok(())
-    /// # }
-    /// ```
     ///
     /// # Errors
     ///
     /// If there is an error, it will be either [`Error::Http`] or [`Error::Json`].
-    </span><span class="kw">pub async fn </span>fire&lt;T: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;T&gt; {
+    </span><span class="kw">pub async fn </span>fire&lt;T: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;T&gt; {
         <span class="kw">let </span>response = <span class="self">self</span>.request(req).<span class="kw">await</span><span class="question-mark">?</span>;
-        decode_resp(response).<span class="kw">await
-    </span>}
+        <span class="kw">let </span>response_de = response.json().<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(response_de)
+    }
 
     <span class="doccomment">/// Performs a request, ratelimiting it if necessary.
     ///
     /// Returns the raw reqwest Response. Use [`Self::fire`] to deserialize the response into some
     /// type.
-    ///
-    /// # Examples
-    ///
-    /// Send a body of bytes over the create message endpoint:
-    ///
-    /// ```rust,no_run
-    /// # use serenity::http::Http;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// # let http: Http = unimplemented!();
-    /// use serenity::http::{LightMethod, Request, Route};
-    ///
-    /// let bytes = vec![
-    ///     // payload bytes here
-    /// ];
-    /// let channel_id = ChannelId::new(381880193700069377);
-    /// let route = Route::ChannelMessages { channel_id };
-    ///
-    /// let mut request = Request::new(route, LightMethod::Post).body(Some(bytes));
-    ///
-    /// let response = http.request(request).await?;
-    ///
-    /// println!(&quot;Response successful?: {}&quot;, response.status().is_success());
-    /// # Ok(())
-    /// # }
-    /// ```
-    </span><span class="attr">#[instrument]
-    </span><span class="kw">pub async fn </span>request(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;ReqwestResponse&gt; {
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"tracing_instrument"</span>, instrument)]
+    </span><span class="kw">pub async fn </span>request(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;ReqwestResponse&gt; {
         <span class="kw">let </span>method = req.method.reqwest_method();
         <span class="kw">let </span>response = <span class="kw">if let </span><span class="prelude-val">Some</span>(ratelimiter) = <span class="kw-2">&amp;</span><span class="self">self</span>.ratelimiter {
             ratelimiter.perform(req).<span class="kw">await</span><span class="question-mark">?
         </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>request = req.build(<span class="kw-2">&amp;</span><span class="self">self</span>.client, <span class="self">self</span>.token(), <span class="self">self</span>.proxy.as_deref())<span class="question-mark">?</span>.build()<span class="question-mark">?</span>;
+            <span class="kw">let </span>request = req
+                .build(<span class="kw-2">&amp;</span><span class="self">self</span>.client, <span class="self">self</span>.token.expose_secret(), <span class="self">self</span>.proxy.as_deref())<span class="question-mark">?
+                </span>.build()<span class="question-mark">?</span>;
             <span class="self">self</span>.client.execute(request).<span class="kw">await</span><span class="question-mark">?
         </span>};
 
@@ -9036,9 +8484,9 @@
     <span class="doccomment">/// Performs a request and then verifies that the response status code is equal to the expected
     /// value.
     ///
-    /// This is a function that performs a light amount of work and returns an empty tuple, so it&#39;s
-    /// called &quot;self.wind&quot; to denote that it&#39;s lightweight.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">async fn </span>wind(<span class="kw-2">&amp;</span><span class="self">self</span>, expected: u16, req: Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    /// This is a function that performs a light amount of work and returns an empty tuple, so it's
+    /// called "self.wind" to denote that it's lightweight.
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">async fn </span>wind(<span class="kw-2">&amp;</span><span class="self">self</span>, expected: u16, req: Request&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span>method = req.method.reqwest_method();
         <span class="kw">let </span>response = <span class="self">self</span>.request(req).<span class="kw">await</span><span class="question-mark">?</span>;
 
@@ -9046,8 +8494,8 @@
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="macro">debug!</span>(<span class="string">&quot;Expected {}, got {}&quot;</span>, expected, response.status());
-        <span class="macro">trace!</span>(<span class="string">&quot;Unsuccessful response: {:?}&quot;</span>, response);
+        <span class="macro">debug!</span>(<span class="string">"Expected {}, got {}"</span>, expected, response.status());
+        <span class="macro">trace!</span>(<span class="string">"Unsuccessful response: {:?}"</span>, response);
 
         <span class="prelude-val">Err</span>(Error::Http(HttpError::UnsuccessfulRequest(
             ErrorResponse::from_response(response, method).<span class="kw">await</span>,
@@ -9055,19 +8503,13 @@
     }
 }
 
-<span class="attr">#[cfg(not(feature = <span class="string">&quot;native_tls_backend&quot;</span>))]
+<span class="attr">#[cfg(not(feature = <span class="string">"native_tls_backend"</span>))]
 </span><span class="kw">fn </span>configure_client_backend(builder: ClientBuilder) -&gt; ClientBuilder {
     builder.use_rustls_tls()
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;native_tls_backend&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"native_tls_backend"</span>)]
 </span><span class="kw">fn </span>configure_client_backend(builder: ClientBuilder) -&gt; ClientBuilder {
     builder.use_native_tls()
-}
-
-<span class="kw">impl </span>AsRef&lt;Http&gt; <span class="kw">for </span>Http {
-    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Http {
-        <span class="self">self
-    </span>}
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1358,289 +1358,31 @@
 <a href="#1358" id="1358">1358</a>
 <a href="#1359" id="1359">1359</a>
 <a href="#1360" id="1360">1360</a>
-<a href="#1361" id="1361">1361</a>
-<a href="#1362" id="1362">1362</a>
-<a href="#1363" id="1363">1363</a>
-<a href="#1364" id="1364">1364</a>
-<a href="#1365" id="1365">1365</a>
-<a href="#1366" id="1366">1366</a>
-<a href="#1367" id="1367">1367</a>
-<a href="#1368" id="1368">1368</a>
-<a href="#1369" id="1369">1369</a>
-<a href="#1370" id="1370">1370</a>
-<a href="#1371" id="1371">1371</a>
-<a href="#1372" id="1372">1372</a>
-<a href="#1373" id="1373">1373</a>
-<a href="#1374" id="1374">1374</a>
-<a href="#1375" id="1375">1375</a>
-<a href="#1376" id="1376">1376</a>
-<a href="#1377" id="1377">1377</a>
-<a href="#1378" id="1378">1378</a>
-<a href="#1379" id="1379">1379</a>
-<a href="#1380" id="1380">1380</a>
-<a href="#1381" id="1381">1381</a>
-<a href="#1382" id="1382">1382</a>
-<a href="#1383" id="1383">1383</a>
-<a href="#1384" id="1384">1384</a>
-<a href="#1385" id="1385">1385</a>
-<a href="#1386" id="1386">1386</a>
-<a href="#1387" id="1387">1387</a>
-<a href="#1388" id="1388">1388</a>
-<a href="#1389" id="1389">1389</a>
-<a href="#1390" id="1390">1390</a>
-<a href="#1391" id="1391">1391</a>
-<a href="#1392" id="1392">1392</a>
-<a href="#1393" id="1393">1393</a>
-<a href="#1394" id="1394">1394</a>
-<a href="#1395" id="1395">1395</a>
-<a href="#1396" id="1396">1396</a>
-<a href="#1397" id="1397">1397</a>
-<a href="#1398" id="1398">1398</a>
-<a href="#1399" id="1399">1399</a>
-<a href="#1400" id="1400">1400</a>
-<a href="#1401" id="1401">1401</a>
-<a href="#1402" id="1402">1402</a>
-<a href="#1403" id="1403">1403</a>
-<a href="#1404" id="1404">1404</a>
-<a href="#1405" id="1405">1405</a>
-<a href="#1406" id="1406">1406</a>
-<a href="#1407" id="1407">1407</a>
-<a href="#1408" id="1408">1408</a>
-<a href="#1409" id="1409">1409</a>
-<a href="#1410" id="1410">1410</a>
-<a href="#1411" id="1411">1411</a>
-<a href="#1412" id="1412">1412</a>
-<a href="#1413" id="1413">1413</a>
-<a href="#1414" id="1414">1414</a>
-<a href="#1415" id="1415">1415</a>
-<a href="#1416" id="1416">1416</a>
-<a href="#1417" id="1417">1417</a>
-<a href="#1418" id="1418">1418</a>
-<a href="#1419" id="1419">1419</a>
-<a href="#1420" id="1420">1420</a>
-<a href="#1421" id="1421">1421</a>
-<a href="#1422" id="1422">1422</a>
-<a href="#1423" id="1423">1423</a>
-<a href="#1424" id="1424">1424</a>
-<a href="#1425" id="1425">1425</a>
-<a href="#1426" id="1426">1426</a>
-<a href="#1427" id="1427">1427</a>
-<a href="#1428" id="1428">1428</a>
-<a href="#1429" id="1429">1429</a>
-<a href="#1430" id="1430">1430</a>
-<a href="#1431" id="1431">1431</a>
-<a href="#1432" id="1432">1432</a>
-<a href="#1433" id="1433">1433</a>
-<a href="#1434" id="1434">1434</a>
-<a href="#1435" id="1435">1435</a>
-<a href="#1436" id="1436">1436</a>
-<a href="#1437" id="1437">1437</a>
-<a href="#1438" id="1438">1438</a>
-<a href="#1439" id="1439">1439</a>
-<a href="#1440" id="1440">1440</a>
-<a href="#1441" id="1441">1441</a>
-<a href="#1442" id="1442">1442</a>
-<a href="#1443" id="1443">1443</a>
-<a href="#1444" id="1444">1444</a>
-<a href="#1445" id="1445">1445</a>
-<a href="#1446" id="1446">1446</a>
-<a href="#1447" id="1447">1447</a>
-<a href="#1448" id="1448">1448</a>
-<a href="#1449" id="1449">1449</a>
-<a href="#1450" id="1450">1450</a>
-<a href="#1451" id="1451">1451</a>
-<a href="#1452" id="1452">1452</a>
-<a href="#1453" id="1453">1453</a>
-<a href="#1454" id="1454">1454</a>
-<a href="#1455" id="1455">1455</a>
-<a href="#1456" id="1456">1456</a>
-<a href="#1457" id="1457">1457</a>
-<a href="#1458" id="1458">1458</a>
-<a href="#1459" id="1459">1459</a>
-<a href="#1460" id="1460">1460</a>
-<a href="#1461" id="1461">1461</a>
-<a href="#1462" id="1462">1462</a>
-<a href="#1463" id="1463">1463</a>
-<a href="#1464" id="1464">1464</a>
-<a href="#1465" id="1465">1465</a>
-<a href="#1466" id="1466">1466</a>
-<a href="#1467" id="1467">1467</a>
-<a href="#1468" id="1468">1468</a>
-<a href="#1469" id="1469">1469</a>
-<a href="#1470" id="1470">1470</a>
-<a href="#1471" id="1471">1471</a>
-<a href="#1472" id="1472">1472</a>
-<a href="#1473" id="1473">1473</a>
-<a href="#1474" id="1474">1474</a>
-<a href="#1475" id="1475">1475</a>
-<a href="#1476" id="1476">1476</a>
-<a href="#1477" id="1477">1477</a>
-<a href="#1478" id="1478">1478</a>
-<a href="#1479" id="1479">1479</a>
-<a href="#1480" id="1480">1480</a>
-<a href="#1481" id="1481">1481</a>
-<a href="#1482" id="1482">1482</a>
-<a href="#1483" id="1483">1483</a>
-<a href="#1484" id="1484">1484</a>
-<a href="#1485" id="1485">1485</a>
-<a href="#1486" id="1486">1486</a>
-<a href="#1487" id="1487">1487</a>
-<a href="#1488" id="1488">1488</a>
-<a href="#1489" id="1489">1489</a>
-<a href="#1490" id="1490">1490</a>
-<a href="#1491" id="1491">1491</a>
-<a href="#1492" id="1492">1492</a>
-<a href="#1493" id="1493">1493</a>
-<a href="#1494" id="1494">1494</a>
-<a href="#1495" id="1495">1495</a>
-<a href="#1496" id="1496">1496</a>
-<a href="#1497" id="1497">1497</a>
-<a href="#1498" id="1498">1498</a>
-<a href="#1499" id="1499">1499</a>
-<a href="#1500" id="1500">1500</a>
-<a href="#1501" id="1501">1501</a>
-<a href="#1502" id="1502">1502</a>
-<a href="#1503" id="1503">1503</a>
-<a href="#1504" id="1504">1504</a>
-<a href="#1505" id="1505">1505</a>
-<a href="#1506" id="1506">1506</a>
-<a href="#1507" id="1507">1507</a>
-<a href="#1508" id="1508">1508</a>
-<a href="#1509" id="1509">1509</a>
-<a href="#1510" id="1510">1510</a>
-<a href="#1511" id="1511">1511</a>
-<a href="#1512" id="1512">1512</a>
-<a href="#1513" id="1513">1513</a>
-<a href="#1514" id="1514">1514</a>
-<a href="#1515" id="1515">1515</a>
-<a href="#1516" id="1516">1516</a>
-<a href="#1517" id="1517">1517</a>
-<a href="#1518" id="1518">1518</a>
-<a href="#1519" id="1519">1519</a>
-<a href="#1520" id="1520">1520</a>
-<a href="#1521" id="1521">1521</a>
-<a href="#1522" id="1522">1522</a>
-<a href="#1523" id="1523">1523</a>
-<a href="#1524" id="1524">1524</a>
-<a href="#1525" id="1525">1525</a>
-<a href="#1526" id="1526">1526</a>
-<a href="#1527" id="1527">1527</a>
-<a href="#1528" id="1528">1528</a>
-<a href="#1529" id="1529">1529</a>
-<a href="#1530" id="1530">1530</a>
-<a href="#1531" id="1531">1531</a>
-<a href="#1532" id="1532">1532</a>
-<a href="#1533" id="1533">1533</a>
-<a href="#1534" id="1534">1534</a>
-<a href="#1535" id="1535">1535</a>
-<a href="#1536" id="1536">1536</a>
-<a href="#1537" id="1537">1537</a>
-<a href="#1538" id="1538">1538</a>
-<a href="#1539" id="1539">1539</a>
-<a href="#1540" id="1540">1540</a>
-<a href="#1541" id="1541">1541</a>
-<a href="#1542" id="1542">1542</a>
-<a href="#1543" id="1543">1543</a>
-<a href="#1544" id="1544">1544</a>
-<a href="#1545" id="1545">1545</a>
-<a href="#1546" id="1546">1546</a>
-<a href="#1547" id="1547">1547</a>
-<a href="#1548" id="1548">1548</a>
-<a href="#1549" id="1549">1549</a>
-<a href="#1550" id="1550">1550</a>
-<a href="#1551" id="1551">1551</a>
-<a href="#1552" id="1552">1552</a>
-<a href="#1553" id="1553">1553</a>
-<a href="#1554" id="1554">1554</a>
-<a href="#1555" id="1555">1555</a>
-<a href="#1556" id="1556">1556</a>
-<a href="#1557" id="1557">1557</a>
-<a href="#1558" id="1558">1558</a>
-<a href="#1559" id="1559">1559</a>
-<a href="#1560" id="1560">1560</a>
-<a href="#1561" id="1561">1561</a>
-<a href="#1562" id="1562">1562</a>
-<a href="#1563" id="1563">1563</a>
-<a href="#1564" id="1564">1564</a>
-<a href="#1565" id="1565">1565</a>
-<a href="#1566" id="1566">1566</a>
-<a href="#1567" id="1567">1567</a>
-<a href="#1568" id="1568">1568</a>
-<a href="#1569" id="1569">1569</a>
-<a href="#1570" id="1570">1570</a>
-<a href="#1571" id="1571">1571</a>
-<a href="#1572" id="1572">1572</a>
-<a href="#1573" id="1573">1573</a>
-<a href="#1574" id="1574">1574</a>
-<a href="#1575" id="1575">1575</a>
-<a href="#1576" id="1576">1576</a>
-<a href="#1577" id="1577">1577</a>
-<a href="#1578" id="1578">1578</a>
-<a href="#1579" id="1579">1579</a>
-<a href="#1580" id="1580">1580</a>
-<a href="#1581" id="1581">1581</a>
-<a href="#1582" id="1582">1582</a>
-<a href="#1583" id="1583">1583</a>
-<a href="#1584" id="1584">1584</a>
-<a href="#1585" id="1585">1585</a>
-<a href="#1586" id="1586">1586</a>
-<a href="#1587" id="1587">1587</a>
-<a href="#1588" id="1588">1588</a>
-<a href="#1589" id="1589">1589</a>
-<a href="#1590" id="1590">1590</a>
-<a href="#1591" id="1591">1591</a>
-<a href="#1592" id="1592">1592</a>
-<a href="#1593" id="1593">1593</a>
-<a href="#1594" id="1594">1594</a>
-<a href="#1595" id="1595">1595</a>
-<a href="#1596" id="1596">1596</a>
-<a href="#1597" id="1597">1597</a>
-<a href="#1598" id="1598">1598</a>
-<a href="#1599" id="1599">1599</a>
-<a href="#1600" id="1600">1600</a>
-<a href="#1601" id="1601">1601</a>
-<a href="#1602" id="1602">1602</a>
-<a href="#1603" id="1603">1603</a>
-<a href="#1604" id="1604">1604</a>
-<a href="#1605" id="1605">1605</a>
-<a href="#1606" id="1606">1606</a>
-<a href="#1607" id="1607">1607</a>
-<a href="#1608" id="1608">1608</a>
-<a href="#1609" id="1609">1609</a>
-<a href="#1610" id="1610">1610</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! All the events this library handles.
 //!
 //! Every event includes the gateway intent required to receive it, as well as a link to the
 //! Discord documentation for the event.
 
-</span><span class="comment">// Just for MessageUpdateEvent (for some reason the #[allow] doesn&#39;t work when placed directly)
+</span><span class="comment">// Just for MessageUpdateEvent (for some reason the #[allow] doesn't work when placed directly)
 </span><span class="attr">#![allow(clippy::option_option)]
 
-</span><span class="kw">use </span>std::collections::HashMap;
-
+</span><span class="kw">use </span>nonmax::NonMaxU64;
 <span class="kw">use </span>serde::de::Error <span class="kw">as </span>DeError;
 <span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>strum::{EnumCount, IntoStaticStr, VariantNames};
+<span class="kw">use </span>tracing::{debug, warn};
 
-<span class="kw">use </span><span class="kw">super</span>::application::ActionRow;
-<span class="kw">use </span><span class="kw">super</span>::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">super</span>::utils::{
-    deserialize_val,
-    emojis,
-    ignore_input,
-    remove_from_map,
-    remove_from_map_opt,
-    stickers,
-};
 <span class="kw">use </span><span class="kw">crate</span>::constants::Opcode;
 <span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::model::application::{CommandPermissions, Interaction};
-<span class="kw">use </span><span class="kw">crate</span>::model::guild::audit_log::AuditLogEntry;
-<span class="kw">use </span><span class="kw">crate</span>::model::guild::automod::{ActionExecution, Rule};
+<span class="kw">use </span><span class="kw">crate</span>::internal::utils::lending_for_each;
+<span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::model::utils::{deserialize_val, remove_from_map, remove_from_map_opt};
 
 <span class="doccomment">/// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#application-command-permissions-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>CommandPermissionsUpdateEvent {
@@ -1650,7 +1392,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::AUTO_MODERATION_CONFIGURATION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AutoModRuleCreateEvent {
@@ -1660,7 +1403,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::AUTO_MODERATION_CONFIGURATION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AutoModRuleUpdateEvent {
@@ -1670,7 +1414,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::AUTO_MODERATION_CONFIGURATION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#auto-moderation-rule-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AutoModRuleDeleteEvent {
@@ -1680,7 +1425,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::AUTO_MODERATION_EXECUTION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#auto-moderation-action-execution).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>AutoModActionExecutionEvent {
@@ -1691,33 +1437,35 @@
 ///
 /// This is fired when:
 /// - A [`Channel`] is created in a [`Guild`]
-/// - A [`PrivateChannel`] is created
 ///
 /// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#channel-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelCreateEvent {
     <span class="doccomment">/// The channel that was created.
-    </span><span class="kw">pub </span>channel: Channel,
+    </span><span class="kw">pub </span>channel: GuildChannel,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#channel-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelDeleteEvent {
-    <span class="kw">pub </span>channel: Channel,
+    <span class="kw">pub </span>channel: GuildChannel,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`] or [`GatewayIntents::DIRECT_MESSAGES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#channel-pins-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelPinsUpdateEvent {
     <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
@@ -1728,17 +1476,19 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#channel-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ChannelUpdateEvent {
-    <span class="kw">pub </span>channel: Channel,
+    <span class="kw">pub </span>channel: GuildChannel,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MODERATION`] and [`Permissions::VIEW_AUDIT_LOG`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-audit-log-entry-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildAuditLogEntryCreateEvent {
     <span class="kw">pub </span>guild_id: GuildId,
@@ -1746,20 +1496,22 @@
     </span><span class="kw">pub </span>entry: AuditLogEntry,
 }
 
-<span class="doccomment">/// Requires [`GatewayIntents::GUILD_BANS`].
+<span class="doccomment">/// Requires [`GatewayIntents::GUILD_MODERATION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-ban-add).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildBanAddEvent {
     <span class="kw">pub </span>guild_id: GuildId,
     <span class="kw">pub </span>user: User,
 }
 
-<span class="doccomment">/// Requires [`GatewayIntents::GUILD_BANS`].
+<span class="doccomment">/// Requires [`GatewayIntents::GUILD_MODERATION`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-ban-remove).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildBanRemoveEvent {
     <span class="kw">pub </span>guild_id: GuildId,
@@ -1769,7 +1521,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-create).
-</span><span class="attr">#[derive(Clone, Debug, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildCreateEvent {
@@ -1777,12 +1530,12 @@
 }
 
 <span class="comment">// Manual impl needed to insert guild_id fields in GuildChannel, Member, Role
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GuildCreateEvent {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GuildCreateEvent {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>guild: Guild = Guild::deserialize(deserializer)<span class="question-mark">?</span>;
-        guild.channels.values_mut().for_each(|x| x.guild_id = guild.id);
-        guild.members.values_mut().for_each(|x| x.guild_id = guild.id);
-        guild.roles.values_mut().for_each(|x| x.guild_id = guild.id);
+        <span class="macro">lending_for_each!</span>(guild.channels.iter_mut(), |x| x.guild_id = guild.id);
+        <span class="macro">lending_for_each!</span>(guild.members.iter_mut(), |x| x.guild_id = guild.id);
+        <span class="macro">lending_for_each!</span>(guild.roles.iter_mut(), |x| x.guild_id = guild.id);
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
             guild,
         })
@@ -1792,7 +1545,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildDeleteEvent {
@@ -1802,18 +1556,19 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_EMOJIS_AND_STICKERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-emojis-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildEmojisUpdateEvent {
-    <span class="attr">#[serde(with = <span class="string">&quot;emojis&quot;</span>)]
-    </span><span class="kw">pub </span>emojis: HashMap&lt;EmojiId, Emoji&gt;,
+    <span class="kw">pub </span>emojis: ExtractMap&lt;EmojiId, Emoji&gt;,
     <span class="kw">pub </span>guild_id: GuildId,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INTEGRATIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-integrations-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildIntegrationsUpdateEvent {
     <span class="kw">pub </span>guild_id: GuildId,
@@ -1822,7 +1577,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MEMBERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-member-add).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildMemberAddEvent {
@@ -1832,7 +1588,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MEMBERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-member-remove).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildMemberRemoveEvent {
     <span class="kw">pub </span>guild_id: GuildId,
@@ -1842,13 +1599,15 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MEMBERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-member-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[bool_to_bitflags::bool_to_bitflags]
+#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildMemberUpdateEvent {
     <span class="kw">pub </span>guild_id: GuildId,
-    <span class="kw">pub </span>nick: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>nick: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u8&gt;&gt;,
     <span class="kw">pub </span>joined_at: Timestamp,
-    <span class="kw">pub </span>roles: Vec&lt;RoleId&gt;,
+    <span class="kw">pub </span>roles: FixedArray&lt;RoleId&gt;,
     <span class="kw">pub </span>user: User,
     <span class="kw">pub </span>premium_since: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
     <span class="attr">#[serde(default)]
@@ -1859,19 +1618,21 @@
     </span><span class="kw">pub </span>mute: bool,
     <span class="kw">pub </span>avatar: <span class="prelude-ty">Option</span>&lt;ImageHash&gt;,
     <span class="kw">pub </span>communication_disabled_until: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
+    <span class="kw">pub </span>unusual_dm_activity_until: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
 }
 
 <span class="doccomment">/// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-members-chunk).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(remote = <span class="string">&quot;Self&quot;</span>)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(remote = <span class="string">"Self"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildMembersChunkEvent {
     <span class="doccomment">/// ID of the guild.
     </span><span class="kw">pub </span>guild_id: GuildId,
     <span class="doccomment">/// Set of guild members.
-    </span><span class="kw">pub </span>members: HashMap&lt;UserId, Member&gt;,
+    </span><span class="kw">pub </span>members: ExtractMap&lt;UserId, Member&gt;,
     <span class="doccomment">/// Chunk index in the expected chunks for this response (0 &lt;= chunk_index &lt; chunk_count).
     </span><span class="kw">pub </span>chunk_index: u32,
     <span class="doccomment">/// Total number of expected chunks for this response.
@@ -1879,19 +1640,19 @@
     <span class="doccomment">/// When passing an invalid ID to [`crate::gateway::ShardRunnerMessage::ChunkGuild`], it will
     /// be returned here.
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>not_found: Vec&lt;GenericId&gt;,
+    </span><span class="kw">pub </span>not_found: FixedArray&lt;GenericId&gt;,
     <span class="doccomment">/// When passing true to [`crate::gateway::ShardRunnerMessage::ChunkGuild`], presences of the
     /// returned members will be here.
     </span><span class="kw">pub </span>presences: <span class="prelude-ty">Option</span>&lt;Vec&lt;Presence&gt;&gt;,
     <span class="doccomment">/// Nonce used in the [`crate::gateway::ShardRunnerMessage::ChunkGuild`] request.
-    </span><span class="kw">pub </span>nonce: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>nonce: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
 }
 
 <span class="comment">// Manual impl needed to insert guild_id fields in Member
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GuildMembersChunkEvent {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GuildMembersChunkEvent {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>event = <span class="self">Self</span>::deserialize(deserializer)<span class="question-mark">?</span>; <span class="comment">// calls #[serde(remote)]-generated inherent method
-        </span>event.members.values_mut().for_each(|m| m.guild_id = event.guild_id);
+        </span><span class="macro">lending_for_each!</span>(event.members.iter_mut(), |m| m.guild_id = event.guild_id);
         <span class="prelude-val">Ok</span>(event)
     }
 }
@@ -1903,7 +1664,8 @@
 }
 
 <span class="doccomment">/// Helper to deserialize `GuildRoleCreateEvent` and `GuildRoleUpdateEvent`.
-</span><span class="attr">#[derive(Deserialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Deserialize)]
 </span><span class="kw">struct </span>RoleEventHelper {
     guild_id: GuildId,
     role: Role,
@@ -1912,15 +1674,16 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-role-create).
-</span><span class="attr">#[derive(Clone, Debug, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildRoleCreateEvent {
     <span class="kw">pub </span>role: Role,
 }
 
 <span class="comment">// Manual impl needed to insert guild_id field in Role
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GuildRoleCreateEvent {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GuildRoleCreateEvent {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>event = RoleEventHelper::deserialize(deserializer)<span class="question-mark">?</span>;
         event.role.guild_id = event.guild_id;
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
@@ -1932,7 +1695,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-role-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildRoleDeleteEvent {
     <span class="kw">pub </span>guild_id: GuildId,
@@ -1942,15 +1706,16 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-role-update).
-</span><span class="attr">#[derive(Clone, Debug, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildRoleUpdateEvent {
     <span class="kw">pub </span>role: Role,
 }
 
 <span class="comment">// Manual impl needed to insert guild_id field in Role
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GuildRoleUpdateEvent {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GuildRoleUpdateEvent {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>event = RoleEventHelper::deserialize(deserializer)<span class="question-mark">?</span>;
         event.role.guild_id = event.guild_id;
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
@@ -1962,25 +1727,26 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_EMOJIS_AND_STICKERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-stickers-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildStickersUpdateEvent {
-    <span class="attr">#[serde(with = <span class="string">&quot;stickers&quot;</span>)]
-    </span><span class="kw">pub </span>stickers: HashMap&lt;StickerId, Sticker&gt;,
+    <span class="kw">pub </span>stickers: ExtractMap&lt;StickerId, Sticker&gt;,
     <span class="kw">pub </span>guild_id: GuildId,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INVITES`] and [`Permissions::MANAGE_CHANNELS´] permission.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#invite-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>InviteCreateEvent {
     <span class="doccomment">/// Whether or not the invite is temporary (invited users will be kicked on disconnect unless
     /// Channel the invite is for.
     </span><span class="kw">pub </span>channel_id: ChannelId,
     <span class="doccomment">/// Unique invite [code](Invite::code).
-    </span><span class="kw">pub </span>code: String,
+    </span><span class="kw">pub </span>code: FixedString,
     <span class="doccomment">/// Time at which the invite was created.
     </span><span class="kw">pub </span>created_at: Timestamp,
     <span class="doccomment">/// Guild of the invite.
@@ -1996,8 +1762,8 @@
     <span class="doccomment">/// User whose stream to display for this voice channel stream invite.
     </span><span class="kw">pub </span>target_user: <span class="prelude-ty">Option</span>&lt;User&gt;,
     <span class="doccomment">/// Embedded application to open for this voice channel embedded application invite.
-    </span><span class="kw">pub </span>target_application: <span class="prelude-ty">Option</span>&lt;serde_json::Value&gt;,
-    <span class="doccomment">/// they&#39;re assigned a role).
+    </span><span class="kw">pub </span>target_application: <span class="prelude-ty">Option</span>&lt;Value&gt;,
+    <span class="doccomment">/// they're assigned a role).
     </span><span class="kw">pub </span>temporary: bool,
     <span class="doccomment">/// How many times the invite has been used (always will be 0).
     </span><span class="kw">pub </span>uses: u64,
@@ -2006,29 +1772,32 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INVITES`] and [`Permissions::MANAGE_CHANNELS´] permission.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#invite-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>InviteDeleteEvent {
     <span class="kw">pub </span>channel_id: ChannelId,
     <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
-    <span class="kw">pub </span>code: String,
+    <span class="kw">pub </span>code: FixedString,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildUpdateEvent {
-    <span class="doccomment">/// GuildUpdateEvent doesn&#39;t have GuildCreate&#39;s extra fields, so this is a partial guild
+    <span class="doccomment">/// GuildUpdateEvent doesn't have GuildCreate's extra fields, so this is a partial guild
     </span><span class="kw">pub </span>guild: PartialGuild,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGES`] or [`GatewayIntents::DIRECT_MESSAGES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MessageCreateEvent {
@@ -2038,32 +1807,34 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGES`] or [`GatewayIntents::DIRECT_MESSAGES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-delete-bulk).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MessageDeleteBulkEvent {
     <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="kw">pub </span>channel_id: ChannelId,
-    <span class="kw">pub </span>ids: Vec&lt;MessageId&gt;,
+    <span class="kw">pub </span>ids: FixedArray&lt;MessageId&gt;,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGES`] or [`GatewayIntents::DIRECT_MESSAGES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-delete).
-</span><span class="attr">#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MessageDeleteEvent {
     <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="kw">pub </span>channel_id: ChannelId,
-    <span class="attr">#[serde(rename = <span class="string">&quot;id&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"id"</span>)]
     </span><span class="kw">pub </span>message_id: MessageId,
 }
 
 <span class="comment">// Any value that is present is considered Some value, including null.
 // Taken from https://github.com/serde-rs/serde/issues/984#issuecomment-314143738
-</span><span class="kw">fn </span>deserialize_some&lt;<span class="lifetime">&#39;de</span>, T, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, D::Error&gt;
+</span><span class="kw">fn </span>deserialize_some&lt;<span class="lifetime">'de</span>, T, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, D::Error&gt;
 <span class="kw">where
-    </span>T: Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;,
-    D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: Deserialize&lt;<span class="lifetime">'de</span>&gt;,
+    D: Deserializer&lt;<span class="lifetime">'de</span>&gt;,
 {
     Deserialize::deserialize(deserializer).map(<span class="prelude-val">Some</span>)
 }
@@ -2076,46 +1847,47 @@
 /// [`Self::guild_id`])
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MessageUpdateEvent {
     <span class="kw">pub </span>id: MessageId,
     <span class="kw">pub </span>channel_id: ChannelId,
     <span class="kw">pub </span>author: <span class="prelude-ty">Option</span>&lt;User&gt;,
-    <span class="kw">pub </span>content: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>content: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
     <span class="kw">pub </span>timestamp: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
     <span class="kw">pub </span>edited_timestamp: <span class="prelude-ty">Option</span>&lt;Timestamp&gt;,
     <span class="kw">pub </span>tts: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="kw">pub </span>mention_everyone: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-    <span class="kw">pub </span>mentions: <span class="prelude-ty">Option</span>&lt;Vec&lt;User&gt;&gt;,
-    <span class="kw">pub </span>mention_roles: <span class="prelude-ty">Option</span>&lt;Vec&lt;RoleId&gt;&gt;,
-    <span class="kw">pub </span>mention_channels: <span class="prelude-ty">Option</span>&lt;Vec&lt;ChannelMention&gt;&gt;,
-    <span class="kw">pub </span>attachments: <span class="prelude-ty">Option</span>&lt;Vec&lt;Attachment&gt;&gt;,
-    <span class="kw">pub </span>embeds: <span class="prelude-ty">Option</span>&lt;Vec&lt;Embed&gt;&gt;,
-    <span class="kw">pub </span>reactions: <span class="prelude-ty">Option</span>&lt;Vec&lt;MessageReaction&gt;&gt;,
+    <span class="kw">pub </span>mentions: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;User&gt;&gt;,
+    <span class="kw">pub </span>mention_roles: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;RoleId&gt;&gt;,
+    <span class="kw">pub </span>mention_channels: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;ChannelMention&gt;&gt;,
+    <span class="kw">pub </span>attachments: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;Attachment&gt;&gt;,
+    <span class="kw">pub </span>embeds: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;Embed&gt;&gt;,
+    <span class="kw">pub </span>reactions: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;MessageReaction&gt;&gt;,
     <span class="kw">pub </span>pinned: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>webhook_id: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;WebhookId&gt;&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span><span class="kw">pub </span>kind: <span class="prelude-ty">Option</span>&lt;MessageType&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>activity: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;MessageActivity&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>application: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;MessageApplication&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>application_id: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;ApplicationId&gt;&gt;,
     <span class="kw">pub </span>message_reference: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;MessageReference&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>flags: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;MessageFlags&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>referenced_message: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;Message&gt;&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
-    </span><span class="kw">pub </span>interaction: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteraction&gt;&gt;&gt;,
-    <span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_some&quot;</span>)]
-    </span><span class="kw">pub </span>thread: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;GuildChannel&gt;&gt;,
-    <span class="kw">pub </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ActionRow&gt;&gt;,
-    <span class="kw">pub </span>sticker_items: <span class="prelude-ty">Option</span>&lt;Vec&lt;StickerItem&gt;&gt;,
-    <span class="kw">pub </span>position: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;u64&gt;&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+    </span><span class="kw">pub </span>interaction_metadata: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteractionMetadata&gt;&gt;&gt;,
+    <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
+    </span><span class="kw">pub </span>thread: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;GuildChannel&gt;&gt;&gt;,
+    <span class="kw">pub </span>components: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;ActionRow&gt;&gt;,
+    <span class="kw">pub </span>sticker_items: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;StickerItem&gt;&gt;,
+    <span class="kw">pub </span>position: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;NonMaxU64&gt;&gt;,
     <span class="kw">pub </span>role_subscription_data: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;RoleSubscriptionData&gt;&gt;,
     <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
     <span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;PartialMember&gt;&gt;&gt;,
@@ -2128,7 +1900,6 @@
     </span><span class="kw">pub fn </span>apply_to_message(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;mut </span>Message) {
         <span class="comment">// Destructure, so we get an `unused` warning when we forget to process one of the fields
         // in this method
-        </span><span class="attr">#[allow(deprecated)] </span><span class="comment">// yes rust, exhaustive means exhaustive, even the deprecated ones
         </span><span class="kw">let </span><span class="self">Self </span>{
             id,
             channel_id,
@@ -2153,7 +1924,8 @@
             message_reference,
             flags,
             referenced_message,
-            interaction,
+            <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+            </span>interaction_metadata,
             thread,
             components,
             sticker_items,
@@ -2163,67 +1935,62 @@
             member,
         } = <span class="self">self</span>;
 
-        <span class="comment">// Discord won&#39;t send a MessageUpdateEvent with a different MessageId and ChannelId than we
-        // already have. But let&#39;s set the fields anyways, in case the user calls this method with
+        <span class="comment">// Discord won't send a MessageUpdateEvent with a different MessageId and ChannelId than we
+        // already have. But let's set the fields anyways, in case the user calls this method with
         // a self-constructed MessageUpdateEvent that does change these fields.
         </span>message.id = <span class="kw-2">*</span>id;
         message.channel_id = <span class="kw-2">*</span>channel_id;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = author { message.author = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = content { message.content = x.clone() }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = content { message.content.clone_from(x) }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = timestamp { message.timestamp = x.clone() }
         message.edited_timestamp = <span class="kw-2">*</span>edited_timestamp;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = tts { message.tts = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_everyone { message.mention_everyone = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mentions { message.mentions = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_roles { message.mention_roles = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_channels { message.mention_channels = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = attachments { message.attachments = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = embeds { message.embeds = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = reactions { message.reactions = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = pinned { message.pinned = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = webhook_id { message.webhook_id = x.clone() }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = tts { message.set_tts(<span class="kw-2">*</span>x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_everyone { message.set_mention_everyone(<span class="kw-2">*</span>x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mentions { message.mentions.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_roles { message.mention_roles.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = mention_channels { message.mention_channels.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = attachments { message.attachments.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = embeds { message.embeds.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = reactions { message.reactions.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = pinned { message.set_pinned(<span class="kw-2">*</span>x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = webhook_id { message.webhook_id.clone_from(x) }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = kind { message.kind = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = activity { message.activity = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = application { message.application = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = application_id { message.application_id = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = message_reference { message.message_reference = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = flags { message.flags = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = referenced_message { message.referenced_message = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = interaction { message.interaction = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = thread { message.thread = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = components { message.components = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = sticker_items { message.sticker_items = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = position { message.position = x.clone() }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = role_subscription_data { message.role_subscription_data = x.clone() }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = activity { message.activity.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = application { message.application.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = application_id { message.application_id.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = message_reference { message.message_reference.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = flags { message.flags.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = referenced_message { message.referenced_message.clone_from(x) }
+        <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(x) = interaction_metadata { message.interaction_metadata.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = thread { message.thread.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = components { message.components.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = sticker_items { message.sticker_items.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = position { message.position.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = role_subscription_data { message.role_subscription_data.clone_from(x) }
         message.guild_id = <span class="kw-2">*</span>guild_id;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = member { message.member = x.clone() }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = member { message.member.clone_from(x) }
     }
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_PRESENCES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#presence-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>PresenceUpdateEvent {
     <span class="kw">pub </span>presence: Presence,
 }
 
-<span class="doccomment">/// Not officially documented.
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(transparent)]
-#[non_exhaustive]
-</span><span class="kw">pub struct </span>PresencesReplaceEvent {
-    <span class="kw">pub </span>presences: Vec&lt;Presence&gt;,
-}
-
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGE_REACTIONS`] or
 /// [`GatewayIntents::DIRECT_MESSAGE_REACTIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-reaction-add).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReactionAddEvent {
@@ -2234,11 +2001,12 @@
 /// [`GatewayIntents::DIRECT_MESSAGE_REACTIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReactionRemoveEvent {
-    <span class="comment">// The Discord API doesn&#39;t share the same schema for Reaction Remove Event and Reaction Add
+    <span class="comment">// The Discord API doesn't share the same schema for Reaction Remove Event and Reaction Add
     // Event (which [`Reaction`] is), but the two currently match up well enough, so re-using the
     // [`Reaction`] struct here is fine.
     </span><span class="kw">pub </span>reaction: Reaction,
@@ -2248,7 +2016,8 @@
 /// [`GatewayIntents::DIRECT_MESSAGE_REACTIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove-all).
-</span><span class="attr">#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReactionRemoveAllEvent {
     <span class="kw">pub </span>channel_id: ChannelId,
@@ -2260,19 +2029,21 @@
 /// [`GatewayIntents::DIRECT_MESSAGE_REACTIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-reaction-remove-emoji-message-reaction-remove-emoji-event-fields).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReactionRemoveEmojiEvent {
     <span class="kw">pub </span>reaction: Reaction,
 }
 
-<span class="doccomment">/// The &quot;Ready&quot; event, containing initial ready cache
+<span class="doccomment">/// The "Ready" event, containing initial ready cache
 ///
 /// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#ready).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ReadyEvent {
@@ -2282,14 +2053,16 @@
 <span class="doccomment">/// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#resumed).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ResumedEvent {}
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGE_TYPING`] or [`GatewayIntents::DIRECT_MESSAGE_TYPING`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#typing-start).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>TypingStartEvent {
     <span class="doccomment">/// ID of the channel.
@@ -2304,19 +2077,13 @@
     </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;Member&gt;,
 }
 
-<span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
-#[non_exhaustive]
-</span><span class="kw">pub struct </span>UnknownEvent {
-    <span class="kw">pub </span>kind: String,
-    <span class="kw">pub </span>value: Value,
-}
-
-<span class="doccomment">/// Sent when properties about the current bot&#39;s user change.
+<span class="doccomment">/// Sent when properties about the current bot's user change.
 ///
 /// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#user-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>UserUpdateEvent {
@@ -2326,28 +2093,43 @@
 <span class="doccomment">/// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#voice-server-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>VoiceServerUpdateEvent {
-    <span class="kw">pub </span>token: String,
-    <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
-    <span class="kw">pub </span>endpoint: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>token: FixedString,
+    <span class="kw">pub </span>guild_id: GuildId,
+    <span class="kw">pub </span>endpoint: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_VOICE_STATES`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#voice-state-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>VoiceStateUpdateEvent {
     <span class="kw">pub </span>voice_state: VoiceState,
 }
 
+<span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
+///
+/// [Incomplete documentation](https://github.com/discord/discord-api-docs/pull/6398)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>VoiceChannelStatusUpdateEvent {
+    <span class="kw">pub </span>status: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u16&gt;&gt;,
+    <span class="kw">pub </span>id: ChannelId,
+    <span class="kw">pub </span>guild_id: GuildId,
+}
+
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_WEBHOOKS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#webhooks-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>WebhookUpdateEvent {
     <span class="kw">pub </span>channel_id: ChannelId,
@@ -2357,7 +2139,8 @@
 <span class="doccomment">/// Requires no gateway intents.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#interaction-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>InteractionCreateEvent {
@@ -2367,7 +2150,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INTEGRATIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#integration-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>IntegrationCreateEvent {
@@ -2377,7 +2161,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INTEGRATIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#integration-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>IntegrationUpdateEvent {
@@ -2387,7 +2172,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_INTEGRATIONS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#integration-delete).
-</span><span class="attr">#[derive(Clone, Debug, Serialize, Deserialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>IntegrationDeleteEvent {
     <span class="kw">pub </span>id: IntegrationId,
@@ -2398,7 +2184,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#stage-instance-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StageInstanceCreateEvent {
@@ -2408,7 +2195,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#stage-instance-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StageInstanceUpdateEvent {
@@ -2418,7 +2206,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#stage-instance-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>StageInstanceDeleteEvent {
@@ -2428,7 +2217,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadCreateEvent {
@@ -2438,7 +2228,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadUpdateEvent {
@@ -2448,7 +2239,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadDeleteEvent {
@@ -2458,7 +2250,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-list-sync).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadListSyncEvent {
     <span class="doccomment">/// The guild Id.
@@ -2468,17 +2261,18 @@
     /// well, so you know to clear that data.
     </span><span class="kw">pub </span>channel_ids: <span class="prelude-ty">Option</span>&lt;Vec&lt;ChannelId&gt;&gt;,
     <span class="doccomment">/// All active threads in the given channels that the current user can access.
-    </span><span class="kw">pub </span>threads: Vec&lt;GuildChannel&gt;,
+    </span><span class="kw">pub </span>threads: FixedArray&lt;GuildChannel&gt;,
     <span class="doccomment">/// All thread member objects from the synced threads for the current user, indicating which
     /// threads the current user has been added to
-    </span><span class="kw">pub </span>members: Vec&lt;ThreadMember&gt;,
+    </span><span class="kw">pub </span>members: FixedArray&lt;ThreadMember&gt;,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILDS`], and, to receive this event for other users,
 /// [`GatewayIntents::GUILD_MEMBERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-member-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadMemberUpdateEvent {
@@ -2488,7 +2282,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_MEMBERS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#thread-members-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ThreadMembersUpdateEvent {
     <span class="doccomment">/// The id of the thread.
@@ -2502,16 +2297,17 @@
     </span><span class="kw">pub </span>member_count: i16,
     <span class="doccomment">/// The users who were added to the thread.
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>added_members: Vec&lt;ThreadMember&gt;,
+    </span><span class="kw">pub </span>added_members: FixedArray&lt;ThreadMember&gt;,
     <span class="doccomment">/// The ids of the users who were removed from the thread.
     </span><span class="attr">#[serde(default)]
-    </span><span class="kw">pub </span>removed_member_ids: Vec&lt;UserId&gt;,
+    </span><span class="kw">pub </span>removed_member_ids: FixedArray&lt;UserId&gt;,
 }
 
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_SCHEDULED_EVENTS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-create).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildScheduledEventCreateEvent {
@@ -2521,7 +2317,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_SCHEDULED_EVENTS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-update).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildScheduledEventUpdateEvent {
@@ -2531,7 +2328,8 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_SCHEDULED_EVENTS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-delete).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(transparent)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildScheduledEventDeleteEvent {
@@ -2541,10 +2339,11 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_SCHEDULED_EVENTS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-user-add).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildScheduledEventUserAddEvent {
-    <span class="attr">#[serde(rename = <span class="string">&quot;guild_scheduled_event_id&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"guild_scheduled_event_id"</span>)]
     </span><span class="kw">pub </span>scheduled_event_id: ScheduledEventId,
     <span class="kw">pub </span>user_id: UserId,
     <span class="kw">pub </span>guild_id: GuildId,
@@ -2553,22 +2352,90 @@
 <span class="doccomment">/// Requires [`GatewayIntents::GUILD_SCHEDULED_EVENTS`].
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#guild-scheduled-event-user-remove).
-</span><span class="attr">#[derive(Clone, Debug, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>GuildScheduledEventUserRemoveEvent {
-    <span class="attr">#[serde(rename = <span class="string">&quot;guild_scheduled_event_id&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"guild_scheduled_event_id"</span>)]
     </span><span class="kw">pub </span>scheduled_event_id: ScheduledEventId,
     <span class="kw">pub </span>user_id: UserId,
     <span class="kw">pub </span>guild_id: GuildId,
 }
 
+<span class="doccomment">/// Requires no gateway intents.
+///
+/// [Discord docs](https://discord.com/developers/docs/monetization/entitlements#new-entitlement)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(transparent)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>EntitlementCreateEvent {
+    <span class="kw">pub </span>entitlement: Entitlement,
+}
+
+<span class="doccomment">/// Requires no gateway intents.
+///
+/// [Discord docs](https://discord.com/developers/docs/monetization/entitlements#new-entitlement)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(transparent)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>EntitlementUpdateEvent {
+    <span class="kw">pub </span>entitlement: Entitlement,
+}
+
+<span class="doccomment">/// Requires no gateway intents.
+///
+/// [Discord docs](https://discord.com/developers/docs/monetization/entitlements#new-entitlement)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(transparent)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>EntitlementDeleteEvent {
+    <span class="kw">pub </span>entitlement: Entitlement,
+}
+
+<span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGE_POLLS`] or [`GatewayIntents::DIRECT_MESSAGE_POLLS`].
+///
+/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-poll-vote-add)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>MessagePollVoteAddEvent {
+    <span class="kw">pub </span>user_id: UserId,
+    <span class="kw">pub </span>channel_id: ChannelId,
+    <span class="kw">pub </span>message_id: MessageId,
+    <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
+    <span class="kw">pub </span>answer_id: AnswerId,
+}
+
+<span class="doccomment">/// Requires [`GatewayIntents::GUILD_MESSAGE_POLLS`] or [`GatewayIntents::DIRECT_MESSAGE_POLLS`].
+///
+/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#message-poll-vote-remove)
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[non_exhaustive]
+</span><span class="kw">pub struct </span>MessagePollVoteRemoveEvent {
+    <span class="kw">pub </span>user_id: UserId,
+    <span class="kw">pub </span>channel_id: ChannelId,
+    <span class="kw">pub </span>message_id: MessageId,
+    <span class="kw">pub </span>guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;,
+    <span class="kw">pub </span>answer_id: AnswerId,
+}
+
 <span class="doccomment">/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#payload-structure).
-</span><span class="attr">#[allow(clippy::large_enum_variant)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
 #[derive(Debug, Clone, Serialize)]
 #[non_exhaustive]
 #[serde(untagged)]
 </span><span class="kw">pub enum </span>GatewayEvent {
-    Dispatch(u64, Event),
+    Dispatch {
+        seq: u64,
+        <span class="comment">// Avoid deserialising straight away to handle errors and get access to `seq`.
+        </span>data: JsonMap,
+        <span class="comment">// Used for debugging, if the data cannot be deserialised.
+        </span>original_str: FixedString,
+    },
     Heartbeat(u64),
     Reconnect,
     <span class="doccomment">/// Whether the session can be resumed.
@@ -2578,34 +2445,34 @@
 }
 
 <span class="comment">// Manual impl needed to emulate integer enum tags
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>GatewayEvent {
-    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GatewayEvent {
+    <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>map = JsonMap::deserialize(deserializer)<span class="question-mark">?</span>;
-        <span class="kw">let </span>seq = remove_from_map_opt(<span class="kw-2">&amp;mut </span>map, <span class="string">&quot;s&quot;</span>)<span class="question-mark">?</span>.flatten();
+        <span class="kw">let </span>seq = remove_from_map_opt(<span class="kw-2">&amp;mut </span>map, <span class="string">"s"</span>)<span class="question-mark">?</span>.flatten();
 
-        <span class="prelude-val">Ok</span>(<span class="kw">match </span>remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">&quot;op&quot;</span>)<span class="question-mark">? </span>{
-            Opcode::Dispatch =&gt; <span class="self">Self</span>::Dispatch(
-                seq.ok_or_else(|| DeError::missing_field(<span class="string">&quot;s&quot;</span>))<span class="question-mark">?</span>,
-                deserialize_val(Value::from(map))<span class="question-mark">?</span>,
-            ),
-            Opcode::Heartbeat =&gt; {
-                GatewayEvent::Heartbeat(seq.ok_or_else(|| DeError::missing_field(<span class="string">&quot;s&quot;</span>))<span class="question-mark">?</span>)
+        <span class="prelude-val">Ok</span>(<span class="kw">match </span>remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"op"</span>)<span class="question-mark">? </span>{
+            Opcode::Dispatch =&gt; {
+                <span class="self">Self</span>::Dispatch {
+                    seq: seq.ok_or_else(|| DeError::missing_field(<span class="string">"s"</span>))<span class="question-mark">?</span>,
+                    <span class="comment">// Filled in in recv_event
+                    </span>original_str: FixedString::new(),
+                    data: map,
+                }
             },
-            Opcode::InvalidSession =&gt; {
-                GatewayEvent::InvalidateSession(remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">&quot;d&quot;</span>)<span class="question-mark">?</span>)
-            },
+            Opcode::Heartbeat =&gt; <span class="self">Self</span>::Heartbeat(seq.ok_or_else(|| DeError::missing_field(<span class="string">"s"</span>))<span class="question-mark">?</span>),
+            Opcode::InvalidSession =&gt; <span class="self">Self</span>::InvalidateSession(remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"d"</span>)<span class="question-mark">?</span>),
             Opcode::Hello =&gt; {
                 <span class="attr">#[derive(Deserialize)]
                 </span><span class="kw">struct </span>HelloPayload {
                     heartbeat_interval: u64,
                 }
 
-                <span class="kw">let </span>inner: HelloPayload = remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">&quot;d&quot;</span>)<span class="question-mark">?</span>;
-                GatewayEvent::Hello(inner.heartbeat_interval)
+                <span class="kw">let </span>inner: HelloPayload = remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"d"</span>)<span class="question-mark">?</span>;
+                <span class="self">Self</span>::Hello(inner.heartbeat_interval)
             },
-            Opcode::Reconnect =&gt; GatewayEvent::Reconnect,
-            Opcode::HeartbeatAck =&gt; GatewayEvent::HeartbeatAck,
-            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(DeError::custom(<span class="string">&quot;invalid opcode&quot;</span>)),
+            Opcode::Reconnect =&gt; <span class="self">Self</span>::Reconnect,
+            Opcode::HeartbeatAck =&gt; <span class="self">Self</span>::HeartbeatAck,
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(DeError::custom(<span class="string">"invalid opcode"</span>)),
         })
     }
 }
@@ -2613,10 +2480,11 @@
 <span class="doccomment">/// Event received over a websocket connection
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#receive-events).
-</span><span class="attr">#[allow(clippy::large_enum_variant)]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = <span class="string">&quot;SCREAMING_SNAKE_CASE&quot;</span>)]
-#[serde(tag = <span class="string">&quot;t&quot;</span>, content = <span class="string">&quot;d&quot;</span>)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Deserialize, Serialize, EnumCount, VariantNames, IntoStaticStr)]
+#[strum(serialize_all = <span class="string">"SCREAMING_SNAKE_CASE"</span>)]
+#[serde(rename_all = <span class="string">"SCREAMING_SNAKE_CASE"</span>)]
+#[serde(tag = <span class="string">"t"</span>, content = <span class="string">"d"</span>)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>Event {
     <span class="doccomment">/// The permissions of an [`Command`] was changed.
@@ -2625,6 +2493,7 @@
     ///
     /// [`Command`]: crate::model::application::Command
     /// [`EventHandler::command_permissions_update`]: crate::client::EventHandler::command_permissions_update
+    </span><span class="attr">#[serde(rename = <span class="string">"APPLICATION_COMMAND_PERMISSIONS_UPDATE"</span>)]
     </span>CommandPermissionsUpdate(CommandPermissionsUpdateEvent),
     <span class="doccomment">/// A [`Rule`] was created.
     ///
@@ -2632,6 +2501,7 @@
     ///
     /// [`EventHandler::auto_moderation_rule_create`]:
     /// crate::client::EventHandler::auto_moderation_rule_create
+    </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_CREATE"</span>)]
     </span>AutoModRuleCreate(AutoModRuleCreateEvent),
     <span class="doccomment">/// A [`Rule`] has been updated.
     ///
@@ -2639,6 +2509,7 @@
     ///
     /// [`EventHandler::auto_moderation_rule_update`]:
     /// crate::client::EventHandler::auto_moderation_rule_update
+    </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_UPDATE"</span>)]
     </span>AutoModRuleUpdate(AutoModRuleUpdateEvent),
     <span class="doccomment">/// A [`Rule`] was deleted.
     ///
@@ -2646,6 +2517,7 @@
     ///
     /// [`EventHandler::auto_moderation_rule_delete`]:
     /// crate::client::EventHandler::auto_moderation_rule_delete
+    </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_DELETE"</span>)]
     </span>AutoModRuleDelete(AutoModRuleDeleteEvent),
     <span class="doccomment">/// A [`Rule`] was triggered and an action was executed.
     ///
@@ -2653,6 +2525,7 @@
     ///
     /// [`EventHandler::auto_moderation_action_execution`]:
     /// crate::client::EventHandler::auto_moderation_action_execution
+    </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_ACTION_EXECUTION"</span>)]
     </span>AutoModActionExecution(AutoModActionExecutionEvent),
     <span class="doccomment">/// A [`Channel`] was created.
     ///
@@ -2687,7 +2560,7 @@
     GuildIntegrationsUpdate(GuildIntegrationsUpdateEvent),
     GuildMemberAdd(GuildMemberAddEvent),
     GuildMemberRemove(GuildMemberRemoveEvent),
-    <span class="doccomment">/// A member&#39;s roles have changed
+    <span class="doccomment">/// A member's roles have changed
     </span>GuildMemberUpdate(GuildMemberUpdateEvent),
     GuildMembersChunk(GuildMembersChunkEvent),
     GuildRoleCreate(GuildRoleCreateEvent),
@@ -2713,37 +2586,35 @@
     MessageDeleteBulk(MessageDeleteBulkEvent),
     <span class="doccomment">/// A message has been edited, either by the user or the system
     </span>MessageUpdate(MessageUpdateEvent),
-    <span class="doccomment">/// A member&#39;s presence state (or username or avatar) has changed
+    <span class="doccomment">/// A member's presence state (or username or avatar) has changed
     </span>PresenceUpdate(PresenceUpdateEvent),
-    <span class="doccomment">/// The presence list of the user&#39;s friends should be replaced entirely
-    </span>PresencesReplace(PresencesReplaceEvent),
     <span class="doccomment">/// A reaction was added to a message.
     ///
     /// Fires the [`EventHandler::reaction_add`] event handler.
     ///
     /// [`EventHandler::reaction_add`]: crate::client::EventHandler::reaction_add
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MESSAGE_REACTION_ADD&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_ADD"</span>)]
     </span>ReactionAdd(ReactionAddEvent),
     <span class="doccomment">/// A reaction was removed to a message.
     ///
     /// Fires the [`EventHandler::reaction_remove`] event handler.
     ///
     /// [`EventHandler::reaction_remove`]: crate::client::EventHandler::reaction_remove
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MESSAGE_REACTION_REMOVE&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE"</span>)]
     </span>ReactionRemove(ReactionRemoveEvent),
     <span class="doccomment">/// A request was issued to remove all [`Reaction`]s from a [`Message`].
     ///
     /// Fires the [`EventHandler::reaction_remove_all`] event handler.
     ///
     /// [`EventHandler::reaction_remove_all`]: crate::client::EventHandler::reaction_remove_all
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MESSAGE_REACTION_REMOVE_ALL&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE_ALL"</span>)]
     </span>ReactionRemoveAll(ReactionRemoveAllEvent),
     <span class="doccomment">/// Sent when a bot removes all instances of a given emoji from the reactions of a message.
     ///
     /// Fires the [`EventHandler::reaction_remove_emoji`] event handler.
     ///
     /// [`EventHandler::reaction_remove_emoji`]: crate::client::EventHandler::reaction_remove_emoji
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;MESSAGE_REACTION_REMOVE_EMOJI&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE_EMOJI"</span>)]
     </span>ReactionRemoveEmoji(ReactionRemoveEmojiEvent),
     <span class="doccomment">/// The first event in a connection, containing the initial ready cache.
     ///
@@ -2753,13 +2624,16 @@
     </span>Resumed(ResumedEvent),
     <span class="doccomment">/// A user is typing; considered to last 5 seconds
     </span>TypingStart(TypingStartEvent),
-    <span class="doccomment">/// Update to the logged-in user&#39;s information
+    <span class="doccomment">/// Update to the logged-in user's information
     </span>UserUpdate(UserUpdateEvent),
-    <span class="doccomment">/// A member&#39;s voice state has changed
+    <span class="doccomment">/// A member's voice state has changed
     </span>VoiceStateUpdate(VoiceStateUpdateEvent),
     <span class="doccomment">/// Voice server information is available
     </span>VoiceServerUpdate(VoiceServerUpdateEvent),
+    <span class="doccomment">/// Fired when the status of a Voice Channel changes.
+    </span>VoiceChannelStatusUpdate(VoiceChannelStatusUpdateEvent),
     <span class="doccomment">/// A webhook for a [channel][`GuildChannel`] was updated in a [`Guild`].
+    </span><span class="attr">#[serde(rename = <span class="string">"WEBHOOKS_UPDATE"</span>)]
     </span>WebhookUpdate(WebhookUpdateEvent),
     <span class="doccomment">/// An interaction was created.
     </span>InteractionCreate(InteractionCreateEvent),
@@ -2798,424 +2672,50 @@
     </span>GuildScheduledEventUserAdd(GuildScheduledEventUserAddEvent),
     <span class="doccomment">/// A guild member has unsubscribed from a scheduled event.
     </span>GuildScheduledEventUserRemove(GuildScheduledEventUserRemoveEvent),
-    <span class="doccomment">/// An event type not covered by the above
-    </span><span class="attr">#[serde(other, deserialize_with = <span class="string">&quot;ignore_input&quot;</span>)]
-    </span>Unknown,
+    <span class="doccomment">/// A user subscribed to a SKU.
+    </span>EntitlementCreate(EntitlementCreateEvent),
+    <span class="doccomment">/// A user's entitlement was updated or renewed.
+    </span>EntitlementUpdate(EntitlementUpdateEvent),
+    <span class="doccomment">/// A user's entitlement was deleted by Discord, or refunded.
+    </span>EntitlementDelete(EntitlementDeleteEvent),
+    <span class="doccomment">/// A user has voted on a Message Poll.
+    </span>MessagePollVoteAdd(MessagePollVoteAddEvent),
+    <span class="doccomment">/// A user has removed a previous vote on a Message Poll.
+    </span>MessagePollVoteRemove(MessagePollVoteRemoveEvent),
 }
 
 <span class="kw">impl </span>Event {
-    <span class="doccomment">/// Return the type of this event.
+    <span class="doccomment">/// Returns the event name of this event.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub const fn </span>event_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EventType {
-        <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::CommandPermissionsUpdate(<span class="kw">_</span>) =&gt; EventType::CommandPermissionsUpdate,
-            <span class="self">Self</span>::AutoModRuleCreate(<span class="kw">_</span>) =&gt; EventType::AutoModRuleCreate,
-            <span class="self">Self</span>::AutoModRuleUpdate(<span class="kw">_</span>) =&gt; EventType::AutoModRuleUpdate,
-            <span class="self">Self</span>::AutoModRuleDelete(<span class="kw">_</span>) =&gt; EventType::AutoModRuleDelete,
-            <span class="self">Self</span>::AutoModActionExecution(<span class="kw">_</span>) =&gt; EventType::AutoModActionExecution,
-            <span class="self">Self</span>::ChannelCreate(<span class="kw">_</span>) =&gt; EventType::ChannelCreate,
-            <span class="self">Self</span>::ChannelDelete(<span class="kw">_</span>) =&gt; EventType::ChannelDelete,
-            <span class="self">Self</span>::ChannelPinsUpdate(<span class="kw">_</span>) =&gt; EventType::ChannelPinsUpdate,
-            <span class="self">Self</span>::ChannelUpdate(<span class="kw">_</span>) =&gt; EventType::ChannelUpdate,
-            <span class="self">Self</span>::GuildAuditLogEntryCreate(<span class="kw">_</span>) =&gt; EventType::GuildAuditLogEntryCreate,
-            <span class="self">Self</span>::GuildBanAdd(<span class="kw">_</span>) =&gt; EventType::GuildBanAdd,
-            <span class="self">Self</span>::GuildBanRemove(<span class="kw">_</span>) =&gt; EventType::GuildBanRemove,
-            <span class="self">Self</span>::GuildCreate(<span class="kw">_</span>) =&gt; EventType::GuildCreate,
-            <span class="self">Self</span>::GuildDelete(<span class="kw">_</span>) =&gt; EventType::GuildDelete,
-            <span class="self">Self</span>::GuildEmojisUpdate(<span class="kw">_</span>) =&gt; EventType::GuildEmojisUpdate,
-            <span class="self">Self</span>::GuildIntegrationsUpdate(<span class="kw">_</span>) =&gt; EventType::GuildIntegrationsUpdate,
-            <span class="self">Self</span>::GuildMemberAdd(<span class="kw">_</span>) =&gt; EventType::GuildMemberAdd,
-            <span class="self">Self</span>::GuildMemberRemove(<span class="kw">_</span>) =&gt; EventType::GuildMemberRemove,
-            <span class="self">Self</span>::GuildMemberUpdate(<span class="kw">_</span>) =&gt; EventType::GuildMemberUpdate,
-            <span class="self">Self</span>::GuildMembersChunk(<span class="kw">_</span>) =&gt; EventType::GuildMembersChunk,
-            <span class="self">Self</span>::GuildRoleCreate(<span class="kw">_</span>) =&gt; EventType::GuildRoleCreate,
-            <span class="self">Self</span>::GuildRoleDelete(<span class="kw">_</span>) =&gt; EventType::GuildRoleDelete,
-            <span class="self">Self</span>::GuildRoleUpdate(<span class="kw">_</span>) =&gt; EventType::GuildRoleUpdate,
-            <span class="self">Self</span>::GuildStickersUpdate(<span class="kw">_</span>) =&gt; EventType::GuildStickersUpdate,
-            <span class="self">Self</span>::GuildUpdate(<span class="kw">_</span>) =&gt; EventType::GuildUpdate,
-            <span class="self">Self</span>::InviteCreate(<span class="kw">_</span>) =&gt; EventType::InviteCreate,
-            <span class="self">Self</span>::InviteDelete(<span class="kw">_</span>) =&gt; EventType::InviteDelete,
-            <span class="self">Self</span>::MessageCreate(<span class="kw">_</span>) =&gt; EventType::MessageCreate,
-            <span class="self">Self</span>::MessageDelete(<span class="kw">_</span>) =&gt; EventType::MessageDelete,
-            <span class="self">Self</span>::MessageDeleteBulk(<span class="kw">_</span>) =&gt; EventType::MessageDeleteBulk,
-            <span class="self">Self</span>::MessageUpdate(<span class="kw">_</span>) =&gt; EventType::MessageUpdate,
-            <span class="self">Self</span>::PresenceUpdate(<span class="kw">_</span>) =&gt; EventType::PresenceUpdate,
-            <span class="self">Self</span>::PresencesReplace(<span class="kw">_</span>) =&gt; EventType::PresencesReplace,
-            <span class="self">Self</span>::ReactionAdd(<span class="kw">_</span>) =&gt; EventType::ReactionAdd,
-            <span class="self">Self</span>::ReactionRemove(<span class="kw">_</span>) =&gt; EventType::ReactionRemove,
-            <span class="self">Self</span>::ReactionRemoveAll(<span class="kw">_</span>) =&gt; EventType::ReactionRemoveAll,
-            <span class="self">Self</span>::ReactionRemoveEmoji(<span class="kw">_</span>) =&gt; EventType::ReactionRemoveEmoji,
-            <span class="self">Self</span>::Ready(<span class="kw">_</span>) =&gt; EventType::Ready,
-            <span class="self">Self</span>::Resumed(<span class="kw">_</span>) =&gt; EventType::Resumed,
-            <span class="self">Self</span>::TypingStart(<span class="kw">_</span>) =&gt; EventType::TypingStart,
-            <span class="self">Self</span>::UserUpdate(<span class="kw">_</span>) =&gt; EventType::UserUpdate,
-            <span class="self">Self</span>::VoiceStateUpdate(<span class="kw">_</span>) =&gt; EventType::VoiceStateUpdate,
-            <span class="self">Self</span>::VoiceServerUpdate(<span class="kw">_</span>) =&gt; EventType::VoiceServerUpdate,
-            <span class="self">Self</span>::WebhookUpdate(<span class="kw">_</span>) =&gt; EventType::WebhookUpdate,
-            <span class="self">Self</span>::InteractionCreate(<span class="kw">_</span>) =&gt; EventType::InteractionCreate,
-            <span class="self">Self</span>::IntegrationCreate(<span class="kw">_</span>) =&gt; EventType::IntegrationCreate,
-            <span class="self">Self</span>::IntegrationUpdate(<span class="kw">_</span>) =&gt; EventType::IntegrationUpdate,
-            <span class="self">Self</span>::IntegrationDelete(<span class="kw">_</span>) =&gt; EventType::IntegrationDelete,
-            <span class="self">Self</span>::StageInstanceCreate(<span class="kw">_</span>) =&gt; EventType::StageInstanceCreate,
-            <span class="self">Self</span>::StageInstanceUpdate(<span class="kw">_</span>) =&gt; EventType::StageInstanceUpdate,
-            <span class="self">Self</span>::StageInstanceDelete(<span class="kw">_</span>) =&gt; EventType::StageInstanceDelete,
-            <span class="self">Self</span>::ThreadCreate(<span class="kw">_</span>) =&gt; EventType::ThreadCreate,
-            <span class="self">Self</span>::ThreadUpdate(<span class="kw">_</span>) =&gt; EventType::ThreadUpdate,
-            <span class="self">Self</span>::ThreadDelete(<span class="kw">_</span>) =&gt; EventType::ThreadDelete,
-            <span class="self">Self</span>::ThreadListSync(<span class="kw">_</span>) =&gt; EventType::ThreadListSync,
-            <span class="self">Self</span>::ThreadMemberUpdate(<span class="kw">_</span>) =&gt; EventType::ThreadMemberUpdate,
-            <span class="self">Self</span>::ThreadMembersUpdate(<span class="kw">_</span>) =&gt; EventType::ThreadMembersUpdate,
-            <span class="self">Self</span>::GuildScheduledEventCreate(<span class="kw">_</span>) =&gt; EventType::GuildScheduledEventCreate,
-            <span class="self">Self</span>::GuildScheduledEventUpdate(<span class="kw">_</span>) =&gt; EventType::GuildScheduledEventUpdate,
-            <span class="self">Self</span>::GuildScheduledEventDelete(<span class="kw">_</span>) =&gt; EventType::GuildScheduledEventDelete,
-            <span class="self">Self</span>::GuildScheduledEventUserAdd(<span class="kw">_</span>) =&gt; EventType::GuildScheduledEventUserAdd,
-            <span class="self">Self</span>::GuildScheduledEventUserRemove(<span class="kw">_</span>) =&gt; EventType::GuildScheduledEventUserRemove,
-            <span class="self">Self</span>::Unknown =&gt; EventType::Other,
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="self">self</span>.into()
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>deserialize_and_log(map: JsonMap, original_str: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        deserialize_val(Value::Object(map))
+            .map_err(|err| log_deserialisation_err(original_str, err))
+    }
+}
+
+<span class="kw">fn </span>filter_unknown_variant(json_err_dbg: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(msg) = json_err_dbg.strip_prefix(<span class="string">"Error(\"unknown variant `"</span>) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>((variant_name, <span class="kw">_</span>)) = msg.split_once(<span class="string">'`'</span>) {
+            <span class="macro">debug!</span>(<span class="string">"Unknown event: {variant_name}"</span>);
+            <span class="kw">return </span><span class="bool-val">true</span>;
         }
     }
-}
 
-<span class="doccomment">/// The type of event dispatch received from the gateway.
-///
-/// This is useful for deciding how to deserialize a received payload.
-///
-/// A Deserialization implementation is provided for deserializing raw event dispatch type strings
-/// to this enum, e.g. deserializing `&quot;CHANNEL_CREATE&quot;` to [`EventType::ChannelCreate`].
-///
-/// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#commands-and-events-gateway-events).
-</span><span class="attr">#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-#[non_exhaustive]
-</span><span class="kw">pub enum </span>EventType {
-    <span class="doccomment">/// Indicator that an application command permission update payload was received.
-    ///
-    /// This maps to [`CommandPermissionsUpdateEvent`].
-    </span>CommandPermissionsUpdate,
-    <span class="doccomment">/// Indicator that an auto moderation rule create payload was received.
-    ///
-    /// This maps to [`AutoModRuleCreateEvent`].
-    </span>AutoModRuleCreate,
-    <span class="doccomment">/// Indicator that an auto moderation rule update payload was received.
-    ///
-    /// This maps to [`AutoModRuleCreateEvent`].
-    </span>AutoModRuleUpdate,
-    <span class="doccomment">/// Indicator that an auto moderation rule delete payload was received.
-    ///
-    /// This maps to [`AutoModRuleDeleteEvent`].
-    </span>AutoModRuleDelete,
-    <span class="doccomment">/// Indicator that an auto moderation action execution payload was received.
-    ///
-    /// This maps to [`AutoModActionExecutionEvent`].
-    </span>AutoModActionExecution,
-    <span class="doccomment">/// Indicator that a channel create payload was received.
-    ///
-    /// This maps to [`ChannelCreateEvent`].
-    </span>ChannelCreate,
-    <span class="doccomment">/// Indicator that a channel delete payload was received.
-    ///
-    /// This maps to [`ChannelDeleteEvent`].
-    </span>ChannelDelete,
-    <span class="doccomment">/// Indicator that a channel pins update payload was received.
-    ///
-    /// This maps to [`ChannelPinsUpdateEvent`].
-    </span>ChannelPinsUpdate,
-    <span class="doccomment">/// Indicator that a channel update payload was received.
-    ///
-    /// This maps to [`ChannelUpdateEvent`].
-    </span>ChannelUpdate,
-    <span class="doccomment">/// Indicator that a new audit log entry was created.
-    ///
-    /// This maps to [`GuildAuditLogEntryCreateEvent`].
-    </span>GuildAuditLogEntryCreate,
-    <span class="doccomment">/// Indicator that a guild ban addition payload was received.
-    ///
-    /// This maps to [`GuildBanAddEvent`].
-    </span>GuildBanAdd,
-    <span class="doccomment">/// Indicator that a guild ban removal payload was received.
-    ///
-    /// This maps to [`GuildBanRemoveEvent`].
-    </span>GuildBanRemove,
-    <span class="doccomment">/// Indicator that a guild create payload was received.
-    ///
-    /// This maps to [`GuildCreateEvent`].
-    </span>GuildCreate,
-    <span class="doccomment">/// Indicator that a guild delete payload was received.
-    ///
-    /// This maps to [`GuildDeleteEvent`].
-    </span>GuildDelete,
-    <span class="doccomment">/// Indicator that a guild emojis update payload was received.
-    ///
-    /// This maps to [`GuildEmojisUpdateEvent`].
-    </span>GuildEmojisUpdate,
-    <span class="doccomment">/// Indicator that a guild integrations update payload was received.
-    ///
-    /// This maps to [`GuildIntegrationsUpdateEvent`].
-    </span>GuildIntegrationsUpdate,
-    <span class="doccomment">/// Indicator that a guild member add payload was received.
-    ///
-    /// This maps to [`GuildMemberAddEvent`].
-    </span>GuildMemberAdd,
-    <span class="doccomment">/// Indicator that a guild member remove payload was received.
-    ///
-    /// This maps to [`GuildMemberRemoveEvent`].
-    </span>GuildMemberRemove,
-    <span class="doccomment">/// Indicator that a guild member update payload was received.
-    ///
-    /// This maps to [`GuildMemberUpdateEvent`].
-    </span>GuildMemberUpdate,
-    <span class="doccomment">/// Indicator that a guild members chunk payload was received.
-    ///
-    /// This maps to [`GuildMembersChunkEvent`].
-    </span>GuildMembersChunk,
-    <span class="doccomment">/// Indicator that a guild role create payload was received.
-    ///
-    /// This maps to [`GuildRoleCreateEvent`].
-    </span>GuildRoleCreate,
-    <span class="doccomment">/// Indicator that a guild role delete payload was received.
-    ///
-    /// This maps to [`GuildRoleDeleteEvent`].
-    </span>GuildRoleDelete,
-    <span class="doccomment">/// Indicator that a guild role update payload was received.
-    ///
-    /// This maps to [`GuildRoleUpdateEvent`].
-    </span>GuildRoleUpdate,
-    <span class="doccomment">/// Indicator that a guild sticker update payload was received.
-    ///
-    /// This maps to [`GuildStickersUpdateEvent`].
-    </span>GuildStickersUpdate,
-    <span class="doccomment">/// Indicator that a guild update payload was received.
-    ///
-    /// This maps to [`GuildUpdateEvent`].
-    </span>GuildUpdate,
-    <span class="doccomment">/// Indicator that an invite was created.
-    ///
-    /// This maps to [`InviteCreateEvent`].
-    </span>InviteCreate,
-    <span class="doccomment">/// Indicator that an invite was deleted.
-    ///
-    /// This maps to [`InviteDeleteEvent`].
-    </span>InviteDelete,
-    <span class="doccomment">/// Indicator that a message create payload was received.
-    ///
-    /// This maps to [`MessageCreateEvent`].
-    </span>MessageCreate,
-    <span class="doccomment">/// Indicator that a message delete payload was received.
-    ///
-    /// This maps to [`MessageDeleteEvent`].
-    </span>MessageDelete,
-    <span class="doccomment">/// Indicator that a message delete bulk payload was received.
-    ///
-    /// This maps to [`MessageDeleteBulkEvent`].
-    </span>MessageDeleteBulk,
-    <span class="doccomment">/// Indicator that a message update payload was received.
-    ///
-    /// This maps to [`MessageUpdateEvent`].
-    </span>MessageUpdate,
-    <span class="doccomment">/// Indicator that a presence update payload was received.
-    ///
-    /// This maps to [`PresenceUpdateEvent`].
-    </span>PresenceUpdate,
-    <span class="doccomment">/// Indicator that a presences replace payload was received.
-    ///
-    /// This maps to [`PresencesReplaceEvent`].
-    </span>PresencesReplace,
-    <span class="doccomment">/// Indicator that a reaction add payload was received.
-    ///
-    /// This maps to [`ReactionAddEvent`].
-    </span>ReactionAdd,
-    <span class="doccomment">/// Indicator that a reaction remove payload was received.
-    ///
-    /// This maps to [`ReactionRemoveEvent`].
-    </span>ReactionRemove,
-    <span class="doccomment">/// Indicator that a reaction remove all payload was received.
-    ///
-    /// This maps to [`ReactionRemoveAllEvent`].
-    </span>ReactionRemoveAll,
-    <span class="doccomment">/// Indicator that a reaction remove emoji payload was received.
-    ///
-    /// This maps to [`ReactionRemoveEmojiEvent`].
-    </span>ReactionRemoveEmoji,
-    <span class="doccomment">/// Indicator that a ready payload was received.
-    ///
-    /// This maps to [`ReadyEvent`].
-    </span>Ready,
-    <span class="doccomment">/// Indicator that a resumed payload was received.
-    ///
-    /// This maps to [`ResumedEvent`].
-    </span>Resumed,
-    <span class="doccomment">/// Indicator that a typing start payload was received.
-    ///
-    /// This maps to [`TypingStartEvent`].
-    </span>TypingStart,
-    <span class="doccomment">/// Indicator that a user update payload was received.
-    ///
-    /// This maps to [`UserUpdateEvent`].
-    </span>UserUpdate,
-    <span class="doccomment">/// Indicator that a voice state payload was received.
-    ///
-    /// This maps to [`VoiceStateUpdateEvent`].
-    </span>VoiceStateUpdate,
-    <span class="doccomment">/// Indicator that a voice server update payload was received.
-    ///
-    /// This maps to [`VoiceServerUpdateEvent`].
-    </span>VoiceServerUpdate,
-    <span class="doccomment">/// Indicator that a webhook update payload was received.
-    ///
-    /// This maps to [`WebhookUpdateEvent`].
-    </span>WebhookUpdate,
-    <span class="doccomment">/// Indicator that an interaction was created.
-    ///
-    /// This maps to [`InteractionCreateEvent`].
-    </span>InteractionCreate,
-    <span class="doccomment">/// Indicator that an integration was created.
-    ///
-    /// This maps to [`IntegrationCreateEvent`].
-    </span>IntegrationCreate,
-    <span class="doccomment">/// Indicator that an integration was created.
-    ///
-    /// This maps to [`IntegrationUpdateEvent`].
-    </span>IntegrationUpdate,
-    <span class="doccomment">/// Indicator that an integration was created.
-    ///
-    /// This maps to [`IntegrationDeleteEvent`].
-    </span>IntegrationDelete,
-    <span class="doccomment">/// Indicator that a stage instance was created.
-    ///
-    /// This maps to [`StageInstanceCreateEvent`].
-    </span>StageInstanceCreate,
-    <span class="doccomment">/// Indicator that a stage instance was updated.
-    ///
-    /// This maps to [`StageInstanceUpdateEvent`].
-    </span>StageInstanceUpdate,
-    <span class="doccomment">/// Indicator that a stage instance was deleted.
-    ///
-    /// This maps to [`StageInstanceDeleteEvent`].
-    </span>StageInstanceDelete,
-    <span class="doccomment">/// Indicator that a thread was created or the current user
-    /// was added to a private thread.
-    ///
-    /// This maps to [`ThreadCreateEvent`].
-    </span>ThreadCreate,
-    <span class="doccomment">/// Indicator that a thread was updated.
-    ///
-    /// This maps to [`ThreadUpdateEvent`].
-    </span>ThreadUpdate,
-    <span class="doccomment">/// Indicator that a thread was deleted.
-    ///
-    /// This maps to [`ThreadDeleteEvent`].
-    </span>ThreadDelete,
-    <span class="doccomment">/// Indicator that the current user gains access to a channel.
-    ///
-    /// This maps to [`ThreadListSyncEvent`]
-    </span>ThreadListSync,
-    <span class="doccomment">/// Indicator that the [`ThreadMember`] object for the current user is updated.
-    ///
-    /// This maps to [`ThreadMemberUpdateEvent`]
-    </span>ThreadMemberUpdate,
-    <span class="doccomment">/// Indicator that anyone is added to or removed from a thread.
-    ///
-    /// This maps to [`ThreadMembersUpdateEvent`]
-    </span>ThreadMembersUpdate,
-    <span class="doccomment">/// Indicator that a scheduled event create payload was received.
-    ///
-    /// This maps to [`GuildScheduledEventCreateEvent`].
-    </span>GuildScheduledEventCreate,
-    <span class="doccomment">/// Indicator that a scheduled event update payload was received.
-    ///
-    /// This maps to [`GuildScheduledEventUpdateEvent`].
-    </span>GuildScheduledEventUpdate,
-    <span class="doccomment">/// Indicator that a scheduled event delete payload was received.
-    ///
-    /// This maps to [`GuildScheduledEventDeleteEvent`].
-    </span>GuildScheduledEventDelete,
-    <span class="doccomment">/// Indicator that a guild member has subscribed to a scheduled event.
-    ///
-    /// This maps to [`GuildScheduledEventUserAddEvent`].
-    </span>GuildScheduledEventUserAdd,
-    <span class="doccomment">/// Indicator that a guild member has unsubscribed from a scheduled event.
-    ///
-    /// This maps to [`GuildScheduledEventUserRemoveEvent`].
-    </span>GuildScheduledEventUserRemove,
-    <span class="doccomment">/// An unknown event was received over the gateway.
-    </span>Other,
-}
+    <span class="bool-val">false
+</span>}
 
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Event&gt; <span class="kw">for </span>EventType {
-    <span class="kw">fn </span>from(event: <span class="kw-2">&amp;</span>Event) -&gt; EventType {
-        event.event_type()
+<span class="attr">#[cold]
+</span><span class="kw">fn </span>log_deserialisation_err(json_str: <span class="kw-2">&amp;</span>str, err: serde_json::Error) -&gt; Error {
+    <span class="kw">let </span>json_err_dbg = <span class="macro">format!</span>(<span class="string">"{err:?}"</span>);
+    <span class="kw">if </span>!filter_unknown_variant(<span class="kw-2">&amp;</span>json_err_dbg) {
+        <span class="macro">warn!</span>(<span class="string">"Err deserializing text: {json_err_dbg}"</span>);
     }
-}
 
-<span class="kw">impl </span>EventType {
-    <span class="doccomment">/// Return the event name of this event. Some events are synthetic, and we lack the information
-    /// to recover the original event name for these events, in which case this method returns
-    /// [`None`].
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub const fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-        <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::CommandPermissionsUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;APPLICATION_COMMAND_PERMISSIONS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::AutoModRuleCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;AUTO_MODERATION_RULE_CREATE&quot;</span>),
-            <span class="self">Self</span>::AutoModRuleUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;AUTO_MODERATION_RULE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::AutoModRuleDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;AUTO_MODERATION_RULE_DELETE&quot;</span>),
-            <span class="self">Self</span>::AutoModActionExecution =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;AUTO_MODERATION_ACTION_EXECUTION&quot;</span>),
-            <span class="self">Self</span>::ChannelCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;CHANNEL_CREATE&quot;</span>),
-            <span class="self">Self</span>::ChannelDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;CHANNEL_DELETE&quot;</span>),
-            <span class="self">Self</span>::ChannelPinsUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;CHANNEL_PINS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::ChannelUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;CHANNEL_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildAuditLogEntryCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_AUDIT_LOG_ENTRY_CREATE&quot;</span>),
-            <span class="self">Self</span>::GuildBanAdd =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_BAN_ADD&quot;</span>),
-            <span class="self">Self</span>::GuildBanRemove =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_BAN_REMOVE&quot;</span>),
-            <span class="self">Self</span>::GuildCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_CREATE&quot;</span>),
-            <span class="self">Self</span>::GuildDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_DELETE&quot;</span>),
-            <span class="self">Self</span>::GuildEmojisUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_EMOJIS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildIntegrationsUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_INTEGRATIONS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildMemberAdd =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_MEMBER_ADD&quot;</span>),
-            <span class="self">Self</span>::GuildMemberRemove =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_MEMBER_REMOVE&quot;</span>),
-            <span class="self">Self</span>::GuildMemberUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_MEMBER_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildMembersChunk =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_MEMBERS_CHUNK&quot;</span>),
-            <span class="self">Self</span>::GuildRoleCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_ROLE_CREATE&quot;</span>),
-            <span class="self">Self</span>::GuildRoleDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_ROLE_DELETE&quot;</span>),
-            <span class="self">Self</span>::GuildRoleUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_ROLE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildStickersUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_STICKERS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::InviteCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INVITE_CREATE&quot;</span>),
-            <span class="self">Self</span>::InviteDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INVITE_DELETE&quot;</span>),
-            <span class="self">Self</span>::GuildUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_UPDATE&quot;</span>),
-            <span class="self">Self</span>::MessageCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_CREATE&quot;</span>),
-            <span class="self">Self</span>::MessageDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_DELETE&quot;</span>),
-            <span class="self">Self</span>::MessageDeleteBulk =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_DELETE_BULK&quot;</span>),
-            <span class="self">Self</span>::ReactionAdd =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_REACTION_ADD&quot;</span>),
-            <span class="self">Self</span>::ReactionRemove =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_REACTION_REMOVE&quot;</span>),
-            <span class="self">Self</span>::ReactionRemoveAll =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_REACTION_REMOVE_ALL&quot;</span>),
-            <span class="self">Self</span>::ReactionRemoveEmoji =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_REACTION_REMOVE_ALL_EMOJI&quot;</span>),
-            <span class="self">Self</span>::MessageUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;MESSAGE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::PresenceUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;PRESENCE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::PresencesReplace =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;PRESENCES_REPLACE&quot;</span>),
-            <span class="self">Self</span>::Ready =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;READY&quot;</span>),
-            <span class="self">Self</span>::Resumed =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;RESUMED&quot;</span>),
-            <span class="self">Self</span>::TypingStart =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;TYPING_START&quot;</span>),
-            <span class="self">Self</span>::UserUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;USER_UPDATE&quot;</span>),
-            <span class="self">Self</span>::VoiceServerUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;VOICE_SERVER_UPDATE&quot;</span>),
-            <span class="self">Self</span>::VoiceStateUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;VOICE_STATE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::WebhookUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;WEBHOOKS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::InteractionCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INTERACTION_CREATE&quot;</span>),
-            <span class="self">Self</span>::IntegrationCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INTEGRATION_CREATE&quot;</span>),
-            <span class="self">Self</span>::IntegrationUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INTEGRATION_UPDATE&quot;</span>),
-            <span class="self">Self</span>::IntegrationDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;INTEGRATION_DELETE&quot;</span>),
-            <span class="self">Self</span>::StageInstanceCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;STAGE_INSTANCE_CREATE&quot;</span>),
-            <span class="self">Self</span>::StageInstanceUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;STAGE_INSTANCE_UPDATE&quot;</span>),
-            <span class="self">Self</span>::StageInstanceDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;STAGE_INSTANCE_DELETE&quot;</span>),
-            <span class="self">Self</span>::ThreadCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_CREATE&quot;</span>),
-            <span class="self">Self</span>::ThreadUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_UPDATE&quot;</span>),
-            <span class="self">Self</span>::ThreadDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_DELETE&quot;</span>),
-            <span class="self">Self</span>::ThreadListSync =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_LIST_SYNC&quot;</span>),
-            <span class="self">Self</span>::ThreadMemberUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_MEMBER_UPDATE&quot;</span>),
-            <span class="self">Self</span>::ThreadMembersUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;THREAD_MEMBERS_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildScheduledEventCreate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_SCHEDULED_EVENT_CREATE&quot;</span>),
-            <span class="self">Self</span>::GuildScheduledEventUpdate =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_SCHEDULED_EVENT_UPDATE&quot;</span>),
-            <span class="self">Self</span>::GuildScheduledEventDelete =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_SCHEDULED_EVENT_DELETE&quot;</span>),
-            <span class="self">Self</span>::GuildScheduledEventUserAdd =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_SCHEDULED_EVENT_USER_ADD&quot;</span>),
-            <span class="self">Self</span>::GuildScheduledEventUserRemove =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;GUILD_SCHEDULED_EVENT_USER_REMOVE&quot;</span>),
-            <span class="self">Self</span>::Other =&gt; <span class="prelude-val">None</span>,
-        }
-    }
+    <span class="macro">debug!</span>(<span class="string">"Failing text: {json_str}"</span>);
+    Error::Json(err)
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/routing.rs`."><title>routing.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/routing.rs`."><title>routing.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -458,14 +458,44 @@
 <a href="#458" id="458">458</a>
 <a href="#459" id="459">459</a>
 <a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
-<span class="kw">use </span>std::num::NonZeroU64;
 
 <span class="kw">use </span><span class="kw">crate</span>::model::id::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Used to group requests together for ratelimiting.
 </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-</span><span class="kw">pub struct </span>RatelimitingBucket(<span class="prelude-ty">Option</span>&lt;(std::mem::Discriminant&lt;Route&lt;<span class="lifetime">&#39;static</span>&gt;&gt;, <span class="prelude-ty">Option</span>&lt;NonZeroU64&gt;)&gt;);
+</span><span class="kw">pub struct </span>RatelimitingBucket(<span class="prelude-ty">Option</span>&lt;(RouteKind, <span class="prelude-ty">Option</span>&lt;GenericId&gt;)&gt;);
 
 <span class="kw">impl </span>RatelimitingBucket {
     <span class="attr">#[must_use]
@@ -477,7 +507,7 @@
 <span class="kw">enum </span>RatelimitingKind {
     <span class="doccomment">/// Requests with the same path and major parameter (usually an Id) should be grouped together
     /// for ratelimiting.
-    </span>PathAndId(NonZeroU64),
+    </span>PathAndId(GenericId),
     <span class="doccomment">/// Requests with the same path should be ratelimited together.
     </span>Path,
 }
@@ -485,7 +515,7 @@
 <span class="doccomment">/// A macro for defining routes as well as the type of ratelimiting they perform. Takes as input a
 /// list of route definitions, and generates a definition for the `Route` enum and implements
 /// methods on it.
-</span><span class="macro">macro_rules! </span>routes {
+</span><span class="macro">macro_rules!</span> routes {
     (<span class="macro-nonterminal">$lt</span>:lifetime, {
         $(
             <span class="macro-nonterminal">$name</span>:ident $({ $(<span class="macro-nonterminal">$field_name</span>:ident: <span class="macro-nonterminal">$field_type</span>:ty),* })<span class="question-mark">?</span>,
@@ -500,9 +530,22 @@
             )+
         }
 
+        <span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+        </span><span class="kw">enum </span>RouteKind {
+            $(<span class="macro-nonterminal">$name</span>,)+
+        }
+
         <span class="kw">impl</span>&lt;<span class="macro-nonterminal">$lt</span>&gt; Route&lt;<span class="macro-nonterminal">$lt</span>&gt; {
+            <span class="kw">fn </span>kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RouteKind {
+                <span class="kw">match </span><span class="self">self </span>{
+                    $(
+                        <span class="self">Self</span>::<span class="macro-nonterminal">$name </span>{..} =&gt; RouteKind::<span class="macro-nonterminal">$name</span>,
+                    )+
+                }
+            }
+
             <span class="attr">#[must_use]
-            </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
+            </span><span class="kw">pub fn </span>path(<span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
                 <span class="kw">match </span><span class="self">self </span>{
                     $(
                         <span class="self">Self</span>::<span class="macro-nonterminal">$name </span>$({ $(<span class="macro-nonterminal">$field_name</span>),* })<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$path</span>.into(),
@@ -513,23 +556,18 @@
             <span class="attr">#[must_use]
             </span><span class="kw">pub fn </span>ratelimiting_bucket(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RatelimitingBucket {
                 <span class="attr">#[allow(unused_variables)]
-                </span><span class="kw">let </span>ratelimiting_kind = <span class="kw">match </span><span class="self">self </span>{
+                </span><span class="kw">let </span>ratelimiting_kind = <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
                     $(
                         <span class="self">Self</span>::<span class="macro-nonterminal">$name </span>$({ $(<span class="macro-nonterminal">$field_name</span>),* })<span class="question-mark">? </span>=&gt; <span class="macro-nonterminal">$ratelimiting_kind</span>,
                     )+
                 };
-
-                <span class="comment">// To avoid adding a lifetime on RatelimitingBucket and causing lifetime infection,
-                // we transmute the Discriminant&lt;Route&lt;&#39;a&gt;&gt; to Discriminant&lt;Route&lt;&#39;static&gt;&gt;.
-                // SAFETY: std::mem::discriminant erases lifetimes.
-                </span><span class="kw">let </span>discriminant = <span class="kw">unsafe </span>{ std::mem::transmute(std::mem::discriminant(<span class="self">self</span>)) };
 
                 RatelimitingBucket(ratelimiting_kind.map(|r| {
                     <span class="kw">let </span>id = <span class="kw">match </span>r {
                         RatelimitingKind::PathAndId(id) =&gt; <span class="prelude-val">Some</span>(id),
                         RatelimitingKind::Path =&gt; <span class="prelude-val">None</span>,
                     };
-                    (discriminant, id)
+                    (<span class="self">self</span>.kind(), id)
                 }))
             }
 
@@ -541,381 +579,405 @@
 // 1. The first line defines an enum variant representing an endpoint.
 // 2. The second line provides the url for that endpoint.
 // 3. The third line indicates what type of ratelimiting the endpoint employs.
-</span><span class="macro">routes! </span>(<span class="lifetime">&#39;a</span>, {
+</span><span class="macro">routes!</span> (<span class="lifetime">'a</span>, {
     Channel { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelInvites { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/invites&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/invites"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessage { channel_id: ChannelId, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}&quot;</span>, channel_id, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessageCrosspost { channel_id: ChannelId, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/crosspost&quot;</span>, channel_id, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/crosspost"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
-    ChannelMessageReaction { channel_id: ChannelId, message_id: MessageId, user_id: UserId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/reactions/{}/{}&quot;</span>, channel_id, message_id, reaction, user_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    ChannelMessageReaction { channel_id: ChannelId, message_id: MessageId, user_id: UserId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}/{}"</span>, channel_id, message_id, reaction, user_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
-    ChannelMessageReactionMe { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/reactions/{}/@me&quot;</span>, channel_id, message_id, reaction),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    ChannelMessageReactionMe { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}/@me"</span>, channel_id, message_id, reaction),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
-    ChannelMessageReactionEmoji { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/reactions/{}&quot;</span>, channel_id, message_id, reaction),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    ChannelMessageReactionEmoji { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}"</span>, channel_id, message_id, reaction),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessageReactions { channel_id: ChannelId, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/reactions&quot;</span>, channel_id, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessages { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessagesBulkDelete { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/bulk-delete&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/bulk-delete"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelFollowNews { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/followers&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/followers"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelPermission { channel_id: ChannelId, target_id: TargetId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/permissions/{}&quot;</span>, channel_id, target_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/permissions/{}"</span>, channel_id, target_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelPin { channel_id: ChannelId, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/pins/{}&quot;</span>, channel_id, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/pins/{}"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelPins { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/pins&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/pins"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelTyping { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/typing&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/typing"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelWebhooks { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/webhooks&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/webhooks"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelMessageThreads { channel_id: ChannelId, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/messages/{}/threads&quot;</span>, channel_id, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/threads"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelThreads { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/threads&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelForumPosts { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/threads&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelThreadMember { channel_id: ChannelId, user_id: UserId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/thread-members/{}&quot;</span>, channel_id, user_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/{}"</span>, channel_id, user_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelThreadMemberMe { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/thread-members/@me&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/@me"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelThreadMembers { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/thread-members&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelArchivedPublicThreads { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/threads/archived/public&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads/archived/public"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelArchivedPrivateThreads { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/threads/archived/private&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads/archived/private"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     ChannelJoinedPrivateThreads { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/channels/{}/users/@me/threads/archived/private&quot;</span>, channel_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(channel_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/users/@me/threads/archived/private"</span>, channel_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
+
+    ChannelPollGetAnswerVoters { channel_id: ChannelId, message_id: MessageId, answer_id: AnswerId },
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/polls/{}/answers/{}"</span>, channel_id, message_id, answer_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
+
+    ChannelPollExpire { channel_id: ChannelId, message_id: MessageId },
+    <span class="macro">api!</span>(<span class="string">"/channels/{}/polls/{}/expire"</span>, channel_id, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 
     Gateway,
-    <span class="macro">api!</span>(<span class="string">&quot;/gateway&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/gateway"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     GatewayBot,
-    <span class="macro">api!</span>(<span class="string">&quot;/gateway/bot&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/gateway/bot"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     Guild { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildAuditLogs { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/audit-logs&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/audit-logs"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildAutomodRule { guild_id: GuildId, rule_id: RuleId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/auto-moderation/rules/{}&quot;</span>, guild_id, rule_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/auto-moderation/rules/{}"</span>, guild_id, rule_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildAutomodRules { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/auto-moderation/rules&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/auto-moderation/rules"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildBan { guild_id: GuildId, user_id: UserId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/bans/{}&quot;</span>, guild_id, user_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/bans/{}"</span>, guild_id, user_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
+
+    GuildBulkBan { guild_id: GuildId },
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/bulk-ban"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildBans { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/bans&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/bans"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildChannels { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/channels&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/channels"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildWidget { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/widget&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/widget"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildPreview { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/preview&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/preview"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildEmojis { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/emojis&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/emojis"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildEmoji { guild_id: GuildId, emoji_id: EmojiId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/emojis/{}&quot;</span>, guild_id, emoji_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/emojis/{}"</span>, guild_id, emoji_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildIntegration { guild_id: GuildId, integration_id: IntegrationId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/integrations/{}&quot;</span>, guild_id, integration_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/integrations/{}"</span>, guild_id, integration_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildIntegrationSync { guild_id: GuildId, integration_id: IntegrationId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/integrations/{}/sync&quot;</span>, guild_id, integration_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/integrations/{}/sync"</span>, guild_id, integration_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildIntegrations { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/integrations&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/integrations"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildInvites { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/invites&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/invites"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMember { guild_id: GuildId, user_id: UserId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/members/{}&quot;</span>, guild_id, user_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/members/{}"</span>, guild_id, user_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMemberRole { guild_id: GuildId, user_id: UserId, role_id: RoleId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/members/{}/roles/{}&quot;</span>, guild_id, user_id, role_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/members/{}/roles/{}"</span>, guild_id, user_id, role_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMembers { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/members&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/members"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMembersSearch { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/members/search&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/members/search"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMemberMe { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/members/@me&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/members/@me"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildMfa { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/mfa&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/mfa"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildPrune { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/prune&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/prune"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildRegions { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/regions&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/regions"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildRole { guild_id: GuildId, role_id: RoleId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/roles/{}&quot;</span>, guild_id, role_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/roles/{}"</span>, guild_id, role_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildRoles { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/roles&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/roles"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildScheduledEvent { guild_id: GuildId, event_id: ScheduledEventId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/scheduled-events/{}&quot;</span>, guild_id, event_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/scheduled-events/{}"</span>, guild_id, event_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildScheduledEvents { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/scheduled-events&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/scheduled-events"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildScheduledEventUsers { guild_id: GuildId, event_id: ScheduledEventId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/scheduled-events/{}/users&quot;</span>, guild_id, event_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/scheduled-events/{}/users"</span>, guild_id, event_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildSticker { guild_id: GuildId, sticker_id: StickerId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/stickers/{}&quot;</span>, guild_id, sticker_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/stickers/{}"</span>, guild_id, sticker_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildStickers { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/stickers&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/stickers"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildVanityUrl { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/vanity-url&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/vanity-url"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildVoiceStates { guild_id: GuildId, user_id: UserId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/voice-states/{}&quot;</span>, guild_id, user_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/voice-states/{}"</span>, guild_id, user_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildVoiceStateMe { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/voice-states/@me&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/voice-states/@me"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildWebhooks { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/webhooks&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/webhooks"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildWelcomeScreen { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/welcome-screen&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/welcome-screen"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     GuildThreadsActive { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds/{}/threads/active&quot;</span>, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(guild_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/guilds/{}/threads/active"</span>, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(guild_id.get())));
 
     Guilds,
-    <span class="macro">api!</span>(<span class="string">&quot;/guilds&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/guilds"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
-    Invite { code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/invites/{}&quot;</span>, code),
+    Invite { code: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/invites/{}"</span>, code),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     Oauth2ApplicationCurrent,
-    <span class="macro">api!</span>(<span class="string">&quot;/oauth2/applications/@me&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/oauth2/applications/@me"</span>),
     <span class="prelude-val">None</span>;
 
     StatusIncidentsUnresolved,
-    <span class="macro">status!</span>(<span class="string">&quot;/incidents/unresolved.json&quot;</span>),
+    <span class="macro">status!</span>(<span class="string">"/incidents/unresolved.json"</span>),
     <span class="prelude-val">None</span>;
 
     StatusMaintenancesActive,
-    <span class="macro">status!</span>(<span class="string">&quot;/scheduled-maintenances/active.json&quot;</span>),
+    <span class="macro">status!</span>(<span class="string">"/scheduled-maintenances/active.json"</span>),
     <span class="prelude-val">None</span>;
 
     StatusMaintenancesUpcoming,
-    <span class="macro">status!</span>(<span class="string">&quot;/scheduled-maintenances/upcoming.json&quot;</span>),
+    <span class="macro">status!</span>(<span class="string">"/scheduled-maintenances/upcoming.json"</span>),
     <span class="prelude-val">None</span>;
 
     Sticker { sticker_id: StickerId },
-    <span class="macro">api!</span>(<span class="string">&quot;/stickers/{}&quot;</span>, sticker_id),
+    <span class="macro">api!</span>(<span class="string">"/stickers/{}"</span>, sticker_id),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     StickerPacks,
-    <span class="macro">api!</span>(<span class="string">&quot;/sticker-packs&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/sticker-packs"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     User { user_id: UserId },
-    <span class="macro">api!</span>(<span class="string">&quot;/users/{}&quot;</span>, user_id),
+    <span class="macro">api!</span>(<span class="string">"/users/{}"</span>, user_id),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMe,
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/users/@me"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMeConnections,
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me/connections&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/users/@me/connections"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMeDmChannels,
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me/channels&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/users/@me/channels"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMeGuild { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me/guilds/{}&quot;</span>, guild_id),
+    <span class="macro">api!</span>(<span class="string">"/users/@me/guilds/{}"</span>, guild_id),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMeGuildMember { guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me/guilds/{}/member&quot;</span>, guild_id),
+    <span class="macro">api!</span>(<span class="string">"/users/@me/guilds/{}/member"</span>, guild_id),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     UserMeGuilds,
-    <span class="macro">api!</span>(<span class="string">&quot;/users/@me/guilds&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/users/@me/guilds"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     VoiceRegions,
-    <span class="macro">api!</span>(<span class="string">&quot;/voice/regions&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/voice/regions"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     Webhook { webhook_id: WebhookId },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}&quot;</span>, webhook_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(webhook_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}"</span>, webhook_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(webhook_id.get())));
 
-    WebhookWithToken { webhook_id: WebhookId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}/{}&quot;</span>, webhook_id, token),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(webhook_id.<span class="number">0</span>));
+    WebhookWithToken { webhook_id: WebhookId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}/{}"</span>, webhook_id, token),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(webhook_id.get())));
 
-    WebhookMessage { webhook_id: WebhookId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}/{}/messages/{}&quot;</span>, webhook_id, token, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(webhook_id.<span class="number">0</span>));
+    WebhookMessage { webhook_id: WebhookId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, message_id: MessageId },
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}/{}/messages/{}"</span>, webhook_id, token, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(webhook_id.get())));
 
-    WebhookOriginalInteractionResponse { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}/{}/messages/@original&quot;</span>, application_id, token),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    WebhookOriginalInteractionResponse { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}/{}/messages/@original"</span>, application_id, token),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
-    WebhookFollowupMessage { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, message_id: MessageId },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}/{}/messages/{}&quot;</span>, application_id, token, message_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    WebhookFollowupMessage { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, message_id: MessageId },
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}/{}/messages/{}"</span>, application_id, token, message_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
-    WebhookFollowupMessages { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/webhooks/{}/{}&quot;</span>, application_id, token),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    WebhookFollowupMessages { application_id: ApplicationId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/webhooks/{}/{}"</span>, application_id, token),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
-    InteractionResponse { interaction_id: InteractionId, token: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str },
-    <span class="macro">api!</span>(<span class="string">&quot;/interactions/{}/{}/callback&quot;</span>, interaction_id, token),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(interaction_id.<span class="number">0</span>));
+    InteractionResponse { interaction_id: InteractionId, token: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+    <span class="macro">api!</span>(<span class="string">"/interactions/{}/{}/callback"</span>, interaction_id, token),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(interaction_id.get())));
 
     Command { application_id: ApplicationId, command_id: CommandId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/commands/{}&quot;</span>, application_id, command_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/commands/{}"</span>, application_id, command_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     Commands { application_id: ApplicationId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/commands&quot;</span>, application_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/commands"</span>, application_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     GuildCommand { application_id: ApplicationId, guild_id: GuildId, command_id: CommandId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/guilds/{}/commands/{}&quot;</span>, application_id, guild_id, command_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/guilds/{}/commands/{}"</span>, application_id, guild_id, command_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     GuildCommandPermissions { application_id: ApplicationId, guild_id: GuildId, command_id: CommandId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/guilds/{}/commands/{}/permissions&quot;</span>, application_id, guild_id, command_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/guilds/{}/commands/{}/permissions"</span>, application_id, guild_id, command_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     GuildCommands { application_id: ApplicationId, guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/guilds/{}/commands&quot;</span>, application_id, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/guilds/{}/commands"</span>, application_id, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     GuildCommandsPermissions { application_id: ApplicationId, guild_id: GuildId },
-    <span class="macro">api!</span>(<span class="string">&quot;/applications/{}/guilds/{}/commands/permissions&quot;</span>, application_id, guild_id),
-    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(application_id.<span class="number">0</span>));
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/guilds/{}/commands/permissions"</span>, application_id, guild_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
+
+    Skus { application_id: ApplicationId },
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/skus"</span>, application_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
+
+    Entitlement { application_id: ApplicationId, entitlement_id: EntitlementId },
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/entitlements/{}"</span>, application_id, entitlement_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
+
+    Entitlements { application_id: ApplicationId },
+    <span class="macro">api!</span>(<span class="string">"/applications/{}/entitlements"</span>, application_id),
+    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(application_id.get())));
 
     StageInstances,
-    <span class="macro">api!</span>(<span class="string">&quot;/stage-instances&quot;</span>),
+    <span class="macro">api!</span>(<span class="string">"/stage-instances"</span>),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 
     StageInstance { channel_id: ChannelId },
-    <span class="macro">api!</span>(<span class="string">&quot;/stage-instances/{}&quot;</span>, channel_id),
+    <span class="macro">api!</span>(<span class="string">"/stage-instances/{}"</span>, channel_id),
     <span class="prelude-val">Some</span>(RatelimitingKind::Path);
 });
 </code></pre></div></section></main></body></html>

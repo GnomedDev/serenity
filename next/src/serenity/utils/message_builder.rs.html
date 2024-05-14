@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/utils/message_builder.rs`."><title>message_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/utils/message_builder.rs`."><title>message_builder.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1383,70 +1383,6 @@
 <a href="#1383" id="1383">1383</a>
 <a href="#1384" id="1384">1384</a>
 <a href="#1385" id="1385">1385</a>
-<a href="#1386" id="1386">1386</a>
-<a href="#1387" id="1387">1387</a>
-<a href="#1388" id="1388">1388</a>
-<a href="#1389" id="1389">1389</a>
-<a href="#1390" id="1390">1390</a>
-<a href="#1391" id="1391">1391</a>
-<a href="#1392" id="1392">1392</a>
-<a href="#1393" id="1393">1393</a>
-<a href="#1394" id="1394">1394</a>
-<a href="#1395" id="1395">1395</a>
-<a href="#1396" id="1396">1396</a>
-<a href="#1397" id="1397">1397</a>
-<a href="#1398" id="1398">1398</a>
-<a href="#1399" id="1399">1399</a>
-<a href="#1400" id="1400">1400</a>
-<a href="#1401" id="1401">1401</a>
-<a href="#1402" id="1402">1402</a>
-<a href="#1403" id="1403">1403</a>
-<a href="#1404" id="1404">1404</a>
-<a href="#1405" id="1405">1405</a>
-<a href="#1406" id="1406">1406</a>
-<a href="#1407" id="1407">1407</a>
-<a href="#1408" id="1408">1408</a>
-<a href="#1409" id="1409">1409</a>
-<a href="#1410" id="1410">1410</a>
-<a href="#1411" id="1411">1411</a>
-<a href="#1412" id="1412">1412</a>
-<a href="#1413" id="1413">1413</a>
-<a href="#1414" id="1414">1414</a>
-<a href="#1415" id="1415">1415</a>
-<a href="#1416" id="1416">1416</a>
-<a href="#1417" id="1417">1417</a>
-<a href="#1418" id="1418">1418</a>
-<a href="#1419" id="1419">1419</a>
-<a href="#1420" id="1420">1420</a>
-<a href="#1421" id="1421">1421</a>
-<a href="#1422" id="1422">1422</a>
-<a href="#1423" id="1423">1423</a>
-<a href="#1424" id="1424">1424</a>
-<a href="#1425" id="1425">1425</a>
-<a href="#1426" id="1426">1426</a>
-<a href="#1427" id="1427">1427</a>
-<a href="#1428" id="1428">1428</a>
-<a href="#1429" id="1429">1429</a>
-<a href="#1430" id="1430">1430</a>
-<a href="#1431" id="1431">1431</a>
-<a href="#1432" id="1432">1432</a>
-<a href="#1433" id="1433">1433</a>
-<a href="#1434" id="1434">1434</a>
-<a href="#1435" id="1435">1435</a>
-<a href="#1436" id="1436">1436</a>
-<a href="#1437" id="1437">1437</a>
-<a href="#1438" id="1438">1438</a>
-<a href="#1439" id="1439">1439</a>
-<a href="#1440" id="1440">1440</a>
-<a href="#1441" id="1441">1441</a>
-<a href="#1442" id="1442">1442</a>
-<a href="#1443" id="1443">1443</a>
-<a href="#1444" id="1444">1444</a>
-<a href="#1445" id="1445">1445</a>
-<a href="#1446" id="1446">1446</a>
-<a href="#1447" id="1447">1447</a>
-<a href="#1448" id="1448">1448</a>
-<a href="#1449" id="1449">1449</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::{<span class="self">self </span><span class="kw">as </span>fmt, Write};
 <span class="kw">use </span>std::ops::Add;
 
@@ -1474,14 +1410,15 @@
 /// // assuming an `emoji` and `user` have already been bound
 ///
 /// let content = MessageBuilder::new()
-///     .push(&quot;You sent a message, &quot;)
+///     .push("You sent a message, ")
 ///     .mention(&amp;user)
-///     .push(&quot;! &quot;)
+///     .push("! ")
 ///     .emoji(&amp;emoji)
 ///     .build();
 /// # }
 /// ```
 </span><span class="attr">#[derive(Clone, Debug, Default)]
+#[must_use]
 </span><span class="kw">pub struct </span>MessageBuilder(<span class="kw">pub </span>String);
 
 <span class="kw">impl </span>MessageBuilder {
@@ -1499,7 +1436,6 @@
     /// // alternatively:
     /// let message = MessageBuilder::default();
     /// ```
-    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>new() -&gt; MessageBuilder {
         MessageBuilder::default()
     }
@@ -1508,7 +1444,7 @@
     ///
     /// # Examples
     ///
-    /// Create a string mentioning a channel by Id, and then suffixing `&quot;!&quot;`, and finally building
+    /// Create a string mentioning a channel by Id, and then suffixing `"!"`, and finally building
     /// it to retrieve the inner String:
     ///
     /// ```rust
@@ -1517,31 +1453,30 @@
     ///
     /// let channel_id = ChannelId::new(81384788765712384);
     ///
-    /// let content = MessageBuilder::new().channel(channel_id).push(&quot;!&quot;).build();
+    /// let content = MessageBuilder::new().channel(channel_id).push("!").build();
     ///
-    /// assert_eq!(content, &quot;&lt;#81384788765712384&gt;!&quot;);
+    /// assert_eq!(content, "&lt;#81384788765712384&gt;!");
     /// ```
     ///
-    /// This is equivalent to simply retrieving the tuple struct&#39;s first value:
+    /// This is equivalent to simply retrieving the tuple struct's first value:
     ///
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let mut content = MessageBuilder::new();
-    /// content.push(&quot;test&quot;);
-    ///
-    /// assert_eq!(content.build(), &quot;test&quot;);
+    /// let mut content = MessageBuilder::new().push("test");
+    /// assert_eq!(content.build(), "test");
     /// ```
-    </span><span class="kw">pub fn </span>build(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; String {
-        <span class="self">self</span>.clone().<span class="number">0
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; String {
+        <span class="self">self</span>.<span class="number">0
     </span>}
 
     <span class="doccomment">/// Mentions the [`GuildChannel`] in the built message.
     ///
-    /// This accepts anything that converts _into_ a [`ChannelId`]. Refer to [`ChannelId`]&#39;s
+    /// This accepts anything that converts _into_ a [`ChannelId`]. Refer to [`ChannelId`]'s
     /// documentation for more information.
     ///
-    /// Refer to [`ChannelId`]&#39;s [Display implementation] for more information on how this is
+    /// Refer to [`ChannelId`]'s [Display implementation] for more information on how this is
     /// formatted.
     ///
     /// # Examples
@@ -1554,20 +1489,15 @@
     ///
     /// let channel_id = ChannelId::new(81384788765712384);
     ///
-    /// let content = MessageBuilder::new().push(&quot;The channel is: &quot;).channel(channel_id).build();
+    /// let content = MessageBuilder::new().push("The channel is: ").channel(channel_id).build();
     ///
-    /// assert_eq!(content, &quot;The channel is: &lt;#81384788765712384&gt;&quot;);
+    /// assert_eq!(content, "The channel is: &lt;#81384788765712384&gt;");
     /// ```
     ///
     /// [`Channel`]: crate::model::channel::Channel
     /// [`GuildChannel`]: crate::model::channel::GuildChannel
     /// [Display implementation]: ChannelId#impl-Display
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>channel&lt;C: Into&lt;ChannelId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, channel: C) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>._channel(channel.into())
-    }
-
-    <span class="kw">fn </span>_channel(<span class="kw-2">&amp;mut </span><span class="self">self</span>, channel: ChannelId) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>channel(<span class="kw-2">mut </span><span class="self">self</span>, channel: ChannelId) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>channel.mention());
         <span class="self">self
     </span>}
@@ -1578,7 +1508,7 @@
     ///
     /// # Examples
     ///
-    /// Mention an emoji in a message&#39;s content:
+    /// Mention an emoji in a message's content:
     ///
     /// ```rust
     /// # use serde_json::{json, from_value};
@@ -1587,23 +1517,23 @@
     /// # use serenity::utils::MessageBuilder;
     ///
     /// # let emoji = from_value::&lt;Emoji&gt;(json!({
-    /// #     &quot;id&quot;: EmojiId::new(302516740095606785),
-    /// #     &quot;name&quot;: &quot;smugAnimeFace&quot;,
+    /// #     "id": EmojiId::new(302516740095606785),
+    /// #     "name": "smugAnimeFace",
     /// # })).unwrap();
     ///
-    /// let message = MessageBuilder::new().push(&quot;foo &quot;).emoji(&amp;emoji).push(&quot;.&quot;).build();
+    /// let message = MessageBuilder::new().push("foo ").emoji(&amp;emoji).push(".").build();
     ///
-    /// assert_eq!(message, &quot;foo &lt;:smugAnimeFace:302516740095606785&gt;.&quot;);
+    /// assert_eq!(message, "foo &lt;:smugAnimeFace:302516740095606785&gt;.");
     /// ```
     ///
     /// [Display implementation]: crate::model::guild::Emoji#impl-Display
-    </span><span class="kw">pub fn </span>emoji(<span class="kw-2">&amp;mut </span><span class="self">self</span>, emoji: <span class="kw-2">&amp;</span>Emoji) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>emoji(<span class="kw-2">mut </span><span class="self">self</span>, emoji: <span class="kw-2">&amp;</span>Emoji) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>emoji);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Mentions something that implements the [`Mentionable`] trait.
-    </span><span class="kw">pub fn </span>mention&lt;M: Mentionable&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, item: <span class="kw-2">&amp;</span>M) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>mention&lt;M: Mentionable&gt;(<span class="kw-2">mut </span><span class="self">self</span>, item: <span class="kw-2">&amp;</span>M) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>item.mention());
         <span class="self">self
     </span>}
@@ -1618,28 +1548,19 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let mut message = MessageBuilder::new();
-    /// message.push(&quot;test&quot;);
+    /// let message = MessageBuilder::new().push("test");
     ///
-    /// assert_eq!(
-    ///     {
-    ///         message.push(&quot;ing&quot;);
-    ///         message.build()
-    ///     },
-    ///     &quot;testing&quot;
-    /// );
+    /// assert_eq!(message.push("ing").build(), "testing");
     /// ```
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into())
-    }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">fn </span>_push&lt;C: std::fmt::Display + <span class="question-mark">?</span>Sized&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw-2">&amp;</span>C) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="macro">write!</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="string">&quot;{content}&quot;</span>).unwrap();
+    </span><span class="kw">pub fn </span>push&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
 
         <span class="self">self
     </span>}
+
+    <span class="kw">fn </span>_push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw-2">&amp;</span><span class="kw">dyn </span>std::fmt::Display) {
+        <span class="macro">write!</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="string">"{content}"</span>).unwrap();
+    }
 
     <span class="doccomment">/// Pushes a codeblock to the content, with optional syntax highlighting.
     ///
@@ -1650,21 +1571,21 @@
     /// ```rust,ignore
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let code = r#&quot;
+    /// let code = r#"
     /// fn main() {
-    ///     println!(&quot;Hello, world!&quot;);
+    ///     println!("Hello, world!");
     /// }
-    /// &quot;#;
+    /// "#;
     ///
     /// let content = MessageBuilder::new()
-    ///     .push_codeblock(code, Some(&quot;rust&quot;))
+    ///     .push_codeblock(code, Some("rust"))
     ///     .build();
     ///
-    /// let expected = r#&quot;```rust
+    /// let expected = r#"```rust
     /// fn main() {
-    ///     println!(&quot;Hello, world!&quot;);
+    ///     println!("Hello, world!");
     /// }
-    /// ```&quot;#;
+    /// ```"#;
     ///
     /// assert_eq!(content, expected);
     /// ```
@@ -1674,25 +1595,25 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content = MessageBuilder::new()
-    ///     .push_codeblock(&quot;hello&quot;, None)
+    ///     .push_codeblock("hello", None)
     ///     .build();
     ///
-    /// assert_eq!(content, &quot;```\nhello\n```&quot;);
+    /// assert_eq!(content, "```\nhello\n```");
     /// ```
-    </span><span class="kw">pub fn </span>push_codeblock(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        content: <span class="kw">impl </span>Into&lt;Content&gt;,
+    </span><span class="kw">pub fn </span>push_codeblock&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
         language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;```&quot;</span>);
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"```"</span>);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(language) = language {
             <span class="self">self</span>.<span class="number">0</span>.push_str(language);
         }
 
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'\n'</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;\n```&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"\n```"</span>);
 
         <span class="self">self
     </span>}
@@ -1706,25 +1627,25 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let key = &quot;prefix&quot;;
-    /// let value = &quot;&amp;&quot;;
+    /// let key = "prefix";
+    /// let value = "&amp;";
     ///
     /// let content = MessageBuilder::new()
-    ///     .push(&quot;The setting &quot;)
+    ///     .push("The setting ")
     ///     .push_mono(key)
-    ///     .push(&quot; for this server is &quot;)
+    ///     .push(" for this server is ")
     ///     .push_mono(value)
-    ///     .push(&quot;.&quot;)
+    ///     .push(".")
     ///     .build();
     ///
-    /// let expected = format!(&quot;The setting `{}` for this server is `{}`.&quot;, key, value);
+    /// let expected = format!("The setting `{}` for this server is `{}`.", key, value);
     ///
     /// assert_eq!(content, expected);
     /// ```
-    </span><span class="kw">pub fn </span>push_mono(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;`&#39;</span>);
+    </span><span class="kw">pub fn </span>push_mono&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'`'</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;`&#39;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'`'</span>);
 
         <span class="self">self
     </span>}
@@ -1739,64 +1660,64 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content = MessageBuilder::new()
-    ///     .push(&quot;You don&#39;t &quot;)
-    ///     .push_italic(&quot;always need&quot;)
-    ///     .push(&quot; to italicize &quot;)
-    ///     .push_italic(&quot;everything&quot;)
-    ///     .push(&quot;.&quot;)
+    ///     .push("You don't ")
+    ///     .push_italic("always need")
+    ///     .push(" to italicize ")
+    ///     .push_italic("everything")
+    ///     .push(".")
     ///     .build();
     ///
-    /// let expected = &quot;You don&#39;t _always need_ to italicize _everything_.&quot;;
+    /// let expected = "You don't _always need_ to italicize _everything_.";
     ///
     /// assert_eq!(content, expected);
     /// ```
-    </span><span class="kw">pub fn </span>push_italic(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;_&#39;</span>);
+    </span><span class="kw">pub fn </span>push_italic&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'_'</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;_&#39;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'_'</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an inline bold text to the content.
-    </span><span class="kw">pub fn </span>push_bold(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;**&quot;</span>);
+    </span><span class="kw">pub fn </span>push_bold&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"**"</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;**&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"**"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an underlined inline text to the content.
-    </span><span class="kw">pub fn </span>push_underline(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;__&quot;</span>);
+    </span><span class="kw">pub fn </span>push_underline&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"__"</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;__&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"__"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes a strikethrough inline text to the content.
-    </span><span class="kw">pub fn </span>push_strike(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;~~&quot;</span>);
+    </span><span class="kw">pub fn </span>push_strike&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"~~"</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;~~&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"~~"</span>);
 
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Pushes a spoiler&#39;d inline text to the content.
-    </span><span class="kw">pub fn </span>push_spoiler(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;||&quot;</span>);
+    <span class="doccomment">/// Pushes a spoiler'd inline text to the content.
+    </span><span class="kw">pub fn </span>push_spoiler&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"||"</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;||&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"||"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes a quoted inline text to the content
-    </span><span class="kw">pub fn </span>push_quote(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;&gt; &quot;</span>);
+    </span><span class="kw">pub fn </span>push_quote&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"&gt; "</span>);
         <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
 
         <span class="self">self
@@ -1811,13 +1732,13 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;hello\nworld&quot;);
+    /// assert_eq!(content, "hello\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_line&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>content.into());
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
         <span class="self">self
     </span>}
@@ -1831,16 +1752,16 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_mono_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_mono_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;`hello`\nworld&quot;);
+    /// assert_eq!(content, "`hello`\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_mono_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_mono(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_mono_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_mono(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an inlined italicized text with an added newline to the content.
     ///
@@ -1851,16 +1772,16 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_italic_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_italic_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;_hello_\nworld&quot;);
+    /// assert_eq!(content, "_hello_\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_italic_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_italic(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_italic_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_italic(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an inline bold text with an added newline to the content.
     ///
@@ -1871,16 +1792,16 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_bold_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_bold_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;**hello**\nworld&quot;);
+    /// assert_eq!(content, "**hello**\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_bold_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_bold(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_bold_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_bold(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an underlined inline text with an added newline to the content.
     ///
@@ -1891,16 +1812,16 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_underline_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_underline_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;__hello__\nworld&quot;);
+    /// assert_eq!(content, "__hello__\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_underline_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_underline(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_underline_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_underline(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes a strikethrough inline text with a newline added to the content.
     ///
@@ -1911,18 +1832,18 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_strike_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_strike_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;~~hello~~\nworld&quot;);
+    /// assert_eq!(content, "~~hello~~\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_strike_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_strike(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_strike_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_strike(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
-    <span class="doccomment">/// Pushes a spoiler&#39;d inline text with a newline added to the content.
+    <span class="doccomment">/// Pushes a spoiler'd inline text with a newline added to the content.
     ///
     /// # Examples
     ///
@@ -1931,16 +1852,16 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_spoiler_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_spoiler_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;||hello||\nworld&quot;);
+    /// assert_eq!(content, "||hello||\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_spoiler_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_spoiler(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_spoiler_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_spoiler(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes a quoted inline text to the content
     ///
@@ -1951,140 +1872,114 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     ///
-    /// let content = MessageBuilder::new().push_quote_line(&quot;hello&quot;).push(&quot;world&quot;).build();
+    /// let content = MessageBuilder::new().push_quote_line("hello").push("world").build();
     ///
-    /// assert_eq!(content, &quot;&gt; hello\nworld&quot;);
+    /// assert_eq!(content, "&gt; hello\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_quote_line(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_quote(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_quote_line&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_quote(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
-    <span class="doccomment">/// Pushes text to your message, but normalizing content - that means ensuring that there&#39;s no
+    <span class="kw">fn </span>_push_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: Content&lt;<span class="lifetime">'_</span>&gt;, norm: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>str) -&gt; String) {
+        <span class="kw">let </span>safe_content = norm(content.inner);
+        <span class="kw">let </span>safe_content = Content {
+            inner: <span class="kw-2">&amp;</span>safe_content,
+            ..content
+        };
+
+        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>safe_content);
+    }
+
+    <span class="doccomment">/// Pushes text to your message, but normalizing content - that means ensuring that there's no
     /// unwanted formatting, mention spam etc.
-    </span><span class="kw">pub fn </span>push_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner =
-                normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&#39;*&#39;</span>, <span class="string">&quot;\\*&quot;</span>).replace(<span class="string">&#39;`&#39;</span>, <span class="string">&quot;\\`&quot;</span>).replace(<span class="string">&#39;_&#39;</span>, <span class="string">&quot;\\_&quot;</span>);
-
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
+    </span><span class="kw">pub fn </span>push_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>._push_safe(content.into(), |c| {
+            normalize(c).replace(<span class="string">'*'</span>, <span class="string">"\\*"</span>).replace(<span class="string">'`'</span>, <span class="string">"\\`"</span>).replace(<span class="string">'_'</span>, <span class="string">"\\_"</span>)
+        });
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes a code-block to your message normalizing content.
-    </span><span class="kw">pub fn </span>push_codeblock_safe(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        content: <span class="kw">impl </span>Into&lt;Content&gt;,
+    </span><span class="kw">pub fn </span>push_codeblock_safe&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
         language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;```&quot;</span>);
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"```"</span>);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(language) = language {
             <span class="self">self</span>.<span class="number">0</span>.push_str(language);
         }
 
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;```&quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;\n```&quot;</span>);
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'\n'</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"```"</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"\n```"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an inline monospaced text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_mono_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;`&#39;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&#39;`&#39;</span>, <span class="string">&quot;&#39;&quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;`&#39;</span>);
+    </span><span class="kw">pub fn </span>push_mono_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'`'</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">'`'</span>, <span class="string">"'"</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'`'</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an inline italicized text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_italic_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;_&#39;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&#39;_&#39;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;_&#39;</span>);
+    </span><span class="kw">pub fn </span>push_italic_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'_'</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">'_'</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'_'</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an inline bold text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_bold_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;**&quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;**&quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;**&quot;</span>);
+    </span><span class="kw">pub fn </span>push_bold_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"**"</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"**"</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"**"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes an underlined inline text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_underline_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;__&quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;__&quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;__&quot;</span>);
+    </span><span class="kw">pub fn </span>push_underline_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"__"</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"__"</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"__"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes a strikethrough inline text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_strike_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;~~&quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;~~&quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;~~&quot;</span>);
+    </span><span class="kw">pub fn </span>push_strike_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"~~"</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"~~"</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"~~"</span>);
 
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Pushes a spoiler&#39;d inline text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_spoiler_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;||&quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;||&quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;||&quot;</span>);
+    <span class="doccomment">/// Pushes a spoiler'd inline text to the content normalizing content.
+    </span><span class="kw">pub fn </span>push_spoiler_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"||"</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"||"</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"||"</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Pushes a quoted inline text to the content normalizing content.
-    </span><span class="kw">pub fn </span>push_quote_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;&gt; &quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = content.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&quot;&gt; &quot;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
+    </span><span class="kw">pub fn </span>push_quote_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"&gt; "</span>);
+        <span class="self">self</span>._push_safe(content.into(), |c| normalize(c).replace(<span class="string">"&gt; "</span>, <span class="string">" "</span>));
 
         <span class="self">self
     </span>}
@@ -2099,16 +1994,16 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_line_safe(&quot;Hello @everyone&quot;).push(&quot;How are you?&quot;).build();
+    ///     MessageBuilder::new().push_line_safe("Hello @everyone").push("How are you?").build();
     ///
-    /// assert_eq!(content, &quot;Hello @\u{200B}everyone\nHow are you?&quot;);
+    /// assert_eq!(content, "Hello @\u{200B}everyone\nHow are you?");
     /// ```
-    </span><span class="kw">pub fn </span>push_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an inline monospaced text with added newline to the content normalizing content.
     ///
@@ -2120,16 +2015,16 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_mono_line_safe(&quot;`hello @everyone`&quot;).push(&quot;world&quot;).build();
+    ///     MessageBuilder::new().push_mono_line_safe("`hello @everyone`").push("world").build();
     ///
-    /// assert_eq!(content, &quot;`&#39;hello @\u{200B}everyone&#39;`\nworld&quot;);
+    /// assert_eq!(content, "`'hello @\u{200B}everyone'`\nworld");
     /// ```
-    </span><span class="kw">pub fn </span>push_mono_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_mono_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_mono_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_mono_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an inline italicized text with added newline to the content normalizing content.
     ///
@@ -2141,16 +2036,16 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_italic_line_safe(&quot;@everyone&quot;).push(&quot;Isn&#39;t a mention.&quot;).build();
+    ///     MessageBuilder::new().push_italic_line_safe("@everyone").push("Isn't a mention.").build();
     ///
-    /// assert_eq!(content, &quot;_@\u{200B}everyone_\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "_@\u{200B}everyone_\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_italic_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_italic_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_italic_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_italic_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an inline bold text with added newline to the content normalizing content.
     ///
@@ -2162,16 +2057,16 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_bold_line_safe(&quot;@everyone&quot;).push(&quot;Isn&#39;t a mention.&quot;).build();
+    ///     MessageBuilder::new().push_bold_line_safe("@everyone").push("Isn't a mention.").build();
     ///
-    /// assert_eq!(content, &quot;**@\u{200B}everyone**\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "**@\u{200B}everyone**\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_bold_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_bold_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_bold_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_bold_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes an underlined inline text with added newline to the content normalizing content.
     ///
@@ -2183,18 +2078,18 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content = MessageBuilder::new()
-    ///     .push_underline_line_safe(&quot;@everyone&quot;)
-    ///     .push(&quot;Isn&#39;t a mention.&quot;)
+    ///     .push_underline_line_safe("@everyone")
+    ///     .push("Isn't a mention.")
     ///     .build();
     ///
-    /// assert_eq!(content, &quot;__@\u{200B}everyone__\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "__@\u{200B}everyone__\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_underline_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_underline_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_underline_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_underline_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes a strikethrough inline text with added newline to the content normalizing content.
     ///
@@ -2206,18 +2101,18 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_strike_line_safe(&quot;@everyone&quot;).push(&quot;Isn&#39;t a mention.&quot;).build();
+    ///     MessageBuilder::new().push_strike_line_safe("@everyone").push("Isn't a mention.").build();
     ///
-    /// assert_eq!(content, &quot;~~@\u{200B}everyone~~\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "~~@\u{200B}everyone~~\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_strike_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_strike_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_strike_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_strike_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
-    <span class="doccomment">/// Pushes a spoiler&#39;d inline text with added newline to the content normalizing content.
+    <span class="doccomment">/// Pushes a spoiler'd inline text with added newline to the content normalizing content.
     ///
     /// # Examples
     ///
@@ -2227,16 +2122,16 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_spoiler_line_safe(&quot;@everyone&quot;).push(&quot;Isn&#39;t a mention.&quot;).build();
+    ///     MessageBuilder::new().push_spoiler_line_safe("@everyone").push("Isn't a mention.").build();
     ///
-    /// assert_eq!(content, &quot;||@\u{200B}everyone||\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "||@\u{200B}everyone||\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_spoiler_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_spoiler_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_spoiler_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_spoiler_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Pushes a quoted inline text with added newline to the content normalizing content.
     ///
@@ -2248,51 +2143,45 @@
     /// use serenity::utils::MessageBuilder;
     ///
     /// let content =
-    ///     MessageBuilder::new().push_quote_line_safe(&quot;@everyone&quot;).push(&quot;Isn&#39;t a mention.&quot;).build();
+    ///     MessageBuilder::new().push_quote_line_safe("@everyone").push("Isn't a mention.").build();
     ///
-    /// assert_eq!(content, &quot;&gt; @\u{200B}everyone\nIsn&#39;t a mention.&quot;);
+    /// assert_eq!(content, "&gt; @\u{200B}everyone\nIsn't a mention.");
     /// ```
-    </span><span class="kw">pub fn </span>push_quote_line_safe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.push_quote_safe(content);
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;\n&#39;</span>);
+    </span><span class="kw">pub fn </span>push_quote_line_safe&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, content: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>this = <span class="self">self</span>.push_quote_safe(content);
+        this.<span class="number">0</span>.push(<span class="string">'\n'</span>);
 
-        <span class="self">self
-    </span>}
+        this
+    }
 
     <span class="doccomment">/// Starts a multi-line quote, every push after this one will be quoted
-    </span><span class="kw">pub fn </span>quote_rest(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;\n&gt;&gt;&gt; &quot;</span>);
+    </span><span class="kw">pub fn </span>quote_rest(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"\n&gt;&gt;&gt; "</span>);
 
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Mentions the [`Role`] in the built message.
     ///
-    /// This accepts anything that converts _into_ a [`RoleId`]. Refer to [`RoleId`]&#39;s
-    /// documentation for more information.
-    ///
-    /// Refer to [`RoleId`]&#39;s [Display implementation] for more information on how this is
+    /// Refer to [`RoleId`]'s [Display implementation] for more information on how this is
     /// formatted.
     ///
     /// [`Role`]: crate::model::guild::Role
     /// [Display implementation]: RoleId#impl-Display
-    </span><span class="kw">pub fn </span>role&lt;R: Into&lt;RoleId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, role: R) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>role.into().mention());
+    </span><span class="kw">pub fn </span>role(<span class="kw-2">mut </span><span class="self">self</span>, role: RoleId) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>role.mention());
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Mentions the [`User`] in the built message.
     ///
-    /// This accepts anything that converts _into_ a [`UserId`]. Refer to [`UserId`]&#39;s
-    /// documentation for more information.
-    ///
-    /// Refer to [`UserId`]&#39;s [Display implementation] for more information on how this is
+    /// Refer to [`UserId`]'s [Display implementation] for more information on how this is
     /// formatted.
     ///
     /// [`User`]: crate::model::user::User
     /// [Display implementation]: UserId#impl-Display
-    </span><span class="kw">pub fn </span>user&lt;U: Into&lt;UserId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, user: U) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>user.into().mention());
+    </span><span class="kw">pub fn </span>user(<span class="kw-2">mut </span><span class="self">self</span>, user: UserId) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>._push(<span class="kw-2">&amp;</span>user.mention());
         <span class="self">self
     </span>}
 }
@@ -2311,7 +2200,7 @@
     /// ```rust
     /// use serenity::utils::MessageBuilder;
     /// ```
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         fmt::Display::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, f)
     }
 }
@@ -2324,35 +2213,37 @@
 ///
 /// # Examples
 ///
-/// Make a named link to Rust&#39;s GitHub organization:
+/// Make a named link to Rust's GitHub organization:
 ///
 /// ```rust
 /// use serenity::utils::{EmbedMessageBuilding, MessageBuilder};
 ///
 /// let msg = MessageBuilder::new()
-///     .push_named_link(&quot;Rust&#39;s GitHub&quot;, &quot;https://github.com/rust-lang&quot;)
+///     .push_named_link("Rust's GitHub", "https://github.com/rust-lang")
 ///     .build();
 ///
-/// assert_eq!(msg, &quot;[Rust&#39;s GitHub](https://github.com/rust-lang)&quot;);
+/// assert_eq!(msg, "[Rust's GitHub](https://github.com/rust-lang)");
 /// ```
 </span><span class="kw">pub trait </span>EmbedMessageBuilding {
     <span class="doccomment">/// Pushes a named link to a message, intended for use in embeds.
     ///
     /// # Examples
     ///
-    /// Make a simple link to Rust&#39;s homepage for use in an embed:
+    /// Make a simple link to Rust's homepage for use in an embed:
     ///
     /// ```rust
     /// use serenity::utils::{EmbedMessageBuilding, MessageBuilder};
     ///
-    /// let mut msg = MessageBuilder::new();
-    /// msg.push(&quot;Rust&#39;s website: &quot;);
-    /// msg.push_named_link(&quot;Homepage&quot;, &quot;https://rust-lang.org&quot;);
-    /// let content = msg.build();
+    /// let content = MessageBuilder::new()
+    ///     .push("Rust's website: ")
+    ///     .push_named_link("Homepage", "https://rust-lang.org")
+    ///     .build();
     ///
-    /// assert_eq!(content, &quot;Rust&#39;s website: [Homepage](https://rust-lang.org)&quot;);
+    /// assert_eq!(content, "Rust's website: [Homepage](https://rust-lang.org)");
     /// ```
-    </span><span class="kw">fn </span>push_named_link(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw">impl </span>Into&lt;Content&gt;, url: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">fn </span>push_named_link&lt;<span class="lifetime">'a</span>&gt;(<span class="self">self</span>, name: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;, url: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;)
+        -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Pushes a named link intended for use in an embed, but with a normalized name to avoid
     /// escaping issues.
@@ -2364,45 +2255,42 @@
     /// ```rust
     /// use serenity::utils::{EmbedMessageBuilding, MessageBuilder};
     ///
-    /// let mut msg = MessageBuilder::new();
-    /// msg.push(&quot;A weird website name: &quot;);
-    /// msg.push_named_link_safe(&quot;Try to ] break links (](&quot;, &quot;https://rust-lang.org&quot;);
-    /// let content = msg.build();
+    /// let content = MessageBuilder::new()
+    ///     .push("A weird website name: ")
+    ///     .push_named_link_safe("Try to ] break links (](", "https://rust-lang.org")
+    ///     .build();
     ///
-    /// assert_eq!(content, &quot;A weird website name: [Try to   break links ( (](https://rust-lang.org)&quot;);
+    /// assert_eq!(content, "A weird website name: [Try to   break links ( (](https://rust-lang.org)");
     /// ```
-    </span><span class="kw">fn </span>push_named_link_safe(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw">impl </span>Into&lt;Content&gt;,
-        url: <span class="kw">impl </span>Into&lt;Content&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">fn </span>push_named_link_safe&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="self">self</span>,
+        name: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+        url: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    ) -&gt; <span class="self">Self</span>;
 }
 
 <span class="kw">impl </span>EmbedMessageBuilding <span class="kw">for </span>MessageBuilder {
-    <span class="kw">fn </span>push_named_link(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw">impl </span>Into&lt;Content&gt;, url: <span class="kw">impl </span>Into&lt;Content&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="macro">write!</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="string">&quot;[{}]({})&quot;</span>, name.into(), url.into()).unwrap();
+    <span class="kw">fn </span>push_named_link&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        name: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+        url: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="macro">write!</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="string">"[{}]({})"</span>, name.into(), url.into()).unwrap();
 
         <span class="self">self
     </span>}
 
-    <span class="kw">fn </span>push_named_link_safe(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw">impl </span>Into&lt;Content&gt;,
-        url: <span class="kw">impl </span>Into&lt;Content&gt;,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;[&#39;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = name.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&#39;]&#39;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">&quot;](&quot;</span>);
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>c = url.into();
-            c.inner = normalize(<span class="kw-2">&amp;</span>c.inner).replace(<span class="string">&#39;)&#39;</span>, <span class="string">&quot; &quot;</span>);
-            <span class="self">self</span>._push(<span class="kw-2">&amp;</span>c);
-        }
-        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">&#39;)&#39;</span>);
+    <span class="kw">fn </span>push_named_link_safe&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">mut </span><span class="self">self</span>,
+        name: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+        url: <span class="kw">impl </span>Into&lt;Content&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">'['</span>);
+        <span class="self">self</span>._push_safe(name.into(), |c| normalize(c).replace(<span class="string">']'</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push_str(<span class="string">"]("</span>);
+        <span class="self">self</span>._push_safe(url.into(), |c| normalize(c).replace(<span class="string">')'</span>, <span class="string">" "</span>));
+        <span class="self">self</span>.<span class="number">0</span>.push(<span class="string">')'</span>);
 
         <span class="self">self
     </span>}
@@ -2415,14 +2303,15 @@
 ///
 /// # Examples
 ///
-/// Create a new Content type which describes a bold-italic &quot;text&quot;:
+/// Create a new Content type which describes a bold-italic "text":
 ///
 /// ```rust,no_run
 /// use serenity::utils::Content;
 /// use serenity::utils::ContentModifier::{Bold, Italic};
-/// let content: Content = Bold + Italic + &quot;text&quot;;
+/// let content: Content = "text" + Bold + Italic;
 /// ```
 </span><span class="attr">#[non_exhaustive]
+#[derive(Clone, Copy)]
 </span><span class="kw">pub enum </span>ContentModifier {
     Italic,
     Bold,
@@ -2432,154 +2321,137 @@
     Spoiler,
 }
 
-<span class="doccomment">/// Describes formatting on string content
+<span class="attr">#[bool_to_bitflags::bool_to_bitflags(owning_setters)]
+</span><span class="doccomment">/// Describes formatting on string content
 </span><span class="attr">#[derive(Clone, Debug, Default)]
-</span><span class="kw">pub struct </span>Content {
+</span><span class="kw">pub struct </span>Content&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">pub </span>italic: bool,
     <span class="kw">pub </span>bold: bool,
     <span class="kw">pub </span>strikethrough: bool,
-    <span class="kw">pub </span>inner: String,
+    <span class="kw">pub </span>inner: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="kw">pub </span>code: bool,
     <span class="kw">pub </span>underline: bool,
     <span class="kw">pub </span>spoiler: bool,
 }
 
-<span class="kw">impl</span>&lt;T: Into&lt;String&gt;&gt; Add&lt;T&gt; <span class="kw">for </span>Content {
-    <span class="kw">type </span>Output = Content;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Add&lt;ContentModifier&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
+    <span class="kw">type </span>Output = Content&lt;<span class="lifetime">'a</span>&gt;;
 
-    <span class="kw">fn </span>add(<span class="kw-2">mut </span><span class="self">self</span>, rhs: T) -&gt; Content {
-        <span class="self">self</span>.inner += <span class="kw-2">&amp;</span>rhs.into();
+    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: ContentModifier) -&gt; <span class="self">Self</span>::Output {
+        <span class="kw">let </span>content = Content {
+            inner: <span class="self">self</span>,
+            ..Default::default()
+        };
 
-        <span class="self">self
-    </span>}
-}
-
-<span class="kw">impl</span>&lt;T: Into&lt;String&gt;&gt; Add&lt;T&gt; <span class="kw">for </span>ContentModifier {
-    <span class="kw">type </span>Output = Content;
-
-    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: T) -&gt; Content {
-        <span class="kw">let </span><span class="kw-2">mut </span>nc = <span class="self">self</span>.to_content();
-        nc.inner += <span class="kw-2">&amp;</span>rhs.into();
-
-        nc
+        content.apply(rhs)
     }
 }
 
-<span class="kw">impl </span>Add&lt;ContentModifier&gt; <span class="kw">for </span>Content {
-    <span class="kw">type </span>Output = Content;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Add&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span>ContentModifier {
+    <span class="kw">type </span>Output = Content&lt;<span class="lifetime">'a</span>&gt;;
 
-    <span class="kw">fn </span>add(<span class="kw-2">mut </span><span class="self">self</span>, rhs: ContentModifier) -&gt; Content {
-        <span class="self">self</span>.apply(<span class="kw-2">&amp;</span>rhs);
-
-        <span class="self">self
+    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; <span class="self">Self</span>::Output {
+        rhs + <span class="self">self
     </span>}
 }
 
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Add&lt;ContentModifier&gt; <span class="kw">for </span>Content&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Output = Content&lt;<span class="lifetime">'a</span>&gt;;
+
+    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: ContentModifier) -&gt; Content&lt;<span class="lifetime">'a</span>&gt; {
+        <span class="self">self</span>.apply(rhs)
+    }
+}
+
 <span class="kw">impl </span>Add&lt;ContentModifier&gt; <span class="kw">for </span>ContentModifier {
-    <span class="kw">type </span>Output = Content;
+    <span class="kw">type </span>Output = Content&lt;<span class="lifetime">'static</span>&gt;;
 
-    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: ContentModifier) -&gt; Content {
-        <span class="kw">let </span><span class="kw-2">mut </span>nc = <span class="self">self</span>.to_content();
-        nc.apply(<span class="kw-2">&amp;</span>rhs);
-
-        nc
+    <span class="kw">fn </span>add(<span class="self">self</span>, rhs: ContentModifier) -&gt; <span class="self">Self</span>::Output {
+        <span class="kw">let </span>content = <span class="self">self</span>.to_content();
+        content.apply(rhs)
     }
 }
 
 <span class="kw">impl </span>ContentModifier {
-    <span class="kw">fn </span>to_content(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Content {
-        <span class="kw">let </span><span class="kw-2">mut </span>nc = Content::default();
-        nc.apply(<span class="self">self</span>);
-
-        nc
+    <span class="kw">fn </span>to_content(<span class="self">self</span>) -&gt; Content&lt;<span class="lifetime">'static</span>&gt; {
+        Content::default().apply(<span class="self">self</span>)
     }
 }
 
-<span class="kw">impl </span>Content {
-    <span class="kw">pub fn </span>apply(<span class="kw-2">&amp;mut </span><span class="self">self</span>, modifier: <span class="kw-2">&amp;</span>ContentModifier) {
-        <span class="kw">match </span><span class="kw-2">*</span>modifier {
-            ContentModifier::Italic =&gt; {
-                <span class="self">self</span>.italic = <span class="bool-val">true</span>;
-            },
-            ContentModifier::Bold =&gt; {
-                <span class="self">self</span>.bold = <span class="bool-val">true</span>;
-            },
-            ContentModifier::Strikethrough =&gt; {
-                <span class="self">self</span>.strikethrough = <span class="bool-val">true</span>;
-            },
-            ContentModifier::Code =&gt; {
-                <span class="self">self</span>.code = <span class="bool-val">true</span>;
-            },
-            ContentModifier::Underline =&gt; {
-                <span class="self">self</span>.underline = <span class="bool-val">true</span>;
-            },
-            ContentModifier::Spoiler =&gt; {
-                <span class="self">self</span>.spoiler = <span class="bool-val">true</span>;
-            },
+<span class="kw">impl </span>Content&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>apply(<span class="self">self</span>, modifier: ContentModifier) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>modifier {
+            ContentModifier::Italic =&gt; <span class="self">self</span>.set_italic(<span class="bool-val">true</span>),
+            ContentModifier::Bold =&gt; <span class="self">self</span>.set_bold(<span class="bool-val">true</span>),
+            ContentModifier::Strikethrough =&gt; <span class="self">self</span>.set_strikethrough(<span class="bool-val">true</span>),
+            ContentModifier::Code =&gt; <span class="self">self</span>.set_code(<span class="bool-val">true</span>),
+            ContentModifier::Underline =&gt; <span class="self">self</span>.set_underline(<span class="bool-val">true</span>),
+            ContentModifier::Spoiler =&gt; <span class="self">self</span>.set_spoiler(<span class="bool-val">true</span>),
         }
     }
 }
 
-<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Content {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="kw">if </span><span class="self">self</span>.spoiler {
-            fmt.write_str(<span class="string">&quot;||&quot;</span>)<span class="question-mark">?</span>;
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Content&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">if </span><span class="self">self</span>.spoiler() {
+            fmt.write_str(<span class="string">"||"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.bold {
-            fmt.write_str(<span class="string">&quot;**&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.bold() {
+            fmt.write_str(<span class="string">"**"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.italic {
-            fmt.write_char(<span class="string">&#39;*&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.italic() {
+            fmt.write_char(<span class="string">'*'</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.strikethrough {
-            fmt.write_str(<span class="string">&quot;~~&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.strikethrough() {
+            fmt.write_str(<span class="string">"~~"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.underline {
-            fmt.write_str(<span class="string">&quot;__&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.underline() {
+            fmt.write_str(<span class="string">"__"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.code {
-            fmt.write_char(<span class="string">&#39;`&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.code() {
+            fmt.write_char(<span class="string">'`'</span>)<span class="question-mark">?</span>;
         }
 
-        fmt.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>.inner)<span class="question-mark">?</span>;
+        fmt.write_str(<span class="self">self</span>.inner)<span class="question-mark">?</span>;
 
-        <span class="kw">if </span><span class="self">self</span>.code {
-            fmt.write_char(<span class="string">&#39;`&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.code() {
+            fmt.write_char(<span class="string">'`'</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.underline {
-            fmt.write_str(<span class="string">&quot;__&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.underline() {
+            fmt.write_str(<span class="string">"__"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.strikethrough {
-            fmt.write_str(<span class="string">&quot;~~&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.strikethrough() {
+            fmt.write_str(<span class="string">"~~"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.italic {
-            fmt.write_char(<span class="string">&#39;*&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.italic() {
+            fmt.write_char(<span class="string">'*'</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.bold {
-            fmt.write_str(<span class="string">&quot;**&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.bold() {
+            fmt.write_str(<span class="string">"**"</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if </span><span class="self">self</span>.spoiler {
-            fmt.write_str(<span class="string">&quot;||&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self</span>.spoiler() {
+            fmt.write_str(<span class="string">"||"</span>)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span>&lt;T: Into&lt;String&gt;&gt; From&lt;T&gt; <span class="kw">for </span>Content {
-    <span class="kw">fn </span>from(t: T) -&gt; Content {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span>Content&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>from(inner: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) -&gt; Content&lt;<span class="lifetime">'a</span>&gt; {
         Content {
-            inner: t.into(),
+            inner,
             ..Default::default()
         }
     }
@@ -2588,25 +2460,25 @@
 <span class="kw">fn </span>normalize(text: <span class="kw-2">&amp;</span>str) -&gt; String {
     <span class="comment">// Remove invite links and popular scam websites, mostly to prevent the current user from
     // triggering various ad detectors and prevent embeds.
-    </span>text.replace(<span class="string">&quot;discord.gg&quot;</span>, <span class="string">&quot;discord\u{2024}gg&quot;</span>)
-        .replace(<span class="string">&quot;discord.me&quot;</span>, <span class="string">&quot;discord\u{2024}me&quot;</span>)
-        .replace(<span class="string">&quot;discordlist.net&quot;</span>, <span class="string">&quot;discordlist\u{2024}net&quot;</span>)
-        .replace(<span class="string">&quot;discordservers.com&quot;</span>, <span class="string">&quot;discordservers\u{2024}com&quot;</span>)
-        .replace(<span class="string">&quot;discord.com/invite&quot;</span>, <span class="string">&quot;discord\u{2024}com/invite&quot;</span>)
-        .replace(<span class="string">&quot;discordapp.com/invite&quot;</span>, <span class="string">&quot;discordapp\u{2024}com/invite&quot;</span>)
+    </span>text.replace(<span class="string">"discord.gg"</span>, <span class="string">"discord\u{2024}gg"</span>)
+        .replace(<span class="string">"discord.me"</span>, <span class="string">"discord\u{2024}me"</span>)
+        .replace(<span class="string">"discordlist.net"</span>, <span class="string">"discordlist\u{2024}net"</span>)
+        .replace(<span class="string">"discordservers.com"</span>, <span class="string">"discordservers\u{2024}com"</span>)
+        .replace(<span class="string">"discord.com/invite"</span>, <span class="string">"discord\u{2024}com/invite"</span>)
+        .replace(<span class="string">"discordapp.com/invite"</span>, <span class="string">"discordapp\u{2024}com/invite"</span>)
         <span class="comment">// Remove right-to-left override and other similar annoying symbols
         </span>.replace([
-            <span class="string">&#39;\u{202E}&#39;</span>, <span class="comment">// RTL Override
-            </span><span class="string">&#39;\u{200F}&#39;</span>, <span class="comment">// RTL Mark
-            </span><span class="string">&#39;\u{202B}&#39;</span>, <span class="comment">// RTL Embedding
-            </span><span class="string">&#39;\u{200B}&#39;</span>, <span class="comment">// Zero-width space
-            </span><span class="string">&#39;\u{200D}&#39;</span>, <span class="comment">// Zero-width joiner
-            </span><span class="string">&#39;\u{200C}&#39;</span>, <span class="comment">// Zero-width non-joiner
-        </span>], <span class="string">&quot; &quot;</span>)
+            <span class="string">'\u{202E}'</span>, <span class="comment">// RTL Override
+            </span><span class="string">'\u{200F}'</span>, <span class="comment">// RTL Mark
+            </span><span class="string">'\u{202B}'</span>, <span class="comment">// RTL Embedding
+            </span><span class="string">'\u{200B}'</span>, <span class="comment">// Zero-width space
+            </span><span class="string">'\u{200D}'</span>, <span class="comment">// Zero-width joiner
+            </span><span class="string">'\u{200C}'</span>, <span class="comment">// Zero-width non-joiner
+        </span>], <span class="string">" "</span>)
         <span class="comment">// Remove everyone and here mentions. Has to be put after ZWS replacement because it
         // utilises it itself.
-        </span>.replace(<span class="string">&quot;@everyone&quot;</span>, <span class="string">&quot;@\u{200B}everyone&quot;</span>)
-        .replace(<span class="string">&quot;@here&quot;</span>, <span class="string">&quot;@\u{200B}here&quot;</span>)
+        </span>.replace(<span class="string">"@everyone"</span>, <span class="string">"@\u{200B}everyone"</span>)
+        .replace(<span class="string">"@here"</span>, <span class="string">"@\u{200B}here"</span>)
 }
 
 <span class="attr">#[cfg(test)]
@@ -2615,7 +2487,7 @@
     <span class="kw">use </span><span class="kw">super</span>::MessageBuilder;
     <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
-    <span class="macro">macro_rules! </span>gen {
+    <span class="macro">macro_rules!</span> gen {
         ($(<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident </span>=&gt; [$(<span class="macro-nonterminal">$text</span>:expr =&gt; <span class="macro-nonterminal">$expected</span>:expr),+]),+) =&gt; ({
             $(
                 $(
@@ -2627,273 +2499,273 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>code_blocks() {
-        <span class="kw">let </span>content = MessageBuilder::new().push_codeblock(<span class="string">&quot;test&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;rb&quot;</span>)).build();
-        <span class="macro">assert_eq!</span>(content, <span class="string">&quot;```rb\ntest\n```&quot;</span>);
+        <span class="kw">let </span>content = MessageBuilder::new().push_codeblock(<span class="string">"test"</span>, <span class="prelude-val">Some</span>(<span class="string">"rb"</span>)).build();
+        <span class="macro">assert_eq!</span>(content, <span class="string">"```rb\ntest\n```"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>safe_content() {
-        <span class="kw">let </span>content = MessageBuilder::new().push_safe(<span class="string">&quot;@everyone discord.gg/discord-api&quot;</span>).build();
-        <span class="macro">assert_ne!</span>(content, <span class="string">&quot;@everyone discord.gg/discord-api&quot;</span>);
+        <span class="kw">let </span>content = MessageBuilder::new().push_safe(<span class="string">"@everyone discord.gg/discord-api"</span>).build();
+        <span class="macro">assert_ne!</span>(content, <span class="string">"@everyone discord.gg/discord-api"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>no_free_formatting() {
-        <span class="kw">let </span>content = MessageBuilder::new().push_bold_safe(<span class="string">&quot;test**test&quot;</span>).build();
-        <span class="macro">assert_ne!</span>(content, <span class="string">&quot;**test**test**&quot;</span>);
+        <span class="kw">let </span>content = MessageBuilder::new().push_bold_safe(<span class="string">"test**test"</span>).build();
+        <span class="macro">assert_ne!</span>(content, <span class="string">"**test**test**"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>mentions() {
-        <span class="kw">let </span>content_emoji = MessageBuilder::new()
-            .emoji(<span class="kw-2">&amp;</span>Emoji {
-                animated: <span class="bool-val">false</span>,
-                available: <span class="bool-val">true</span>,
-                id: EmojiId::new(<span class="number">32</span>),
-                name: <span class="string">&quot;Rohrkatze&quot;</span>.to_string(),
-                managed: <span class="bool-val">false</span>,
-                require_colons: <span class="bool-val">true</span>,
-                roles: <span class="macro">vec!</span>[],
-                user: <span class="prelude-val">None</span>,
-            })
-            .build();
+        <span class="kw">let </span><span class="kw-2">mut </span>emoji = Emoji {
+            id: EmojiId::new(<span class="number">32</span>),
+            name: FixedString::from_static_trunc(<span class="string">"Rohrkatze"</span>),
+            roles: FixedArray::empty(),
+            user: <span class="prelude-val">None</span>,
+            __generated_flags: EmojiGeneratedFlags::empty(),
+        };
+
+        emoji.set_available(<span class="bool-val">true</span>);
+        emoji.set_require_colons(<span class="bool-val">true</span>);
+
+        <span class="kw">let </span>content_emoji = MessageBuilder::new().emoji(<span class="kw-2">&amp;</span>emoji).build();
         <span class="kw">let </span>content_mentions = MessageBuilder::new()
             .channel(ChannelId::new(<span class="number">1</span>))
             .mention(<span class="kw-2">&amp;</span>UserId::new(<span class="number">2</span>))
             .role(RoleId::new(<span class="number">3</span>))
             .user(UserId::new(<span class="number">4</span>))
             .build();
-        <span class="macro">assert_eq!</span>(content_mentions, <span class="string">&quot;&lt;#1&gt;&lt;@2&gt;&lt;@&amp;3&gt;&lt;@4&gt;&quot;</span>);
-        <span class="macro">assert_eq!</span>(content_emoji, <span class="string">&quot;&lt;:Rohrkatze:32&gt;&quot;</span>);
+        <span class="macro">assert_eq!</span>(content_mentions, <span class="string">"&lt;#1&gt;&lt;@2&gt;&lt;@&amp;3&gt;&lt;@4&gt;"</span>);
+        <span class="macro">assert_eq!</span>(content_emoji, <span class="string">"&lt;:Rohrkatze:32&gt;"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>content() {
-        <span class="kw">let </span>content = Bold + Italic + Code + <span class="string">&quot;Fun!&quot;</span>;
+        <span class="kw">let </span>content = <span class="string">"Fun!" </span>+ Bold + Italic + Code;
 
-        <span class="macro">assert_eq!</span>(content.to_string(), <span class="string">&quot;***`Fun!`***&quot;</span>);
+        <span class="macro">assert_eq!</span>(content.to_string(), <span class="string">"***`Fun!`***"</span>);
 
-        <span class="kw">let </span>content = Spoiler + Bold + <span class="string">&quot;Divert your eyes elsewhere&quot;</span>;
+        <span class="kw">let </span>content = <span class="string">"Divert your eyes elsewhere" </span>+ Spoiler + Bold;
 
-        <span class="macro">assert_eq!</span>(content.to_string(), <span class="string">&quot;||**Divert your eyes elsewhere**||&quot;</span>);
+        <span class="macro">assert_eq!</span>(content.to_string(), <span class="string">"||**Divert your eyes elsewhere**||"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>init() {
-        <span class="macro">assert_eq!</span>(MessageBuilder::new().<span class="number">0</span>, <span class="string">&quot;&quot;</span>);
-        <span class="macro">assert_eq!</span>(MessageBuilder::default().<span class="number">0</span>, <span class="string">&quot;&quot;</span>);
+        <span class="macro">assert_eq!</span>(MessageBuilder::new().<span class="number">0</span>, <span class="string">""</span>);
+        <span class="macro">assert_eq!</span>(MessageBuilder::default().<span class="number">0</span>, <span class="string">""</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>message_content() {
-        <span class="kw">let </span>message_content = MessageBuilder::new().push(Bold + Italic + Code + <span class="string">&quot;Fun!&quot;</span>).build();
+        <span class="kw">let </span>message_content = MessageBuilder::new().push(<span class="string">"Fun!" </span>+ Bold + Italic + Code).build();
 
-        <span class="macro">assert_eq!</span>(message_content, <span class="string">&quot;***`Fun!`***&quot;</span>);
+        <span class="macro">assert_eq!</span>(message_content, <span class="string">"***`Fun!`***"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>message_content_safe() {
-        <span class="kw">let </span>message_content = MessageBuilder::new().push_safe(Bold + Italic + <span class="string">&quot;test**test&quot;</span>).build();
+        <span class="kw">let </span>message_content = MessageBuilder::new().push_safe(<span class="string">"test**test" </span>+ Bold + Italic).build();
 
-        <span class="macro">assert_eq!</span>(message_content, <span class="string">&quot;***test\\*\\*test***&quot;</span>);
+        <span class="macro">assert_eq!</span>(message_content, <span class="string">"***test\\*\\*test***"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>push() {
-        <span class="macro">assert_eq!</span>(MessageBuilder::new().push(<span class="string">&#39;a&#39;</span>).<span class="number">0</span>, <span class="string">&quot;a&quot;</span>);
-        <span class="macro">assert!</span>(MessageBuilder::new().push(<span class="string">&quot;&quot;</span>).<span class="number">0</span>.is_empty());
+        <span class="macro">assert_eq!</span>(MessageBuilder::new().push(<span class="string">"a"</span>).<span class="number">0</span>, <span class="string">"a"</span>);
+        <span class="macro">assert!</span>(MessageBuilder::new().push(<span class="string">""</span>).<span class="number">0</span>.is_empty());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>push_codeblock() {
-        <span class="kw">let </span>content = <span class="kw-2">&amp;</span>MessageBuilder::new().push_codeblock(<span class="string">&quot;foo&quot;</span>, <span class="prelude-val">None</span>).<span class="number">0</span>.clone();
-        <span class="macro">assert_eq!</span>(content, <span class="string">&quot;```\nfoo\n```&quot;</span>);
+        <span class="kw">let </span>content = <span class="kw-2">&amp;</span>MessageBuilder::new().push_codeblock(<span class="string">"foo"</span>, <span class="prelude-val">None</span>).<span class="number">0</span>.clone();
+        <span class="macro">assert_eq!</span>(content, <span class="string">"```\nfoo\n```"</span>);
 
-        <span class="kw">let </span>content = <span class="kw-2">&amp;</span>MessageBuilder::new().push_codeblock(<span class="string">&quot;fn main() { }&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;rs&quot;</span>)).<span class="number">0</span>.clone();
-        <span class="macro">assert_eq!</span>(content, <span class="string">&quot;```rs\nfn main() { }\n```&quot;</span>);
+        <span class="kw">let </span>content = <span class="kw-2">&amp;</span>MessageBuilder::new().push_codeblock(<span class="string">"fn main() { }"</span>, <span class="prelude-val">Some</span>(<span class="string">"rs"</span>)).<span class="number">0</span>.clone();
+        <span class="macro">assert_eq!</span>(content, <span class="string">"```rs\nfn main() { }\n```"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>push_codeblock_safe() {
         <span class="macro">assert_eq!</span>(
-            MessageBuilder::new().push_codeblock_safe(<span class="string">&quot;foo&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;rs&quot;</span>)).<span class="number">0</span>,
-            <span class="string">&quot;```rs\nfoo\n```&quot;</span>,
+            MessageBuilder::new().push_codeblock_safe(<span class="string">"foo"</span>, <span class="prelude-val">Some</span>(<span class="string">"rs"</span>)).<span class="number">0</span>,
+            <span class="string">"```rs\nfoo\n```"</span>,
         );
-        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">&quot;```\n\n```&quot;</span>,);
-        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">&quot;1 * 2&quot;</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">&quot;```\n1 * 2\n```&quot;</span>,);
+        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">""</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">"```\n\n```"</span>,);
+        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">"1 * 2"</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">"```\n1 * 2\n```"</span>,);
         <span class="macro">assert_eq!</span>(
-            MessageBuilder::new().push_codeblock_safe(<span class="string">&quot;`1 * 3`&quot;</span>, <span class="prelude-val">None</span>).<span class="number">0</span>,
-            <span class="string">&quot;```\n`1 * 3`\n```&quot;</span>,
+            MessageBuilder::new().push_codeblock_safe(<span class="string">"`1 * 3`"</span>, <span class="prelude-val">None</span>).<span class="number">0</span>,
+            <span class="string">"```\n`1 * 3`\n```"</span>,
         );
-        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">&quot;```.```&quot;</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">&quot;```\n . \n```&quot;</span>,);
+        <span class="macro">assert_eq!</span>(MessageBuilder::new().push_codeblock_safe(<span class="string">"```.```"</span>, <span class="prelude-val">None</span>).<span class="number">0</span>, <span class="string">"```\n . \n```"</span>,);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>push_safe() {
-        <span class="macro">gen! </span>{
+        <span class="macro">gen!</span> {
             push_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;foo&quot;</span>,
-                <span class="string">&quot;1 * 2&quot; </span>=&gt; <span class="string">&quot;1 \\* 2&quot;
+                <span class="string">"" </span>=&gt; <span class="string">""</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"foo"</span>,
+                <span class="string">"1 * 2" </span>=&gt; <span class="string">"1 \\* 2"
             </span>],
             push_bold_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;****&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;**foo**&quot;</span>,
-                <span class="string">&quot;*foo*&quot; </span>=&gt; <span class="string">&quot;***foo***&quot;</span>,
-                <span class="string">&quot;f*o**o&quot; </span>=&gt; <span class="string">&quot;**f*o o**&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"****"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"**foo**"</span>,
+                <span class="string">"*foo*" </span>=&gt; <span class="string">"***foo***"</span>,
+                <span class="string">"f*o**o" </span>=&gt; <span class="string">"**f*o o**"
             </span>],
             push_italic_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;__&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;_foo_&quot;</span>,
-                <span class="string">&quot;f_o_o&quot; </span>=&gt; <span class="string">&quot;_f o o_&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"__"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"_foo_"</span>,
+                <span class="string">"f_o_o" </span>=&gt; <span class="string">"_f o o_"
             </span>],
             push_mono_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;``&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;`foo`&quot;</span>,
-                <span class="string">&quot;asterisk *&quot; </span>=&gt; <span class="string">&quot;`asterisk *`&quot;</span>,
-                <span class="string">&quot;`ticks`&quot; </span>=&gt; <span class="string">&quot;`&#39;ticks&#39;`&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"``"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"`foo`"</span>,
+                <span class="string">"asterisk *" </span>=&gt; <span class="string">"`asterisk *`"</span>,
+                <span class="string">"`ticks`" </span>=&gt; <span class="string">"`'ticks'`"
             </span>],
             push_strike_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;~~~~&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;~~foo~~&quot;</span>,
-                <span class="string">&quot;foo ~&quot; </span>=&gt; <span class="string">&quot;~~foo ~~~&quot;</span>,
-                <span class="string">&quot;~~foo&quot; </span>=&gt; <span class="string">&quot;~~ foo~~&quot;</span>,
-                <span class="string">&quot;~~fo~~o~~&quot; </span>=&gt; <span class="string">&quot;~~ fo o ~~&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"~~~~"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"~~foo~~"</span>,
+                <span class="string">"foo ~" </span>=&gt; <span class="string">"~~foo ~~~"</span>,
+                <span class="string">"~~foo" </span>=&gt; <span class="string">"~~ foo~~"</span>,
+                <span class="string">"~~fo~~o~~" </span>=&gt; <span class="string">"~~ fo o ~~"
             </span>],
             push_underline_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;____&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;__foo__&quot;</span>,
-                <span class="string">&quot;foo _&quot; </span>=&gt; <span class="string">&quot;__foo ___&quot;</span>,
-                <span class="string">&quot;__foo__ bar&quot; </span>=&gt; <span class="string">&quot;__ foo  bar__&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"____"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"__foo__"</span>,
+                <span class="string">"foo _" </span>=&gt; <span class="string">"__foo ___"</span>,
+                <span class="string">"__foo__ bar" </span>=&gt; <span class="string">"__ foo  bar__"
             </span>],
             push_spoiler_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;||||&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;||foo||&quot;</span>,
-                <span class="string">&quot;foo |&quot; </span>=&gt; <span class="string">&quot;||foo |||&quot;</span>,
-                <span class="string">&quot;||foo|| bar&quot; </span>=&gt;<span class="string">&quot;|| foo  bar||&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"||||"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"||foo||"</span>,
+                <span class="string">"foo |" </span>=&gt; <span class="string">"||foo |||"</span>,
+                <span class="string">"||foo|| bar" </span>=&gt;<span class="string">"|| foo  bar||"
             </span>],
             push_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;foo\n&quot;</span>,
-                <span class="string">&quot;1 * 2&quot; </span>=&gt; <span class="string">&quot;1 \\* 2\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"foo\n"</span>,
+                <span class="string">"1 * 2" </span>=&gt; <span class="string">"1 \\* 2\n"
             </span>],
             push_mono_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;``\n&quot;</span>,
-                <span class="string">&quot;a ` b `&quot; </span>=&gt; <span class="string">&quot;`a &#39; b &#39;`\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"``\n"</span>,
+                <span class="string">"a ` b `" </span>=&gt; <span class="string">"`a ' b '`\n"
             </span>],
             push_italic_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;__\n&quot;</span>,
-                <span class="string">&quot;a * c&quot; </span>=&gt; <span class="string">&quot;_a * c_\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"__\n"</span>,
+                <span class="string">"a * c" </span>=&gt; <span class="string">"_a * c_\n"
             </span>],
             push_bold_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;****\n&quot;</span>,
-                <span class="string">&quot;a ** d&quot; </span>=&gt; <span class="string">&quot;**a   d**\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"****\n"</span>,
+                <span class="string">"a ** d" </span>=&gt; <span class="string">"**a   d**\n"
             </span>],
             push_underline_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;____\n&quot;</span>,
-                <span class="string">&quot;a __ e&quot; </span>=&gt; <span class="string">&quot;__a   e__\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"____\n"</span>,
+                <span class="string">"a __ e" </span>=&gt; <span class="string">"__a   e__\n"
             </span>],
             push_strike_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;~~~~\n&quot;</span>,
-                <span class="string">&quot;a ~~ f&quot; </span>=&gt; <span class="string">&quot;~~a   f~~\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"~~~~\n"</span>,
+                <span class="string">"a ~~ f" </span>=&gt; <span class="string">"~~a   f~~\n"
             </span>],
             push_spoiler_line_safe =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;||||\n&quot;</span>,
-                <span class="string">&quot;a || f&quot; </span>=&gt; <span class="string">&quot;||a   f||\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"||||\n"</span>,
+                <span class="string">"a || f" </span>=&gt; <span class="string">"||a   f||\n"
             </span>]
         };
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>push_unsafe() {
-        <span class="macro">gen! </span>{
+        <span class="macro">gen!</span> {
             push_bold =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;**a**&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;****&quot;</span>,
-                <span class="string">&#39;*&#39; </span>=&gt; <span class="string">&quot;*****&quot;</span>,
-                <span class="string">&quot;**&quot; </span>=&gt; <span class="string">&quot;******&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"**a**"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"****"</span>,
+                <span class="string">"*" </span>=&gt; <span class="string">"*****"</span>,
+                <span class="string">"**" </span>=&gt; <span class="string">"******"
             </span>],
             push_bold_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;****\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;**foo**\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"****\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"**foo**\n"
             </span>],
             push_italic =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;_a_&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;__&quot;</span>,
-                <span class="string">&quot;_&quot; </span>=&gt; <span class="string">&quot;___&quot;</span>,
-                <span class="string">&quot;__&quot; </span>=&gt; <span class="string">&quot;____&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"_a_"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"__"</span>,
+                <span class="string">"_" </span>=&gt; <span class="string">"___"</span>,
+                <span class="string">"__" </span>=&gt; <span class="string">"____"
             </span>],
             push_italic_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;__\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;_foo_\n&quot;</span>,
-                <span class="string">&quot;_?&quot; </span>=&gt; <span class="string">&quot;__?_\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"__\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"_foo_\n"</span>,
+                <span class="string">"_?" </span>=&gt; <span class="string">"__?_\n"
             </span>],
             push_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;foo\n&quot;</span>,
-                <span class="string">&quot;\n\n&quot; </span>=&gt; <span class="string">&quot;\n\n\n&quot;</span>,
-                <span class="string">&quot;\nfoo\n&quot; </span>=&gt; <span class="string">&quot;\nfoo\n\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"foo\n"</span>,
+                <span class="string">"\n\n" </span>=&gt; <span class="string">"\n\n\n"</span>,
+                <span class="string">"\nfoo\n" </span>=&gt; <span class="string">"\nfoo\n\n"
             </span>],
             push_mono =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;`a`&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;``&quot;</span>,
-                <span class="string">&quot;`&quot; </span>=&gt; <span class="string">&quot;```&quot;</span>,
-                <span class="string">&quot;``&quot; </span>=&gt; <span class="string">&quot;````&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"`a`"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"``"</span>,
+                <span class="string">"`" </span>=&gt; <span class="string">"```"</span>,
+                <span class="string">"``" </span>=&gt; <span class="string">"````"
             </span>],
             push_mono_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;``\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;`foo`\n&quot;</span>,
-                <span class="string">&quot;\n&quot; </span>=&gt; <span class="string">&quot;`\n`\n&quot;</span>,
-                <span class="string">&quot;`\n`\n&quot; </span>=&gt; <span class="string">&quot;``\n`\n`\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"``\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"`foo`\n"</span>,
+                <span class="string">"\n" </span>=&gt; <span class="string">"`\n`\n"</span>,
+                <span class="string">"`\n`\n" </span>=&gt; <span class="string">"``\n`\n`\n"
             </span>],
             push_strike =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;~~a~~&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;~~~~&quot;</span>,
-                <span class="string">&quot;~&quot; </span>=&gt; <span class="string">&quot;~~~~~&quot;</span>,
-                <span class="string">&quot;~~&quot; </span>=&gt; <span class="string">&quot;~~~~~~&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"~~a~~"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"~~~~"</span>,
+                <span class="string">"~" </span>=&gt; <span class="string">"~~~~~"</span>,
+                <span class="string">"~~" </span>=&gt; <span class="string">"~~~~~~"
             </span>],
             push_strike_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;~~~~\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;~~foo~~\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"~~~~\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"~~foo~~\n"
             </span>],
             push_underline =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;__a__&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;____&quot;</span>,
-                <span class="string">&quot;_&quot; </span>=&gt; <span class="string">&quot;_____&quot;</span>,
-                <span class="string">&quot;__&quot; </span>=&gt; <span class="string">&quot;______&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"__a__"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"____"</span>,
+                <span class="string">"_" </span>=&gt; <span class="string">"_____"</span>,
+                <span class="string">"__" </span>=&gt; <span class="string">"______"
             </span>],
             push_underline_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;____\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;__foo__\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"____\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"__foo__\n"
             </span>],
             push_spoiler =&gt; [
-                <span class="string">&quot;a&quot; </span>=&gt; <span class="string">&quot;||a||&quot;</span>,
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;||||&quot;</span>,
-                <span class="string">&quot;|&quot; </span>=&gt; <span class="string">&quot;|||||&quot;</span>,
-                <span class="string">&quot;||&quot; </span>=&gt; <span class="string">&quot;||||||&quot;
+                <span class="string">"a" </span>=&gt; <span class="string">"||a||"</span>,
+                <span class="string">"" </span>=&gt; <span class="string">"||||"</span>,
+                <span class="string">"|" </span>=&gt; <span class="string">"|||||"</span>,
+                <span class="string">"||" </span>=&gt; <span class="string">"||||||"
             </span>],
             push_spoiler_line =&gt; [
-                <span class="string">&quot;&quot; </span>=&gt; <span class="string">&quot;||||\n&quot;</span>,
-                <span class="string">&quot;foo&quot; </span>=&gt; <span class="string">&quot;||foo||\n&quot;
+                <span class="string">"" </span>=&gt; <span class="string">"||||\n"</span>,
+                <span class="string">"foo" </span>=&gt; <span class="string">"||foo||\n"
             </span>]
         };
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>normalize() {
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;@everyone&quot;</span>), <span class="string">&quot;@\u{200B}everyone&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;@here&quot;</span>), <span class="string">&quot;@\u{200B}here&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;discord.gg&quot;</span>), <span class="string">&quot;discord\u{2024}gg&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;discord.me&quot;</span>), <span class="string">&quot;discord\u{2024}me&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;discordlist.net&quot;</span>), <span class="string">&quot;discordlist\u{2024}net&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;discordservers.com&quot;</span>), <span class="string">&quot;discordservers\u{2024}com&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;discord.com/invite&quot;</span>), <span class="string">&quot;discord\u{2024}com/invite&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{202E}&quot;</span>), <span class="string">&quot; &quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{200F}&quot;</span>), <span class="string">&quot; &quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{202B}&quot;</span>), <span class="string">&quot; &quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{200B}&quot;</span>), <span class="string">&quot; &quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{200D}&quot;</span>), <span class="string">&quot; &quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">&quot;\u{200C}&quot;</span>), <span class="string">&quot; &quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"@everyone"</span>), <span class="string">"@\u{200B}everyone"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"@here"</span>), <span class="string">"@\u{200B}here"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"discord.gg"</span>), <span class="string">"discord\u{2024}gg"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"discord.me"</span>), <span class="string">"discord\u{2024}me"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"discordlist.net"</span>), <span class="string">"discordlist\u{2024}net"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"discordservers.com"</span>), <span class="string">"discordservers\u{2024}com"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"discord.com/invite"</span>), <span class="string">"discord\u{2024}com/invite"</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{202E}"</span>), <span class="string">" "</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{200F}"</span>), <span class="string">" "</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{202B}"</span>), <span class="string">" "</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{200B}"</span>), <span class="string">" "</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{200D}"</span>), <span class="string">" "</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw">super</span>::normalize(<span class="string">"\u{200C}"</span>), <span class="string">" "</span>);
     }
 }
 </code></pre></div></section></main></body></html>

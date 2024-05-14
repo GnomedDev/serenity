@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/user.rs`."><title>user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-085727c29c2fa99e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (7d9bce327 2023-09-16)" data-channel="nightly" data-search-js="search-5d3eaacf19ebf04f.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f6ec288034ea164c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../serenity/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/user.rs`."><title>user.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (ab14f944a 2024-05-13)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -870,88 +870,27 @@
 <a href="#870" id="870">870</a>
 <a href="#871" id="871">871</a>
 <a href="#872" id="872">872</a>
-<a href="#873" id="873">873</a>
-<a href="#874" id="874">874</a>
-<a href="#875" id="875">875</a>
-<a href="#876" id="876">876</a>
-<a href="#877" id="877">877</a>
-<a href="#878" id="878">878</a>
-<a href="#879" id="879">879</a>
-<a href="#880" id="880">880</a>
-<a href="#881" id="881">881</a>
-<a href="#882" id="882">882</a>
-<a href="#883" id="883">883</a>
-<a href="#884" id="884">884</a>
-<a href="#885" id="885">885</a>
-<a href="#886" id="886">886</a>
-<a href="#887" id="887">887</a>
-<a href="#888" id="888">888</a>
-<a href="#889" id="889">889</a>
-<a href="#890" id="890">890</a>
-<a href="#891" id="891">891</a>
-<a href="#892" id="892">892</a>
-<a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
-<a href="#895" id="895">895</a>
-<a href="#896" id="896">896</a>
-<a href="#897" id="897">897</a>
-<a href="#898" id="898">898</a>
-<a href="#899" id="899">899</a>
-<a href="#900" id="900">900</a>
-<a href="#901" id="901">901</a>
-<a href="#902" id="902">902</a>
-<a href="#903" id="903">903</a>
-<a href="#904" id="904">904</a>
-<a href="#905" id="905">905</a>
-<a href="#906" id="906">906</a>
-<a href="#907" id="907">907</a>
-<a href="#908" id="908">908</a>
-<a href="#909" id="909">909</a>
-<a href="#910" id="910">910</a>
-<a href="#911" id="911">911</a>
-<a href="#912" id="912">912</a>
-<a href="#913" id="913">913</a>
-<a href="#914" id="914">914</a>
-<a href="#915" id="915">915</a>
-<a href="#916" id="916">916</a>
-<a href="#917" id="917">917</a>
-<a href="#918" id="918">918</a>
-<a href="#919" id="919">919</a>
-<a href="#920" id="920">920</a>
-<a href="#921" id="921">921</a>
-<a href="#922" id="922">922</a>
-<a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
-<a href="#925" id="925">925</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! User information-related models.
 
 </span><span class="kw">use </span>std::fmt;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span>std::fmt::Write;
 <span class="kw">use </span>std::num::NonZeroU16;
 <span class="kw">use </span>std::ops::{Deref, DerefMut};
-<span class="attr">#[cfg(feature = <span class="string">&quot;temp_cache&quot;</span>)]
-</span><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span><span class="kw">super</span>::prelude::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::builder::{Builder, CreateMessage, EditProfile};
-<span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;model&quot;</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::cache::{Cache, UserRef};
-<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::builder::{CreateMessage, EditProfile};
+<span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::collector::{MessageCollector, ReactionCollector};
-<span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::gateway::ShardMessenger;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::http::CacheHttp;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::json::json;
-<span class="kw">use </span><span class="kw">crate</span>::model::mention::Mentionable;
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
+<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::model::utils::avatar_url;
 
 <span class="doccomment">/// Used with `#[serde(with|deserialize_with|serialize_with)]`
@@ -963,35 +902,34 @@
 ///
 /// #[derive(Deserialize, Serialize)]
 /// struct A {
-///     #[serde(with = &quot;discriminator&quot;)]
+///     #[serde(with = "discriminator")]
 ///     id: Option&lt;NonZeroU16&gt;,
 /// }
 ///
 /// #[derive(Deserialize)]
 /// struct B {
-///     #[serde(deserialize_with = &quot;discriminator::deserialize&quot;)]
+///     #[serde(deserialize_with = "discriminator::deserialize")]
 ///     id: Option&lt;NonZeroU16&gt;,
 /// }
 ///
 /// #[derive(Serialize)]
 /// struct C {
-///     #[serde(serialize_with = &quot;discriminator::serialize&quot;)]
+///     #[serde(serialize_with = "discriminator::serialize")]
 ///     id: Option&lt;NonZeroU16&gt;,
 /// }
 /// ```
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>discriminator {
-    <span class="kw">use </span>std::convert::TryFrom;
     <span class="kw">use </span>std::fmt;
 
     <span class="kw">use </span>serde::de::{Error, Visitor};
 
     <span class="kw">struct </span>DiscriminatorVisitor;
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>DiscriminatorVisitor {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>DiscriminatorVisitor {
         <span class="kw">type </span>Value = u16;
 
-        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-            formatter.write_str(<span class="string">&quot;string or integer discriminator&quot;</span>)
+        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            formatter.write_str(<span class="string">"string or integer discriminator"</span>)
         }
 
         <span class="kw">fn </span>visit_u64&lt;E: Error&gt;(<span class="self">self</span>, value: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt; {
@@ -1007,7 +945,7 @@
 
     <span class="kw">use </span>serde::{Deserializer, Serializer};
 
-    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">&#39;de</span>, D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">'de</span>, D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(
         deserializer: D,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;, D::Error&gt; {
         deserializer.deserialize_option(OptionalDiscriminatorVisitor)
@@ -1019,18 +957,18 @@
         serializer: S,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
         <span class="kw">match </span>value {
-            <span class="prelude-val">Some</span>(value) =&gt; serializer.serialize_some(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{value:04}&quot;</span>)),
+            <span class="prelude-val">Some</span>(value) =&gt; serializer.serialize_some(<span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">"{value:04}"</span>)),
             <span class="prelude-val">None </span>=&gt; serializer.serialize_none(),
         }
     }
 
     <span class="kw">struct </span>OptionalDiscriminatorVisitor;
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>OptionalDiscriminatorVisitor {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>OptionalDiscriminatorVisitor {
         <span class="kw">type </span>Value = <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;;
 
-        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-            formatter.write_str(<span class="string">&quot;optional string or integer discriminator&quot;</span>)
+        <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            formatter.write_str(<span class="string">"optional string or integer discriminator"</span>)
         }
 
         <span class="kw">fn </span>visit_none&lt;E: Error&gt;(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt; {
@@ -1041,7 +979,7 @@
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
         }
 
-        <span class="kw">fn </span>visit_some&lt;D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;(
+        <span class="kw">fn </span>visit_some&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(
             <span class="self">self</span>,
             deserializer: D,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, D::Error&gt; {
@@ -1053,7 +991,8 @@
 <span class="doccomment">/// Information about the current user.
 ///
 /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object).
-</span><span class="attr">#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(transparent)]
 </span><span class="kw">pub struct </span>CurrentUser(User);
 
@@ -1077,13 +1016,13 @@
     </span>}
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>CurrentUser {
-    <span class="doccomment">/// Edits the current user&#39;s profile settings.
+    <span class="doccomment">/// Edits the current user's profile settings.
     ///
     /// This mutates the current user in-place.
     ///
-    /// Refer to [`EditProfile`]&#39;s documentation for its methods.
+    /// Refer to [`EditProfile`]'s documentation for its methods.
     ///
     /// # Examples
     ///
@@ -1097,7 +1036,7 @@
     /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     /// # let http: Http = unimplemented!();
     /// # let mut user = CurrentUser::default();
-    /// let avatar = CreateAttachment::path(&quot;./avatar.png&quot;).await?;
+    /// let avatar = CreateAttachment::path("./avatar.png").await?;
     /// user.edit(&amp;http, EditProfile::new().avatar(&amp;avatar)).await;
     /// # Ok(())
     /// # }
@@ -1107,42 +1046,43 @@
     ///
     /// Returns an [`Error::Http`] if an invalid value is set. May also return an [`Error::Json`]
     /// if there is an error in deserializing the API response.
-    </span><span class="kw">pub async fn </span>edit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp, builder: EditProfile) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw-2">*</span><span class="self">self </span>= builder.execute(cache_http, ()).<span class="kw">await</span><span class="question-mark">?</span>;
+    </span><span class="kw">pub async fn </span>edit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, builder: EditProfile&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw-2">*</span><span class="self">self </span>= builder.execute(http).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="doccomment">/// The representation of a user&#39;s status.
+<span class="doccomment">/// The representation of a user's status.
 ///
 /// [Discord docs](https://discord.com/developers/docs/topics/gateway-events#update-presence-status-types).
-</span><span class="attr">#[derive(
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(
     Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize,
 )]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>OnlineStatus {
-    <span class="attr">#[serde(rename = <span class="string">&quot;dnd&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"dnd"</span>)]
     </span>DoNotDisturb,
-    <span class="attr">#[serde(rename = <span class="string">&quot;idle&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"idle"</span>)]
     </span>Idle,
-    <span class="attr">#[serde(rename = <span class="string">&quot;invisible&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"invisible"</span>)]
     </span>Invisible,
-    <span class="attr">#[serde(rename = <span class="string">&quot;offline&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"offline"</span>)]
     </span>Offline,
-    <span class="attr">#[serde(rename = <span class="string">&quot;online&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"online"</span>)]
     #[default]
     </span>Online,
 }
 
 <span class="kw">impl </span>OnlineStatus {
     <span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
-            OnlineStatus::DoNotDisturb =&gt; <span class="string">&quot;dnd&quot;</span>,
-            OnlineStatus::Idle =&gt; <span class="string">&quot;idle&quot;</span>,
-            OnlineStatus::Invisible =&gt; <span class="string">&quot;invisible&quot;</span>,
-            OnlineStatus::Offline =&gt; <span class="string">&quot;offline&quot;</span>,
-            OnlineStatus::Online =&gt; <span class="string">&quot;online&quot;</span>,
+    </span><span class="kw">pub fn </span>name(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="kw">match </span><span class="self">self </span>{
+            OnlineStatus::DoNotDisturb =&gt; <span class="string">"dnd"</span>,
+            OnlineStatus::Idle =&gt; <span class="string">"idle"</span>,
+            OnlineStatus::Invisible =&gt; <span class="string">"invisible"</span>,
+            OnlineStatus::Offline =&gt; <span class="string">"offline"</span>,
+            OnlineStatus::Online =&gt; <span class="string">"online"</span>,
         }
     }
 }
@@ -1151,25 +1091,27 @@
 ///
 /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object), existence of
 /// additional partial member field documented [here](https://discord.com/developers/docs/topics/gateway-events#message-create).
-</span><span class="attr">#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+</span><span class="attr">#[bool_to_bitflags::bool_to_bitflags]
+#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>User {
-    <span class="doccomment">/// The unique Id of the user. Can be used to calculate the account&#39;s creation date.
+    <span class="doccomment">/// The unique Id of the user. Can be used to calculate the account's creation date.
     </span><span class="kw">pub </span>id: UserId,
-    <span class="doccomment">/// The account&#39;s username. Changing username will trigger a discriminator
+    <span class="doccomment">/// The account's username. Changing username will trigger a discriminator
     /// change if the username+discriminator pair becomes non-unique. Unless the account has
     /// migrated to a next generation username, which does not have a discriminant.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;username&quot;</span>)]
-    </span><span class="kw">pub </span>name: String,
-    <span class="doccomment">/// The account&#39;s discriminator to differentiate the user from others with
+    </span><span class="attr">#[serde(rename = <span class="string">"username"</span>)]
+    </span><span class="kw">pub </span>name: FixedString&lt;u8&gt;,
+    <span class="doccomment">/// The account's discriminator to differentiate the user from others with
     /// the same [`Self::name`]. The name+discriminator pair is always unique.
     /// If the discriminator is not present, then this is a next generation username
     /// which is implicitly unique.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, with = <span class="string">&quot;discriminator&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>, with = <span class="string">"discriminator"</span>)]
     </span><span class="kw">pub </span>discriminator: <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;,
-    <span class="doccomment">/// The account&#39;s display name, if it is set.
+    <span class="doccomment">/// The account's display name, if it is set.
     /// For bots this is the application name.
-    </span><span class="kw">pub </span>global_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span><span class="kw">pub </span>global_name: <span class="prelude-ty">Option</span>&lt;FixedString&lt;u8&gt;&gt;,
     <span class="doccomment">/// Optional avatar hash.
     </span><span class="kw">pub </span>avatar: <span class="prelude-ty">Option</span>&lt;ImageHash&gt;,
     <span class="doccomment">/// Indicator of whether the user is a bot.
@@ -1186,29 +1128,29 @@
     /// **Note**: This will only be present if the user is fetched via Rest API, e.g. with
     /// [`crate::http::Http::get_user`].
     </span><span class="kw">pub </span>banner: <span class="prelude-ty">Option</span>&lt;ImageHash&gt;,
-    <span class="doccomment">/// The user&#39;s banner colour encoded as an integer representation of hexadecimal colour code
+    <span class="doccomment">/// The user's banner colour encoded as an integer representation of hexadecimal colour code
     ///
     /// **Note**: This will only be present if the user is fetched via Rest API, e.g. with
     /// [`crate::http::Http::get_user`].
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;accent_color&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"accent_color"</span>)]
     </span><span class="kw">pub </span>accent_colour: <span class="prelude-ty">Option</span>&lt;Colour&gt;,
-    <span class="doccomment">/// The user&#39;s chosen language option
-    </span><span class="kw">pub </span>locale: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// The user's chosen language option
+    </span><span class="kw">pub </span>locale: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
     <span class="doccomment">/// Whether the email on this account has been verified
     ///
     /// Requires [`Scope::Email`]
     </span><span class="kw">pub </span>verified: <span class="prelude-ty">Option</span>&lt;bool&gt;,
-    <span class="doccomment">/// The user&#39;s email
+    <span class="doccomment">/// The user's email
     ///
     /// Requires [`Scope::Email`]
-    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// The flags on a user&#39;s account
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
+    <span class="doccomment">/// The flags on a user's account
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>flags: UserPublicFlags,
-    <span class="doccomment">/// The type of Nitro subscription on a user&#39;s account
+    <span class="doccomment">/// The type of Nitro subscription on a user's account
     </span><span class="attr">#[serde(default)]
     </span><span class="kw">pub </span>premium_type: PremiumType,
-    <span class="doccomment">/// The public flags on a user&#39;s account
+    <span class="doccomment">/// The public flags on a user's account
     </span><span class="kw">pub </span>public_flags: <span class="prelude-ty">Option</span>&lt;UserPublicFlags&gt;,
     <span class="doccomment">/// Only included in [`Message::mentions`] for messages from the gateway.
     ///
@@ -1217,17 +1159,22 @@
     </span><span class="kw">pub </span>member: <span class="prelude-ty">Option</span>&lt;Box&lt;PartialMember&gt;&gt;,
 }
 
-<span class="macro">enum_number! </span>{
+<span class="kw">impl </span>ExtractKey&lt;UserId&gt; <span class="kw">for </span>User {
+    <span class="kw">fn </span>extract_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>UserId {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.id
+    }
+}
+
+<span class="macro">enum_number!</span> {
     <span class="doccomment">/// Premium types denote the level of premium a user has. Visit the [Nitro](https://discord.com/nitro)
     /// page to learn more about the premium plans Discord currently offers.
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-premium-types).
     </span><span class="attr">#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-    #[serde(from = <span class="string">&quot;u8&quot;</span>, into = <span class="string">&quot;u8&quot;</span>)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
     #[non_exhaustive]
     </span><span class="kw">pub enum </span>PremiumType {
-        <span class="attr">#[default]
-        </span><span class="prelude-val">None </span>= <span class="number">0</span>,
+        <span class="prelude-val">None </span>= <span class="number">0</span>,
         NitroClassic = <span class="number">1</span>,
         Nitro = <span class="number">2</span>,
         NitroBasic = <span class="number">3</span>,
@@ -1235,82 +1182,68 @@
     }
 }
 
-<span class="macro">bitflags! </span>{
-    <span class="doccomment">/// User&#39;s public flags
+<span class="macro">bitflags!</span> {
+    <span class="doccomment">/// User's public flags
     ///
     /// [Discord docs](https://discord.com/developers/docs/resources/user#user-object-user-flags).
-    </span><span class="attr">#[derive(Default)]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+    #[derive(Copy, Clone, Default, Debug, Eq, Hash, PartialEq)]
     </span><span class="kw">pub struct </span>UserPublicFlags: u32 {
-        <span class="doccomment">/// User&#39;s flag as discord employee
+        <span class="doccomment">/// User's flag as discord employee
         </span><span class="kw">const </span>DISCORD_EMPLOYEE = <span class="number">1 </span>&lt;&lt; <span class="number">0</span>;
-        <span class="doccomment">/// User&#39;s flag as partnered server owner
+        <span class="doccomment">/// User's flag as partnered server owner
         </span><span class="kw">const </span>PARTNERED_SERVER_OWNER = <span class="number">1 </span>&lt;&lt; <span class="number">1</span>;
-        <span class="doccomment">/// User&#39;s flag as hypesquad events
+        <span class="doccomment">/// User's flag as hypesquad events
         </span><span class="kw">const </span>HYPESQUAD_EVENTS = <span class="number">1 </span>&lt;&lt; <span class="number">2</span>;
-        <span class="doccomment">/// User&#39;s flag as bug hunter level 1
+        <span class="doccomment">/// User's flag as bug hunter level 1
         </span><span class="kw">const </span>BUG_HUNTER_LEVEL_1 = <span class="number">1 </span>&lt;&lt; <span class="number">3</span>;
-        <span class="doccomment">/// User&#39;s flag as house bravery
+        <span class="doccomment">/// User's flag as house bravery
         </span><span class="kw">const </span>HOUSE_BRAVERY = <span class="number">1 </span>&lt;&lt; <span class="number">6</span>;
-        <span class="doccomment">/// User&#39;s flag as house brilliance
+        <span class="doccomment">/// User's flag as house brilliance
         </span><span class="kw">const </span>HOUSE_BRILLIANCE = <span class="number">1 </span>&lt;&lt; <span class="number">7</span>;
-        <span class="doccomment">/// User&#39;s flag as house balance
+        <span class="doccomment">/// User's flag as house balance
         </span><span class="kw">const </span>HOUSE_BALANCE = <span class="number">1 </span>&lt;&lt; <span class="number">8</span>;
-        <span class="doccomment">/// User&#39;s flag as early supporter
+        <span class="doccomment">/// User's flag as early supporter
         </span><span class="kw">const </span>EARLY_SUPPORTER = <span class="number">1 </span>&lt;&lt; <span class="number">9</span>;
-        <span class="doccomment">/// User&#39;s flag as team user
+        <span class="doccomment">/// User's flag as team user
         </span><span class="kw">const </span>TEAM_USER = <span class="number">1 </span>&lt;&lt; <span class="number">10</span>;
-        <span class="doccomment">/// User&#39;s flag as system
+        <span class="doccomment">/// User's flag as system
         </span><span class="kw">const </span>SYSTEM = <span class="number">1 </span>&lt;&lt; <span class="number">12</span>;
-        <span class="doccomment">/// User&#39;s flag as bug hunter level 2
+        <span class="doccomment">/// User's flag as bug hunter level 2
         </span><span class="kw">const </span>BUG_HUNTER_LEVEL_2 = <span class="number">1 </span>&lt;&lt; <span class="number">14</span>;
-        <span class="doccomment">/// User&#39;s flag as verified bot
+        <span class="doccomment">/// User's flag as verified bot
         </span><span class="kw">const </span>VERIFIED_BOT = <span class="number">1 </span>&lt;&lt; <span class="number">16</span>;
-        <span class="doccomment">/// User&#39;s flag as early verified bot developer
+        <span class="doccomment">/// User's flag as early verified bot developer
         </span><span class="kw">const </span>EARLY_VERIFIED_BOT_DEVELOPER = <span class="number">1 </span>&lt;&lt; <span class="number">17</span>;
-        <span class="doccomment">/// User&#39;s flag as discord certified moderator
+        <span class="doccomment">/// User's flag as discord certified moderator
         </span><span class="kw">const </span>DISCORD_CERTIFIED_MODERATOR = <span class="number">1 </span>&lt;&lt; <span class="number">18</span>;
-        <span class="doccomment">/// Bot&#39;s running with HTTP interactions
+        <span class="doccomment">/// Bot's running with HTTP interactions
         </span><span class="kw">const </span>BOT_HTTP_INTERACTIONS = <span class="number">1 </span>&lt;&lt; <span class="number">19</span>;
-        <span class="doccomment">/// User&#39;s flag as active developer
+        <span class="doccomment">/// User's flag for suspected spam activity.
+        </span><span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
+        </span><span class="kw">const </span>SPAMMER = <span class="number">1 </span>&lt;&lt; <span class="number">20</span>;
+        <span class="doccomment">/// User's flag as active developer
         </span><span class="kw">const </span>ACTIVE_DEVELOPER = <span class="number">1 </span>&lt;&lt; <span class="number">22</span>;
     }
 }
 
-<span class="kw">use </span>std::hash::{Hash, Hasher};
-
-<span class="kw">impl </span>PartialEq <span class="kw">for </span>User {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.id == other.id
-    }
-}
-
-<span class="kw">impl </span>Eq <span class="kw">for </span>User {}
-
-<span class="kw">impl </span>Hash <span class="kw">for </span>User {
-    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, hasher: <span class="kw-2">&amp;mut </span>H) {
-        <span class="self">self</span>.id.hash(hasher);
-    }
-}
-
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>User {
-    <span class="doccomment">/// Returns the formatted URL of the user&#39;s icon, if one exists.
+    <span class="doccomment">/// Returns the formatted URL of the user's icon, if one exists.
     ///
     /// This will produce a WEBP image URL, or GIF if the user has a GIF avatar.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>avatar_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         avatar_url(<span class="prelude-val">None</span>, <span class="self">self</span>.id, <span class="self">self</span>.avatar.as_ref())
     }
 
-    <span class="doccomment">/// Returns the formatted URL of the user&#39;s banner, if one exists.
+    <span class="doccomment">/// Returns the formatted URL of the user's banner, if one exists.
     ///
     /// This will produce a WEBP image URL, or GIF if the user has a GIF banner.
     ///
     /// **Note**: This will only be present if the user is fetched via Rest API, e.g. with
     /// [`crate::http::Http::get_user`].
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>banner_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         banner_url(<span class="self">self</span>.id, <span class="self">self</span>.banner.as_ref())
     }
@@ -1323,9 +1256,8 @@
     /// # Errors
     ///
     /// See [`UserId::create_dm_channel`] for what errors may be returned.
-    </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>create_dm_channel(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;PrivateChannel&gt; {
-        <span class="kw">if </span><span class="self">self</span>.bot {
+        <span class="kw">if </span><span class="self">self</span>.bot() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Model(ModelError::MessagingBot));
         }
 
@@ -1333,17 +1265,15 @@
     </span>}
 
     <span class="doccomment">/// Retrieves the time that this user was created at.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>created_at(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Timestamp {
         <span class="self">self</span>.id.created_at()
     }
 
-    <span class="doccomment">/// Returns the formatted URL to the user&#39;s default avatar URL.
+    <span class="doccomment">/// Returns the formatted URL to the user's default avatar URL.
     ///
     /// This will produce a PNG URL.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>default_avatar_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
         default_avatar_url(<span class="self">self</span>)
     }
@@ -1353,86 +1283,22 @@
     ///
     /// # Examples
     ///
-    /// When a user sends a message with a content of `&quot;~help&quot;`, DM the author a help message, and
-    /// then react with `&#39;👌&#39;` to verify message sending:
-    ///
-    /// ```rust,no_run
-    /// # #[cfg(feature = &quot;client&quot;)] {
-    /// # use serenity::prelude::*;
-    /// # use serenity::model::prelude::*;
-    /// #
-    /// use serenity::builder::{CreateBotAuthParameters, CreateMessage};
-    ///
-    /// struct Handler;
-    ///
-    /// #[serenity::async_trait]
-    /// impl EventHandler for Handler {
-    /// #   #[cfg(feature = &quot;cache&quot;)]
-    ///     async fn message(&amp;self, ctx: Context, msg: Message) {
-    ///         if msg.content == &quot;~help&quot; {
-    ///             let url = match CreateBotAuthParameters::new()
-    ///                 .permissions(Permissions::empty())
-    ///                 .scopes(&amp;[Scope::Bot])
-    ///                 .auto_client_id(&amp;ctx)
-    ///                 .await
-    ///             {
-    ///                 Ok(v) =&gt; v.build(),
-    ///                 Err(why) =&gt; {
-    ///                     println!(&quot;Error creating invite url: {:?}&quot;, why);
-    ///                     return;
-    ///                 },
-    ///             };
-    ///
-    ///             let help = format!(&quot;Helpful info here. Invite me with this link: &lt;{}&gt;&quot;, url);
-    ///
-    ///             let builder = CreateMessage::new().content(help);
-    ///             let dm = msg.author.direct_message(&amp;ctx, builder).await;
-    ///
-    ///             match dm {
-    ///                 Ok(_) =&gt; {
-    ///                     let _ = msg.react(&amp;ctx, &#39;👌&#39;).await;
-    ///                 },
-    ///                 Err(why) =&gt; {
-    ///                     println!(&quot;Err sending help: {:?}&quot;, why);
-    ///
-    ///                     let _ = msg.reply(&amp;ctx, &quot;There was an error DMing you help.&quot;).await;
-    ///                 },
-    ///             };
-    ///         }
-    ///     }
-    /// }
-    ///
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    /// let mut client =
-    ///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;
-    /// # Ok(())
-    /// # }
-    /// # }
-    /// ```
+    /// See [`UserId::direct_message`] for examples.
     ///
     /// # Errors
     ///
-    /// Returns a [`ModelError::MessagingBot`] if the user being direct messaged is a bot user.
-    ///
-    /// May also return an [`Error::Http`] if the user cannot be sent a direct message.
-    ///
-    /// Returns an [`Error::Json`] if there is an error deserializing the API response.
-    </span><span class="kw">pub async fn </span>direct_message(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        builder: CreateMessage,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        <span class="self">self</span>.create_dm_channel(<span class="kw-2">&amp;</span>cache_http).<span class="kw">await</span><span class="question-mark">?</span>.send_message(cache_http, builder).<span class="kw">await
+    /// See [`UserId::direct_message`] for errors.
+    </span><span class="kw">pub async fn </span>direct_message(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, builder: CreateMessage&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="self">self</span>.id.direct_message(http, builder).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// This is an alias of [`Self::direct_message`].
     </span><span class="attr">#[allow(clippy::missing_errors_doc)]
-    #[inline]
-    </span><span class="kw">pub async fn </span>dm(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp, builder: CreateMessage) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        <span class="self">self</span>.direct_message(cache_http, builder).<span class="kw">await
+    </span><span class="kw">pub async fn </span>dm(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, builder: CreateMessage&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="self">self</span>.direct_message(http, builder).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Retrieves the URL to the user&#39;s avatar, falling back to the default avatar if needed.
+    <span class="doccomment">/// Retrieves the URL to the user's avatar, falling back to the default avatar if needed.
     ///
     /// This will call [`Self::avatar_url`] first, and if that returns [`None`], it then falls back
     /// to [`Self::default_avatar_url`].
@@ -1441,7 +1307,7 @@
         <span class="self">self</span>.avatar_url().unwrap_or_else(|| <span class="self">self</span>.default_avatar_url())
     }
 
-    <span class="doccomment">/// Retrieves the URL to the static version of the user&#39;s avatar, falling back to the default
+    <span class="doccomment">/// Retrieves the URL to the static version of the user's avatar, falling back to the default
     /// avatar if needed.
     ///
     /// This will call [`Self::static_avatar_url`] first, and if that returns [`None`], it then
@@ -1459,7 +1325,7 @@
     /// Check if a guild has a [`Role`] by Id:
     ///
     /// ```rust,ignore
-    /// // Assumes a &#39;guild_id&#39; and `role_id` have already been bound
+    /// // Assumes a 'guild_id' and `role_id` have already been bound
     /// let _ = message.author.has_role(guild_id, role_id);
     /// ```
     ///
@@ -1471,14 +1337,13 @@
     /// exist in the given [`Guild`], or if the given [`User`] is not in that [`Guild`].
     ///
     /// May also return an [`Error::Json`] if there is an error in deserializing the API response.
-    </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>has_role(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         cache_http: <span class="kw">impl </span>CacheHttp,
-        guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;,
-        role: <span class="kw">impl </span>Into&lt;RoleId&gt;,
+        guild_id: GuildId,
+        role: RoleId,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
-        guild_id.into().member(cache_http, <span class="self">self</span>).<span class="kw">await</span>.map(|m| m.roles.contains(<span class="kw-2">&amp;</span>role.into()))
+        guild_id.member(cache_http, <span class="self">self</span>.id).<span class="kw">await</span>.map(|m| m.roles.contains(<span class="kw-2">&amp;</span>role))
     }
 
     <span class="doccomment">/// Refreshes the information about the user.
@@ -1488,121 +1353,98 @@
     /// # Errors
     ///
     /// See [`UserId::to_user`] for what errors may be returned.
-    </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>refresh(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="self">self</span>.id.to_user(cache_http).<span class="kw">await</span><span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Returns a static formatted URL of the user&#39;s icon, if one exists.
+    <span class="doccomment">/// Returns a static formatted URL of the user's icon, if one exists.
     ///
     /// This will always produce a WEBP image URL.
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>static_avatar_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         static_avatar_url(<span class="self">self</span>.id, <span class="self">self</span>.avatar.as_ref())
     }
 
-    <span class="doccomment">/// Returns the &quot;tag&quot; for the user.
+    <span class="doccomment">/// Returns the "tag" for the user.
     ///
-    /// The &quot;tag&quot; is defined as &quot;username#discriminator&quot;, such as &quot;zeyla#5479&quot;.
+    /// The "tag" is defined as "username#discriminator", such as "zeyla#5479".
     ///
     /// # Examples
     ///
     /// Make a command to tell the user what their tag is:
     ///
     /// ```rust,no_run
-    /// # #[cfg(feature = &quot;client&quot;)]
-    /// # async fn run() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     /// # use serenity::prelude::*;
     /// # use serenity::model::prelude::*;
-    /// #
-    /// use serenity::utils::ContentModifier::Bold;
-    /// use serenity::utils::MessageBuilder;
-    ///
-    /// struct Handler;
+    /// # struct Handler;
     ///
     /// #[serenity::async_trait]
+    /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
     ///     async fn message(&amp;self, context: Context, msg: Message) {
-    ///         if msg.content == &quot;!mytag&quot; {
-    ///             let content = MessageBuilder::new()
-    ///                 .push(&quot;Your tag is &quot;)
-    ///                 .push(Bold + msg.author.tag())
-    ///                 .build();
-    ///
+    ///         if msg.content == "!mytag" {
+    ///             let content = format!("Your tag is: {}", msg.author.tag());
     ///             let _ = msg.channel_id.say(&amp;context.http, &amp;content).await;
     ///         }
     ///     }
     /// }
-    /// let mut client =
-    ///     Client::builder(&quot;token&quot;, GatewayIntents::default()).event_handler(Handler).await?;
-    ///
-    /// client.start().await?;
-    /// # Ok(())
-    /// # }
     /// ```
-    </span><span class="attr">#[inline]
-    #[must_use]
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>tag(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
         tag(<span class="kw-2">&amp;</span><span class="self">self</span>.name, <span class="self">self</span>.discriminator)
     }
 
-    <span class="doccomment">/// Returns the user&#39;s nickname in the given `guild_id`.
+    <span class="doccomment">/// Returns the user's nickname in the given `guild_id`.
     ///
     /// If none is used, it returns [`None`].
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub async fn </span>nick_in(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cache_http: <span class="kw">impl </span>CacheHttp,
-        guild_id: <span class="kw">impl </span>Into&lt;GuildId&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
-        <span class="kw">let </span>guild_id = guild_id.into();
-
-        <span class="comment">// This can&#39;t be removed because `GuildId::member` clones the entire `Member` struct if
-        // it&#39;s present in the cache, which is expensive.
-        </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
+    </span><span class="kw">pub async fn </span>nick_in(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp, guild_id: GuildId) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+        <span class="comment">// This can't be removed because `GuildId::member` clones the entire `Member` struct if
+        // it's present in the cache, which is expensive.
+        </span><span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
         </span>{
             <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(guild) = guild_id.to_guild_cached(cache) {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(member) = guild.members.get(<span class="kw-2">&amp;</span><span class="self">self</span>.id) {
-                        <span class="kw">return </span>member.nick.clone();
+                        <span class="kw">return </span>member.nick.clone().map(Into::into);
                     }
                 }
             }
         }
 
-        <span class="comment">// At this point we&#39;re guaranteed to do an API call.
-        </span>guild_id.member(cache_http, <span class="kw-2">&amp;</span><span class="self">self</span>.id).<span class="kw">await</span>.ok().and_then(|member| member.nick)
+        <span class="comment">// At this point we're guaranteed to do an API call.
+        </span>guild_id
+            .member(cache_http, <span class="self">self</span>.id)
+            .<span class="kw">await
+            </span>.ok()
+            .and_then(|member| member.nick)
+            .map(Into::into)
     }
 
     <span class="doccomment">/// Returns a builder which can be awaited to obtain a message or stream of messages sent by
     /// this user.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-    </span><span class="kw">pub fn </span>await_reply(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: <span class="kw">impl </span>AsRef&lt;ShardMessenger&gt;) -&gt; MessageCollector {
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_reply(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; MessageCollector {
         MessageCollector::new(shard_messenger).author_id(<span class="self">self</span>.id)
     }
 
     <span class="doccomment">/// Same as [`Self::await_reply`].
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-    </span><span class="kw">pub fn </span>await_replies(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: <span class="kw">impl </span>AsRef&lt;ShardMessenger&gt;) -&gt; MessageCollector {
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_replies(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; MessageCollector {
         <span class="self">self</span>.await_reply(shard_messenger)
     }
 
     <span class="doccomment">/// Returns a builder which can be awaited to obtain a reaction or stream of reactions sent by
     /// this user.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-    </span><span class="kw">pub fn </span>await_reaction(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: <span class="kw">impl </span>AsRef&lt;ShardMessenger&gt;) -&gt; ReactionCollector {
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_reaction(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
         ReactionCollector::new(shard_messenger).author_id(<span class="self">self</span>.id)
     }
 
     <span class="doccomment">/// Same as [`Self::await_reaction`].
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;collector&quot;</span>)]
-    </span><span class="kw">pub fn </span>await_reactions(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shard_messenger: <span class="kw">impl </span>AsRef&lt;ShardMessenger&gt;,
-    ) -&gt; ReactionCollector {
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_reactions(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
         <span class="self">self</span>.await_reaction(shard_messenger)
     }
 }
@@ -1610,12 +1452,12 @@
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>User {
     <span class="doccomment">/// Formats a string which will mention the user.
     </span><span class="comment">// This is in the format of: `&lt;@USER_ID&gt;`
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         fmt::Display::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.id.mention(), f)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">impl </span>UserId {
     <span class="doccomment">/// Creates a direct message channel between the [current user] and the user. This can also
     /// retrieve the channel if one already exists.
@@ -1630,40 +1472,88 @@
     ///
     /// [current user]: CurrentUser
     </span><span class="kw">pub async fn </span>create_dm_channel(<span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;PrivateChannel&gt; {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
-        </span>{
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
-                <span class="kw">for </span>channel_entry <span class="kw">in </span>cache.private_channels().iter() {
-                    <span class="kw">let </span>channel = channel_entry.value();
+        <span class="attr">#[derive(serde::Serialize)]
+        </span><span class="kw">struct </span>CreateDmChannel {
+            recipient_id: UserId,
+        }
 
-                    <span class="kw">if </span>channel.recipient.id == <span class="self">self </span>{
-                        <span class="kw">return </span><span class="prelude-val">Ok</span>(channel.clone());
-                    }
-                }
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(private_channel) = cache.temp_private_channels.get(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(PrivateChannel::clone(<span class="kw-2">&amp;</span>private_channel));
             }
         }
 
-        <span class="kw">let </span>map = <span class="macro">json!</span>({
-            <span class="string">&quot;recipient_id&quot;</span>: <span class="self">self</span>.<span class="number">0</span>,
-        });
+        <span class="kw">let </span>body = CreateDmChannel {
+            recipient_id: <span class="self">self</span>,
+        };
 
-        cache_http.http().create_private_channel(<span class="kw-2">&amp;</span>map).<span class="kw">await
-    </span>}
+        <span class="kw">let </span>channel = cache_http.http().create_private_channel(<span class="kw-2">&amp;</span>body).<span class="kw">await</span><span class="question-mark">?</span>;
 
-    <span class="doccomment">/// Attempts to find a [`User`] by its Id in the cache.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
-    #[inline]
-    </span><span class="kw">pub fn </span>to_user_cached(<span class="self">self</span>, cache: <span class="kw-2">&amp;</span><span class="kw">impl </span>AsRef&lt;Cache&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;UserRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
-        cache.as_ref().user(<span class="self">self</span>)
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
+            <span class="kw">use </span><span class="kw">crate</span>::cache::MaybeOwnedArc;
+
+            <span class="kw">let </span>cached_channel = MaybeOwnedArc::new(channel.clone());
+            cache.temp_private_channels.insert(<span class="self">self</span>, cached_channel);
+        }
+
+        <span class="prelude-val">Ok</span>(channel)
     }
 
-    <span class="doccomment">/// First attempts to find a [`User`] by its Id in the cache, upon failure requests it via the
-    /// REST API.
+    <span class="doccomment">/// Sends a message to a user through a direct message channel. This is a channel that can only
+    /// be accessed by you and the recipient.
     ///
-    /// **Note**: If the cache is not enabled, REST API will be used only.
+    /// # Examples
     ///
-    /// **Note**: If the cache is enabled, you might want to enable the `temp_cache` feature to
-    /// cache user data retrieved by this function for a short duration.
+    /// When a user sends a message with a content of `"~help"`, DM the author a help message
+    ///
+    /// ```rust,no_run
+    /// # use serenity::prelude::*;
+    /// # use serenity::model::prelude::*;
+    /// # struct Handler;
+    /// use serenity::builder::CreateMessage;
+    ///
+    /// #[serenity::async_trait]
+    /// # #[cfg(feature = "client")]
+    /// impl EventHandler for Handler {
+    ///     async fn message(&amp;self, ctx: Context, msg: Message) {
+    ///         if msg.content == "~help" {
+    ///             let builder = CreateMessage::new().content("Helpful info here.");
+    ///
+    ///             if let Err(why) = msg.author.id.direct_message(&amp;ctx.http, builder).await {
+    ///                 println!("Err sending help: {why:?}");
+    ///                 let _ = msg.reply(&amp;ctx.http, "There was an error DMing you help.").await;
+    ///             };
+    ///         }
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`ModelError::MessagingBot`] if the user being direct messaged is a bot user.
+    ///
+    /// May also return an [`Error::Http`] if the user cannot be sent a direct message.
+    ///
+    /// Returns an [`Error::Json`] if there is an error deserializing the API response.
+    </span><span class="kw">pub async fn </span>direct_message(
+        <span class="self">self</span>,
+        cache_http: <span class="kw">impl </span>CacheHttp,
+        builder: CreateMessage&lt;<span class="lifetime">'_</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="self">self</span>.create_dm_channel(<span class="kw-2">&amp;</span>cache_http).<span class="kw">await</span><span class="question-mark">?</span>.send_message(cache_http.http(), builder).<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// This is an alias of [`Self::direct_message`].
+    </span><span class="attr">#[allow(clippy::missing_errors_doc)]
+    #[inline]
+    </span><span class="kw">pub async fn </span>dm(<span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, builder: CreateMessage&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+        <span class="self">self</span>.direct_message(http, builder).<span class="kw">await
+    </span>}
+
+    <span class="doccomment">/// First attempts to find a [`User`] by its Id in the `temp_cache` if enabled,
+    /// upon failure requests it via the REST API.
     ///
     /// # Errors
     ///
@@ -1671,23 +1561,25 @@
     /// otherwise cannot be fetched.
     ///
     /// May also return an [`Error::Json`] if there is an error in deserializing the user.
-    </span><span class="attr">#[inline]
     </span><span class="kw">pub async fn </span>to_user(<span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Result</span>&lt;User&gt; {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;cache&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
         </span>{
             <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = cache.user(<span class="self">self</span>) {
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(user.clone());
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(user) = cache.temp_users.get(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+                    <span class="kw">return </span><span class="prelude-val">Ok</span>(User::clone(<span class="kw-2">&amp;</span>user));
                 }
             }
         }
 
         <span class="kw">let </span>user = cache_http.http().get_user(<span class="self">self</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
-        <span class="attr">#[cfg(all(feature = <span class="string">&quot;cache&quot;</span>, feature = <span class="string">&quot;temp_cache&quot;</span>))]
+        <span class="attr">#[cfg(feature = <span class="string">"temp_cache"</span>)]
         </span>{
             <span class="kw">if let </span><span class="prelude-val">Some</span>(cache) = cache_http.cache() {
-                cache.temp_users.insert(user.id, Arc::new(user.clone()));
+                <span class="kw">use </span><span class="kw">crate</span>::cache::MaybeOwnedArc;
+
+                <span class="kw">let </span>cached_user = MaybeOwnedArc::new(user.clone());
+                cache.temp_users.insert(cached_user.id, cached_user);
             }
         }
 
@@ -1702,7 +1594,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Member&gt; <span class="kw">for </span>UserId {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Member&gt; <span class="kw">for </span>UserId {
     <span class="doccomment">/// Gets the Id of a [`Member`].
     </span><span class="kw">fn </span>from(member: <span class="kw-2">&amp;</span>Member) -&gt; UserId {
         member.user.id
@@ -1716,14 +1608,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>User&gt; <span class="kw">for </span>UserId {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>User&gt; <span class="kw">for </span>UserId {
     <span class="doccomment">/// Gets the Id of a [`User`].
     </span><span class="kw">fn </span>from(user: <span class="kw-2">&amp;</span>User) -&gt; UserId {
         user.id
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>default_avatar_url(user: <span class="kw-2">&amp;</span>User) -&gt; String {
     <span class="kw">let </span>avatar_id = <span class="kw">if let </span><span class="prelude-val">Some</span>(discriminator) = user.discriminator {
         discriminator.get() % <span class="number">5 </span><span class="comment">// Legacy username system
@@ -1731,24 +1623,23 @@
         ((user.id.get() &gt;&gt; <span class="number">22</span>) % <span class="number">6</span>) <span class="kw">as </span>u16 <span class="comment">// New username system
     </span>};
 
-    <span class="macro">cdn!</span>(<span class="string">&quot;/embed/avatars/{}.png&quot;</span>, avatar_id)
+    <span class="macro">cdn!</span>(<span class="string">"/embed/avatars/{}.png"</span>, avatar_id)
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>static_avatar_url(user_id: UserId, hash: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ImageHash&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
-    hash.map(|hash| <span class="macro">cdn!</span>(<span class="string">&quot;/avatars/{}/{}.webp?size=1024&quot;</span>, user_id, hash))
+    hash.map(|hash| <span class="macro">cdn!</span>(<span class="string">"/avatars/{}/{}.webp?size=1024"</span>, user_id, hash))
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>banner_url(user_id: UserId, hash: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ImageHash&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
     hash.map(|hash| {
-        <span class="kw">let </span>ext = <span class="kw">if </span>hash.is_animated() { <span class="string">&quot;gif&quot; </span>} <span class="kw">else </span>{ <span class="string">&quot;webp&quot; </span>};
-
-        <span class="macro">cdn!</span>(<span class="string">&quot;/banners/{}/{}.{}?size=1024&quot;</span>, user_id.<span class="number">0</span>, hash, ext)
+        <span class="kw">let </span>ext = <span class="kw">if </span>hash.is_animated() { <span class="string">"gif" </span>} <span class="kw">else </span>{ <span class="string">"webp" </span>};
+        <span class="macro">cdn!</span>(<span class="string">"/banners/{}/{}.{}?size=1024"</span>, user_id, hash, ext)
     })
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">fn </span>tag(name: <span class="kw-2">&amp;</span>str, discriminator: <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;) -&gt; String {
     <span class="comment">// 32: max length of username
     // 1: `#`
@@ -1756,8 +1647,8 @@
     </span><span class="kw">let </span><span class="kw-2">mut </span>tag = String::with_capacity(<span class="number">37</span>);
     tag.push_str(name);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(discriminator) = discriminator {
-        tag.push(<span class="string">&#39;#&#39;</span>);
-        <span class="macro">write!</span>(tag, <span class="string">&quot;{discriminator:04}&quot;</span>).unwrap();
+        tag.push(<span class="string">'#'</span>);
+        <span class="macro">write!</span>(tag, <span class="string">"{discriminator:04}"</span>).unwrap();
     }
     tag
 }
@@ -1769,20 +1660,21 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_discriminator_serde() {
         <span class="kw">use </span>serde::{Deserialize, Serialize};
+        <span class="kw">use </span>serde_json::json;
 
         <span class="kw">use </span><span class="kw">super</span>::discriminator;
-        <span class="kw">use </span><span class="kw">crate</span>::json::{assert_json, json};
+        <span class="kw">use </span><span class="kw">crate</span>::model::utils::assert_json;
 
         <span class="attr">#[derive(Debug, PartialEq, Deserialize, Serialize)]
         </span><span class="kw">struct </span>User {
-            <span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>, with = <span class="string">&quot;discriminator&quot;</span>)]
+            <span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>, with = <span class="string">"discriminator"</span>)]
             </span>discriminator: <span class="prelude-ty">Option</span>&lt;NonZeroU16&gt;,
         }
 
         <span class="kw">let </span>user = User {
             discriminator: NonZeroU16::new(<span class="number">123</span>),
         };
-        assert_json(<span class="kw-2">&amp;</span>user, <span class="macro">json!</span>({<span class="string">&quot;discriminator&quot;</span>: <span class="string">&quot;0123&quot;</span>}));
+        assert_json(<span class="kw-2">&amp;</span>user, <span class="macro">json!</span>({<span class="string">"discriminator"</span>: <span class="string">"0123"</span>}));
 
         <span class="kw">let </span>user_no_discriminator = User {
             discriminator: <span class="prelude-val">None</span>,
@@ -1790,10 +1682,12 @@
         assert_json(<span class="kw-2">&amp;</span>user_no_discriminator, <span class="macro">json!</span>({}));
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;model&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
     </span><span class="kw">mod </span>model {
         <span class="kw">use </span>std::num::NonZeroU16;
         <span class="kw">use </span>std::str::FromStr;
+
+        <span class="kw">use </span>small_fixed_array::FixedString;
 
         <span class="kw">use </span><span class="kw">crate</span>::model::id::UserId;
         <span class="kw">use </span><span class="kw">crate</span>::model::misc::ImageHash;
@@ -1803,26 +1697,26 @@
         </span><span class="kw">fn </span>test_core() {
             <span class="kw">let </span><span class="kw-2">mut </span>user = User {
                 id: UserId::new(<span class="number">210</span>),
-                avatar: <span class="prelude-val">Some</span>(ImageHash::from_str(<span class="string">&quot;fb211703bcc04ee612c88d494df0272f&quot;</span>).unwrap()),
+                avatar: <span class="prelude-val">Some</span>(ImageHash::from_str(<span class="string">"fb211703bcc04ee612c88d494df0272f"</span>).unwrap()),
                 discriminator: NonZeroU16::new(<span class="number">1432</span>),
-                name: <span class="string">&quot;test&quot;</span>.to_string(),
+                name: FixedString::from_static_trunc(<span class="string">"test"</span>),
                 ..Default::default()
             };
 
-            <span class="kw">let </span>expected = <span class="string">&quot;/avatars/210/fb211703bcc04ee612c88d494df0272f.webp?size=1024&quot;</span>;
+            <span class="kw">let </span>expected = <span class="string">"/avatars/210/fb211703bcc04ee612c88d494df0272f.webp?size=1024"</span>;
             <span class="macro">assert!</span>(user.avatar_url().unwrap().ends_with(expected));
             <span class="macro">assert!</span>(user.static_avatar_url().unwrap().ends_with(expected));
 
-            user.avatar = <span class="prelude-val">Some</span>(ImageHash::from_str(<span class="string">&quot;a_fb211703bcc04ee612c88d494df0272f&quot;</span>).unwrap());
-            <span class="kw">let </span>expected = <span class="string">&quot;/avatars/210/a_fb211703bcc04ee612c88d494df0272f.gif?size=1024&quot;</span>;
+            user.avatar = <span class="prelude-val">Some</span>(ImageHash::from_str(<span class="string">"a_fb211703bcc04ee612c88d494df0272f"</span>).unwrap());
+            <span class="kw">let </span>expected = <span class="string">"/avatars/210/a_fb211703bcc04ee612c88d494df0272f.gif?size=1024"</span>;
             <span class="macro">assert!</span>(user.avatar_url().unwrap().ends_with(expected));
-            <span class="kw">let </span>expected = <span class="string">&quot;/avatars/210/a_fb211703bcc04ee612c88d494df0272f.webp?size=1024&quot;</span>;
+            <span class="kw">let </span>expected = <span class="string">"/avatars/210/a_fb211703bcc04ee612c88d494df0272f.webp?size=1024"</span>;
             <span class="macro">assert!</span>(user.static_avatar_url().unwrap().ends_with(expected));
 
             user.avatar = <span class="prelude-val">None</span>;
             <span class="macro">assert!</span>(user.avatar_url().is_none());
 
-            <span class="macro">assert_eq!</span>(user.tag(), <span class="string">&quot;test#1432&quot;</span>);
+            <span class="macro">assert_eq!</span>(user.tag(), <span class="string">"test#1432"</span>);
         }
 
         <span class="attr">#[test]
@@ -1834,17 +1728,17 @@
             };
 
             <span class="comment">// New username system
-            </span><span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">&quot;5.png&quot;</span>));
+            </span><span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">"5.png"</span>));
 
             <span class="comment">// Legacy username system
             </span>user.discriminator = NonZeroU16::new(<span class="number">1</span>);
-            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">&quot;1.png&quot;</span>));
+            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">"1.png"</span>));
             user.discriminator = NonZeroU16::new(<span class="number">2</span>);
-            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">&quot;2.png&quot;</span>));
+            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">"2.png"</span>));
             user.discriminator = NonZeroU16::new(<span class="number">3</span>);
-            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">&quot;3.png&quot;</span>));
+            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">"3.png"</span>));
             user.discriminator = NonZeroU16::new(<span class="number">4</span>);
-            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">&quot;4.png&quot;</span>));
+            <span class="macro">assert!</span>(user.default_avatar_url().ends_with(<span class="string">"4.png"</span>));
         }
     }
 }

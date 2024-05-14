@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["OnlineStatus","PremiumType"],"struct":["CurrentUser","User","UserPublicFlags"]};
+window.SIDEBAR_ITEMS = {"enum":["OnlineStatus"],"struct":["CurrentUser","PremiumType","User","UserGeneratedOriginal","UserPublicFlags"]};
