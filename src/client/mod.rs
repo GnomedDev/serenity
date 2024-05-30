@@ -106,8 +106,6 @@ impl ClientBuilder {
             framework: None,
             #[cfg(feature = "voice")]
             voice_manager: None,
-            event_handler: None,
-            raw_event_handler: None,
             presence: PresenceData::default(),
         }
     }

@@ -54,6 +54,46 @@ macro_rules! event_handler {
             }
         }
 
+        pub trait PassthroughEventHandler: 'static + Send + Sync {
+            type ChildHandler: EventHandler;
+
+            fn wrap(handler: Self::ChildHandler) -> Self;
+            fn get_child_handler(&self) -> &Self::ChildHandler;
+
+            $(
+                $( #[cfg(feature = $feature)] )?
+                fn $method_name(&self, $($context: EventContext,)? $( $arg_name: $arg_type ),*) -> impl std::future::Future<Output = ()> + Send + '_ {
+                    self.get_child_handler().$method_name($($context,)? $($arg_name),*)
+                }
+            )*
+        }
+
+        #[async_trait]
+        impl<T: PassthroughEventHandler> EventHandler for T {
+            fn new(ctx: ClientContext) -> Self {
+                Self::wrap(T::ChildHandler::new(ctx))
+            }
+
+            $(
+                $( #[cfg(feature = $feature)] )?
+                async fn $method_name(&self, $($context: EventContext,)? $( $arg_name: $arg_type ),*) {
+                    self.$method_name($($context,)? $($arg_name),*).await
+                }
+            )*
+        }
+
+        impl<T> PassthroughEventHandler for std::sync::OnceLock<T>  where T: EventHandler + Send + Sync + 'static {
+            type ChildHandler = T;
+
+            fn wrap(handler: Self::ChildHandler) -> Self {
+                std::sync::OnceLock::new()
+            }
+
+            fn get_child_handler(&self) -> &Self::ChildHandler {
+                self.get()
+            }
+        }
+
         /// This enum stores every possible event that an [`EventHandler`] can receive.
         #[cfg_attr(not(feature = "unstable"), non_exhaustive)]
         #[derive(Clone, Debug, VariantNames, IntoStaticStr, EnumCount)]
