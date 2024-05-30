@@ -3,8 +3,9 @@ use std::borrow::Cow;
 use to_arraystring::ToArrayString;
 
 use crate::builder::{CreateActionRow, CreateInputText, CreateInteractionResponse, CreateModal};
-use crate::client::Context;
 use crate::collector::ModalInteractionCollector;
+use crate::gateway::ShardMessenger;
+use crate::http::Http;
 use crate::internal::prelude::*;
 use crate::model::prelude::*;
 
@@ -85,7 +86,8 @@ impl<'a> CreateQuickModal<'a> {
     /// See [`CreateInteractionResponse::execute()`].
     pub async fn execute(
         self,
-        ctx: &Context,
+        http: &Http,
+        shard_messenger: ShardMessenger,
         interaction_id: InteractionId,
         token: &str,
     ) -> Result<Option<QuickModalResponse>, crate::Error> {
@@ -101,9 +103,10 @@ impl<'a> CreateQuickModal<'a> {
                     .collect::<Vec<_>>(),
             ),
         );
-        builder.execute(&ctx.http, interaction_id, token).await?;
 
-        let collector = ModalInteractionCollector::new(ctx.shard.clone())
+        builder.execute(&http, interaction_id, token).await?;
+
+        let collector = ModalInteractionCollector::new(shard_messenger)
             .custom_ids(vec![FixedString::from_str_trunc(&modal_custom_id)]);
 
         let collector = match self.timeout {

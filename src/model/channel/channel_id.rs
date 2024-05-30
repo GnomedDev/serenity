@@ -1090,7 +1090,7 @@ impl<'a> From<&'a WebhookChannel> for ChannelId {
 pub struct MessagesIter<'a> {
     http: &'a Http,
     #[cfg(feature = "cache")]
-    cache: Option<&'a Arc<Cache>>,
+    cache: Option<&'a Cache>,
     channel_id: ChannelId,
     buffer: Vec<Message>,
     before: Option<MessageId>,

@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
+use super::context::EventContext;
 #[cfg(feature = "gateway")]
 use super::event_handler::InternalEventHandler;
-use super::{Context, FullEvent};
+use super::FullEvent;
 #[cfg(feature = "cache")]
 use crate::cache::{Cache, CacheUpdate};
 #[cfg(feature = "framework")]
@@ -46,7 +47,8 @@ macro_rules! update_cache {
 /// intra-shard concurrency between the shard loop and event handler.
 pub(crate) async fn dispatch_model(
     event: Event,
-    context: Context,
+    context: EventContext,
+    #[cfg(feature = "cache")] cache: Arc<Cache>,
     #[cfg(feature = "framework")] framework: Option<Arc<dyn Framework>>,
     event_handler: Option<InternalEventHandler>,
 ) {
@@ -60,7 +62,7 @@ pub(crate) async fn dispatch_model(
 
     let (full_event, extra_event) = update_cache_with_event(
         #[cfg(feature = "cache")]
-        &context.cache,
+        &cache,
         event,
     );
 

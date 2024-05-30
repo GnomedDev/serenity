@@ -6,7 +6,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use strum::{EnumCount, IntoStaticStr, VariantNames};
 
-use super::context::Context;
+use super::context::{ClientContext, EventContext};
 use crate::gateway::ShardStageUpdateEvent;
 use crate::http::RatelimitInfo;
 use crate::model::prelude::*;
@@ -25,12 +25,14 @@ macro_rules! event_handler {
                 $( #[doc = $doc] )*
                 $( #[cfg(feature = $feature)] )?
                 $( #[deprecated = $deprecated] )?
-                async fn $method_name(&self, $($context: Context,)? $( $arg_name: $arg_type ),*) {
+                async fn $method_name(&self, $($context: EventContext,)? $( $arg_name: $arg_type ),*) {
                     // Suppress unused argument warnings
                     #[allow(dropping_references, dropping_copy_types)]
                     drop(( $($context,)? $($arg_name),* ))
                 }
             )*
+
+            fn new(client_context: ClientContext) -> Self where Self: Sized;
 
             /// Checks if the `event` should be dispatched (`true`) or ignored (`false`).
             ///
@@ -44,7 +46,7 @@ macro_rules! event_handler {
             /// in a timely manner. It is recommended to keep the runtime
             /// complexity of the filter code low to avoid unnecessarily blocking
             /// your bot.
-            fn filter_event(&self, context: &Context, event: &Event) -> bool {
+            fn filter_event(&self, context: &EventContext, event: &Event) -> bool {
                     // Suppress unused argument warnings
                     #[allow(dropping_references, dropping_copy_types)]
                     drop(( context, event ));
@@ -90,7 +92,7 @@ macro_rules! event_handler {
             }
 
             /// Runs the given [`EventHandler`]'s code for this event.
-            pub async fn dispatch(self, ctx: Context, handler: &dyn EventHandler) {
+            pub async fn dispatch(self, ctx: EventContext, handler: &dyn EventHandler) {
                 #[allow(deprecated)]
                 match self {
                     $(
@@ -513,7 +515,7 @@ event_handler! {
 #[async_trait]
 pub trait RawEventHandler: Send + Sync {
     /// Dispatched when any event occurs
-    async fn raw_event(&self, _ctx: Context, _ev: Event) {}
+    async fn raw_event(&self, _ctx: EventContext, _ev: Event) {}
 
     /// Checks if the `event` should be dispatched (`true`) or ignored (`false`).
     ///
@@ -528,7 +530,7 @@ pub trait RawEventHandler: Send + Sync {
     /// in a timely manner. It is recommended to keep the runtime
     /// complexity of the filter code low to avoid unnecessarily blocking
     /// your bot.
-    fn filter_event(&self, context: &Context, event: &Event) -> bool {
+    fn filter_event(&self, context: &EventContext, event: &Event) -> bool {
         // Suppress unused argument warnings
         #[allow(dropping_references, dropping_copy_types)]
         drop((context, event));

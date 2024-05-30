@@ -42,7 +42,7 @@ pub use self::typing::*;
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 #[cfg(feature = "client")]
-use crate::client::Context;
+use crate::client::ClientContext;
 use crate::model::prelude::*;
 
 /// This trait will be required by functions that need [`Http`] and can optionally use a [`Cache`]
@@ -63,7 +63,7 @@ pub trait CacheHttp: Send + Sync {
 
     #[cfg(feature = "cache")]
     #[must_use]
-    fn cache(&self) -> Option<&Arc<Cache>> {
+    fn cache(&self) -> Option<&Cache> {
         None
     }
 }
@@ -76,7 +76,7 @@ where
         (*self).http()
     }
     #[cfg(feature = "cache")]
-    fn cache(&self) -> Option<&Arc<Cache>> {
+    fn cache(&self) -> Option<&Cache> {
         (*self).cache()
     }
 }
@@ -89,25 +89,25 @@ where
         (**self).http()
     }
     #[cfg(feature = "cache")]
-    fn cache(&self) -> Option<&Arc<Cache>> {
+    fn cache(&self) -> Option<&Cache> {
         (**self).cache()
     }
 }
 
 #[cfg(feature = "client")]
-impl CacheHttp for Context {
+impl CacheHttp for ClientContext {
     fn http(&self) -> &Http {
         &self.http
     }
     #[cfg(feature = "cache")]
-    fn cache(&self) -> Option<&Arc<Cache>> {
+    fn cache(&self) -> Option<&Cache> {
         Some(&self.cache)
     }
 }
 
 #[cfg(feature = "cache")]
-impl CacheHttp for (Option<&Arc<Cache>>, &Http) {
-    fn cache(&self) -> Option<&Arc<Cache>> {
+impl CacheHttp for (Option<&Cache>, &Http) {
+    fn cache(&self) -> Option<&Cache> {
         self.0
     }
 

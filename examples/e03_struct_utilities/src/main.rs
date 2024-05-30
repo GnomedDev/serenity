@@ -6,11 +6,19 @@ use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 
-struct Handler;
+struct MyBot {
+    client_ctx: ClientContext,
+}
 
 #[async_trait]
-impl EventHandler for Handler {
-    async fn message(&self, context: Context, msg: Message) {
+impl EventHandler for MyBot {
+    fn new(client_ctx: ClientContext) -> Self {
+        Self {
+            client_ctx,
+        }
+    }
+
+    async fn message(&self, _: EventContext, msg: Message) {
         if msg.content == "!messageme" {
             // If the `utils`-feature is enabled, then model structs will have a lot of useful
             // methods implemented, to avoid using an often otherwise bulky Context, or even much
@@ -19,7 +27,7 @@ impl EventHandler for Handler {
             // In this case, you can direct message a User directly by simply calling a method on
             // its instance, with the content of the message.
             let builder = CreateMessage::new().content("Hello!");
-            let dm = msg.author.dm(&context.http, builder).await;
+            let dm = msg.author.dm(&self.client_ctx.http, builder).await;
 
             if let Err(why) = dm {
                 println!("Error when direct messaging user: {why:?}");
@@ -27,7 +35,7 @@ impl EventHandler for Handler {
         }
     }
 
-    async fn ready(&self, _: Context, ready: Ready) {
+    async fn ready(&self, _: EventContext, ready: Ready) {
         println!("{} is connected!", ready.user.name);
     }
 }

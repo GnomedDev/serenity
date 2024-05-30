@@ -71,7 +71,6 @@ default_no_backend = [
     "cache",
     "chrono",
     "client",
-    "framework",
     "gateway",
     "model",
     "http",

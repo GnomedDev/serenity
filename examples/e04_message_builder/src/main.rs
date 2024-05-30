@@ -6,11 +6,19 @@ use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use serenity::utils::MessageBuilder;
 
-struct Handler;
+struct MyBot {
+    client_ctx: ClientContext,
+}
 
 #[async_trait]
-impl EventHandler for Handler {
-    async fn message(&self, context: Context, msg: Message) {
+impl EventHandler for MyBot {
+    fn new(client_ctx: ClientContext) -> Self {
+        Self {
+            client_ctx,
+        }
+    }
+
+    async fn message(&self, context: EventContext, msg: Message) {
         if msg.content == "!ping" {
             let channel = match msg.channel_id.to_channel(&context).await {
                 Ok(channel) => channel,
@@ -38,7 +46,7 @@ impl EventHandler for Handler {
         }
     }
 
-    async fn ready(&self, _: Context, ready: Ready) {
+    async fn ready(&self, _: EventContext, ready: Ready) {
         println!("{} is connected!", ready.user.name);
     }
 }

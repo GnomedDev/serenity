@@ -16,7 +16,7 @@ use super::{ShardId, ShardManager, ShardRunnerMessage};
 #[cfg(feature = "cache")]
 use crate::cache::Cache;
 use crate::client::dispatch::dispatch_model;
-use crate::client::{Context, InternalEventHandler};
+use crate::client::{EventContext, InternalEventHandler};
 #[cfg(feature = "framework")]
 use crate::framework::Framework;
 use crate::gateway::{GatewayError, ReconnectType, Shard, ShardAction};
@@ -203,6 +203,8 @@ impl ShardRunner {
                         dispatch_model(
                             event,
                             context,
+                            #[cfg(feature = "cache")]
+                            self.cache.clone(),
                             #[cfg(feature = "framework")]
                             self.framework.clone(),
                             self.event_handler.clone(),
@@ -291,15 +293,10 @@ impl ShardRunner {
         false
     }
 
-    fn make_context(&self) -> Context {
-        Context::new(
-            Arc::clone(&self.data),
-            self,
-            self.shard.shard_info().id,
-            Arc::clone(&self.http),
-            #[cfg(feature = "cache")]
-            Arc::clone(&self.cache),
-        )
+    fn make_context(&self) -> EventContext {
+        EventContext {
+            shard_id: self.shard.shard_info().id,
+        }
     }
 
     // Handles a received value over the shard runner rx channel.

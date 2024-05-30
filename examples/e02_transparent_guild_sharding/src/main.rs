@@ -20,21 +20,29 @@ use serenity::prelude::*;
 // Taking a scenario of 2 guilds, try saying "!ping" in one guild. It should print either "0" or
 // "1" in the console. Saying "!ping" in the other guild, it should cache the other number in the
 // console. This confirms that guild sharding works.
-struct Handler;
+struct MyBot {
+    client_ctx: ClientContext,
+}
 
 #[async_trait]
-impl EventHandler for Handler {
-    async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!ping" {
-            println!("Shard {}", ctx.shard_id);
+impl EventHandler for MyBot {
+    fn new(client_ctx: ClientContext) -> Self {
+        Self {
+            client_ctx,
+        }
+    }
 
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
+    async fn message(&self, evt_ctx: EventContext, msg: Message) {
+        if msg.content == "!ping" {
+            println!("Shard {}", evt_ctx.shard_id);
+
+            if let Err(why) = msg.channel_id.say(&self.client_ctx.http, "Pong!").await {
                 println!("Error sending message: {why:?}");
             }
         }
     }
 
-    async fn ready(&self, _: Context, ready: Ready) {
+    async fn ready(&self, _: EventContext, ready: Ready) {
         println!("{} is connected!", ready.user.name);
     }
 }

@@ -511,7 +511,7 @@ impl User {
     /// #[serenity::async_trait]
     /// # #[cfg(feature = "client")]
     /// impl EventHandler for Handler {
-    ///     async fn message(&self, context: Context, msg: Message) {
+    ///     async fn message(&self, context: EventContext, msg: Message) {
     ///         if msg.content == "!mytag" {
     ///             let content = format!("Your tag is: {}", msg.author.tag());
     ///             let _ = msg.channel_id.say(&context.http, &content).await;

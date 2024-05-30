@@ -5,20 +5,28 @@ use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 
-struct Handler;
+struct MyBot {
+    client_ctx: ClientContext,
+}
 
 #[async_trait]
-impl EventHandler for Handler {
+impl EventHandler for MyBot {
+    fn new(client_ctx: ClientContext) -> Self {
+        Self {
+            client_ctx,
+        }
+    }
+
     // Set a handler for the `message` event. This is called whenever a new message is received.
     //
     // Event handlers are dispatched through a threadpool, and so multiple events can be dispatched
     // simultaneously.
-    async fn message(&self, ctx: Context, msg: Message) {
+    async fn message(&self, _: EventContext, msg: Message) {
         if msg.content == "!ping" {
             // Sending a message can fail, due to a network error, an authentication error, or lack
             // of permissions to post in the channel, so log to stdout when some error happens,
             // with a description of it.
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
+            if let Err(why) = msg.channel_id.say(&self.client_ctx.http, "Pong!").await {
                 println!("Error sending message: {why:?}");
             }
         }
@@ -29,7 +37,7 @@ impl EventHandler for Handler {
     // Ids, current user data, private channels, and more.
     //
     // In this case, just print what the current user's username is.
-    async fn ready(&self, _: Context, ready: Ready) {
+    async fn ready(&self, _: EventContext, ready: Ready) {
         println!("{} is connected!", ready.user.name);
     }
 }

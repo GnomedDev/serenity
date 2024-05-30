@@ -14,7 +14,7 @@ use crate::builder::{
     EditInteractionResponse,
 };
 #[cfg(feature = "collector")]
-use crate::client::Context;
+use crate::gateway::ShardMessenger;
 #[cfg(feature = "model")]
 use crate::http::Http;
 use crate::internal::prelude::*;
@@ -236,10 +236,11 @@ impl CommandInteraction {
     #[cfg(all(feature = "collector", feature = "utils"))]
     pub async fn quick_modal(
         &self,
-        ctx: &Context,
+        http: &Http,
+        shard_messenger: ShardMessenger,
         builder: CreateQuickModal<'_>,
     ) -> Result<Option<QuickModalResponse>> {
-        builder.execute(ctx, self.id, &self.token).await
+        builder.execute(http, shard_messenger, self.id, &self.token).await
     }
 }
 

@@ -25,7 +25,7 @@ impl EventHandler for Handler {
         println!("Presence Update");
     }
 
-    async fn ready(&self, _: Context, ready: Ready) {
+    async fn ready(&self, _: EventContext, ready: Ready) {
         println!("{} is connected!", ready.user.name);
     }
 }

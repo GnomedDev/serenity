@@ -33,7 +33,7 @@ use futures::future::BoxFuture;
 use futures::StreamExt as _;
 use tracing::debug;
 
-pub use self::context::Context;
+pub use self::context::{ClientContext, EventContext};
 pub use self::error::Error as ClientError;
 #[cfg(feature = "gateway")]
 pub use self::event_handler::{EventHandler, FullEvent, InternalEventHandler, RawEventHandler};
@@ -74,8 +74,6 @@ pub struct ClientBuilder {
     framework: Option<Box<dyn Framework>>,
     #[cfg(feature = "voice")]
     voice_manager: Option<Arc<dyn VoiceGatewayManager>>,
-    event_handler: Option<Arc<dyn EventHandler>>,
-    raw_event_handler: Option<Arc<dyn RawEventHandler>>,
     presence: PresenceData,
 }
 
@@ -228,37 +226,6 @@ impl ClientBuilder {
         self.intents
     }
 
-    /// Adds an event handler with multiple methods for each possible event.
-    pub fn event_handler<H>(mut self, event_handler: impl Into<Arc<H>>) -> Self
-    where
-        H: EventHandler + 'static,
-    {
-        self.event_handler = Some(event_handler.into());
-        self
-    }
-
-    /// Gets the added event handlers. See [`Self::event_handler`] for more info.
-    #[must_use]
-    pub fn get_event_handler(&self) -> Option<&Arc<dyn EventHandler>> {
-        self.event_handler.as_ref()
-    }
-
-    /// Adds an event handler with a single method where all received gateway events will be
-    /// dispatched.
-    pub fn raw_event_handler<H>(mut self, raw_event_handler: impl Into<Arc<H>>) -> Self
-    where
-        H: RawEventHandler + 'static,
-    {
-        self.raw_event_handler = Some(raw_event_handler.into());
-        self
-    }
-
-    /// Gets the added raw event handlers. See [`Self::raw_event_handler`] for more info.
-    #[must_use]
-    pub fn get_raw_event_handler(&self) -> Option<&Arc<dyn RawEventHandler>> {
-        self.raw_event_handler.as_ref()
-    }
-
     /// Sets the initial activity.
     pub fn activity(mut self, activity: ActivityData) -> Self {
         self.presence.activity = Some(activity);
@@ -278,23 +245,13 @@ impl ClientBuilder {
     pub fn get_presence(&self) -> &PresenceData {
         &self.presence
     }
-}
 
-#[cfg(feature = "gateway")]
-impl IntoFuture for ClientBuilder {
-    type Output = Result<Client>;
+    pub async fn build_with_event_handler<H: EventHandler>(self) -> Result<Client> {}
 
-    type IntoFuture = BoxFuture<'static, Result<Client>>;
+    pub async fn build_with_raw_event_handler<H: RawEventHandler>(self) -> Result<Client> {}
 
-    #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
-    fn into_future(self) -> Self::IntoFuture {
+    pub async fn build(self) -> Result<Client> {
         let data = self.data.unwrap_or(Arc::new(()));
-        #[cfg(feature = "framework")]
-        let framework = self.framework;
-        let intents = self.intents;
-        let presence = self.presence;
-        let http = self.http;
-
         let event_handler = match (self.event_handler, self.raw_event_handler) {
             (Some(_), Some(_)) => panic!("Cannot provide both a normal and raw event handlers"),
             (Some(h), None) => Some(InternalEventHandler::Normal(h)),
@@ -320,58 +277,56 @@ impl IntoFuture for ClientBuilder {
         #[cfg(feature = "cache")]
         let cache = Arc::new(Cache::new_with_settings(self.cache_settings));
 
-        Box::pin(async move {
-            let (ws_url, shard_total, max_concurrency) = match http.get_bot_gateway().await {
-                Ok(response) => (
-                    Arc::from(response.url),
-                    response.shards,
-                    response.session_start_limit.max_concurrency,
-                ),
-                Err(err) => {
-                    tracing::warn!("HTTP request to get gateway URL failed: {err}");
-                    (Arc::from("wss://gateway.discord.gg"), NonZeroU16::MIN, NonZeroU16::MIN)
-                },
-            };
+        let (ws_url, shard_total, max_concurrency) = match http.get_bot_gateway().await {
+            Ok(response) => (
+                Arc::from(response.url),
+                response.shards,
+                response.session_start_limit.max_concurrency,
+            ),
+            Err(err) => {
+                tracing::warn!("HTTP request to get gateway URL failed: {err}");
+                (Arc::from("wss://gateway.discord.gg"), NonZeroU16::MIN, NonZeroU16::MIN)
+            },
+        };
 
+        #[cfg(feature = "framework")]
+        let framework_cell = Arc::new(OnceLock::new());
+        let (shard_manager, shard_manager_ret_value) = ShardManager::new(ShardManagerOptions {
+            data: Arc::clone(&data),
+            event_handler,
             #[cfg(feature = "framework")]
-            let framework_cell = Arc::new(OnceLock::new());
-            let (shard_manager, shard_manager_ret_value) = ShardManager::new(ShardManagerOptions {
-                data: Arc::clone(&data),
-                event_handler,
-                #[cfg(feature = "framework")]
-                framework: Arc::clone(&framework_cell),
-                #[cfg(feature = "voice")]
-                voice_manager: voice_manager.clone(),
-                ws_url: Arc::clone(&ws_url),
-                shard_total,
-                #[cfg(feature = "cache")]
-                cache: Arc::clone(&cache),
-                http: Arc::clone(&http),
-                intents,
-                presence: Some(presence),
-                max_concurrency,
-            });
+            framework: Arc::clone(&framework_cell),
+            #[cfg(feature = "voice")]
+            voice_manager: voice_manager.clone(),
+            ws_url: Arc::clone(&ws_url),
+            shard_total,
+            #[cfg(feature = "cache")]
+            cache: Arc::clone(&cache),
+            http: Arc::clone(&http),
+            intents,
+            presence: Some(presence),
+            max_concurrency,
+        });
 
-            let client = Client {
-                data,
-                shard_manager,
-                shard_manager_return_value: shard_manager_ret_value,
-                #[cfg(feature = "voice")]
-                voice_manager,
-                ws_url,
-                #[cfg(feature = "cache")]
-                cache,
-                http,
-            };
-            #[cfg(feature = "framework")]
-            if let Some(mut framework) = framework {
-                framework.init(&client).await;
-                if let Err(_existing) = framework_cell.set(framework.into()) {
-                    tracing::warn!("overwrote existing contents of framework OnceLock");
-                }
+        let client = Client {
+            data,
+            shard_manager,
+            shard_manager_return_value: shard_manager_ret_value,
+            #[cfg(feature = "voice")]
+            voice_manager,
+            ws_url,
+            #[cfg(feature = "cache")]
+            cache,
+            http,
+        };
+        #[cfg(feature = "framework")]
+        if let Some(mut framework) = framework {
+            framework.init(&client).await;
+            if let Err(_existing) = framework_cell.set(framework.into()) {
+                tracing::warn!("overwrote existing contents of framework OnceLock");
             }
-            Ok(client)
-        })
+        }
+        Ok(client)
     }
 }
 
@@ -401,7 +356,7 @@ impl IntoFuture for ClientBuilder {
 ///
 /// #[serenity::async_trait]
 /// impl EventHandler for Handler {
-///     async fn message(&self, context: Context, msg: Message) {
+///     async fn message(&self, context: EventContext, msg: Message) {
 ///         if msg.content == "!ping" {
 ///             let _ = msg.channel_id.say(&context.http, "Pong!");
 ///         }
