@@ -181,19 +181,6 @@ impl Message {
         self.channel_id.crosspost(http, self.id).await
     }
 
-    /// First attempts to find a [`Channel`] by its Id in the cache, upon failure requests it via
-    /// the REST API.
-    ///
-    /// **Note**: If the `cache`-feature is enabled permissions will be checked and upon owning the
-    /// required permissions the HTTP-request will be issued.
-    ///
-    /// # Errors
-    ///
-    /// Can return an error if the HTTP request fails.
-    pub async fn channel(&self, cache_http: impl CacheHttp) -> Result<Channel> {
-        self.channel_id.to_channel(cache_http).await
-    }
-
     /// Deletes the message.
     ///
     /// **Note**: The logged in user must either be the author of the message or have the [Manage
@@ -571,13 +558,6 @@ impl Message {
         self.id.link(self.channel_id, self.guild_id)
     }
 
-    /// Same as [`Self::link`] but tries to find the [`GuildId`] if Discord does not provide it.
-    ///
-    /// [`guild_id`]: Self::guild_id
-    pub async fn link_ensured(&self, cache_http: impl CacheHttp) -> String {
-        self.id.link_ensured(cache_http, self.channel_id, self.guild_id).await
-    }
-
     /// Returns a builder which can be awaited to obtain a reaction or stream of reactions on this
     /// message.
     #[cfg(feature = "collector")]
@@ -644,13 +624,14 @@ impl Message {
             }
         }
 
-        let channel = self.channel_id.to_channel(&cache_http).await.ok()?.guild()?;
-        if channel.thread_metadata.is_some() {
-            let thread_parent = channel.parent_id?.to_channel(cache_http).await.ok()?.guild()?;
-            thread_parent.parent_id
-        } else {
-            channel.parent_id
-        }
+        None
+        // let channel = self.channel_id.to_channel(&cache_http).await.ok()?.guild()?;
+        // if channel.thread_metadata.is_some() {
+        //     let thread_parent = channel.parent_id?.to_channel(cache_http).await.ok()?.guild()?;
+        //     thread_parent.parent_id
+        // } else {
+        //     channel.parent_id
+        // }
     }
 }
 
@@ -920,26 +901,6 @@ impl MessageId {
         } else {
             format!("https://discord.com/channels/@me/{channel_id}/{self}")
         }
-    }
-
-    /// Same as [`Self::link`] but tries to find the [`GuildId`] if it is not provided.
-    pub async fn link_ensured(
-        &self,
-        cache_http: impl CacheHttp,
-        channel_id: ChannelId,
-        mut guild_id: Option<GuildId>,
-    ) -> String {
-        if guild_id.is_none() {
-            let found_channel = channel_id.to_channel(cache_http).await;
-
-            if let Ok(channel) = found_channel {
-                if let Some(c) = channel.guild() {
-                    guild_id = Some(c.guild_id);
-                }
-            }
-        }
-
-        self.link(channel_id, guild_id)
     }
 }
 

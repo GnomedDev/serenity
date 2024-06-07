@@ -2746,21 +2746,6 @@ impl Http {
         .await
     }
 
-    /// Gets channel information.
-    pub async fn get_channel(&self, channel_id: ChannelId) -> Result<Channel> {
-        self.fire(Request {
-            body: None,
-            multipart: None,
-            headers: None,
-            method: LightMethod::Get,
-            route: Route::Channel {
-                channel_id,
-            },
-            params: None,
-        })
-        .await
-    }
-
     /// Gets all channels in a guild.
     pub async fn get_channels(
         &self,

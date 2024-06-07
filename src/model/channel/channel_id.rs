@@ -360,42 +360,6 @@ impl ChannelId {
         http.follow_news_channel(self, &map).await
     }
 
-    /// First attempts to retrieve the channel from the `temp_cache` if enabled, otherwise performs
-    /// a HTTP request.
-    ///
-    /// It is recommended to first check if the channel is accessible via `Cache::guild` and
-    /// `Guild::members`, although this requires a `GuildId`.
-    ///
-    /// # Errors
-    ///
-    /// Returns [`Error::Http`] if the channel retrieval request failed.
-    pub async fn to_channel(self, cache_http: impl CacheHttp) -> Result<Channel> {
-        #[cfg(feature = "temp_cache")]
-        {
-            if let Some(cache) = cache_http.cache() {
-                if let Some(channel) = cache.temp_channels.get(&self) {
-                    return Ok(Channel::Guild(GuildChannel::clone(&*channel)));
-                }
-            }
-        }
-
-        let channel = cache_http.http().get_channel(self).await?;
-
-        #[cfg(all(feature = "cache", feature = "temp_cache"))]
-        {
-            if let Some(cache) = cache_http.cache() {
-                if let Channel::Guild(guild_channel) = &channel {
-                    use crate::cache::MaybeOwnedArc;
-
-                    let cached_channel = MaybeOwnedArc::new(guild_channel.clone());
-                    cache.temp_channels.insert(cached_channel.id, cached_channel);
-                }
-            }
-        }
-
-        Ok(channel)
-    }
-
     /// Gets all of the channel's invites.
     ///
     /// Requires the [Manage Channels] permission.
