@@ -1,8 +1,6 @@
 //! Models relating to Discord channels.
 
 use std::borrow::Cow;
-#[cfg(feature = "model")]
-use std::fmt::Display;
 
 use nonmax::NonMaxU64;
 
@@ -425,18 +423,8 @@ impl Message {
     /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
     ///
     /// [Add Reactions]: Permissions::ADD_REACTIONS
-<<<<<<< HEAD
-    /// [permissions]: crate::model::permissions
-    pub async fn react(
-        &self,
-        cache_http: impl CacheHttp,
-        reaction_type: impl Into<ReactionType>,
-    ) -> Result<Reaction> {
-        self.react_(cache_http, reaction_type.into(), false).await
-=======
     pub async fn react(&self, http: &Http, reaction_type: impl Into<ReactionType>) -> Result<()> {
         http.create_reaction(self.channel_id, self.id, &reaction_type.into()).await
->>>>>>> f2de3faa20 (Remove permission checks (#2855))
     }
 
     /// React to the message with a custom [`Emoji`] or unicode character.
@@ -522,14 +510,12 @@ impl Message {
 
     /// Uses Discord's inline reply to a user without pinging them.
     ///
-    /// User mentions are generally around 20 or 21 characters long.
-    ///
-    /// **Note**: Requires the [Send Messages] permission.
-    ///
-    /// **Note**: Message contents must be under 2000 unicode code points.
+    /// Refer to the documentation for [`CreateMessage`] for information regarding content
+    /// restrictions and requirements.
     ///
     /// # Errors
     ///
+<<<<<<< HEAD
     /// Returns a [`ModelError::TooLarge`] if the content of the message is over the above
     /// limit, containing the number of unicode code points over the limit.
     ///
@@ -545,27 +531,27 @@ impl Message {
     pub async fn reply(&self, http: &Http, content: impl Into<Cow<'_, str>>) -> Result<Message> {
         self._reply(http, content, Some(false)).await
 >>>>>>> f2de3faa20 (Remove permission checks (#2855))
+=======
+    /// See the documentation of [`CreateMessage::execute`] for possible errors.
+    pub async fn reply(&self, http: &Http, content: impl Into<Cow<'_, str>>) -> Result<Message> {
+        self._reply(http, content.into(), false).await
+>>>>>>> e4776f7815 (Clean up `Message::reply` (#2897))
     }
 
     /// Uses Discord's inline reply to a user with a ping.
     ///
-    /// **Note**: Requires the [Send Messages] permission.
-    ///
-    /// **Note**: Message contents must be under 2000 unicode code points.
+    /// Refer to the documentation for [`CreateMessage`] for information regarding content
+    /// restrictions and requirements.
     ///
     /// # Errors
     ///
-    /// Returns [`Error::Http`] if the current user lacks permission or if invalid data is given.
-    ///
-    /// Returns a [`ModelError::TooLarge`] if the content of the message is over the above
-    /// limit, containing the number of unicode code points over the limit.
-    ///
-    /// [Send Messages]: Permissions::SEND_MESSAGES
+    /// See the documentation of [`CreateMessage::execute`] for possible errors.
     pub async fn reply_ping(
         &self,
         http: &Http,
         content: impl Into<Cow<'_, str>>,
     ) -> Result<Message> {
+<<<<<<< HEAD
 <<<<<<< HEAD
         self.reply_(cache_http, content, Some(true)).await
 =======
@@ -621,6 +607,22 @@ impl Message {
                 .all_roles(true);
             builder = builder.reference_message(self).allowed_mentions(allowed_mentions);
         }
+=======
+        self._reply(http, content.into(), true).await
+    }
+
+    async fn _reply(&self, http: &Http, content: Cow<'_, str>, ping_user: bool) -> Result<Message> {
+        let default_allowed_mentions = http.default_allowed_mentions.clone();
+        let allowed_mentions = default_allowed_mentions.unwrap_or_else(|| {
+            CreateAllowedMentions::new().everyone(true).all_users(true).all_roles(true)
+        });
+
+        let builder = CreateMessage::new()
+            .content(content)
+            .reference_message(self)
+            .allowed_mentions(allowed_mentions.replied_user(ping_user));
+
+>>>>>>> e4776f7815 (Clean up `Message::reply` (#2897))
         self.channel_id.send_message(http, builder).await
     }
 
