@@ -1,7 +1,6 @@
 use std::borrow::Cow;
 
 use serde::Serialize;
-use serde_json::json;
 
 use crate::model::prelude::*;
 
@@ -31,7 +30,7 @@ impl<'a> CreateActionRow<'a> {
     }
 }
 
-impl<'a> serde::Serialize for CreateActionRow<'a> {
+impl serde::Serialize for CreateActionRow<'_> {
     fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         use serde::ser::SerializeMap as _;
 
