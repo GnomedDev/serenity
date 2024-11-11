@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/channel_id.rs`."><title>channel_id.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/channel_id.rs`."><title>channel_id.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (143ce0920 2024-11-10)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/model/channel/</div>channel_id.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1234,7 +1235,8 @@
 <a href="#1234" id="1234">1234</a>
 <a href="#1235" id="1235">1235</a>
 <a href="#1236" id="1236">1236</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
+<a href="#1237" id="1237">1237</a></pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
+</span><span class="kw">use </span>std::borrow::Cow;
 <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span>std::sync::Arc;
 
@@ -1264,7 +1266,6 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::gateway::ShardMessenger;
 <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http, Typing};
-<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 
 <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
@@ -1313,10 +1314,8 @@
         builder.execute(http, <span class="self">self</span>).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Creates a [permission overwrite][`PermissionOverwrite`] for either a single [`Member`] or
-    /// [`Role`] within the channel.
-    ///
-    /// Refer to the documentation for [`GuildChannel::create_permission`] for more information.
+    <span class="doccomment">/// Creates a [permission overwrite] for either a single [`Member`] or [`Role`] within the
+    /// channel.
     ///
     /// Requires the [Manage Channels] permission.
     ///
@@ -1325,6 +1324,7 @@
     /// Returns [`Error::Http`] if the current user lacks permission, or if an invalid value is
     /// set.
     ///
+    /// [permission overwrite]: PermissionOverwrite
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
     </span><span class="kw">pub async fn </span>create_permission(
         <span class="self">self</span>,
@@ -1391,9 +1391,10 @@
         http.delete_message(<span class="self">self</span>, message_id, reason).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Deletes all messages by Ids from the given vector in the given channel.
+    <span class="doccomment">/// Deletes messages by Ids from the given vector in the given channel.
     ///
-    /// The minimum amount of messages is 2 and the maximum amount is 100.
+    /// The Discord API supports deleting between 2 and 100 messages at once. This function
+    /// also handles the case of a single message by calling `delete_message` internally.
     ///
     /// Requires the [Manage Messages] permission.
     ///
@@ -1601,6 +1602,7 @@
     /// # Errors
     ///
     /// Returns [`Error::Http`] if the channel retrieval request failed.
+    </span><span class="attr">#[cfg_attr(not(feature = <span class="string">"cache"</span>), allow(unused_variables))]
     </span><span class="kw">pub async fn </span>to_channel(
         <span class="self">self</span>,
         cache_http: <span class="kw">impl </span>CacheHttp,
@@ -2046,7 +2048,7 @@
 
     <span class="doccomment">/// Same as [`Self::await_reply`].
     </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_replies(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; MessageCollector {
+    </span><span class="kw">pub fn </span>await_replies(<span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; MessageCollector {
         <span class="self">self</span>.await_reply(shard_messenger)
     }
 
@@ -2059,7 +2061,7 @@
 
     <span class="doccomment">/// Same as [`Self::await_reaction`].
     </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_reactions(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
+    </span><span class="kw">pub fn </span>await_reactions(<span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
         <span class="self">self</span>.await_reaction(shard_messenger)
     }
 
@@ -2301,7 +2303,7 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Channel&gt; <span class="kw">for </span>ChannelId {
+</span><span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Channel&gt; <span class="kw">for </span>ChannelId {
     <span class="doccomment">/// Gets the Id of a [`Channel`].
     </span><span class="kw">fn </span>from(channel: <span class="kw-2">&amp;</span>Channel) -&gt; ChannelId {
         channel.id()
@@ -2315,7 +2317,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>PrivateChannel&gt; <span class="kw">for </span>ChannelId {
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>PrivateChannel&gt; <span class="kw">for </span>ChannelId {
     <span class="doccomment">/// Gets the Id of a private channel.
     </span><span class="kw">fn </span>from(private_channel: <span class="kw-2">&amp;</span>PrivateChannel) -&gt; ChannelId {
         private_channel.id
@@ -2329,7 +2331,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuildChannel&gt; <span class="kw">for </span>ChannelId {
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>GuildChannel&gt; <span class="kw">for </span>ChannelId {
     <span class="doccomment">/// Gets the Id of a guild channel.
     </span><span class="kw">fn </span>from(public_channel: <span class="kw-2">&amp;</span>GuildChannel) -&gt; ChannelId {
         public_channel.id
@@ -2343,7 +2345,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>WebhookChannel&gt; <span class="kw">for </span>ChannelId {
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>WebhookChannel&gt; <span class="kw">for </span>ChannelId {
     <span class="doccomment">/// Gets the Id of a webhook channel.
     </span><span class="kw">fn </span>from(webhook_channel: <span class="kw-2">&amp;</span>WebhookChannel) -&gt; ChannelId {
         webhook_channel.id

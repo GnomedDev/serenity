@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/event.rs`."><title>event.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (143ce0920 2024-11-10)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>event.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1349,23 +1350,7 @@
 <a href="#1349" id="1349">1349</a>
 <a href="#1350" id="1350">1350</a>
 <a href="#1351" id="1351">1351</a>
-<a href="#1352" id="1352">1352</a>
-<a href="#1353" id="1353">1353</a>
-<a href="#1354" id="1354">1354</a>
-<a href="#1355" id="1355">1355</a>
-<a href="#1356" id="1356">1356</a>
-<a href="#1357" id="1357">1357</a>
-<a href="#1358" id="1358">1358</a>
-<a href="#1359" id="1359">1359</a>
-<a href="#1360" id="1360">1360</a>
-<a href="#1361" id="1361">1361</a>
-<a href="#1362" id="1362">1362</a>
-<a href="#1363" id="1363">1363</a>
-<a href="#1364" id="1364">1364</a>
-<a href="#1365" id="1365">1365</a>
-<a href="#1366" id="1366">1366</a>
-<a href="#1367" id="1367">1367</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! All the events this library handles.
+<a href="#1352" id="1352">1352</a></pre></div><pre class="rust"><code><span class="doccomment">//! All the events this library handles.
 //!
 //! Every event includes the gateway intent required to receive it, as well as a link to the
 //! Discord documentation for the event.
@@ -1377,13 +1362,13 @@
 <span class="kw">use </span>serde::de::Error <span class="kw">as </span>DeError;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>strum::{EnumCount, IntoStaticStr, VariantNames};
-<span class="kw">use </span>tracing::{debug, warn};
+<span class="attr">#[cfg(feature = <span class="string">"gateway"</span>)]
+</span><span class="kw">use </span>tracing::{debug, warn};
 
 <span class="kw">use </span><span class="kw">crate</span>::constants::Opcode;
-<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::internal::utils::lending_for_each;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::model::utils::{deserialize_val, remove_from_map, remove_from_map_opt};
+<span class="kw">use </span><span class="kw">crate</span>::model::utils::{deserialize_val, remove_from_map};
 
 <span class="doccomment">/// Requires no gateway intents.
 ///
@@ -1891,8 +1876,7 @@
     <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     #[cfg(not(feature = <span class="string">"unstable"</span>))]
     </span><span class="kw">pub </span>interaction: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteraction&gt;&gt;&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
-    </span><span class="kw">pub </span>interaction_metadata: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteractionMetadata&gt;&gt;&gt;,
+    <span class="kw">pub </span>interaction_metadata: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteractionMetadata&gt;&gt;&gt;,
     <span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_some"</span>)]
     </span><span class="kw">pub </span>thread: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;Box&lt;GuildChannel&gt;&gt;&gt;,
     <span class="kw">pub </span>components: <span class="prelude-ty">Option</span>&lt;FixedArray&lt;ActionRow&gt;&gt;,
@@ -1904,7 +1888,7 @@
 }
 
 <span class="kw">impl </span>MessageUpdateEvent {
-    <span class="attr">#[allow(clippy::clone_on_copy)] </span><span class="comment">// For consistency between fields
+    <span class="attr">#[expect(clippy::clone_on_copy)] </span><span class="comment">// For consistency between fields
     </span><span class="attr">#[rustfmt::skip]
     </span><span class="doccomment">/// Writes the updated data in this message update event into the given [`Message`].
     </span><span class="kw">pub fn </span>apply_to_message(<span class="kw-2">&amp;</span><span class="self">self</span>, message: <span class="kw-2">&amp;mut </span>Message) {
@@ -1936,8 +1920,7 @@
             referenced_message,
             <span class="attr">#[cfg(not(feature = <span class="string">"unstable"</span>))]
             </span>interaction,
-            <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
-            </span>interaction_metadata,
+            interaction_metadata,
             thread,
             components,
             sticker_items,
@@ -1976,8 +1959,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = referenced_message { message.referenced_message.clone_from(x) }
         <span class="attr">#[cfg(not(feature = <span class="string">"unstable"</span>))]
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(x) = interaction { message.interaction.clone_from(x) }
-        <span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(x) = interaction_metadata { message.interaction_metadata.clone_from(x) }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = interaction_metadata { message.interaction_metadata.clone_from(x) }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = thread { message.thread.clone_from(x) }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = components { message.components.clone_from(x) }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(x) = sticker_items { message.sticker_items.clone_from(x) }
@@ -2462,18 +2444,17 @@
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>GatewayEvent {
     <span class="kw">fn </span>deserialize&lt;D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(deserializer: D) -&gt; StdResult&lt;<span class="self">Self</span>, D::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>map = JsonMap::deserialize(deserializer)<span class="question-mark">?</span>;
-        <span class="kw">let </span>seq = remove_from_map_opt(<span class="kw-2">&amp;mut </span>map, <span class="string">"s"</span>)<span class="question-mark">?</span>.flatten();
 
         <span class="prelude-val">Ok</span>(<span class="kw">match </span>remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"op"</span>)<span class="question-mark">? </span>{
             Opcode::Dispatch =&gt; {
                 <span class="self">Self</span>::Dispatch {
-                    seq: seq.ok_or_else(|| DeError::missing_field(<span class="string">"s"</span>))<span class="question-mark">?</span>,
+                    seq: remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"s"</span>)<span class="question-mark">?</span>,
                     <span class="comment">// Filled in in recv_event
                     </span>original_str: FixedString::new(),
                     data: map,
                 }
             },
-            Opcode::Heartbeat =&gt; <span class="self">Self</span>::Heartbeat(seq.ok_or_else(|| DeError::missing_field(<span class="string">"s"</span>))<span class="question-mark">?</span>),
+            Opcode::Heartbeat =&gt; <span class="self">Self</span>::Heartbeat(remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"s"</span>)<span class="question-mark">?</span>),
             Opcode::InvalidSession =&gt; <span class="self">Self</span>::InvalidateSession(remove_from_map(<span class="kw-2">&amp;mut </span>map, <span class="string">"d"</span>)<span class="question-mark">?</span>),
             Opcode::Hello =&gt; {
                 <span class="attr">#[derive(Deserialize)]
@@ -2506,7 +2487,7 @@
     /// Fires the [`EventHandler::command_permissions_update`] event.
     ///
     /// [`Command`]: crate::model::application::Command
-    /// [`EventHandler::command_permissions_update`]: crate::client::EventHandler::command_permissions_update
+    /// [`EventHandler::command_permissions_update`]: crate::gateway::client::EventHandler::command_permissions_update
     </span><span class="attr">#[serde(rename = <span class="string">"APPLICATION_COMMAND_PERMISSIONS_UPDATE"</span>)]
     </span>CommandPermissionsUpdate(CommandPermissionsUpdateEvent),
     <span class="doccomment">/// A [`Rule`] was created.
@@ -2514,7 +2495,7 @@
     /// Fires the [`EventHandler::auto_moderation_rule_create`] event.
     ///
     /// [`EventHandler::auto_moderation_rule_create`]:
-    /// crate::client::EventHandler::auto_moderation_rule_create
+    /// crate::gateway::client::EventHandler::auto_moderation_rule_create
     </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_CREATE"</span>)]
     </span>AutoModRuleCreate(AutoModRuleCreateEvent),
     <span class="doccomment">/// A [`Rule`] has been updated.
@@ -2522,7 +2503,7 @@
     /// Fires the [`EventHandler::auto_moderation_rule_update`] event.
     ///
     /// [`EventHandler::auto_moderation_rule_update`]:
-    /// crate::client::EventHandler::auto_moderation_rule_update
+    /// crate::gateway::client::EventHandler::auto_moderation_rule_update
     </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_UPDATE"</span>)]
     </span>AutoModRuleUpdate(AutoModRuleUpdateEvent),
     <span class="doccomment">/// A [`Rule`] was deleted.
@@ -2530,7 +2511,7 @@
     /// Fires the [`EventHandler::auto_moderation_rule_delete`] event.
     ///
     /// [`EventHandler::auto_moderation_rule_delete`]:
-    /// crate::client::EventHandler::auto_moderation_rule_delete
+    /// crate::gateway::client::EventHandler::auto_moderation_rule_delete
     </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_RULE_DELETE"</span>)]
     </span>AutoModRuleDelete(AutoModRuleDeleteEvent),
     <span class="doccomment">/// A [`Rule`] was triggered and an action was executed.
@@ -2538,32 +2519,32 @@
     /// Fires the [`EventHandler::auto_moderation_action_execution`] event.
     ///
     /// [`EventHandler::auto_moderation_action_execution`]:
-    /// crate::client::EventHandler::auto_moderation_action_execution
+    /// crate::gateway::client::EventHandler::auto_moderation_action_execution
     </span><span class="attr">#[serde(rename = <span class="string">"AUTO_MODERATION_ACTION_EXECUTION"</span>)]
     </span>AutoModActionExecution(AutoModActionExecutionEvent),
     <span class="doccomment">/// A [`Channel`] was created.
     ///
     /// Fires the [`EventHandler::channel_create`] event.
     ///
-    /// [`EventHandler::channel_create`]: crate::client::EventHandler::channel_create
+    /// [`EventHandler::channel_create`]: crate::gateway::client::EventHandler::channel_create
     </span>ChannelCreate(ChannelCreateEvent),
     <span class="doccomment">/// A [`Channel`] has been deleted.
     ///
     /// Fires the [`EventHandler::channel_delete`] event.
     ///
-    /// [`EventHandler::channel_delete`]: crate::client::EventHandler::channel_delete
+    /// [`EventHandler::channel_delete`]: crate::gateway::client::EventHandler::channel_delete
     </span>ChannelDelete(ChannelDeleteEvent),
     <span class="doccomment">/// The pins for a [`Channel`] have been updated.
     ///
     /// Fires the [`EventHandler::channel_pins_update`] event.
     ///
-    /// [`EventHandler::channel_pins_update`]: crate::client::EventHandler::channel_pins_update
+    /// [`EventHandler::channel_pins_update`]: crate::gateway::client::EventHandler::channel_pins_update
     </span>ChannelPinsUpdate(ChannelPinsUpdateEvent),
     <span class="doccomment">/// A [`Channel`] has been updated.
     ///
     /// Fires the [`EventHandler::channel_update`] event.
     ///
-    /// [`EventHandler::channel_update`]: crate::client::EventHandler::channel_update
+    /// [`EventHandler::channel_update`]: crate::gateway::client::EventHandler::channel_update
     </span>ChannelUpdate(ChannelUpdateEvent),
     GuildAuditLogEntryCreate(GuildAuditLogEntryCreateEvent),
     GuildBanAdd(GuildBanAddEvent),
@@ -2587,13 +2568,13 @@
     ///
     /// Fires the [`EventHandler::invite_create`] event handler.
     ///
-    /// [`EventHandler::invite_create`]: crate::client::EventHandler::invite_create
+    /// [`EventHandler::invite_create`]: crate::gateway::client::EventHandler::invite_create
     </span>InviteCreate(InviteCreateEvent),
     <span class="doccomment">/// An [`Invite`] was deleted.
     ///
     /// Fires the [`EventHandler::invite_delete`] event handler.
     ///
-    /// [`EventHandler::invite_delete`]: crate::client::EventHandler::invite_delete
+    /// [`EventHandler::invite_delete`]: crate::gateway::client::EventHandler::invite_delete
     </span>InviteDelete(InviteDeleteEvent),
     MessageCreate(MessageCreateEvent),
     MessageDelete(MessageDeleteEvent),
@@ -2606,28 +2587,28 @@
     ///
     /// Fires the [`EventHandler::reaction_add`] event handler.
     ///
-    /// [`EventHandler::reaction_add`]: crate::client::EventHandler::reaction_add
+    /// [`EventHandler::reaction_add`]: crate::gateway::client::EventHandler::reaction_add
     </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_ADD"</span>)]
     </span>ReactionAdd(ReactionAddEvent),
     <span class="doccomment">/// A reaction was removed to a message.
     ///
     /// Fires the [`EventHandler::reaction_remove`] event handler.
     ///
-    /// [`EventHandler::reaction_remove`]: crate::client::EventHandler::reaction_remove
+    /// [`EventHandler::reaction_remove`]: crate::gateway::client::EventHandler::reaction_remove
     </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE"</span>)]
     </span>ReactionRemove(ReactionRemoveEvent),
     <span class="doccomment">/// A request was issued to remove all [`Reaction`]s from a [`Message`].
     ///
     /// Fires the [`EventHandler::reaction_remove_all`] event handler.
     ///
-    /// [`EventHandler::reaction_remove_all`]: crate::client::EventHandler::reaction_remove_all
+    /// [`EventHandler::reaction_remove_all`]: crate::gateway::client::EventHandler::reaction_remove_all
     </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE_ALL"</span>)]
     </span>ReactionRemoveAll(ReactionRemoveAllEvent),
     <span class="doccomment">/// Sent when a bot removes all instances of a given emoji from the reactions of a message.
     ///
     /// Fires the [`EventHandler::reaction_remove_emoji`] event handler.
     ///
-    /// [`EventHandler::reaction_remove_emoji`]: crate::client::EventHandler::reaction_remove_emoji
+    /// [`EventHandler::reaction_remove_emoji`]: crate::gateway::client::EventHandler::reaction_remove_emoji
     </span><span class="attr">#[serde(rename = <span class="string">"MESSAGE_REACTION_REMOVE_EMOJI"</span>)]
     </span>ReactionRemoveEmoji(ReactionRemoveEmojiEvent),
     <span class="doccomment">/// The first event in a connection, containing the initial ready cache.
@@ -2705,31 +2686,20 @@
         <span class="self">self</span>.into()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>deserialize_and_log(map: JsonMap, original_str: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        deserialize_val(Value::Object(map))
-            .map_err(|err| log_deserialisation_err(original_str, err))
+    <span class="attr">#[cfg(feature = <span class="string">"gateway"</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>deserialize_and_log(map: JsonMap, original_str: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        deserialize_val(Value::Object(map)).map_err(|err| {
+            <span class="kw">let </span>err_dbg = <span class="macro">format!</span>(<span class="string">"{err:?}"</span>);
+            <span class="kw">if let </span><span class="prelude-val">Some</span>((variant_name, <span class="kw">_</span>)) =
+                err_dbg.strip_prefix(<span class="string">r#"Error("unknown variant `"#</span>).and_then(|s| s.split_once(<span class="string">'`'</span>))
+            {
+                <span class="macro">debug!</span>(<span class="string">"Unknown event: {variant_name}"</span>);
+            } <span class="kw">else </span>{
+                <span class="macro">warn!</span>(<span class="string">"Err deserializing text: {err_dbg}"</span>);
+            }
+            <span class="macro">debug!</span>(<span class="string">"Failing text: {original_str}"</span>);
+            Error::Json(err)
+        })
     }
-}
-
-<span class="kw">fn </span>filter_unknown_variant(json_err_dbg: <span class="kw-2">&amp;</span>str) -&gt; bool {
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(msg) = json_err_dbg.strip_prefix(<span class="string">"Error(\"unknown variant `"</span>) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>((variant_name, <span class="kw">_</span>)) = msg.split_once(<span class="string">'`'</span>) {
-            <span class="macro">debug!</span>(<span class="string">"Unknown event: {variant_name}"</span>);
-            <span class="kw">return </span><span class="bool-val">true</span>;
-        }
-    }
-
-    <span class="bool-val">false
-</span>}
-
-<span class="attr">#[cold]
-</span><span class="kw">fn </span>log_deserialisation_err(json_str: <span class="kw-2">&amp;</span>str, err: serde_json::Error) -&gt; Error {
-    <span class="kw">let </span>json_err_dbg = <span class="macro">format!</span>(<span class="string">"{err:?}"</span>);
-    <span class="kw">if </span>!filter_unknown_variant(<span class="kw-2">&amp;</span>json_err_dbg) {
-        <span class="macro">warn!</span>(<span class="string">"Err deserializing text: {json_err_dbg}"</span>);
-    }
-
-    <span class="macro">debug!</span>(<span class="string">"Failing text: {json_str}"</span>);
-    Error::Json(err)
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (143ce0920 2024-11-10)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/model/</div>utils.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -253,76 +254,21 @@
 <a href="#253" id="253">253</a>
 <a href="#254" id="254">254</a>
 <a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-<a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
-<a href="#269" id="269">269</a>
-<a href="#270" id="270">270</a>
-<a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
-<a href="#280" id="280">280</a>
-<a href="#281" id="281">281</a>
-<a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
-<a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::cell::Cell;
-<span class="kw">use </span>std::fmt;
+<a href="#256" id="256">256</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt;
 
 <span class="kw">use </span>arrayvec::ArrayVec;
 <span class="kw">use </span>serde::de::Error <span class="kw">as </span>DeError;
-<span class="kw">use </span>serde::ser::SerializeSeq;
 <span class="kw">use </span>serde_cow::CowStr;
 <span class="kw">use </span>small_fixed_array::FixedString;
 
 <span class="kw">use </span><span class="kw">super</span>::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">pub fn </span>default_true() -&gt; bool {
     <span class="bool-val">true
 </span>}
 
 <span class="doccomment">/// Helper function for `#[serde(skip_serializing_if = "is_false")]`
-</span><span class="attr">#[allow(clippy::trivially_copy_pass_by_ref)]
+</span><span class="attr">#[expect(clippy::trivially_copy_pass_by_ref)]
 </span><span class="kw">pub fn </span>is_false(v: <span class="kw-2">&amp;</span>bool) -&gt; bool {
     !v
 }
@@ -361,42 +307,12 @@
     T::deserialize(val).map_err(serde::de::Error::custom)
 }
 
-<span class="kw">pub fn </span>remove_from_map_opt&lt;T, E&gt;(map: <span class="kw-2">&amp;mut </span>JsonMap, key: <span class="kw-2">&amp;</span>str) -&gt; StdResult&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, E&gt;
-<span class="kw">where
-    </span>T: serde::de::DeserializeOwned,
-    E: serde::de::Error,
-{
-    map.remove(key).map(deserialize_val).transpose()
-}
-
 <span class="kw">pub fn </span>remove_from_map&lt;T, E&gt;(map: <span class="kw-2">&amp;mut </span>JsonMap, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; StdResult&lt;T, E&gt;
 <span class="kw">where
     </span>T: serde::de::DeserializeOwned,
     E: serde::de::Error,
 {
-    remove_from_map_opt(map, key)<span class="question-mark">?</span>.ok_or_else(|| serde::de::Error::missing_field(key))
-}
-
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>SerializeIter&lt;I&gt;(Cell&lt;<span class="prelude-ty">Option</span>&lt;I&gt;&gt;);
-
-<span class="kw">impl</span>&lt;I&gt; SerializeIter&lt;I&gt; {
-    <span class="kw">pub fn </span>new(iter: I) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(Cell::new(<span class="prelude-val">Some</span>(iter)))
-    }
-}
-
-<span class="kw">impl</span>&lt;Iter, Item&gt; serde::Serialize <span class="kw">for </span>SerializeIter&lt;Iter&gt;
-<span class="kw">where
-    </span>Iter: Iterator&lt;Item = Item&gt;,
-    Item: serde::Serialize,
-{
-    <span class="kw">fn </span>serialize&lt;S: serde::Serializer&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt; {
-        <span class="kw">let </span><span class="prelude-val">Some</span>(iter) = <span class="self">self</span>.<span class="number">0</span>.take() <span class="kw">else </span>{
-            <span class="kw">return </span>serializer.serialize_seq(<span class="prelude-val">Some</span>(<span class="number">0</span>))<span class="question-mark">?</span>.end();
-        };
-
-        serializer.collect_seq(iter)
-    }
+    map.remove(key).ok_or_else(|| serde::de::Error::missing_field(key)).and_then(deserialize_val)
 }
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">enum </span>StrOrInt&lt;<span class="lifetime">'de</span>&gt; {
@@ -548,24 +464,6 @@
         seq.serialize_element(user)<span class="question-mark">?</span>;
 
         seq.end()
-    }
-}
-
-<span class="kw">pub mod </span>secret {
-    <span class="kw">use </span>secrecy::{ExposeSecret, Secret, Zeroize};
-    <span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
-
-    <span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">'de</span>, S: Deserialize&lt;<span class="lifetime">'de</span>&gt; + Zeroize, D: Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;(
-        deserializer: D,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Secret&lt;S&gt;&gt;, D::Error&gt; {
-        <span class="prelude-ty">Option</span>::&lt;S&gt;::deserialize(deserializer).map(|s| s.map(Secret::new))
-    }
-
-    <span class="kw">pub fn </span>serialize&lt;S: Serialize + Zeroize, Sr: Serializer&gt;(
-        secret: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;Secret&lt;S&gt;&gt;,
-        serializer: Sr,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Sr::Ok, Sr::Error&gt; {
-        secret.as_ref().map(ExposeSecret::expose_secret).serialize(serializer)
     }
 }
 

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/message.rs`."><title>message.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/model/channel/message.rs`."><title>message.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-590a400c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0-nightly (143ce0920 2024-11-10)" data-channel="nightly" data-search-js="search-c5a66128.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/model/channel/</div>message.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1075,8 +1076,59 @@
 <a href="#1075" id="1075">1075</a>
 <a href="#1076" id="1076">1076</a>
 <a href="#1077" id="1077">1077</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Models relating to Discord channels.
+<a href="#1078" id="1078">1078</a>
+<a href="#1079" id="1079">1079</a>
+<a href="#1080" id="1080">1080</a>
+<a href="#1081" id="1081">1081</a>
+<a href="#1082" id="1082">1082</a>
+<a href="#1083" id="1083">1083</a>
+<a href="#1084" id="1084">1084</a>
+<a href="#1085" id="1085">1085</a>
+<a href="#1086" id="1086">1086</a>
+<a href="#1087" id="1087">1087</a>
+<a href="#1088" id="1088">1088</a>
+<a href="#1089" id="1089">1089</a>
+<a href="#1090" id="1090">1090</a>
+<a href="#1091" id="1091">1091</a>
+<a href="#1092" id="1092">1092</a>
+<a href="#1093" id="1093">1093</a>
+<a href="#1094" id="1094">1094</a>
+<a href="#1095" id="1095">1095</a>
+<a href="#1096" id="1096">1096</a>
+<a href="#1097" id="1097">1097</a>
+<a href="#1098" id="1098">1098</a>
+<a href="#1099" id="1099">1099</a>
+<a href="#1100" id="1100">1100</a>
+<a href="#1101" id="1101">1101</a>
+<a href="#1102" id="1102">1102</a>
+<a href="#1103" id="1103">1103</a>
+<a href="#1104" id="1104">1104</a>
+<a href="#1105" id="1105">1105</a>
+<a href="#1106" id="1106">1106</a>
+<a href="#1107" id="1107">1107</a>
+<a href="#1108" id="1108">1108</a>
+<a href="#1109" id="1109">1109</a>
+<a href="#1110" id="1110">1110</a>
+<a href="#1111" id="1111">1111</a>
+<a href="#1112" id="1112">1112</a>
+<a href="#1113" id="1113">1113</a>
+<a href="#1114" id="1114">1114</a>
+<a href="#1115" id="1115">1115</a>
+<a href="#1116" id="1116">1116</a>
+<a href="#1117" id="1117">1117</a>
+<a href="#1118" id="1118">1118</a>
+<a href="#1119" id="1119">1119</a>
+<a href="#1120" id="1120">1120</a>
+<a href="#1121" id="1121">1121</a>
+<a href="#1122" id="1122">1122</a>
+<a href="#1123" id="1123">1123</a>
+<a href="#1124" id="1124">1124</a>
+<a href="#1125" id="1125">1125</a>
+<a href="#1126" id="1126">1126</a>
+<a href="#1127" id="1127">1127</a>
+<a href="#1128" id="1128">1128</a></pre></div><pre class="rust"><code><span class="doccomment">//! Models relating to Discord channels.
 
+</span><span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span>std::borrow::Cow;
 
 <span class="kw">use </span>nonmax::NonMaxU64;
@@ -1097,7 +1149,6 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::gateway::ShardMessenger;
 <span class="attr">#[cfg(feature = <span class="string">"model"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::http::{CacheHttp, Http};
-<span class="kw">use </span><span class="kw">crate</span>::internal::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::model::utils::{discord_colours, StrOrInt};
 
@@ -1187,7 +1238,6 @@
     <span class="doccomment">/// Sent if the message is a response to an [`Interaction`].
     ///
     /// [`Interaction`]: crate::model::application::Interaction
-    </span><span class="attr">#[cfg(feature = <span class="string">"unstable"</span>)]
     </span><span class="kw">pub </span>interaction_metadata: <span class="prelude-ty">Option</span>&lt;Box&lt;MessageInteractionMetadata&gt;&gt;,
     <span class="doccomment">/// The thread that was started from this message, includes thread member object.
     </span><span class="kw">pub </span>thread: <span class="prelude-ty">Option</span>&lt;Box&lt;GuildChannel&gt;&gt;,
@@ -1531,7 +1581,7 @@
     ///
     /// See the documentation of [`CreateMessage::execute`] for possible errors.
     </span><span class="kw">pub async fn </span>reply(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, content: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'_</span>, str&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        <span class="self">self</span>._reply(http, content.into(), <span class="bool-val">false</span>).<span class="kw">await
+        <span class="self">self</span>.reply_(http, content.into(), <span class="bool-val">false</span>).<span class="kw">await
     </span>}
 
     <span class="doccomment">/// Uses Discord's inline reply to a user with a ping.
@@ -1547,10 +1597,10 @@
         http: <span class="kw-2">&amp;</span>Http,
         content: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'_</span>, str&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
-        <span class="self">self</span>._reply(http, content.into(), <span class="bool-val">true</span>).<span class="kw">await
+        <span class="self">self</span>.reply_(http, content.into(), <span class="bool-val">true</span>).<span class="kw">await
     </span>}
 
-    <span class="kw">async fn </span>_reply(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, content: Cow&lt;<span class="lifetime">'_</span>, str&gt;, ping_user: bool) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
+    <span class="kw">async fn </span>reply_(<span class="kw-2">&amp;</span><span class="self">self</span>, http: <span class="kw-2">&amp;</span>Http, content: Cow&lt;<span class="lifetime">'_</span>, str&gt;, ping_user: bool) -&gt; <span class="prelude-ty">Result</span>&lt;Message&gt; {
         <span class="kw">let </span>default_allowed_mentions = http.default_allowed_mentions.clone();
         <span class="kw">let </span>allowed_mentions = default_allowed_mentions.unwrap_or_else(|| {
             CreateAllowedMentions::new().everyone(<span class="bool-val">true</span>).all_users(<span class="bool-val">true</span>).all_roles(<span class="bool-val">true</span>)
@@ -1630,57 +1680,6 @@
         <span class="self">self</span>.id.link(<span class="self">self</span>.channel_id, <span class="self">self</span>.guild_id)
     }
 
-    <span class="doccomment">/// Returns a builder which can be awaited to obtain a reaction or stream of reactions on this
-    /// message.
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_reaction(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
-        ReactionCollector::new(shard_messenger).message_id(<span class="self">self</span>.id)
-    }
-
-    <span class="doccomment">/// Same as [`Self::await_reaction`].
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_reactions(<span class="kw-2">&amp;</span><span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
-        <span class="self">self</span>.await_reaction(shard_messenger)
-    }
-
-    <span class="doccomment">/// Returns a builder which can be awaited to obtain a single component interactions or a
-    /// stream of component interactions on this message.
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_component_interaction(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shard_messenger: ShardMessenger,
-    ) -&gt; ComponentInteractionCollector {
-        ComponentInteractionCollector::new(shard_messenger).message_id(<span class="self">self</span>.id)
-    }
-
-    <span class="doccomment">/// Same as [`Self::await_component_interaction`].
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_component_interactions(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shard_messenger: ShardMessenger,
-    ) -&gt; ComponentInteractionCollector {
-        <span class="self">self</span>.await_component_interaction(shard_messenger)
-    }
-
-    <span class="doccomment">/// Returns a builder which can be awaited to obtain a model submit interaction or stream of
-    /// modal submit interactions on this message.
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_modal_interaction(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shard_messenger: ShardMessenger,
-    ) -&gt; ModalInteractionCollector {
-        ModalInteractionCollector::new(shard_messenger).message_id(<span class="self">self</span>.id)
-    }
-
-    <span class="doccomment">/// Same as [`Self::await_modal_interaction`].
-    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
-    </span><span class="kw">pub fn </span>await_modal_interactions(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shard_messenger: ShardMessenger,
-    ) -&gt; ModalInteractionCollector {
-        <span class="self">self</span>.await_modal_interaction(shard_messenger)
-    }
-
     <span class="doccomment">/// Retrieves the message channel's category ID if the channel has one.
     </span><span class="kw">pub async fn </span>category_id(<span class="kw-2">&amp;</span><span class="self">self</span>, cache_http: <span class="kw">impl </span>CacheHttp) -&gt; <span class="prelude-ty">Option</span>&lt;ChannelId&gt; {
         <span class="attr">#[cfg(feature = <span class="string">"cache"</span>)]
@@ -1720,7 +1719,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Message&gt; <span class="kw">for </span>MessageId {
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Message&gt; <span class="kw">for </span>MessageId {
     <span class="doccomment">/// Gets the Id of a [`Message`].
     </span><span class="kw">fn </span>from(message: <span class="kw-2">&amp;</span>Message) -&gt; MessageId {
         message.id
@@ -1886,6 +1885,21 @@
     </span><span class="kw">pub </span>party_id: <span class="prelude-ty">Option</span>&lt;FixedString&gt;,
 }
 
+<span class="macro">enum_number!</span> {
+    <span class="doccomment">/// Message Reference Type information
+    ///
+    /// [Discord docs](https://discord.com/developers/docs/resources/message#message-reference-types)
+    </span><span class="attr">#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
+    #[cfg_attr(feature = <span class="string">"typesize"</span>, derive(typesize::derive::TypeSize))]
+    #[non_exhaustive]
+    #[&lt;default&gt; = <span class="number">0</span>]
+    </span><span class="kw">pub enum </span>MessageReferenceKind {
+        Default = <span class="number">0</span>,
+        Forward = <span class="number">1</span>,
+        <span class="kw">_ </span>=&gt; Unknown(u8),
+    }
+}
+
 <span class="doccomment">/// Reference data sent with crossposted messages.
 ///
 /// [Discord docs](https://discord.com/developers/docs/resources/channel#message-reference-object-message-reference-structure).
@@ -1893,6 +1907,9 @@
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>MessageReference {
+    <span class="doccomment">/// The Type of Message Reference
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>, default = <span class="string">"MessageReferenceKind::default"</span>)]
+    </span><span class="kw">pub </span>kind: MessageReferenceKind,
     <span class="doccomment">/// ID of the originating message.
     </span><span class="kw">pub </span>message_id: <span class="prelude-ty">Option</span>&lt;MessageId&gt;,
     <span class="doccomment">/// ID of the originating message's channel.
@@ -1904,9 +1921,41 @@
     </span><span class="kw">pub </span>fail_if_not_exists: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
+<span class="kw">impl </span>MessageReference {
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>new(kind: MessageReferenceKind, channel_id: ChannelId) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            kind,
+            channel_id,
+            message_id: <span class="prelude-val">None</span>,
+            guild_id: <span class="prelude-val">None</span>,
+            fail_if_not_exists: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>message_id(<span class="kw-2">mut </span><span class="self">self</span>, message_id: MessageId) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.message_id = <span class="prelude-val">Some</span>(message_id);
+        <span class="self">self
+    </span>}
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>guild_id(<span class="kw-2">mut </span><span class="self">self</span>, guild_id: GuildId) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.guild_id = <span class="prelude-val">Some</span>(guild_id);
+        <span class="self">self
+    </span>}
+
+    <span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>fail_if_not_exists(<span class="kw-2">mut </span><span class="self">self</span>, fail_if_not_exists: bool) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.fail_if_not_exists = <span class="prelude-val">Some</span>(fail_if_not_exists);
+        <span class="self">self
+    </span>}
+}
+
 <span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>Message&gt; <span class="kw">for </span>MessageReference {
     <span class="kw">fn </span>from(m: <span class="kw-2">&amp;</span>Message) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
+            kind: MessageReferenceKind::default(),
             message_id: <span class="prelude-val">Some</span>(m.id),
             channel_id: m.channel_id,
             guild_id: m.guild_id,
@@ -1916,8 +1965,10 @@
 }
 
 <span class="kw">impl </span>From&lt;(ChannelId, MessageId)&gt; <span class="kw">for </span>MessageReference {
-    <span class="kw">fn </span>from(pair: (ChannelId, MessageId)) -&gt; <span class="self">Self </span>{
+    <span class="comment">// TODO(next): Remove this
+    </span><span class="kw">fn </span>from(pair: (ChannelId, MessageId)) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
+            kind: MessageReferenceKind::default(),
             message_id: <span class="prelude-val">Some</span>(pair.<span class="number">1</span>),
             channel_id: pair.<span class="number">0</span>,
             guild_id: <span class="prelude-val">None</span>,
@@ -1990,12 +2041,63 @@
     <span class="doccomment">/// Returns a link referencing this message. When clicked, users will jump to the message. The
     /// link will be valid for messages in either private channels or guilds.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>link(<span class="kw-2">&amp;</span><span class="self">self</span>, channel_id: ChannelId, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;) -&gt; String {
+    </span><span class="kw">pub fn </span>link(<span class="self">self</span>, channel_id: ChannelId, guild_id: <span class="prelude-ty">Option</span>&lt;GuildId&gt;) -&gt; String {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(guild_id) = guild_id {
             <span class="macro">format!</span>(<span class="string">"https://discord.com/channels/{guild_id}/{channel_id}/{self}"</span>)
         } <span class="kw">else </span>{
             <span class="macro">format!</span>(<span class="string">"https://discord.com/channels/@me/{channel_id}/{self}"</span>)
         }
+    }
+
+    <span class="doccomment">/// Returns a builder which can be awaited to obtain a reaction or stream of reactions on this
+    /// message.
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_reaction(<span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
+        ReactionCollector::new(shard_messenger).message_id(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Same as [`Self::await_reaction`].
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_reactions(<span class="self">self</span>, shard_messenger: ShardMessenger) -&gt; ReactionCollector {
+        <span class="self">self</span>.await_reaction(shard_messenger)
+    }
+
+    <span class="doccomment">/// Returns a builder which can be awaited to obtain a single component interactions or a
+    /// stream of component interactions on this message.
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_component_interaction(
+        <span class="self">self</span>,
+        shard_messenger: ShardMessenger,
+    ) -&gt; ComponentInteractionCollector {
+        ComponentInteractionCollector::new(shard_messenger).message_id(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Same as [`Self::await_component_interaction`].
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_component_interactions(
+        <span class="self">self</span>,
+        shard_messenger: ShardMessenger,
+    ) -&gt; ComponentInteractionCollector {
+        <span class="self">self</span>.await_component_interaction(shard_messenger)
+    }
+
+    <span class="doccomment">/// Returns a builder which can be awaited to obtain a model submit interaction or stream of
+    /// modal submit interactions on this message.
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_modal_interaction(
+        <span class="self">self</span>,
+        shard_messenger: ShardMessenger,
+    ) -&gt; ModalInteractionCollector {
+        ModalInteractionCollector::new(shard_messenger).message_id(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Same as [`Self::await_modal_interaction`].
+    </span><span class="attr">#[cfg(feature = <span class="string">"collector"</span>)]
+    </span><span class="kw">pub fn </span>await_modal_interactions(
+        <span class="self">self</span>,
+        shard_messenger: ShardMessenger,
+    ) -&gt; ModalInteractionCollector {
+        <span class="self">self</span>.await_modal_interaction(shard_messenger)
     }
 }
 
