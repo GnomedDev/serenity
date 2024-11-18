@@ -700,7 +700,8 @@ impl Http {
         interaction_token: &str,
         map: &impl serde::Serialize,
         files: Vec<CreateAttachment<'_>>,
-    ) -> Result<()> {
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
         let mut request = Request {
             body: None,
             multipart: None,
@@ -723,7 +724,8 @@ impl Http {
             });
         }
 
-        self.wind(204, request).await
+        let response = self.request(request).await?;
+        Ok(if with_response { Some(response.json().await?) } else { None })
     }
 
     /// Creates a [`RichInvite`] for the given [channel][`GuildChannel`].
