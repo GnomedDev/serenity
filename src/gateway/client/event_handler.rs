@@ -10,6 +10,46 @@ use crate::gateway::ShardStageUpdateEvent;
 use crate::http::RatelimitInfo;
 use crate::model::prelude::*;
 
+pub trait EventResult {
+    const OK_VAL: Self;
+    const CAN_ERROR: bool;
+    type Error: std::fmt::Display;
+
+    fn from_error(output: Self::Error) -> Self;
+    fn into_error(self) -> Option<Self::Error>;
+}
+
+impl EventResult for () {
+    const OK_VAL: Self = ();
+    const CAN_ERROR: bool = false;
+    type Error = std::convert::Infallible;
+
+    fn from_error(output: Self::Error) -> Self {
+        match output {}
+    }
+
+    fn into_error(self) -> Option<Self::Error> {
+        None
+    }
+}
+
+impl<E> EventResult for Result<(), E>
+where
+    E: std::fmt::Display,
+{
+    type Error = E;
+    const CAN_ERROR: bool = true;
+    const OK_VAL: Self = Ok(());
+
+    fn from_error(output: Self::Error) -> Self {
+        Err(output)
+    }
+
+    fn into_error(self) -> Option<Self::Error> {
+        self.err()
+    }
+}
+
 macro_rules! event_handler {
     ( $(
         $( #[doc = $doc:literal] )*
@@ -19,14 +59,15 @@ macro_rules! event_handler {
     )* ) => {
         /// The core trait for handling events by serenity.
         #[async_trait]
-        pub trait EventHandler: Send + Sync {
+        pub trait EventHandler<Res: EventResult = ()>: Send + Sync {
             $(
                 $( #[doc = $doc] )*
                 $( #[cfg(feature = $feature)] )?
                 $( #[deprecated = $deprecated] )?
-                async fn $method_name(&self, $($context: Context,)? $( $arg_name: $arg_type ),*) {
+                async fn $method_name(&self, $($context: Context,)? $( $arg_name: $arg_type ),*) -> Res {
                     // Suppress unused argument warnings
-                    drop(( $($context,)? $($arg_name),* ))
+                    drop(( $($context,)? $($arg_name),* ));
+                    Res::OK_VAL
                 }
             )*
 
@@ -45,6 +86,10 @@ macro_rules! event_handler {
             /// your bot.
             fn filter_event(&self, _context: &Context, _event: &Event) -> bool {
                 true
+            }
+
+            fn handle_error(&self, _context: Context, err: Res::Error) {
+                tracing::error!("EventHandler returned error: {err}")
             }
         }
 
@@ -85,15 +130,21 @@ macro_rules! event_handler {
             }
 
             /// Runs the given [`EventHandler`]'s code for this event.
-            pub async fn dispatch(self, ctx: Context, handler: &dyn EventHandler) {
-                match self {
+            pub async fn dispatch<Res: EventResult>(self, ctx: Context, handler: &dyn EventHandler<Res>) {
+                let ctx_clone = Res::CAN_ERROR.then(|| ctx.clone());
+                let result: Res = match self {
                     $(
                         $( #[cfg(feature = $feature)] )?
                         Self::$variant_name { $( $arg_name ),* } => {
                             $( let $context = ctx; )?
-                            handler.$method_name( $($context,)? $( $arg_name ),* ).await;
+                            handler.$method_name( $($context,)? $( $arg_name ),* ).await
                         }
                     )*
+                };
+
+                if let Some(error) = result.into_error() {
+                    let ctx_clone = ctx_clone.expect("context clone should be initialised if `EventResult::CAN_ERROR` is correct");
+                    handler.handle_error(ctx_clone, error);
                 }
             }
         }
