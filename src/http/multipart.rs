@@ -8,13 +8,17 @@ use crate::internal::prelude::*;
 
 impl CreateAttachment<'_> {
     async fn into_part(self) -> Result<Part> {
-        let mut part = match self.data {
+        #[rustfmt::skip]
+        let Self { filename, data, description } = self;
+        drop(description);
+
+        let mut part = match data {
             AttachmentData::Bytes(bytes) => Part::stream(bytes),
             AttachmentData::File(file) => Part::stream(file.try_clone().await?),
             AttachmentData::Path(path) => Part::stream(File::open(path).await?),
         };
-        part = guess_mime_str(part, &self.filename)?;
-        part = part.file_name(self.filename);
+        part = guess_mime_str(part, &filename)?;
+        part = part.file_name(filename);
         Ok(part)
     }
 }
@@ -49,7 +53,8 @@ impl Multipart<'_> {
             },
             MultipartUpload::Attachments(attachment_files) => {
                 for (idx, file) in attachment_files.into_iter().enumerate() {
-                    multipart = multipart.part(format!("files[{idx}]"), file.into_part().await?);
+                    let part = file.into_part().await?;
+                    multipart = multipart.part(format!("files[{idx}]"), part);
                 }
             },
         }
