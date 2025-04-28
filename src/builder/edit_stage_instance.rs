@@ -52,7 +52,8 @@ impl<'a> EditStageInstance<'a> {
     /// Returns [`Error::Http`] if the channel is not a stage channel, or there is no stage
     /// instance currently.
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> Result<StageInstance> {
-        http.edit_stage_instance(channel_id, &self, self.audit_log_reason).await
+    pub async fn execute(mut self, http: &Http, channel_id: ChannelId) -> Result<StageInstance> {
+        let audit_log_reason = self.audit_log_reason.take();
+        http.edit_stage_instance(channel_id, self, audit_log_reason).await
     }
 }

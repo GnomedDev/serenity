@@ -139,7 +139,8 @@ impl<'a> CreateInvite<'a> {
     ///
     /// [Create Instant Invite]: Permissions::CREATE_INSTANT_INVITE
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> Result<RichInvite> {
-        http.create_invite(channel_id, &self, self.audit_log_reason).await
+    pub async fn execute(mut self, http: &Http, channel_id: ChannelId) -> Result<RichInvite> {
+        let audit_log_reason = self.audit_log_reason.take();
+        http.create_invite(channel_id, self, audit_log_reason).await
     }
 }

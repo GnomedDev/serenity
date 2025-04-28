@@ -371,8 +371,7 @@ impl<'a> ExecuteWebhook<'a> {
             )
             .await
         } else {
-            http.execute_webhook(webhook_id, self.thread_id, webhook_token, wait, files, &self)
-                .await
+            http.execute_webhook(webhook_id, self.thread_id, webhook_token, wait, files, self).await
         }
     }
 }

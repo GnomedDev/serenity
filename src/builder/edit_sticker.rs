@@ -79,11 +79,12 @@ impl<'a> EditSticker<'a> {
     /// [Manage Guild Expressions]: Permissions::MANAGE_GUILD_EXPRESSIONS
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         guild_id: GuildId,
         sticker_id: StickerId,
     ) -> Result<Sticker> {
-        http.edit_sticker(guild_id, sticker_id, &self, self.audit_log_reason).await
+        let audit_log_reason = self.audit_log_reason.take();
+        http.edit_sticker(guild_id, sticker_id, self, audit_log_reason).await
     }
 }

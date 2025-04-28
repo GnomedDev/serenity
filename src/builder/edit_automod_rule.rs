@@ -109,16 +109,17 @@ impl<'a> EditAutoModRule<'a> {
     /// [Manage Guild]: Permissions::MANAGE_GUILD
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         guild_id: GuildId,
         rule_id: Option<RuleId>,
     ) -> Result<AutoModRule> {
+        let audit_log_reason = self.audit_log_reason.take();
         match rule_id {
-            Some(id) => http.edit_automod_rule(guild_id, id, &self, self.audit_log_reason).await,
+            Some(id) => http.edit_automod_rule(guild_id, id, self, audit_log_reason).await,
             // Automod Rule creation has required fields, whereas modifying a rule does not.
             // TODO: Enforce these fields (maybe with a separate CreateAutoModRule builder).
-            None => http.create_automod_rule(guild_id, &self, self.audit_log_reason).await,
+            None => http.create_automod_rule(guild_id, self, audit_log_reason).await,
         }
     }
 }

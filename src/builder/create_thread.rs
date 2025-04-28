@@ -103,16 +103,17 @@ impl<'a> CreateThread<'a> {
     /// Returns [`Error::Http`] if the current user lacks permission, or if invalid data is given.
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         channel_id: ChannelId,
         message_id: Option<MessageId>,
     ) -> Result<GuildThread> {
+        let audit_log_reason = self.audit_log_reason.take();
         match message_id {
             Some(id) => {
-                http.create_thread_from_message(channel_id, id, &self, self.audit_log_reason).await
+                http.create_thread_from_message(channel_id, id, self, audit_log_reason).await
             },
-            None => http.create_thread(channel_id, &self, self.audit_log_reason).await,
+            None => http.create_thread(channel_id, self, audit_log_reason).await,
         }
     }
 }

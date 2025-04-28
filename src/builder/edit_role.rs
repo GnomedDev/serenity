@@ -154,23 +154,22 @@ impl<'a> EditRole<'a> {
     /// [Manage Roles]: Permissions::MANAGE_ROLES
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         guild_id: GuildId,
         role_id: Option<RoleId>,
     ) -> Result<Role> {
+        let position = self.position.take();
+        let audit_log_reason = self.audit_log_reason.take();
         let role = match role_id {
-            Some(role_id) => {
-                http.edit_role(guild_id, role_id, &self, self.audit_log_reason).await?
-            },
-            None => http.create_role(guild_id, &self, self.audit_log_reason).await?,
+            Some(role_id) => http.edit_role(guild_id, role_id, self, audit_log_reason).await?,
+            None => http.create_role(guild_id, self, audit_log_reason).await?,
         };
 
-        if let Some(position) = self.position {
-            guild_id
-                .edit_role_positions(http, [(role.id, position)], self.audit_log_reason)
-                .await?;
+        if let Some(position) = position {
+            guild_id.edit_role_positions(http, [(role.id, position)], audit_log_reason).await?;
         }
+
         Ok(role)
     }
 }

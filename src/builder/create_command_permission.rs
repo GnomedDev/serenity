@@ -44,7 +44,7 @@ impl<'a> EditCommandPermissions<'a> {
         guild_id: GuildId,
         command_id: CommandId,
     ) -> Result<CommandPermissions> {
-        http.edit_guild_command_permissions(guild_id, command_id, &self).await
+        http.edit_guild_command_permissions(guild_id, command_id, self).await
     }
 }
 

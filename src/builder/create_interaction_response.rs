@@ -141,7 +141,7 @@ impl CreateInteractionResponse<'_> {
             }
         }
 
-        http.create_interaction_response(interaction_id, interaction_token, &self, files).await
+        http.create_interaction_response(interaction_id, interaction_token, self, files).await
     }
 }
 
@@ -415,7 +415,7 @@ impl<'a> CreateAutocompleteResponse<'a> {
         interaction_id: InteractionId,
         interaction_token: &str,
     ) -> Result<()> {
-        http.create_interaction_response(interaction_id, interaction_token, &self, Vec::new()).await
+        http.create_interaction_response(interaction_id, interaction_token, self, Vec::new()).await
     }
 }
 

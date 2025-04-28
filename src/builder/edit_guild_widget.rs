@@ -53,7 +53,8 @@ impl<'a> EditGuildWidget<'a> {
     ///
     /// [Manage Guild]: Permissions::MANAGE_GUILD
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, guild_id: GuildId) -> Result<GuildWidget> {
-        http.edit_guild_widget(guild_id, &self, self.audit_log_reason).await
+    pub async fn execute(mut self, http: &Http, guild_id: GuildId) -> Result<GuildWidget> {
+        let audit_log_reason = self.audit_log_reason.take();
+        http.edit_guild_widget(guild_id, self, audit_log_reason).await
     }
 }

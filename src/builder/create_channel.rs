@@ -265,7 +265,8 @@ impl<'a> CreateChannel<'a> {
     ///
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, guild_id: GuildId) -> Result<GuildChannel> {
-        http.create_channel(guild_id, &self, self.audit_log_reason).await
+    pub async fn execute(mut self, http: &Http, guild_id: GuildId) -> Result<GuildChannel> {
+        let audit_log_reason = self.audit_log_reason.take();
+        http.create_channel(guild_id, self, audit_log_reason).await
     }
 }

@@ -314,7 +314,7 @@ impl<'a> EditChannel<'a> {
     /// [Manage Channels]: Permissions::MANAGE_CHANNELS
     /// [Manage Roles]: Permissions::MANAGE_ROLES
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> Result<GuildChannel> {
+    pub async fn execute(mut self, http: &Http, channel_id: ChannelId) -> Result<GuildChannel> {
         if let Some(status) = &self.status {
             #[derive(Serialize)]
             struct EditVoiceStatusBody<'a> {
@@ -331,7 +331,8 @@ impl<'a> EditChannel<'a> {
             .await?;
         }
 
-        http.edit_channel(channel_id.widen(), &self, self.audit_log_reason)
+        let audit_log_reason = self.audit_log_reason.take();
+        http.edit_channel(channel_id.widen(), self, audit_log_reason)
             .await?
             .guild()
             .ok_or(Error::Model(ModelError::InvalidChannelType))

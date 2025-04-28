@@ -70,16 +70,17 @@ impl<'a> EditWebhook<'a> {
     /// Returns [`Error::Json`] if there is an error in deserialising Discord's response.
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         webhook_id: WebhookId,
         webhook_token: Option<&str>,
     ) -> Result<Webhook> {
+        let audit_log_reason = self.audit_log_reason.take();
         match webhook_token {
             Some(token) => {
-                http.edit_webhook_with_token(webhook_id, token, &self, self.audit_log_reason).await
+                http.edit_webhook_with_token(webhook_id, token, self, audit_log_reason).await
             },
-            None => http.edit_webhook(webhook_id, &self, self.audit_log_reason).await,
+            None => http.edit_webhook(webhook_id, self, audit_log_reason).await,
         }
     }
 }

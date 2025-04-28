@@ -131,8 +131,9 @@ impl<'a> CreateScheduledEvent<'a> {
     ///
     /// [Create Events]: Permissions::CREATE_EVENTS
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, guild_id: GuildId) -> Result<ScheduledEvent> {
-        http.create_scheduled_event(guild_id, &self, self.audit_log_reason).await
+    pub async fn execute(mut self, http: &Http, guild_id: GuildId) -> Result<ScheduledEvent> {
+        let audit_log_reason = self.audit_log_reason.take();
+        http.create_scheduled_event(guild_id, self, audit_log_reason).await
     }
 }
 

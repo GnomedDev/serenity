@@ -63,10 +63,11 @@ impl<'a> CreateWebhook<'a> {
     /// [`Text`]: ChannelType::Text
     /// [`News`]: ChannelType::News
     #[cfg(feature = "http")]
-    pub async fn execute(self, http: &Http, channel_id: ChannelId) -> Result<Webhook> {
+    pub async fn execute(mut self, http: &Http, channel_id: ChannelId) -> Result<Webhook> {
         crate::model::error::Minimum::WebhookName.check_underflow(self.name.chars().count())?;
         crate::model::error::Maximum::WebhookName.check_overflow(self.name.chars().count())?;
 
-        http.create_webhook(channel_id, &self, self.audit_log_reason).await
+        let audit_log_reason = self.audit_log_reason.take();
+        http.create_webhook(channel_id, self, audit_log_reason).await
     }
 }

@@ -13,7 +13,7 @@ use reqwest::header::{HeaderMap as Headers, HeaderValue};
 use reqwest::{Client, ClientBuilder, Response as ReqwestResponse, StatusCode};
 use serde::de::DeserializeOwned;
 use serde::ser::SerializeSeq as _;
-use serde_json::{from_value, to_string, to_vec};
+use serde_json::from_value;
 use to_arraystring::ToArrayString as _;
 #[cfg(feature = "tracing_instrument")]
 use tracing::instrument;
@@ -231,6 +231,16 @@ fn reason_into_header(reason: &str) -> Headers {
     headers
 }
 
+/// A version of `serde_json::to_vec` which consumes the type, allowing it to be dropped earlier.
+fn to_vec(val: impl serde::Serialize) -> serde_json::Result<Vec<u8>> {
+    serde_json::to_vec(&val)
+}
+
+/// A version of `serde_json::to_string` which consumes the type, allowing it to be dropped earlier.
+fn to_string(val: impl serde::Serialize) -> serde_json::Result<String> {
+    serde_json::to_string(&val)
+}
+
 /// A low-level client for sending requests to Discord's HTTP REST API.
 ///
 /// **Note**: For all member functions that return a [`Result`], the Error kind will be either
@@ -281,13 +291,11 @@ impl Http {
         &self,
         guild_id: GuildId,
         user_id: UserId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Option<Member>> {
-        let body = to_vec(map)?;
-
         let response = self
             .request(Request {
-                body: Some(body),
+                body: Some(to_vec(&map)?),
                 multipart: None,
                 headers: None,
                 method: LightMethod::Put,
@@ -358,7 +366,7 @@ impl Http {
     pub async fn bulk_ban_users(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         reason: Option<&str>,
     ) -> Result<BulkBanResponse> {
         self.fire(Request {
@@ -393,7 +401,7 @@ impl Http {
     pub async fn create_channel(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildChannel> {
         let body = to_vec(map)?;
@@ -414,7 +422,7 @@ impl Http {
     /// Creates a stage instance.
     pub async fn create_stage_instance(
         &self,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<StageInstance> {
         self.fire(Request {
@@ -433,7 +441,7 @@ impl Http {
         &self,
         channel_id: ChannelId,
         message_id: MessageId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildThread> {
         let body = to_vec(map)?;
@@ -456,7 +464,7 @@ impl Http {
     pub async fn create_thread(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildThread> {
         let body = to_vec(map)?;
@@ -478,7 +486,7 @@ impl Http {
     pub async fn create_forum_post(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         files: Vec<CreateAttachment<'_>>,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildThread> {
@@ -503,7 +511,7 @@ impl Http {
     pub async fn create_emoji(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Emoji> {
         self.fire(Request {
@@ -524,7 +532,7 @@ impl Http {
     /// See [`Context::create_application_emoji`] for required fields.
     ///
     /// [`Context::create_application_emoji`]: crate::gateway::client::Context::create_application_emoji
-    pub async fn create_application_emoji(&self, map: &impl serde::Serialize) -> Result<Emoji> {
+    pub async fn create_application_emoji(&self, map: impl serde::Serialize) -> Result<Emoji> {
         self.fire(Request {
             body: Some(to_vec(map)?),
             multipart: None,
@@ -544,7 +552,7 @@ impl Http {
     pub async fn create_followup_message(
         &self,
         interaction_token: &str,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         files: Vec<CreateAttachment<'_>>,
     ) -> Result<Message> {
         let mut request = Request {
@@ -573,7 +581,7 @@ impl Http {
     }
 
     /// Creates a new global command.
-    pub async fn create_global_command(&self, map: &impl serde::Serialize) -> Result<Command> {
+    pub async fn create_global_command(&self, map: impl serde::Serialize) -> Result<Command> {
         self.fire(Request {
             body: Some(to_vec(map)?),
             multipart: None,
@@ -588,10 +596,7 @@ impl Http {
     }
 
     /// Creates new global application commands.
-    pub async fn create_global_commands(
-        &self,
-        map: &impl serde::Serialize,
-    ) -> Result<Vec<Command>> {
+    pub async fn create_global_commands(&self, map: impl serde::Serialize) -> Result<Vec<Command>> {
         self.fire(Request {
             body: Some(to_vec(map)?),
             multipart: None,
@@ -609,7 +614,7 @@ impl Http {
     pub async fn create_guild_commands(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Vec<Command>> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -631,7 +636,7 @@ impl Http {
     /// over a [`Shard`], if at least one is running.
     ///
     /// [`Shard`]: crate::gateway::Shard
-    pub async fn create_guild(&self, map: &impl serde::Serialize) -> Result<PartialGuild> {
+    pub async fn create_guild(&self, map: impl serde::Serialize) -> Result<PartialGuild> {
         self.fire(Request {
             body: Some(to_vec(map)?),
             multipart: None,
@@ -649,7 +654,7 @@ impl Http {
     pub async fn create_guild_command(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Command> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -670,7 +675,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         integration_id: IntegrationId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<()> {
         self.wind(Request {
@@ -692,7 +697,7 @@ impl Http {
         &self,
         interaction_id: InteractionId,
         interaction_token: &str,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         files: Vec<CreateAttachment<'_>>,
     ) -> Result<()> {
         let mut request = Request {
@@ -724,7 +729,7 @@ impl Http {
     pub async fn create_invite(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<RichInvite> {
         let body = to_vec(map)?;
@@ -747,7 +752,7 @@ impl Http {
         &self,
         channel_id: ChannelId,
         target_id: TargetId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<()> {
         let body = to_vec(map)?;
@@ -769,7 +774,7 @@ impl Http {
     /// Creates a private channel with a user.
     pub async fn create_private_channel(
         &self,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<PrivateChannel> {
         let body = to_vec(map)?;
 
@@ -810,7 +815,7 @@ impl Http {
     pub async fn create_role(
         &self,
         guild_id: GuildId,
-        body: &impl serde::Serialize,
+        body: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Role> {
         let mut value: Value = self
@@ -837,7 +842,7 @@ impl Http {
     pub async fn create_scheduled_event(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<ScheduledEvent> {
         let body = to_vec(map)?;
@@ -922,7 +927,7 @@ impl Http {
     pub async fn create_webhook(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Webhook> {
         let body = to_vec(map)?;
@@ -1153,7 +1158,7 @@ impl Http {
     pub async fn delete_messages(
         &self,
         channel_id: GenericChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<()> {
         self.wind(Request {
@@ -1422,7 +1427,7 @@ impl Http {
     pub async fn edit_channel(
         &self,
         channel_id: GenericChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Channel> {
         self.fire(Request {
@@ -1442,7 +1447,7 @@ impl Http {
     pub async fn edit_stage_instance(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<StageInstance> {
         self.fire(Request {
@@ -1463,7 +1468,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         emoji_id: EmojiId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Emoji> {
         let body = to_vec(map)?;
@@ -1490,7 +1495,7 @@ impl Http {
     pub async fn edit_application_emoji(
         &self,
         emoji_id: EmojiId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Emoji> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -1511,7 +1516,7 @@ impl Http {
         &self,
         interaction_token: &str,
         message_id: MessageId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         new_attachments: Vec<CreateAttachment<'_>>,
     ) -> Result<Message> {
         let mut request = Request {
@@ -1565,7 +1570,7 @@ impl Http {
     pub async fn edit_global_command(
         &self,
         command_id: CommandId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Command> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -1585,7 +1590,7 @@ impl Http {
     pub async fn edit_guild(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<PartialGuild> {
         let body = to_vec(map)?;
@@ -1608,7 +1613,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         command_id: CommandId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Command> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -1630,7 +1635,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         command_id: CommandId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<CommandPermissions> {
         self.fire(Request {
             body: Some(to_vec(map)?),
@@ -1653,7 +1658,7 @@ impl Http {
         guild_id: GuildId,
         value: impl Iterator<Item: serde::Serialize>,
     ) -> Result<()> {
-        let body = to_vec(&SerializeIter::new(value))?;
+        let body = to_vec(SerializeIter::new(value))?;
 
         self.wind(Request {
             body: Some(body),
@@ -1672,7 +1677,7 @@ impl Http {
     pub async fn edit_guild_mfa_level(
         &self,
         guild_id: GuildId,
-        value: &impl serde::Serialize,
+        value: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<MfaLevel> {
         #[derive(Deserialize)]
@@ -1700,7 +1705,7 @@ impl Http {
     pub async fn edit_guild_widget(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildWidget> {
         let body = to_vec(map)?;
@@ -1722,7 +1727,7 @@ impl Http {
     pub async fn edit_guild_welcome_screen(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<GuildWelcomeScreen> {
         let body = to_vec(map)?;
@@ -1745,7 +1750,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         user_id: UserId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Member> {
         let body = to_vec(map)?;
@@ -1778,7 +1783,7 @@ impl Http {
         &self,
         channel_id: GenericChannelId,
         message_id: MessageId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         new_attachments: Vec<CreateAttachment<'_>>,
     ) -> Result<Message> {
         let mut request = Request {
@@ -1832,7 +1837,7 @@ impl Http {
     pub async fn edit_member_me(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Member> {
         self.fire(Request {
@@ -1852,7 +1857,7 @@ impl Http {
     pub async fn edit_current_member(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Member> {
         self.fire(Request {
@@ -1872,7 +1877,7 @@ impl Http {
     pub async fn follow_news_channel(
         &self,
         news_channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<FollowedChannel> {
         self.fire(Request {
             body: Some(to_vec(&map)?),
@@ -1910,7 +1915,7 @@ impl Http {
     pub async fn edit_original_interaction_response(
         &self,
         interaction_token: &str,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         new_attachments: Vec<CreateAttachment<'_>>,
     ) -> Result<Message> {
         let mut request = Request {
@@ -1939,7 +1944,7 @@ impl Http {
     }
 
     /// Edits the current user's profile settings.
-    pub async fn edit_profile(&self, map: &impl serde::Serialize) -> Result<CurrentUser> {
+    pub async fn edit_profile(&self, map: impl serde::Serialize) -> Result<CurrentUser> {
         let body = to_vec(map)?;
 
         self.fire(Request {
@@ -1958,7 +1963,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         role_id: RoleId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Role> {
         let mut value: Value = self
@@ -1989,7 +1994,7 @@ impl Http {
         positions: impl Iterator<Item: serde::Serialize>,
         audit_log_reason: Option<&str>,
     ) -> Result<Vec<Role>> {
-        let body = to_vec(&SerializeIter::new(positions))?;
+        let body = to_vec(SerializeIter::new(positions))?;
 
         let mut value: Value = self
             .fire(Request {
@@ -2024,7 +2029,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         event_id: ScheduledEventId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<ScheduledEvent> {
         let body = to_vec(map)?;
@@ -2049,7 +2054,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         sticker_id: StickerId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Sticker> {
         let body = to_vec(&map)?;
@@ -2080,7 +2085,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         user_id: UserId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<()> {
         self.wind(Request {
             body: Some(to_vec(map)?),
@@ -2100,7 +2105,7 @@ impl Http {
     pub async fn edit_voice_state_me(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<()> {
         self.wind(Request {
             body: Some(to_vec(map)?),
@@ -2119,7 +2124,7 @@ impl Http {
     pub async fn edit_voice_status(
         &self,
         channel_id: ChannelId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<()> {
         let body = to_vec(map)?;
@@ -2141,7 +2146,7 @@ impl Http {
     pub async fn edit_webhook(
         &self,
         webhook_id: WebhookId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Webhook> {
         self.fire(Request {
@@ -2162,7 +2167,7 @@ impl Http {
         &self,
         webhook_id: WebhookId,
         token: &str,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<Webhook> {
         let body = to_vec(map)?;
@@ -2189,7 +2194,7 @@ impl Http {
         token: &str,
         wait: bool,
         files: Vec<CreateAttachment<'_>>,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Option<Message>> {
         self.execute_webhook_(webhook_id, thread_id, token, wait, files, map, false).await
     }
@@ -2207,7 +2212,7 @@ impl Http {
         token: &str,
         wait: bool,
         files: Vec<CreateAttachment<'_>>,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Option<Message>> {
         self.execute_webhook_(webhook_id, thread_id, token, wait, files, map, true).await
     }
@@ -2220,7 +2225,7 @@ impl Http {
         token: &str,
         wait: bool,
         files: Vec<CreateAttachment<'_>>,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         with_components: bool,
     ) -> Result<Option<Message>> {
         let (thread_id_str, with_components_str);
@@ -2303,7 +2308,7 @@ impl Http {
         thread_id: Option<ThreadId>,
         token: &str,
         message_id: MessageId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         new_attachments: Vec<CreateAttachment<'_>>,
     ) -> Result<Message> {
         let thread_id_str;
@@ -2523,7 +2528,7 @@ impl Http {
     pub async fn create_automod_rule(
         &self,
         guild_id: GuildId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<AutoModRule> {
         let body = to_vec(map)?;
@@ -2546,7 +2551,7 @@ impl Http {
         &self,
         guild_id: GuildId,
         rule_id: RuleId,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
         audit_log_reason: Option<&str>,
     ) -> Result<AutoModRule> {
         let body = to_vec(map)?;
@@ -4172,7 +4177,7 @@ impl Http {
         &self,
         channel_id: GenericChannelId,
         files: Vec<CreateAttachment<'_>>,
-        map: &impl serde::Serialize,
+        map: impl serde::Serialize,
     ) -> Result<Message> {
         let mut request = Request {
             body: None,

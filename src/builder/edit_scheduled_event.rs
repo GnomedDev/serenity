@@ -176,11 +176,12 @@ impl<'a> EditScheduledEvent<'a> {
     /// [Manage Events]: Permissions::MANAGE_EVENTS
     #[cfg(feature = "http")]
     pub async fn execute(
-        self,
+        mut self,
         http: &Http,
         guild_id: GuildId,
         event_id: ScheduledEventId,
     ) -> Result<ScheduledEvent> {
-        http.edit_scheduled_event(guild_id, event_id, &self, self.audit_log_reason).await
+        let audit_log_reason = self.audit_log_reason.take();
+        http.edit_scheduled_event(guild_id, event_id, self, audit_log_reason).await
     }
 }
