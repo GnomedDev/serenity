@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/routing.rs`."><title>routing.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (43f0014ef 2025-03-25)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../static.files/storage-82c7156e.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/http/</div>routing.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::borrow::Cow;
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/http/routing.rs`."><title>routing.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ce1a80b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="serenity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0-nightly (4d051fb30 2025-05-18)" data-channel="nightly" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-63605ae7.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">serenity/http/</div>routing.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>std::borrow::Cow;
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span><span class="kw">crate</span>::model::id::<span class="kw-2">*</span>;
 <a href=#4 id=4 data-nosnippet>4</a>
@@ -89,7 +89,7 @@
 <a href=#89 id=89 data-nosnippet>89</a>// 2. The second line provides the url for that endpoint.
 <a href=#90 id=90 data-nosnippet>90</a>// 3. The third line indicates what type of ratelimiting the endpoint employs.
 <a href=#91 id=91 data-nosnippet>91</a></span><span class="macro">routes!</span> (<span class="lifetime">'a</span>, {
-<a href=#92 id=92 data-nosnippet>92</a>    Channel { channel_id: ChannelId },
+<a href=#92 id=92 data-nosnippet>92</a>    Channel { channel_id: GenericChannelId },
 <a href=#93 id=93 data-nosnippet>93</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}"</span>, channel_id),
 <a href=#94 id=94 data-nosnippet>94</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#95 id=95 data-nosnippet>95</a>
@@ -97,7 +97,7 @@
 <a href=#97 id=97 data-nosnippet>97</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/invites"</span>, channel_id),
 <a href=#98 id=98 data-nosnippet>98</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#99 id=99 data-nosnippet>99</a>
-<a href=#100 id=100 data-nosnippet>100</a>    ChannelMessage { channel_id: ChannelId, message_id: MessageId },
+<a href=#100 id=100 data-nosnippet>100</a>    ChannelMessage { channel_id: GenericChannelId, message_id: MessageId },
 <a href=#101 id=101 data-nosnippet>101</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}"</span>, channel_id, message_id),
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#103 id=103 data-nosnippet>103</a>
@@ -105,27 +105,27 @@
 <a href=#105 id=105 data-nosnippet>105</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/crosspost"</span>, channel_id, message_id),
 <a href=#106 id=106 data-nosnippet>106</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#107 id=107 data-nosnippet>107</a>
-<a href=#108 id=108 data-nosnippet>108</a>    ChannelMessageReaction { channel_id: ChannelId, message_id: MessageId, user_id: UserId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+<a href=#108 id=108 data-nosnippet>108</a>    ChannelMessageReaction { channel_id: GenericChannelId, message_id: MessageId, user_id: UserId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
 <a href=#109 id=109 data-nosnippet>109</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}/{}"</span>, channel_id, message_id, reaction, user_id),
 <a href=#110 id=110 data-nosnippet>110</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#111 id=111 data-nosnippet>111</a>
-<a href=#112 id=112 data-nosnippet>112</a>    ChannelMessageReactionMe { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+<a href=#112 id=112 data-nosnippet>112</a>    ChannelMessageReactionMe { channel_id: GenericChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
 <a href=#113 id=113 data-nosnippet>113</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}/@me"</span>, channel_id, message_id, reaction),
 <a href=#114 id=114 data-nosnippet>114</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#115 id=115 data-nosnippet>115</a>
-<a href=#116 id=116 data-nosnippet>116</a>    ChannelMessageReactionEmoji { channel_id: ChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
+<a href=#116 id=116 data-nosnippet>116</a>    ChannelMessageReactionEmoji { channel_id: GenericChannelId, message_id: MessageId, reaction: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str },
 <a href=#117 id=117 data-nosnippet>117</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions/{}"</span>, channel_id, message_id, reaction),
 <a href=#118 id=118 data-nosnippet>118</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#119 id=119 data-nosnippet>119</a>
-<a href=#120 id=120 data-nosnippet>120</a>    ChannelMessageReactions { channel_id: ChannelId, message_id: MessageId },
+<a href=#120 id=120 data-nosnippet>120</a>    ChannelMessageReactions { channel_id: GenericChannelId, message_id: MessageId },
 <a href=#121 id=121 data-nosnippet>121</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/{}/reactions"</span>, channel_id, message_id),
 <a href=#122 id=122 data-nosnippet>122</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#123 id=123 data-nosnippet>123</a>
-<a href=#124 id=124 data-nosnippet>124</a>    ChannelMessages { channel_id: ChannelId },
+<a href=#124 id=124 data-nosnippet>124</a>    ChannelMessages { channel_id: GenericChannelId },
 <a href=#125 id=125 data-nosnippet>125</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages"</span>, channel_id),
 <a href=#126 id=126 data-nosnippet>126</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#127 id=127 data-nosnippet>127</a>
-<a href=#128 id=128 data-nosnippet>128</a>    ChannelMessagesBulkDelete { channel_id: ChannelId },
+<a href=#128 id=128 data-nosnippet>128</a>    ChannelMessagesBulkDelete { channel_id: GenericChannelId },
 <a href=#129 id=129 data-nosnippet>129</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/messages/bulk-delete"</span>, channel_id),
 <a href=#130 id=130 data-nosnippet>130</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#131 id=131 data-nosnippet>131</a>
@@ -137,15 +137,15 @@
 <a href=#137 id=137 data-nosnippet>137</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/permissions/{}"</span>, channel_id, target_id),
 <a href=#138 id=138 data-nosnippet>138</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#139 id=139 data-nosnippet>139</a>
-<a href=#140 id=140 data-nosnippet>140</a>    ChannelPin { channel_id: ChannelId, message_id: MessageId },
+<a href=#140 id=140 data-nosnippet>140</a>    ChannelPin { channel_id: GenericChannelId, message_id: MessageId },
 <a href=#141 id=141 data-nosnippet>141</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/pins/{}"</span>, channel_id, message_id),
 <a href=#142 id=142 data-nosnippet>142</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#143 id=143 data-nosnippet>143</a>
-<a href=#144 id=144 data-nosnippet>144</a>    ChannelPins { channel_id: ChannelId },
+<a href=#144 id=144 data-nosnippet>144</a>    ChannelPins { channel_id: GenericChannelId },
 <a href=#145 id=145 data-nosnippet>145</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/pins"</span>, channel_id),
 <a href=#146 id=146 data-nosnippet>146</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#147 id=147 data-nosnippet>147</a>
-<a href=#148 id=148 data-nosnippet>148</a>    ChannelTyping { channel_id: ChannelId },
+<a href=#148 id=148 data-nosnippet>148</a>    ChannelTyping { channel_id: GenericChannelId },
 <a href=#149 id=149 data-nosnippet>149</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/typing"</span>, channel_id),
 <a href=#150 id=150 data-nosnippet>150</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#151 id=151 data-nosnippet>151</a>
@@ -165,17 +165,17 @@
 <a href=#165 id=165 data-nosnippet>165</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads"</span>, channel_id),
 <a href=#166 id=166 data-nosnippet>166</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#167 id=167 data-nosnippet>167</a>
-<a href=#168 id=168 data-nosnippet>168</a>    ChannelThreadMember { channel_id: ChannelId, user_id: UserId },
-<a href=#169 id=169 data-nosnippet>169</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/{}"</span>, channel_id, user_id),
-<a href=#170 id=170 data-nosnippet>170</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
+<a href=#168 id=168 data-nosnippet>168</a>    ChannelThreadMember { thread_id: ThreadId, user_id: UserId },
+<a href=#169 id=169 data-nosnippet>169</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/{}"</span>, thread_id, user_id),
+<a href=#170 id=170 data-nosnippet>170</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(thread_id.get())));
 <a href=#171 id=171 data-nosnippet>171</a>
-<a href=#172 id=172 data-nosnippet>172</a>    ChannelThreadMemberMe { channel_id: ChannelId },
-<a href=#173 id=173 data-nosnippet>173</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/@me"</span>, channel_id),
-<a href=#174 id=174 data-nosnippet>174</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
+<a href=#172 id=172 data-nosnippet>172</a>    ChannelThreadMemberMe { thread_id: ThreadId },
+<a href=#173 id=173 data-nosnippet>173</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members/@me"</span>, thread_id),
+<a href=#174 id=174 data-nosnippet>174</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(thread_id.get())));
 <a href=#175 id=175 data-nosnippet>175</a>
-<a href=#176 id=176 data-nosnippet>176</a>    ChannelThreadMembers { channel_id: ChannelId },
-<a href=#177 id=177 data-nosnippet>177</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members"</span>, channel_id),
-<a href=#178 id=178 data-nosnippet>178</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
+<a href=#176 id=176 data-nosnippet>176</a>    ChannelThreadMembers { thread_id: ThreadId },
+<a href=#177 id=177 data-nosnippet>177</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/thread-members"</span>, thread_id),
+<a href=#178 id=178 data-nosnippet>178</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(thread_id.get())));
 <a href=#179 id=179 data-nosnippet>179</a>
 <a href=#180 id=180 data-nosnippet>180</a>    ChannelArchivedPublicThreads { channel_id: ChannelId },
 <a href=#181 id=181 data-nosnippet>181</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/threads/archived/public"</span>, channel_id),
@@ -189,11 +189,11 @@
 <a href=#189 id=189 data-nosnippet>189</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/users/@me/threads/archived/private"</span>, channel_id),
 <a href=#190 id=190 data-nosnippet>190</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#191 id=191 data-nosnippet>191</a>
-<a href=#192 id=192 data-nosnippet>192</a>    ChannelPollGetAnswerVoters { channel_id: ChannelId, message_id: MessageId, answer_id: AnswerId },
+<a href=#192 id=192 data-nosnippet>192</a>    ChannelPollGetAnswerVoters { channel_id: GenericChannelId, message_id: MessageId, answer_id: AnswerId },
 <a href=#193 id=193 data-nosnippet>193</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/polls/{}/answers/{}"</span>, channel_id, message_id, answer_id),
 <a href=#194 id=194 data-nosnippet>194</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#195 id=195 data-nosnippet>195</a>
-<a href=#196 id=196 data-nosnippet>196</a>    ChannelPollExpire { channel_id: ChannelId, message_id: MessageId },
+<a href=#196 id=196 data-nosnippet>196</a>    ChannelPollExpire { channel_id: GenericChannelId, message_id: MessageId },
 <a href=#197 id=197 data-nosnippet>197</a>    <span class="macro">api!</span>(<span class="string">"/channels/{}/polls/{}/expire"</span>, channel_id, message_id),
 <a href=#198 id=198 data-nosnippet>198</a>    <span class="prelude-val">Some</span>(RatelimitingKind::PathAndId(GenericId::new(channel_id.get())));
 <a href=#199 id=199 data-nosnippet>199</a>
