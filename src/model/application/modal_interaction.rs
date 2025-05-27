@@ -84,8 +84,9 @@ impl ModalInteraction {
         &self,
         http: &Http,
         builder: CreateInteractionResponse<'_>,
-    ) -> Result<()> {
-        builder.execute(http, self.id, &self.token).await
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
+        builder.execute(http, self.id, &self.token, with_response).await
     }
 
     /// Edits the initial interaction response.
@@ -168,8 +169,12 @@ impl ModalInteraction {
     ///
     /// Returns an [`Error::Http`] if the API returns an error, or an [`Error::Json`] if there is
     /// an error in deserializing the API response.
-    pub async fn defer(&self, http: &Http) -> Result<()> {
-        self.create_response(http, CreateInteractionResponse::Acknowledge).await
+    pub async fn defer(
+        &self,
+        http: &Http,
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
+        self.create_response(http, CreateInteractionResponse::Acknowledge, with_response).await
     }
 
     /// Helper function to defer an interaction ephemerally
@@ -178,11 +183,15 @@ impl ModalInteraction {
     ///
     /// May also return an [`Error::Http`] if the API returns an error, or an [`Error::Json`] if
     /// there is an error in deserializing the API response.
-    pub async fn defer_ephemeral(&self, http: &Http) -> Result<()> {
+    pub async fn defer_ephemeral(
+        &self,
+        http: &Http,
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
         let builder = CreateInteractionResponse::Defer(
             CreateInteractionResponseMessage::new().ephemeral(true),
         );
-        self.create_response(http, builder).await
+        self.create_response(http, builder, with_response).await
     }
 }
 

@@ -124,9 +124,10 @@ impl CreateInteractionResponse<'_> {
     pub async fn execute(
         mut self,
         http: &Http,
-        interaction_id: InteractionId,
+        id: InteractionId,
         interaction_token: &str,
-    ) -> Result<()> {
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
         self.check_length()?;
         let files = match &mut self {
             CreateInteractionResponse::Message(msg)
@@ -141,7 +142,7 @@ impl CreateInteractionResponse<'_> {
             }
         }
 
-        http.create_interaction_response(interaction_id, interaction_token, &self, files).await
+        http.create_interaction_response(id, interaction_token, with_response, &self, files).await
     }
 }
 
@@ -412,10 +413,12 @@ impl<'a> CreateAutocompleteResponse<'a> {
     pub async fn execute(
         self,
         http: &Http,
-        interaction_id: InteractionId,
+        id: InteractionId,
         interaction_token: &str,
-    ) -> Result<()> {
-        http.create_interaction_response(interaction_id, interaction_token, &self, Vec::new()).await
+        with_response: bool,
+    ) -> Result<Option<InteractionResponse>> {
+        http.create_interaction_response(id, interaction_token, with_response, &self, Vec::new())
+            .await
     }
 }
 

@@ -127,9 +127,11 @@ async fn message(ctx: &Context, msg: &Message) -> Result<(), serenity::Error> {
                 .collect_component_interactions(ctx)
                 .timeout(std::time::Duration::from_secs(10))
                 .await;
-            match button_press {
-                Some(x) => x.defer(&ctx.http).await?,
-                None => break,
+
+            if let Some(button_press) = button_press {
+                x.defer(&ctx.http, false).await?;
+            } else {
+                break;
             }
 
             custom_id = msg.id.to_string();
@@ -244,19 +246,20 @@ async fn command_interaction(
 ) -> Result<(), serenity::Error> {
     if interaction.data.name == "editattachments" {
         // Respond with an image
-        interaction
-            .create_response(
-                &ctx.http,
-                CreateInteractionResponse::Message(
-                    CreateInteractionResponseMessage::new().add_file(
-                        CreateAttachment::url(&ctx.http, IMAGE_URL, "testing.png").await?,
-                    ),
-                ),
-            )
-            .await?;
+        let builder = CreateInteractionResponse::Message(
+            CreateInteractionResponseMessage::new()
+                .add_file(CreateAttachment::url(&ctx.http, IMAGE_URL, "testing.png").await?),
+        );
 
         // We need to know the attachments' IDs in order to not lose them in the subsequent edit
-        let msg = interaction.get_response(&ctx.http).await?;
+        let message = {
+            let resp_opt = interaction.create_response(&ctx.http, builder, true).await?;
+
+            let resp = resp_opt.expect("a response should be returned with with_response true");
+            let resource = resp.resource.expect("a resource should be created");
+
+            resource.message.unwrap();
+        };
 
         // Add another image
         let msg = interaction
@@ -286,6 +289,7 @@ async fn command_interaction(
                 CreateInteractionResponse::Message(
                     CreateInteractionResponseMessage::new().content("works"),
                 ),
+                false,
             )
             .await?;
 
@@ -308,6 +312,7 @@ async fn command_interaction(
                         CreateAttachment::url(&ctx.http, IMAGE_URL, "testing.png").await?,
                     ),
                 ),
+                false,
             )
             .await?;
 
@@ -336,6 +341,7 @@ async fn command_interaction(
                         .content("hi")
                         .embed(CreateEmbed::new().description("hi")),
                 ),
+                false,
             )
             .await?;
 
@@ -371,6 +377,7 @@ async fn command_interaction(
                             default_channels: None,
                         })),
                 ),
+                false,
             )
             .await?;
     }
@@ -402,6 +409,7 @@ impl EventHandler for Handler {
                         CreateInteractionResponse::Autocomplete(
                             CreateAutocompleteResponse::new().add_choice("suggestion"),
                         ),
+                        false,
                     )
                     .await
                     .unwrap();

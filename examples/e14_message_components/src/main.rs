@@ -115,6 +115,7 @@ impl EventHandler for Handler {
                                     "<:ferris:381919740114763787>".parse().unwrap(),
                                 )),
                         ),
+                        false,
                     )
                     .await
                     .unwrap();
@@ -138,6 +139,7 @@ impl EventHandler for Handler {
                                     .ephemeral(true)
                                     .content(format!("The **{animal}** says __{sound}__")),
                             ),
+                            false,
                         )
                         .await
                         .unwrap();

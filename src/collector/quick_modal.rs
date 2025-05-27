@@ -96,7 +96,7 @@ impl<'a> CreateQuickModal<'a> {
                     .collect::<Vec<_>>(),
             ),
         );
-        builder.execute(&ctx.http, interaction_id, token).await?;
+        builder.execute(&ctx.http, interaction_id, token, false).await?;
 
         let collector = ModalInteractionCollector::new(ctx)
             .custom_ids(vec![FixedString::from_str_trunc(&modal_custom_id)]);

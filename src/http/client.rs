@@ -693,9 +693,10 @@ impl Http {
         &self,
         interaction_id: InteractionId,
         interaction_token: &str,
+        with_response: bool,
         map: &impl serde::Serialize,
         files: Vec<CreateAttachment<'_>>,
-    ) -> Result<()> {
+    ) -> Result<Option<InteractionResponse>> {
         let mut request = Request {
             body: None,
             multipart: None,
@@ -705,7 +706,7 @@ impl Http {
                 interaction_id,
                 token: interaction_token,
             },
-            params: None,
+            params: if with_response { Some(&[("with_response", "true")]) } else { None },
         };
 
         if files.is_empty() {
@@ -718,7 +719,12 @@ impl Http {
             });
         }
 
-        self.wind(request).await
+        if with_response {
+            self.wind(request).await?;
+            Ok(None)
+        } else {
+            self.fire(request).await
+        }
     }
 
     /// Creates a [`RichInvite`] for the given [channel][`GuildChannel`].
