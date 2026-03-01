@@ -46,10 +46,8 @@ use tracing::{debug, error, info, trace, warn};
 use url::Url;
 
 pub use self::shard_manager::{
-    DEFAULT_WAIT_BETWEEN_SHARD_START,
-    ShardManager,
-    ShardManagerMessage,
-    ShardManagerOptions,
+    DEFAULT_WAIT_BETWEEN_SHARD_START, ShardManager, ShardManagerMessage, ShardManagerOptions,
+    ShardRunnerMetadata,
 };
 pub use self::shard_queue::ShardQueue;
 pub use self::shard_runner::{ShardRunner, ShardRunnerMessage};
@@ -393,10 +391,9 @@ impl Shard {
     #[cfg_attr(feature = "tracing_instrument", instrument(skip(self)))]
     pub fn handle_event(&mut self, event: Result<GatewayEvent>) -> Result<Option<ShardAction>> {
         match event {
-            Ok(GatewayEvent::Dispatch {
-                seq,
-                event,
-            }) => Ok(self.handle_gateway_dispatch(seq, event).map(ShardAction::Dispatch)),
+            Ok(GatewayEvent::Dispatch { seq, event }) => {
+                Ok(self.handle_gateway_dispatch(seq, event).map(ShardAction::Dispatch))
+            },
             Ok(GatewayEvent::Heartbeat) => {
                 info!("[{:?}] Received a request to heartbeat", self.info);
                 Ok(Some(ShardAction::Heartbeat))
@@ -711,12 +708,7 @@ impl HeartbeatMetadata {
 
 impl Default for HeartbeatMetadata {
     fn default() -> Self {
-        Self {
-            started: Instant::now(),
-            last_sent: None,
-            last_ack: None,
-            interval: None,
-        }
+        Self { started: Instant::now(), last_sent: None, last_ack: None, interval: None }
     }
 }
 
