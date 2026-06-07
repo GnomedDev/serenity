@@ -333,7 +333,7 @@ impl ShardRunner {
 }
 
 /// A message to send from a shard over a WebSocket.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ShardRunnerMessage {
     /// Indicator that a shard should be restarted.
     Restart,
